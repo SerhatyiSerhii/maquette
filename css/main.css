@@ -1,112 +1,66 @@
 * {
+    box-sizing: border-box; /* TODO: read about box-sizing, float positioning */
+}
+
+body {
     margin: 0;
-    padding: 0;    
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: #fff;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+a:hover {
+    color: #00a3ff;
 }
 
 .container {
-    width: 1440px;    
-    height: 750px;
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 29.2%, #040404 92.26%),
-    url(../images/headphones.png) center no-repeat;
-    background-size: 100%;
-}    
+    width: 1180px;
+    margin: 0 auto;
+}
 
-.container .logo {
-    text-transform: uppercase;
-    color: #ffffff;
-    font-family: "Roboto";
-    font-style: normal;
-    
-    position: absolute;
+header {
+    padding: 25px 0;
+    background: #000;
+}
+
+header .container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.logo {
     width: 104px;
-    height: 47px;         
-    left: 127px;
-    top: 25px;
-    display: flex;
+    height: 47px;
+    display: block;
+    line-height: 47px;
 }
 
-.logo .dot {
-    font-size: 40px;    
-    line-height: 46.88px;
+.logo img {
+    margin-top: 20px;
 }
 
-.logo .text {
-    font-size: 23px;
-    line-height: 57px;
-    vertical-align: bottom;
+nav ul {
+    margin-top: 22px;
 }
 
-.logo div:last-child {
-    font-size: 23px;
-    line-height: 57px;
-    vertical-align: bottom;
-    padding-left: 5px;
-}
-
-.container .menu {
+nav li {
+    display: inline-block;
+    margin-left: 35px;
     text-transform: uppercase;
-    color: #ffffff;
-    font-family: "Roboto";
-    font-size: 14px;
-    font-style: normal;
-    display: flex;
-    
 }
 
-.container .menu div:first-child {  
-    position: absolute;
-    left: 1005px;
-    top: 49px;
+nav a {
+    text-decoration: none;
+    color: #fff;
 }
 
-.container .menu div:nth-child(2) {
-    position: absolute;
-    left: 1092px;
-    top: 49px;
-}
-
-.container .menu div:last-child {
-    position: absolute;
-    left: 1282px;
-    top: 49px;
-}
-
-.center {
-    color: #ffffff;
-    text-transform: uppercase;
-    font-family: "Roboto";
-    font-style: normal;
-    font-weight: normal;
-    font-size: 70px;
-    line-height: 82px;
-
-    position: absolute;
-    width: 980px;
-    left: 130px;
-    top: 195px;    
-}
-
-.center span {
-    color: #00A3FF;        
-}
-
-.container_text {
-    color: #ffffff;
-    font-family: "Roboto";
-    font-style: normal;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 24px;
-
-    position: absolute;
-    width: 480px;
-    height: 48px;
-    left: 130px;
-    top: 492px;
-}
-
-.vector_1 {
-    position: absolute;
-    left: 130px;
-    top: 614px;
+nav a:hover {
+    text-decoration: underline;
 }
