@@ -1,5 +1,5 @@
 * {
-    box-sizing: border-box; /* TODO: read about box-sizing, float positioning */
+    box-sizing: border-box; /* TODO: read about box-sizing, float positioning, css property position: static, relative, absolute, sticky */
 }
 
 body {
@@ -8,6 +8,7 @@ body {
     font-size: 16px;
     font-weight: 400;
     color: #fff;
+    background: #000;
 }
 
 ul {
@@ -21,13 +22,21 @@ a:hover {
 }
 
 .container {
-    width: 1180px;
+    max-width: 1220px;
+    padding: 0 20px;
     margin: 0 auto;
 }
 
+.accent-text {
+    color: #00a3ff;
+}
+
 header {
+    width: 100%;
     padding: 25px 0;
-    background: #000;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 header .container {
@@ -54,6 +63,7 @@ nav li {
     display: inline-block;
     margin-left: 35px;
     text-transform: uppercase;
+    font-size: 14px;
 }
 
 nav a {
@@ -63,4 +73,27 @@ nav a {
 
 nav a:hover {
     text-decoration: underline;
+}
+
+.main-section {
+    padding: 140px 0 80px;
+    background: url('../images/headphones.png') no-repeat top right;
+    background-size: cover;
+}
+
+.main-section h1 {
+    margin-bottom: 55px;
+    font-size: 70px;
+    text-transform: uppercase;
+    width: 980px;
+}
+
+.main-section p {
+    width: 480px;
+    line-height: 24px;
+    margin-bottom: 75px;
+}
+
+.arrow-down svg path {
+    stroke: #00a3ff;
 }
