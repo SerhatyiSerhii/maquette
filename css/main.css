@@ -1,0 +1,112 @@
+* {
+    margin: 0;
+    padding: 0;    
+}
+
+.container {
+    width: 1440px;    
+    height: 750px;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 29.2%, #040404 92.26%),
+    url(../images/headphones.png) center no-repeat;
+    background-size: 100%;
+}    
+
+.container .logo {
+    text-transform: uppercase;
+    color: #ffffff;
+    font-family: "Roboto";
+    font-style: normal;
+    
+    position: absolute;
+    width: 104px;
+    height: 47px;         
+    left: 127px;
+    top: 25px;
+    display: flex;
+}
+
+.logo .dot {
+    font-size: 40px;    
+    line-height: 46.88px;
+}
+
+.logo .text {
+    font-size: 23px;
+    line-height: 57px;
+    vertical-align: bottom;
+}
+
+.logo div:last-child {
+    font-size: 23px;
+    line-height: 57px;
+    vertical-align: bottom;
+    padding-left: 5px;
+}
+
+.container .menu {
+    text-transform: uppercase;
+    color: #ffffff;
+    font-family: "Roboto";
+    font-size: 14px;
+    font-style: normal;
+    display: flex;
+    
+}
+
+.container .menu div:first-child {  
+    position: absolute;
+    left: 1005px;
+    top: 49px;
+}
+
+.container .menu div:nth-child(2) {
+    position: absolute;
+    left: 1092px;
+    top: 49px;
+}
+
+.container .menu div:last-child {
+    position: absolute;
+    left: 1282px;
+    top: 49px;
+}
+
+.center {
+    color: #ffffff;
+    text-transform: uppercase;
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: normal;
+    font-size: 70px;
+    line-height: 82px;
+
+    position: absolute;
+    width: 980px;
+    left: 130px;
+    top: 195px;    
+}
+
+.center span {
+    color: #00A3FF;        
+}
+
+.container_text {
+    color: #ffffff;
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+
+    position: absolute;
+    width: 480px;
+    height: 48px;
+    left: 130px;
+    top: 492px;
+}
+
+.vector_1 {
+    position: absolute;
+    left: 130px;
+    top: 614px;
+}
