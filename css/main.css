@@ -97,3 +97,108 @@ nav a:hover {
 .arrow-down svg path {
     stroke: #00a3ff;
 }
+
+.film-image img {
+    width: 480px;
+    height: 545px;
+}
+
+.film-content h1 {
+    width: 430px;
+    font-size: 40px;
+    z-index: 2;
+    position: relative;
+}
+
+.film-content .number {
+    font-size: 135px;
+    z-index: 1;
+    position: relative;
+    margin: 0;
+    width: 0;
+    color: rgba(0, 163, 255, 0.5);
+    bottom: 55px;
+    right: 93px;
+}
+
+.film-content p {
+    width: 354px;
+    font-size: 16px;
+    line-height: 24px;
+    margin: 0;
+}
+
+hr {
+    width: 60px;
+    height: 0px;
+    border-color: #00a3ff;
+    display: inline-flex;
+    margin: 6px 0 0 0;
+}
+
+button {
+    width: 138px;
+    height: 58px;
+    text-transform: uppercase;
+    box-sizing: border-box;
+    border: 2px solid #00A3FF;
+    color: #fff;
+    background-color: #000;
+    padding: 0 0 0 5px;
+    font-size: 16px;
+}
+
+.title {
+    display: flex;
+    width: 450px;
+    padding: 16px 0 0 22px;
+}
+
+.message {
+    display: flex;
+    justify-content: space-between;
+    width: 500px;
+    padding: 13px 25px 0 22px;
+}
+
+.listen-button {
+    margin: 105px 0 0 120px
+}
+
+.guardians .container {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 178px;
+}
+
+.jurassic .container {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 178px;
+}
+
+.jurassic p {
+    width: 352px;
+}
+
+.jurassic .title {
+    padding: 21px 0 0 105px;
+}
+
+.jurassic .title .number {
+    right: 80px;
+}
+
+.jurassic .message {
+    padding: 0 0 0 51px;
+    margin-left: 50px;
+    margin-top: -38px;
+}
+
+.jurassic .listen-button {
+    margin: 55px 0 0 200px;
+}
+
+.jurassic .film-image {
+    margin-top: 55px;
+}
