@@ -1,5 +1,5 @@
 * {
-    box-sizing: border-box; /* TODO: read about box-sizing, float positioning, css property position: static, relative, absolute, sticky */
+    box-sizing: border-box;
 }
 
 body {
@@ -115,15 +115,15 @@ nav a:hover {
     z-index: 1;
     position: relative;
     margin: 0;
-    width: 0;
-    color: rgba(0, 163, 255, 0.5);
+    width: 0; /* TODO: ни в коем случае, для этого есть или отрицательный margin, или position absolute */
+    color: rgba(0, 163, 255, 0.5); /* TODO: используй стандартный акцентный цвет и прозрачность для него */
     bottom: 55px;
     right: 93px;
 }
 
 .film-content p {
     width: 354px;
-    font-size: 16px;
+    font-size: 16px; /* TODO: не имеет смысла, в body уже определено */
     line-height: 24px;
     margin: 0;
 }
@@ -132,18 +132,18 @@ hr {
     width: 60px;
     height: 0px;
     border-color: #00a3ff;
-    display: inline-flex;
+    display: inline-flex; /* TODO: ни на что не влияет */
     margin: 6px 0 0 0;
 }
 
 button {
-    width: 138px;
+    width: 138px; /* TODO: высота и ширина кнопки определяется отступами */
     height: 58px;
     text-transform: uppercase;
-    box-sizing: border-box;
+    box-sizing: border-box; /* TODO: уже определено для всех */
     border: 2px solid #00A3FF;
     color: #fff;
-    background-color: #000;
+    background-color: #000; /* TODO: лучше прозрачным */
     padding: 0 0 0 5px;
     font-size: 16px;
 }
@@ -162,14 +162,16 @@ button {
 }
 
 .listen-button {
-    margin: 105px 0 0 120px
+    margin: 105px 0 0 120px /* TODO: убрать правый отступ */
 }
 
-.guardians .container {
+.guardians .container { /* TODO: ниже такие же стили для похожего селектора, зачем дублировать? */
     display: flex;
     justify-content: space-between;
-    padding-top: 178px;
+    padding-top: 178px; /* TODO: отступы должны быть у section, а не у .container */
 }
+
+/* TODO: избавиться от стилей .jurassic */
 
 .jurassic .container {
     display: flex;
