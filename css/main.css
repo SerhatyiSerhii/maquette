@@ -98,109 +98,99 @@ nav a:hover {
     stroke: #00a3ff;
 }
 
+/*стили фильмов*/
+
 .film-image img {
     width: 480px;
     height: 545px;
 }
 
-.film-content h1 {
-    width: 430px;
-    font-size: 40px;
-    z-index: 2;
-    position: relative;
-}
-
-.film-content .number {
-    font-size: 135px;
-    z-index: 1;
-    position: relative;
-    margin: 0;
-    width: 0; /* TODO: ни в коем случае, для этого есть или отрицательный margin, или position absolute */
-    color: rgba(0, 163, 255, 0.5); /* TODO: используй стандартный акцентный цвет и прозрачность для него */
-    bottom: 55px;
-    right: 93px;
-}
-
-.film-content p {
-    width: 354px;
-    font-size: 16px; /* TODO: не имеет смысла, в body уже определено */
-    line-height: 24px;
-    margin: 0;
-}
-
-hr {
-    width: 60px;
-    height: 0px;
-    border-color: #00a3ff;
-    display: inline-flex; /* TODO: ни на что не влияет */
-    margin: 6px 0 0 0;
-}
-
+/*Работа над ошибками*/
 button {
-    width: 138px; /* TODO: высота и ширина кнопки определяется отступами */
-    height: 58px;
     text-transform: uppercase;
-    box-sizing: border-box; /* TODO: уже определено для всех */
-    border: 2px solid #00A3FF;
+    background-color: transparent;
+    border: 2px solid #00A3ff;
     color: #fff;
-    background-color: #000; /* TODO: лучше прозрачным */
-    padding: 0 0 0 5px;
+    padding: 18px 40px;
     font-size: 16px;
 }
 
-.title {
-    display: flex;
-    width: 450px;
-    padding: 16px 0 0 22px;
+button:hover {
+    cursor: pointer;
+    background-color: #00A3ff;
+    color:#fff;
+    border-color: #fff;
+    transition: 0.3s;
 }
 
-.message {
-    display: flex;
-    justify-content: space-between;
-    width: 500px;
-    padding: 13px 25px 0 22px;
+.stright-direction-description {
+    padding-top: 212px;
 }
 
-.listen-button {
-    margin: 105px 0 0 120px /* TODO: убрать правый отступ */
+.reverse-direction-description {
+    padding-top: 235px;
 }
 
-.guardians .container { /* TODO: ниже такие же стили для похожего селектора, зачем дублировать? */
-    display: flex;
-    justify-content: space-between;
-    padding-top: 178px; /* TODO: отступы должны быть у section, а не у .container */
-}
-
-/* TODO: избавиться от стилей .jurassic */
-
-.jurassic .container {
+.flex-container {
     display: flex;
     justify-content: space-between;
-    padding-top: 178px;
 }
 
-.jurassic p {
-    width: 352px;
+.film-content {
+    position: relative;
+    width: 480px;
+    margin-top: -25px;
 }
 
-.jurassic .title {
-    padding: 21px 0 0 105px;
+.film-title-content span {
+    font-weight: 500;
+    font-size: 135px;
+    color: #00A3ff;
+    opacity: 0.5;
+    position: absolute;
+    z-index: 1;
+    top: -67px;
+    left: -87px;
 }
 
-.jurassic .title .number {
-    right: 80px;
+.film-title-content h2 {
+    position: relative;
+    z-index: 2;
+    font-size: 40px;
+    margin: 24px 0px 42px 3px;
 }
 
-.jurassic .message {
-    padding: 0 0 0 51px;
-    margin-left: 50px;
-    margin-top: -38px;
+.film-description-content {
+    padding-left: 100px;
 }
 
-.jurassic .listen-button {
-    margin: 55px 0 0 200px;
+.film-description-content p {
+    position: relative;
+    margin: 0 0 55px 2px;
+    width: 354px;
+    line-height: 24px;
 }
 
-.jurassic .film-image {
-    margin-top: 55px;
+.film-description-content p::before {
+    content: '';
+    display: block;
+    border: 1px solid;
+    border-color: #00A3ff;
+    box-sizing: border-box;
+    width: 60px;
+    position: absolute;
+    top: 5px;
+    left: -100px;
+}
+
+.reverse-direction-description .film-content {
+    padding-left: 100px;
+}
+
+.reverse-direction-description span {
+    left: 3px;
+}
+
+.reverse-direction-description .film-description-content p {
+    padding-right: 2px;
 }
