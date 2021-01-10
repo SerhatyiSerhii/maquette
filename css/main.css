@@ -76,7 +76,7 @@ nav a:hover {
 }
 
 .main-section {
-    padding: 140px 0 80px;
+    padding: 140px 0 70px;
     background: url('../images/headphones.png') no-repeat top right;
     background-size: cover;
 }
@@ -86,6 +86,7 @@ nav a:hover {
     font-size: 70px;
     text-transform: uppercase;
     width: 980px;
+    line-height: 80px;
 }
 
 .main-section p {
@@ -94,18 +95,16 @@ nav a:hover {
     margin-bottom: 75px;
 }
 
-.arrow-down svg path {
+.arrow svg path {
     stroke: #00a3ff;
 }
-
-/*стили фильмов*/
 
 .film-image img {
     width: 480px;
     height: 545px;
+    display: block;
 }
 
-/*Работа над ошибками*/
 button {
     text-transform: uppercase;
     background-color: transparent;
@@ -113,33 +112,31 @@ button {
     color: #fff;
     padding: 18px 40px;
     font-size: 16px;
+    transition: 0.3s;
+    outline: none;
 }
 
 button:hover {
     cursor: pointer;
     background-color: #00A3ff;
-    color:#fff;
     border-color: #fff;
-    transition: 0.3s;
 }
 
-.stright-direction-description {
-    padding-top: 212px;
+.direction-description {
+    padding-top: 237px;
 }
 
-.reverse-direction-description {
-    padding-top: 235px;
-}
-
-.flex-container {
+.description-content {
     display: flex;
     justify-content: space-between;
 }
 
 .film-content {
-    position: relative;
     width: 480px;
-    margin-top: -25px;
+}
+
+.film-title-content {
+    position: relative;
 }
 
 .film-title-content span {
@@ -149,15 +146,15 @@ button:hover {
     opacity: 0.5;
     position: absolute;
     z-index: 1;
-    top: -67px;
-    left: -87px;
+    top: -90px;
+    left: -95px;
 }
 
 .film-title-content h2 {
     position: relative;
     z-index: 2;
     font-size: 40px;
-    margin: 24px 0px 42px 3px;
+    margin: 0 0 42px 3px;
 }
 
 .film-description-content {
@@ -187,10 +184,103 @@ button:hover {
     padding-left: 100px;
 }
 
-.reverse-direction-description span {
-    left: 3px;
+.reverse-direction-description .film-content span {
+    left: -96px;
 }
 
-.reverse-direction-description .film-description-content p {
-    padding-right: 2px;
+.reverse-direction-description .film-content .film-description-content p::before {
+    top: 8px;
+}
+
+.reverse-direction-description .film-content .film-description-content p {
+    margin: 0px 0 57px 2px;
+    padding-top: 2px;
+}
+
+.central-direction-description {
+    background: url('../images/jedirobot.png') no-repeat left -549px bottom 2px,
+    url('../images/jedi.png') no-repeat right -143px bottom 7px;
+}
+
+.central-direction-description .container {
+    display: flex;
+    justify-content: space-around;
+}
+
+.central-direction-description .film-content {
+    padding-top: 10px;
+}
+
+.central-direction-description .film-content .film-title-content span {
+    top: -87px;
+    left: -41px;
+}
+
+.central-direction-description .film-content .film-title-content h2 {
+    width: 480px;
+    margin: 11px 0 42px 57px;
+}
+
+.central-direction-description .film-content .film-description-content {
+    padding-left: 151px;
+    padding-top: 3px;
+    padding-bottom: 304px;
+}
+
+.central-direction-description .film-content .film-description-content p {
+    margin-bottom: 80px;
+}
+
+.white-slider {
+    color: #000;
+    background: url('../images/little_tree.jpg') no-repeat right -760px bottom 150px,
+    url('../images/conference_room.jpg') no-repeat left -526px bottom 150px,
+    #fff url('../images/dino_pet.jpg') no-repeat 50.5% 50%;
+    margin-top: -4px;
+}
+
+.white-slider .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 840px;
+}
+
+.white-slider .container button {
+    width: 85px;
+    height: 85px;
+    border-radius: 50%;
+    background-color: #00A3ff;
+    position: relative;
+    top: 0;
+    right: -2px;
+}
+
+.white-slider .container button .black-arrow-right {
+    width: 0;
+    height: 0;
+    border-left: 29px solid #000;
+    border-top: 13px solid transparent;
+    border-bottom: 13px solid transparent;
+    position: relative;
+    top: 0;
+    left: -10px;
+    transition: 0.3s;
+}
+
+.white-slider .container button:hover .black-arrow-right {
+    border-left: 29px solid #fff;
+    transition: 0.3s;
+}
+
+.arrow-left svg {
+    position: relative;
+    left: 45px;
+    top: 2px;
+}
+
+.arrow-right svg {
+    position: relative;
+    right: 43px;
+    top: 2px;
 }
