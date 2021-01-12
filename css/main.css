@@ -197,17 +197,31 @@ button:hover {
 }
 
 .slider {
-    color: #000;
-    background: url('../images/little_tree.jpg') no-repeat right -760px bottom 150px,
-        url('../images/conference_room.jpg') no-repeat left -526px bottom 150px,
-        #fff url('../images/dino_pet.jpg') no-repeat 50.5% 50%;
+    background-color: #fff;
+    overflow: hidden;
 }
 
-.slider .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 840px;
+.slides-wrapper {
+    width: 3500px;
+}
+
+.slides-wrapper ul {
+    position: relative;
+    left: -910px;
+}
+
+.slides-wrapper ul li {
+    display: inline-block;
+}
+
+.slides-wrapper ul li div {
+    position: relative;
+}
+
+.slides-wrapper ul li div img {
+    width: 880px;
+    height: 540px;
+    margin: 150px 45px 150px 37px;
 }
 
 .btn-play::before {
@@ -229,12 +243,18 @@ button:hover {
     height: 85px;
     border-radius: 50%;
     background-color: #00A3ff;
-    position: relative;
-    top: 0;
-    right: -2px;
+    position: absolute;
+    top: 376px;
+    right: 442px;
 }
 
 .btn-play:hover::before  {
     border-left: 29px solid #fff;
     transition: 0.3s;
+}
+
+.slider svg {
+    position: relative;
+    bottom: 399px;
+    left: -3px;
 }
