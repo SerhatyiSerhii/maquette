@@ -203,19 +203,19 @@ button:hover {
 }
 
 .slides-wrapper {
-    margin-bottom: -52px;
+    margin-bottom: -52px; /* TODO: what for? */
 }
 
 .slides-wrapper ul {
     position: relative;
     left: -951px;
-    bottom: 49px;
+    bottom: 49px; /* TODO: what for? */
     width: 3500px;
 }
 
 .slides-wrapper ul li {
     display: inline-block;
-    padding-left: 77px;
+    padding-left: 77px; /* TODO: why are paddings not equal? */
     padding-right: 70px;
 }
 
@@ -265,12 +265,12 @@ button:hover {
 }
 
 .slider .arrow-left {
-    position: relative;
-    top: 248px;
+    position: relative; /* TODO: does it really need to be in the document flow? */
+    top: 248px; /* TODO: isn't it centralized vertically? */
     left: 49px;
 }
 
-.slider .arrow-right {
+.slider .arrow-right { /* TODO: duplicated styles */
     position: relative;
     top: 248px;
     left: 1019px;
