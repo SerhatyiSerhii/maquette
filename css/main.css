@@ -199,29 +199,35 @@ button:hover {
 .slider {
     background-color: #fff;
     overflow: hidden;
+    padding: 150px 0;
 }
 
 .slides-wrapper {
-    width: 3500px;
+    margin-bottom: -52px;
 }
 
 .slides-wrapper ul {
     position: relative;
-    left: -910px;
+    left: -951px;
+    bottom: 49px;
+    width: 3500px;
 }
 
 .slides-wrapper ul li {
     display: inline-block;
+    padding-left: 77px;
+    padding-right: 70px;
 }
 
 .slides-wrapper ul li div {
     position: relative;
+    width: 880px;
+    Height: 540px;
 }
 
 .slides-wrapper ul li div img {
-    width: 880px;
-    height: 540px;
-    margin: 150px 45px 150px 37px;
+    width: 100%;
+    height: 100%;
 }
 
 .btn-play::before {
@@ -244,8 +250,9 @@ button:hover {
     border-radius: 50%;
     background-color: #00A3ff;
     position: absolute;
-    top: 376px;
-    right: 442px;
+    top: 50%;
+    right: 50%;
+    transform: translate(50%, -50%);
 }
 
 .btn-play:hover::before  {
@@ -253,8 +260,18 @@ button:hover {
     transition: 0.3s;
 }
 
-.slider svg {
+.slider a {
+    text-decoration: none;
+}
+
+.slider .arrow-left {
     position: relative;
-    bottom: 399px;
-    left: -3px;
+    top: 248px;
+    left: 49px;
+}
+
+.slider .arrow-right {
+    position: relative;
+    top: 248px;
+    left: 1019px;
 }
