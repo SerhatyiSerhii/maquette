@@ -156,6 +156,7 @@ button:hover {
     z-index: 2;
     font-size: 40px;
     margin: 0 0 42px 0;
+    text-transform: uppercase;
 }
 
 .film-description-content {
@@ -186,8 +187,8 @@ button:hover {
 }
 
 .central-direction-description {
-    background: url('../images/jedirobot.png') no-repeat left -549px bottom 2px,
-        url('../images/jedi.png') no-repeat right -143px bottom 7px;
+    background: url('../images/jedirobot2.png') no-repeat left -5px bottom -24px,
+        url('../images/jedi2.png') no-repeat right -12px bottom -19px;
     padding-bottom: 305px;
     padding-top: 258px;
 }
@@ -197,24 +198,23 @@ button:hover {
 }
 
 .slider {
-    position: relative;
     background-color: #fff;
     overflow: hidden;
-    padding: 150px 0;
+    padding: 150px 0 145px;
+}
+
+.slider .container {
+    position: relative;
 }
 
 .slides-wrapper ul {
     position: relative;
     left: -951px;
-    /* TODO: what for? */
-    /*deleted*/
     width: 3500px;
 }
 
 .slides-wrapper ul li {
     display: inline-block;
-    /* TODO: why are paddings not equal? */
-    /*equal, but there is a little difference with pixel*/
     padding: 0 75px;
 }
 
@@ -263,16 +263,27 @@ button:hover {
     text-decoration: none;
 }
 
-.slider .arrow-left {
-    position: absolute; /* TODO: does it really need to be in the document flow? */ /*not realy*/
-    top: 50%; /* TODO: isn't it centralized vertically? */ /*centralized vertically*/
-    left: 14%;
-    transform: translate(-50%, -50%);
-}
-
-.slider .arrow-right { /* TODO: duplicated styles */ /*this class is for right-direction arrow*/
+.slider .arrow {
     position: absolute;
     top: 50%;
-    right: 9%;
-    transform: translate(-50%, -50%);
+    transform: translateY(-50%);
+    z-index: 2;
+}
+
+.slider .arrow-left {
+    left: 6%;
+}
+
+.slider .arrow-right {
+    right: 6%;
+}
+
+.runner {
+    background: url('../images/bladerunner_woman.png') no-repeat left -5px bottom -19px,
+        url('../images/bladerunner_man.png') no-repeat right -12px bottom -19px;
+}
+
+.godfuther {
+    background: url('../images/boss.png') no-repeat left -5px bottom -19px,
+        url('../images/gungster.png') no-repeat right -12px bottom -19px;
 }
