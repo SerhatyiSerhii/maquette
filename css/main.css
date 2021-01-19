@@ -297,12 +297,12 @@ button:hover {
 
 .sign_up form {
     width: 576px;
-    margin: 0 295px 115px;;
+    margin: 0 295px 115px;; /* TODO: left and right paddings 295px. what for? */
 }
 
 .sign_up h2 {
     text-transform: uppercase;
-    font-size: 40px;
+    font-size: 40px; /* TODO: there is another h2 style with the same font-size and text-transform. Isn't it better not to duplicate? */
     margin-bottom: 68px;
 }
 
@@ -319,11 +319,11 @@ button:hover {
 
 .email-space input:hover {
     border-color: #fff;
-    background-color: #00A3ff;
+    background-color: #00A3ff; /* TODO: how often do you see input fields to change background on hover? */
 }
 
 .email-space  input[type=text] {
-    padding: 20px 191px 20px 15px;
+    padding: 20px 191px 20px 15px; /* TODO: 191px from right? */
     transition: 0.3s;
 }
 
@@ -331,7 +331,7 @@ button:hover {
     color: #fff;
 }
 
-.email-space  input[type=submit] {
+.email-space  input[type=submit] { /* TODO: duplicated styles. You already have almost the same for buttons */
     padding: 15px 55px;
     color: #fff;
     text-transform: uppercase;
@@ -374,8 +374,8 @@ button:hover {
 .footer a {
     color: #fff;
     text-decoration: none;
-    transition: 0.3s;
-    position: relative;
+    transition: 0.3s; /* what for? */
+    position: relative; /* what for? */
 }
 
 .fa-twitter:before {
@@ -392,7 +392,7 @@ button:hover {
     right: -16px;
 }
 
-.fa-facebook-f:before {
+.fa-facebook-f:before { /* TODO: after changing to icons it does not have sense, but using absolute here is wrong. Should use paddings and font-size to align */
     position: absolute;
     font-size: 19px;
     bottom: -4px;
@@ -403,12 +403,12 @@ button:hover {
     position: relative;
 }
 
-.footer .policy li {
+.footer .policy li { /* TODO: do not use paddings as space between elements */
     padding-right: 72px;
     padding-top: 51px;
 }
 
 .footer .sm li {
-    padding: 22px 19px 0 22px;;
+    padding: 22px 19px 0 22 /* TODO: do not use paddings as space between elements */px;;
 }
 
