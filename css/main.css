@@ -187,8 +187,6 @@ button:hover {
 }
 
 .central-direction-description {
-    background: url('../images/jedirobot2.png') no-repeat left -5px bottom -24px,
-        url('../images/jedi2.png') no-repeat right -12px bottom -19px;
     padding-bottom: 305px;
     padding-top: 258px;
 }
@@ -278,6 +276,11 @@ button:hover {
     right: 6%;
 }
 
+.star-wars {
+    background: url('../images/jedirobot2.png') no-repeat left -5px bottom -24px,
+        url('../images/jedi2.png') no-repeat right -12px bottom -19px;
+}
+
 .runner {
     background: url('../images/bladerunner_woman.png') no-repeat left -5px bottom -19px,
         url('../images/bladerunner_man.png') no-repeat right -12px bottom -19px;
@@ -287,3 +290,125 @@ button:hover {
     background: url('../images/boss.png') no-repeat left -5px bottom -19px,
         url('../images/gungster.png') no-repeat right -12px bottom -19px;
 }
+
+.sign_up {
+    padding-top: 155px;
+}
+
+.sign_up form {
+    width: 576px;
+    margin: 0 295px 115px;;
+}
+
+.sign_up h2 {
+    text-transform: uppercase;
+    font-size: 40px;
+    margin-bottom: 68px;
+}
+
+.email-space {
+    display: flex;
+    justify-content: space-between;
+}
+
+.email-space input {
+    border-color: #00A3ff;
+    background-color: transparent;
+    outline: none;
+}
+
+.email-space input:hover {
+    border-color: #fff;
+    background-color: #00A3ff;
+}
+
+.email-space  input[type=text] {
+    padding: 20px 191px 20px 15px;
+    transition: 0.3s;
+}
+
+.email-space  input[type=text]:hover::placeholder {
+    color: #fff;
+}
+
+.email-space  input[type=submit] {
+    padding: 15px 55px;
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 16px;
+    line-height: 20px;
+    transition: 0.3s;
+}
+
+.email-space  input[type=submit]:hover {
+    cursor: pointer;
+}
+
+.email-space ::placeholder {
+    text-transform: uppercase;
+    font-size: 16px;
+    line-height: 19px;
+    color: #515151;
+    transition: 0.3s;
+}
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 54px;
+}
+
+.footer li {
+    display: inline-block;
+    text-transform: uppercase;
+}
+
+.footer .btn-sm {
+    padding: 0;
+    width: 53px;
+    height: 53px;
+    background-color: #00A3ff;
+    border-radius: 50%;
+}
+
+.footer a {
+    color: #fff;
+    text-decoration: none;
+    transition: 0.3s;
+    position: relative;
+}
+
+.fa-twitter:before {
+    position: absolute;
+    font-size: 30px;
+    bottom: -12px;
+    right: -15px;
+}
+
+.fa-instagram:before {
+    position: absolute;
+    font-size: 34px;
+    bottom: -12px;
+    right: -16px;
+}
+
+.fa-facebook-f:before {
+    position: absolute;
+    font-size: 19px;
+    bottom: -4px;
+    right: -7px;
+}
+
+.footer .sm .btn-sm {
+    position: relative;
+}
+
+.footer .policy li {
+    padding-right: 72px;
+    padding-top: 51px;
+}
+
+.footer .sm li {
+    padding: 22px 19px 0 22px;;
+}
+
