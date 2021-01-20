@@ -297,12 +297,12 @@ button:hover {
 
 .sign-up form {
     width: 576px;
-    margin: 0 auto; /* TODO: left and right paddings 295px. what for? */ /*to centrilize the form. corrected with auto*/
+    margin: 0 auto;
 }
 
-.sign-up span {
+.sign-up span { /* TODO: it was better to leave as h2, return h2 and remove styles duplicates */
     text-transform: uppercase;
-    font-size: 40px; /* TODO: there is another h2 style with the same font-size and text-transform. Isn't it better not to duplicate? */ /*Here h2 is now used arleady*/
+    font-size: 40px;
     font-weight: 500;
     line-height: 47px;
 }
@@ -322,11 +322,10 @@ button:hover {
 
 .email-space input:hover {
     border-color: #fff;
-    /* TODO: how often do you see input fields to change background on hover? */ /*removed this effect*/
 }
 
 .email-space  input[type=text] {
-    padding: 20px 15px 20px 15px; /* TODO: 191px from right? */ /*corrected with the attribute size*/
+    padding: 20px 15px 20px 15px; /* TODO: this string can be simplified */
     transition: 0.3s;
 }
 
@@ -334,7 +333,7 @@ button:hover {
     color: #fff;
 }
 
-.email-space  input[type=submit] { /* TODO: duplicated styles. You already have almost the same for buttons */ /*corrected at button selector comma input*/
+.email-space  input[type=submit] {
     padding: 15px 55px;
     line-height: 20px;
 }
@@ -355,7 +354,7 @@ footer li {
     display: inline-block;
 }
 
-footer a {
+footer a { /* TODO: styles duplicates */
     text-decoration: none;
     color: #fff;
     text-transform: uppercase;
@@ -367,7 +366,7 @@ footer .policy li {
     margin-left: 2px;
 }
 
-footer .policy a:hover {
+footer .policy a:hover { /* TODO: styles duplicates */
     text-decoration: underline;
 }
 
@@ -376,7 +375,7 @@ footer circle {
 }
 
 footer .social-media a:hover circle {
-    fill: #784aa8;
+    fill: #784aa8; /* TODO: not the best coloc solution. Try just invert the colors - background white and icons blue */
 }
 
 footer .social-media li {
@@ -387,6 +386,6 @@ footer .social-media li {
 footer .container {
     display: flex;
     justify-content: space-between;
-    padding: 138px 20px 54px;
+    padding: 138px 20px 54px; /* TODO: why does container contain this? */ /* TODO: footer has such a big top padding while sign up section does not have bottom padding at all */
 
 }
