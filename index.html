@@ -398,31 +398,63 @@
             </div>
         </section>
 
-        <section class="sign_up"> <!-- TODO: why underscore? -->
+        <section class="sign-up"> <!-- TODO: why underscore? --> <!--two words, but one meaning. To unite words.-->
             <div class="container">
                 <form>
-                    <h2> <!-- TODO: probably it's better to remove title from form -->
+                    <span> <!-- TODO: probably it's better to remove title from form --><!--Removed-->
                         Sign up to receive the latest updates and news
-                    </h2>
+                    </span>
                     <div class="email-space">
-                        <input type="text" name="email" placeholder="enter your email"> <!-- TODO: notice that the border color is not the same all the border width --> <!-- TODO: try to type something without hovering -->
-                        <input type="submit" value="submit"> <!-- TODO: notice that the border color is not the same all the border width -->
+                        <input type="text" name="email" placeholder="enter your email" size="45"> <!-- TODO: notice that the border color is not the same all the border width --> <!--solved--> <!-- TODO: try to type something without hovering --><!--Solved :)-->
+                        <input type="submit" value="submit"> <!-- TODO: notice that the border color is not the same all the border width --> <!--solved-->
                     </div>
                 </form>
-                <div class="footer"> <!-- TODO: footer has its own tag and it is definitely must not be included in main tag -->
-                    <ul class="policy">
-                        <li><a href="#">private policy</a></li> <!-- TODO: add the same hover effects as the links in header -->
-                        <li><a href="#">cookie policy</a></li> <!-- TODO: add the same hover effects as the links in header -->
-                    </ul>
-                    <ul class="sm"> <!-- TODO: what is sm? -->
-                        <li><button class="btn-sm"><a href="#" class="fab fa-twitter"></a></button></li> <!-- TODO: this is not a button --> <!-- TODO: remove font awesome, use svg icons instead --> <!-- TODO: change icons background on hover -->
-                        <li><button class="btn-sm"><a href="#" class="fab fa-instagram"></a></button></li> <!-- TODO: this is not a button --><!-- TODO: remove font awesome, use svg icons instead --> <!-- TODO: change icons background on hover -->
-                        <li><button class="btn-sm"><a href="#" class="fab fa-facebook-f"></a></button></li> <!-- TODO: this is not a button --><!-- TODO: remove font awesome, use svg icons instead --> <!-- TODO: change icons background on hover -->
-                    </ul>
-                </div>
             </div>
         </section>
 
     </main>
+    <footer>
+        <div class="container">
+            <!-- TODO: footer has its own tag and it is definitely must not be included in main tag --><!--mooved to own tag-->
+            <ul class="policy">
+                <li><a href="#">privacy policy</a></li> <!-- TODO: add the same hover effects as the links in header --><!--ready-->
+                <li><a href="#">cookie policy</a></li> <!-- TODO: add the same hover effects as the links in header --><!--ready-->
+            </ul>
+            <ul class="social-media"> <!-- TODO: what is sm? --> <!--social media-->
+                <li>
+                    <a href="#">
+                        <svg width="53" height="53" viewBox="0 0 53 53" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="26.5" cy="26.5" r="26.5" fill="#00A3FF"/>
+                            <path d="M42 17.851C40.8977 18.3383 39.7123 18.6631 38.4614 18.817C39.7329 18.0638 40.7115 16.8624 41.1706 15.4425C39.9809 16.1383 38.6626 16.6496 37.2604 16.9191C36.1403 15.7347 34.5426 15 32.773 15C29.3737 15 26.6176 17.7255 26.6176 21.0865C26.6176 21.5624 26.6738 22.0255 26.7783 22.4751C21.6641 22.2191 17.1277 19.7929 14.093 16.1106C13.56 17.0106 13.2601 18.0638 13.2601 19.1759C13.2601 21.2886 14.3439 23.1489 15.997 24.2446C14.9878 24.2141 14.0383 23.934 13.2068 23.4843C13.2068 23.5028 13.2068 23.5297 13.2068 23.556C13.2068 26.5084 15.3289 28.9673 18.1419 29.5268C17.628 29.6673 17.0843 29.7453 16.5243 29.7453C16.127 29.7453 15.7397 29.7006 15.3644 29.6332C16.1476 32.046 18.4197 33.8098 21.1119 33.8623C19.0054 35.492 16.3523 36.4679 13.4676 36.4679C12.9694 36.4679 12.4819 36.4395 12 36.3814C14.7269 38.1041 17.9628 39.1133 21.4367 39.1133C32.7559 39.1133 38.949 29.8375 38.949 21.79C38.949 21.5262 38.9404 21.2638 38.9284 21.0042C40.1365 20.1524 41.1777 19.0787 42 17.851Z" fill="url(#paint0_linear)"/>
+                            <defs>
+                                <linearGradient id="paint0_linear" x1="16.5826" y1="15.9305" x2="38.1831" y2="37.5762" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="white"/>
+                                <stop offset="1" stop-color="white"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <svg width="53" height="53" viewBox="0 0 53 53" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="26.5" cy="26.5" r="26.5" fill="#00A3FF"/>
+                            <path d="M34.1115 42.4209H20.1463C15.6554 42.4209 12 38.747 12 34.2307V20.1902C12 15.6739 15.6554 12 20.1463 12H34.1115C38.6024 12 42.2578 15.6739 42.2578 20.1902V34.2307C42.2578 38.747 38.6024 42.4209 34.1115 42.4209ZM20.1463 14.3401C16.9378 14.3401 14.3275 16.9645 14.3275 20.1902V34.2307C14.3275 37.4564 16.9378 40.0808 20.1463 40.0808H34.1115C37.32 40.0808 39.9303 37.4564 39.9303 34.2307V20.1902C39.9303 16.9645 37.32 14.3401 34.1115 14.3401H20.1463Z" fill="white"/>
+                            <path d="M27.1463 35.4131C22.6554 35.4131 19 31.7391 19 27.2227C19 22.7062 22.6554 19.0322 27.1463 19.0322C31.6372 19.0322 35.2926 22.7062 35.2926 27.2227C35.2926 31.7391 31.6372 35.4131 27.1463 35.4131ZM27.1463 21.3723C23.9378 21.3723 21.3275 23.9968 21.3275 27.2227C21.3275 30.4485 23.9378 33.073 27.1463 33.073C30.3548 33.073 32.9651 30.4485 32.9651 27.2227C32.9651 23.9968 30.3548 21.3723 27.1463 21.3723Z" fill="white"/>
+                            <path d="M36.7456 19.5293C37.7097 19.5293 38.4912 18.7434 38.4912 17.7739C38.4912 16.8045 37.7097 16.0186 36.7456 16.0186C35.7815 16.0186 35 16.8045 35 17.7739C35 18.7434 35.7815 19.5293 36.7456 19.5293Z" fill="white"/>
+                        </svg>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <svg width="53" height="53" viewBox="0 0 53 53" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="26.5" cy="26.5" r="26.5" fill="#00A3FF"/>
+                            <path d="M30.7151 27.5395H28.1331V37.874H24.2999V27.5395H22V24.3597H24.2999V22.4438C24.3014 19.6551 25.4184 18 28.5869 18H31.1996V21.1798H29.4463C28.2128 21.1798 28.1331 21.6568 28.1331 22.5496V24.3597H31.1996L30.7151 27.5395Z" fill="white"/>
+                        </svg>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </footer>
 </body>
 </html>

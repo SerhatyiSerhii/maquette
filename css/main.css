@@ -105,7 +105,7 @@ nav a:hover {
     display: block;
 }
 
-button {
+button, input[type=submit] {
     text-transform: uppercase;
     background-color: transparent;
     border: 2px solid #00A3ff;
@@ -291,39 +291,42 @@ button:hover {
         url('../images/gungster.png') no-repeat right -12px bottom -19px;
 }
 
-.sign_up {
+.sign-up {
     padding-top: 155px;
 }
 
-.sign_up form {
+.sign-up form {
     width: 576px;
-    margin: 0 295px 115px;; /* TODO: left and right paddings 295px. what for? */
+    margin: 0 auto; /* TODO: left and right paddings 295px. what for? */ /*to centrilize the form. corrected with auto*/
 }
 
-.sign_up h2 {
+.sign-up span {
     text-transform: uppercase;
-    font-size: 40px; /* TODO: there is another h2 style with the same font-size and text-transform. Isn't it better not to duplicate? */
-    margin-bottom: 68px;
+    font-size: 40px; /* TODO: there is another h2 style with the same font-size and text-transform. Isn't it better not to duplicate? */ /*Here h2 is now used arleady*/
+    font-weight: 500;
+    line-height: 47px;
 }
 
 .email-space {
     display: flex;
     justify-content: space-between;
+    margin-top: 69px;
 }
 
 .email-space input {
-    border-color: #00A3ff;
+    border: 2px solid #00A3ff;
     background-color: transparent;
     outline: none;
+    color: #fff;
 }
 
 .email-space input:hover {
     border-color: #fff;
-    background-color: #00A3ff; /* TODO: how often do you see input fields to change background on hover? */
+    /* TODO: how often do you see input fields to change background on hover? */ /*removed this effect*/
 }
 
 .email-space  input[type=text] {
-    padding: 20px 191px 20px 15px; /* TODO: 191px from right? */
+    padding: 20px 15px 20px 15px; /* TODO: 191px from right? */ /*corrected with the attribute size*/
     transition: 0.3s;
 }
 
@@ -331,13 +334,9 @@ button:hover {
     color: #fff;
 }
 
-.email-space  input[type=submit] { /* TODO: duplicated styles. You already have almost the same for buttons */
+.email-space  input[type=submit] { /* TODO: duplicated styles. You already have almost the same for buttons */ /*corrected at button selector comma input*/
     padding: 15px 55px;
-    color: #fff;
-    text-transform: uppercase;
-    font-size: 16px;
     line-height: 20px;
-    transition: 0.3s;
 }
 
 .email-space  input[type=submit]:hover {
@@ -352,63 +351,42 @@ button:hover {
     transition: 0.3s;
 }
 
-.footer {
-    display: flex;
-    justify-content: space-between;
-    padding-bottom: 54px;
+footer li {
+    display: inline-block;
 }
 
-.footer li {
-    display: inline-block;
+footer a {
+    text-decoration: none;
+    color: #fff;
     text-transform: uppercase;
 }
 
-.footer .btn-sm {
-    padding: 0;
-    width: 53px;
-    height: 53px;
-    background-color: #00A3ff;
-    border-radius: 50%;
+footer .policy li {
+    line-height: 75px;
+    margin-right: 74px;
+    margin-left: 2px;
 }
 
-.footer a {
-    color: #fff;
-    text-decoration: none;
-    transition: 0.3s; /* what for? */
-    position: relative; /* what for? */
+footer .policy a:hover {
+    text-decoration: underline;
 }
 
-.fa-twitter:before {
-    position: absolute;
-    font-size: 30px;
-    bottom: -12px;
-    right: -15px;
+footer circle {
+    transition: 0.3s;
 }
 
-.fa-instagram:before {
-    position: absolute;
-    font-size: 34px;
-    bottom: -12px;
-    right: -16px;
+footer .social-media a:hover circle {
+    fill: #784aa8;
 }
 
-.fa-facebook-f:before { /* TODO: after changing to icons it does not have sense, but using absolute here is wrong. Should use paddings and font-size to align */
-    position: absolute;
-    font-size: 19px;
-    bottom: -4px;
-    right: -7px;
+footer .social-media li {
+    margin-left: 28px;
+    margin-right: 13px;
 }
 
-.footer .sm .btn-sm {
-    position: relative;
-}
+footer .container {
+    display: flex;
+    justify-content: space-between;
+    padding: 138px 20px 54px;
 
-.footer .policy li { /* TODO: do not use paddings as space between elements */
-    padding-right: 72px;
-    padding-top: 51px;
 }
-
-.footer .sm li {
-    padding: 22px 19px 0 22 /* TODO: do not use paddings as space between elements */px;;
-}
-
