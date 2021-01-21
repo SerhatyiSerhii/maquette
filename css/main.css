@@ -294,16 +294,14 @@ button:hover, input[type=submit]:hover {
 }
 
 .sign-up {
-    padding-top: 155px;
-    padding-bottom: 85px;
+    padding-top: 155px; /* TODO: combine in one property */
+    padding-bottom: 85px; /* TODO: combine in one property */
 }
 
 .sign-up .appeal {
     width: 576px;
     margin: 0 auto;
 }
-
-/* TODO: it was better to leave as h2, return h2 and remove styles duplicates */ /*done. created global h2 and deleted duplicates.*/
 
 .email-space {
     display: flex;
@@ -326,13 +324,13 @@ button:hover, input[type=submit]:hover {
     text-transform: uppercase;
     font-size: 16px;
     line-height: 19px;
-    padding: 17px 15px; /* TODO: this string can be simplified */ /*yes :)*/
+    padding: 17px 15px;
     transition: 0.3s;
     width: 380px;
 }
 
 .email-space  input[type=text]:hover::placeholder {
-    color: #fff;
+    color: #fff; /* TODO: better to remove */
 }
 
 .email-space  input[type=submit] {
@@ -356,15 +354,11 @@ footer li {
     display: inline-block;
 }
 
-/* TODO: styles duplicates */ /*corrected with global a*/
-
 footer .policy li {
     line-height: 75px;
     margin-right: 74px;
     margin-left: 2px;
 }
-
-/* TODO: styles duplicates */ /*corrected with global a:hover*/
 
 footer circle {
     transition: 0.3s;
@@ -372,7 +366,7 @@ footer circle {
 
 footer .social-media .circle {
     background-color: #00A3ff;
-    border-radius: 100%;
+    border-radius: 100%; /* TODO: usualy used 50% because more does not make sense */
     width: 53px;
     height: 53px;
     display: flex;
@@ -383,11 +377,11 @@ footer .social-media .circle {
 
 footer .social-media .circle svg {
     height: 100%;
-    margin-left: 4px;
+    margin-left: 4px; /* TODO: it seems to me that without margin they look better */
 }
 
 footer .social-media .circle:hover {
-    background-color: #fff; /* TODO: not the best coloc solution. Try just invert the colors - background white and icons blue */ /*corrected*/
+    background-color: #fff;
 }
 
 footer .social-media .circle path {
@@ -407,5 +401,5 @@ footer .social-media li {
 footer .container {
     display: flex;
     justify-content: space-between;
-    padding: 54px 20px; /* TODO: why does container contain this? */ /* TODO: footer has such a big top padding while sign up section does not have bottom padding at all *//*corrected*/
+    padding: 54px 20px; /* TODO: why does container contain this? */
 }
