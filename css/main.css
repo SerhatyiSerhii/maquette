@@ -17,8 +17,16 @@ ul {
     list-style-type: none;
 }
 
+a {
+    text-decoration: none;
+    color: #fff;
+    text-transform: uppercase;
+    transition: 0.3s;
+}
+
 a:hover {
     color: #00a3ff;
+    text-decoration: underline;
 }
 
 .container {
@@ -44,6 +52,11 @@ header .container {
     justify-content: space-between;
 }
 
+h2 {
+    text-transform: uppercase;
+    font-size: 40px;
+}
+
 .logo {
     width: 104px;
     height: 47px;
@@ -64,15 +77,6 @@ nav li {
     margin-left: 35px;
     text-transform: uppercase;
     font-size: 14px;
-}
-
-nav a {
-    text-decoration: none;
-    color: #fff;
-}
-
-nav a:hover {
-    text-decoration: underline;
 }
 
 .main-section {
@@ -116,7 +120,7 @@ button, input[type=submit] {
     outline: none;
 }
 
-button:hover {
+button:hover, input[type=submit]:hover {
     cursor: pointer;
     background-color: #00A3ff;
     border-color: #fff;
@@ -154,9 +158,7 @@ button:hover {
 .film-title-content h2 {
     position: relative;
     z-index: 2;
-    font-size: 40px;
     margin: 0 0 42px 0;
-    text-transform: uppercase;
 }
 
 .film-description-content {
@@ -293,19 +295,15 @@ button:hover {
 
 .sign-up {
     padding-top: 155px;
+    padding-bottom: 85px;
 }
 
-.sign-up form {
+.sign-up .appeal {
     width: 576px;
     margin: 0 auto;
 }
 
-.sign-up span { /* TODO: it was better to leave as h2, return h2 and remove styles duplicates */
-    text-transform: uppercase;
-    font-size: 40px;
-    font-weight: 500;
-    line-height: 47px;
-}
+/* TODO: it was better to leave as h2, return h2 and remove styles duplicates */ /*done. created global h2 and deleted duplicates.*/
 
 .email-space {
     display: flex;
@@ -325,8 +323,12 @@ button:hover {
 }
 
 .email-space  input[type=text] {
-    padding: 20px 15px 20px 15px; /* TODO: this string can be simplified */
+    text-transform: uppercase;
+    font-size: 16px;
+    line-height: 19px;
+    padding: 17px 15px; /* TODO: this string can be simplified */ /*yes :)*/
     transition: 0.3s;
+    width: 380px;
 }
 
 .email-space  input[type=text]:hover::placeholder {
@@ -354,11 +356,7 @@ footer li {
     display: inline-block;
 }
 
-footer a { /* TODO: styles duplicates */
-    text-decoration: none;
-    color: #fff;
-    text-transform: uppercase;
-}
+/* TODO: styles duplicates */ /*corrected with global a*/
 
 footer .policy li {
     line-height: 75px;
@@ -366,26 +364,48 @@ footer .policy li {
     margin-left: 2px;
 }
 
-footer .policy a:hover { /* TODO: styles duplicates */
-    text-decoration: underline;
-}
+/* TODO: styles duplicates */ /*corrected with global a:hover*/
 
 footer circle {
     transition: 0.3s;
 }
 
-footer .social-media a:hover circle {
-    fill: #784aa8; /* TODO: not the best coloc solution. Try just invert the colors - background white and icons blue */
+footer .social-media .circle {
+    background-color: #00A3ff;
+    border-radius: 100%;
+    width: 53px;
+    height: 53px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.3s;
+}
+
+footer .social-media .circle svg {
+    height: 100%;
+    margin-left: 4px;
+}
+
+footer .social-media .circle:hover {
+    background-color: #fff; /* TODO: not the best coloc solution. Try just invert the colors - background white and icons blue */ /*corrected*/
+}
+
+footer .social-media .circle path {
+    transition: 0.3s;
+    fill: #fff;
+}
+
+footer .social-media .circle:hover path {
+    fill: #00A3ff;
 }
 
 footer .social-media li {
-    margin-left: 28px;
-    margin-right: 13px;
+    margin-left: 29px;
+    margin-right: 12px;
 }
 
 footer .container {
     display: flex;
     justify-content: space-between;
-    padding: 138px 20px 54px; /* TODO: why does container contain this? */ /* TODO: footer has such a big top padding while sign up section does not have bottom padding at all */
-
+    padding: 54px 20px; /* TODO: why does container contain this? */ /* TODO: footer has such a big top padding while sign up section does not have bottom padding at all *//*corrected*/
 }
