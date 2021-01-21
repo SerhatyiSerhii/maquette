@@ -2,6 +2,10 @@
     box-sizing: border-box;
 }
 
+:root {
+    --main-color: #00a3ff;
+}
+
 body {
     margin: 0;
     font-family: 'Roboto', sans-serif;
@@ -25,7 +29,7 @@ a {
 }
 
 a:hover {
-    color: #00a3ff;
+    color: var(--main-color);
     text-decoration: underline;
 }
 
@@ -36,7 +40,7 @@ a:hover {
 }
 
 .accent-text {
-    color: #00a3ff;
+    color: var(--main-color);
 }
 
 header {
@@ -100,7 +104,7 @@ nav li {
 }
 
 .arrow svg path {
-    stroke: #00a3ff;
+    stroke: var(--main-color);
 }
 
 .film-image img {
@@ -112,7 +116,7 @@ nav li {
 button, input[type=submit] {
     text-transform: uppercase;
     background-color: transparent;
-    border: 2px solid #00A3ff;
+    border: 2px solid var(--main-color);
     color: #fff;
     padding: 18px 40px;
     font-size: 16px;
@@ -122,7 +126,7 @@ button, input[type=submit] {
 
 button:hover, input[type=submit]:hover {
     cursor: pointer;
-    background-color: #00A3ff;
+    background-color: var(--main-color);
     border-color: #fff;
 }
 
@@ -147,7 +151,7 @@ button:hover, input[type=submit]:hover {
 .film-title-content span {
     font-weight: 500;
     font-size: 135px;
-    color: #00A3ff;
+    color: var(--main-color);
     opacity: 0.5;
     position: absolute;
     z-index: 1;
@@ -176,7 +180,7 @@ button:hover, input[type=submit]:hover {
     content: '';
     display: block;
     border: 1px solid;
-    border-color: #00A3ff;
+    border-color: var(--main-color);
     box-sizing: border-box;
     width: 60px;
     position: absolute;
@@ -247,7 +251,7 @@ button:hover, input[type=submit]:hover {
     width: 85px;
     height: 85px;
     border-radius: 50%;
-    background-color: #00A3ff;
+    background-color: var(--main-color);
     position: absolute;
     top: 50%;
     right: 50%;
@@ -294,8 +298,9 @@ button:hover, input[type=submit]:hover {
 }
 
 .sign-up {
-    padding-top: 155px; /* TODO: combine in one property */
-    padding-bottom: 85px; /* TODO: combine in one property */
+    padding: 155px 0 85px;
+     /* TODO: combine in one property *//*combined*/
+     /* TODO: combine in one property *//*combined*/
 }
 
 .sign-up .appeal {
@@ -310,7 +315,7 @@ button:hover, input[type=submit]:hover {
 }
 
 .email-space input {
-    border: 2px solid #00A3ff;
+    border: 2px solid var(--main-color);
     background-color: transparent;
     outline: none;
     color: #fff;
@@ -329,13 +334,10 @@ button:hover, input[type=submit]:hover {
     width: 380px;
 }
 
-.email-space  input[type=text]:hover::placeholder {
-    color: #fff; /* TODO: better to remove */
-}
-
 .email-space  input[type=submit] {
     padding: 15px 55px;
     line-height: 20px;
+
 }
 
 .email-space  input[type=submit]:hover {
@@ -348,6 +350,10 @@ button:hover, input[type=submit]:hover {
     line-height: 19px;
     color: #515151;
     transition: 0.3s;
+}
+
+footer {
+    padding: 54px 0;
 }
 
 footer li {
@@ -365,8 +371,8 @@ footer circle {
 }
 
 footer .social-media .circle {
-    background-color: #00A3ff;
-    border-radius: 100%; /* TODO: usualy used 50% because more does not make sense */
+    background-color: var(--main-color);
+    border-radius: 50%; /* TODO: usualy used 50% because more does not make sense *//*corrected*/
     width: 53px;
     height: 53px;
     display: flex;
@@ -377,7 +383,7 @@ footer .social-media .circle {
 
 footer .social-media .circle svg {
     height: 100%;
-    margin-left: 4px; /* TODO: it seems to me that without margin they look better */
+    /* TODO: it seems to me that without margin they look better *//*deleted margin*/
 }
 
 footer .social-media .circle:hover {
@@ -390,7 +396,7 @@ footer .social-media .circle path {
 }
 
 footer .social-media .circle:hover path {
-    fill: #00A3ff;
+    fill: var(--main-color);
 }
 
 footer .social-media li {
@@ -401,5 +407,5 @@ footer .social-media li {
 footer .container {
     display: flex;
     justify-content: space-between;
-    padding: 54px 20px; /* TODO: why does container contain this? */
+    /* TODO: why does container contain this? */ /*corrected. made padding for footer*/
 }
