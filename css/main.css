@@ -258,7 +258,7 @@ button:hover, input[type=submit]:hover {
     transform: translate(50%, -50%);
 }
 
-.btn-play:hover::before  {
+.btn-play:hover::before {
     border-left: 29px solid #fff;
     transition: 0.3s;
 }
@@ -299,8 +299,6 @@ button:hover, input[type=submit]:hover {
 
 .sign-up {
     padding: 155px 0 85px;
-     /* TODO: combine in one property *//*combined*/
-     /* TODO: combine in one property *//*combined*/
 }
 
 .sign-up .appeal {
@@ -325,7 +323,7 @@ button:hover, input[type=submit]:hover {
     border-color: #fff;
 }
 
-.email-space  input[type=text] {
+.email-space input[type=text] {
     text-transform: uppercase;
     font-size: 16px;
     line-height: 19px;
@@ -334,13 +332,13 @@ button:hover, input[type=submit]:hover {
     width: 380px;
 }
 
-.email-space  input[type=submit] {
+.email-space input[type=submit] {
     padding: 15px 55px;
     line-height: 20px;
 
 }
 
-.email-space  input[type=submit]:hover {
+.email-space input[type=submit]:hover {
     cursor: pointer;
 }
 
@@ -372,7 +370,7 @@ footer circle {
 
 footer .social-media .circle {
     background-color: var(--main-color);
-    border-radius: 50%; /* TODO: usualy used 50% because more does not make sense *//*corrected*/
+    border-radius: 50%;
     width: 53px;
     height: 53px;
     display: flex;
@@ -383,7 +381,6 @@ footer .social-media .circle {
 
 footer .social-media .circle svg {
     height: 100%;
-    /* TODO: it seems to me that without margin they look better *//*deleted margin*/
 }
 
 footer .social-media .circle:hover {
@@ -407,5 +404,4 @@ footer .social-media li {
 footer .container {
     display: flex;
     justify-content: space-between;
-    /* TODO: why does container contain this? */ /*corrected. made padding for footer*/
 }
