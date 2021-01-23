@@ -83,6 +83,25 @@ nav li {
     font-size: 14px;
 }
 
+nav .film-nav {
+    position: absolute;
+    top: 40px;
+    display: none;
+    padding: 5px 0 0;
+}
+
+nav li:hover ul {
+    display: block;
+}
+
+nav .film-nav li {
+    display: flex;
+    flex-direction: column;
+    width: 140px;
+    text-align: center;
+    margin: 5px 0 0;
+}
+
 .main-section {
     padding: 140px 0 70px;
     background: url('../images/headphones.png') no-repeat top right;
@@ -319,6 +338,7 @@ button:hover, input[type=submit]:hover {
     background-color: transparent;
     outline: none;
     color: #fff;
+    border-radius: 0;
 }
 
 .email-space input:hover {
@@ -337,7 +357,6 @@ button:hover, input[type=submit]:hover {
 .email-space  input[type=submit] {
     padding: 15px 55px;
     line-height: 20px;
-
 }
 
 .email-space  input[type=submit]:hover {
