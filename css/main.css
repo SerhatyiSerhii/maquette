@@ -86,10 +86,10 @@ nav li {
 
 nav .film-nav {
     position: absolute;
-    top: -10px;
-    right: -9px;
+    top: -10px; /* TODO: strange with padding top */
+    right: -9px; /* TODO: could be, but it is actualy centered horizontally */
     display: none;
-    padding: 5px 0 0;
+    padding: 5px 0 0; /* TODO: strange with top */
 }
 
 nav li:hover ul {
@@ -111,14 +111,14 @@ nav .film-nav li {
 
 nav .film-nav li:hover {
     border-color: var(--main-color);
-    position: relative;
+    position: relative; /* TODO: you already have it in non-hover rule */
     z-index: 2;
 }
 
 nav .film-nav li a {
     text-decoration: none;
-    padding: 1px 0 0;
-    font-size: 14px;
+    padding: 1px 0 0; /* TODO: does not make sense to use all-paddings property */
+    font-size: 14px; /* TODO: does not make sense */
 }
 
 .main-section {
