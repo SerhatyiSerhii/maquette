@@ -87,11 +87,9 @@ nav li {
 nav .film-nav {
     position: absolute;
     margin: 0;
-    top: 17px; /* TODO: strange with padding top */ /*Corrected: last tule{top: -10px;}*/
-    transform: translateX(-13px); /* TODO: could be, but it is actualy centered horizontally */ /*Corrected: last rule {right: -9px;}*/
-    /*Yes, it is centralized, but this ul doesn't go outside of its parent li. So I have make it go outside of parent*/
+    top: 17px;
+    transform: translateX(-13px); /*Yes, it is centralized, but this ul doesn't go outside of its parent li. So I have make it go outside of parent*/ /* TODO: there is not much difference between right -9px and translateX(13px). It's not centralized, it's just moveв for several pixels */
     display: none;
-    /* TODO: strange with top */ /*Deleted: last rle {padding: 5px 0 0;}*/
 }
 
 nav li:hover ul {
@@ -114,14 +112,12 @@ nav .film-nav li {
 
 nav .film-nav li:hover {
     border-color: var(--main-color);
-    /* TODO: you already have it in non-hover rule */ /*Deleted: last rule{position: relative;} I thought :hover also require position*/
     z-index: 2;
 }
 
 nav .film-nav li a {
     text-decoration: none;
-    padding-top: 1px; /* TODO: does not make sense to use all-paddings property */ /*Corrected: last rule{padding: 1px 0 0;}*/
-    /* TODO: does not make sense */ /*Deleted: last tule{font-size: 14px;}*/
+    padding-top: 1px;
 }
 
 .main-section {
