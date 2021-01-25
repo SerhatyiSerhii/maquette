@@ -86,10 +86,12 @@ nav li {
 
 nav .film-nav {
     position: absolute;
-    top: -10px; /* TODO: strange with padding top */
-    right: -9px; /* TODO: could be, but it is actualy centered horizontally */
+    margin: 0;
+    top: 17px; /* TODO: strange with padding top */ /*Corrected: last tule{top: -10px;}*/
+    transform: translateX(-13px); /* TODO: could be, but it is actualy centered horizontally */ /*Corrected: last rule {right: -9px;}*/
+    /*Yes, it is centralized, but this ul doesn't go outside of its parent li. So I have make it go outside of parent*/
     display: none;
-    padding: 5px 0 0; /* TODO: strange with top */
+    /* TODO: strange with top */ /*Deleted: last rle {padding: 5px 0 0;}*/
 }
 
 nav li:hover ul {
@@ -99,7 +101,7 @@ nav li:hover ul {
 nav .film-nav li {
     display: flex;
     flex-direction: column;
-    width: 55px;
+    width: 70px;
     text-align: center;
     margin: -1px auto 0;
     border: 1px solid #515151;
@@ -107,18 +109,19 @@ nav .film-nav li {
     position: relative;
     z-index: 1;
     transition: 0.3s;
+    padding: 5px 0;
 }
 
 nav .film-nav li:hover {
     border-color: var(--main-color);
-    position: relative; /* TODO: you already have it in non-hover rule */
+    /* TODO: you already have it in non-hover rule */ /*Deleted: last rule{position: relative;} I thought :hover also require position*/
     z-index: 2;
 }
 
 nav .film-nav li a {
     text-decoration: none;
-    padding: 1px 0 0; /* TODO: does not make sense to use all-paddings property */
-    font-size: 14px; /* TODO: does not make sense */
+    padding-top: 1px; /* TODO: does not make sense to use all-paddings property */ /*Corrected: last rule{padding: 1px 0 0;}*/
+    /* TODO: does not make sense */ /*Deleted: last tule{font-size: 14px;}*/
 }
 
 .main-section {
@@ -337,8 +340,6 @@ button:hover, input[type=submit]:hover {
 
 .sign-up {
     padding: 155px 0 85px;
-     /* TODO: combine in one property *//*combined*/
-     /* TODO: combine in one property *//*combined*/
 }
 
 .sign-up .appeal {
@@ -410,7 +411,7 @@ footer circle {
 
 footer .social-media .circle {
     background-color: var(--main-color);
-    border-radius: 50%; /* TODO: usualy used 50% because more does not make sense *//*corrected*/
+    border-radius: 50%;
     width: 53px;
     height: 53px;
     display: flex;
@@ -421,7 +422,6 @@ footer .social-media .circle {
 
 footer .social-media .circle svg {
     height: 100%;
-    /* TODO: it seems to me that without margin they look better *//*deleted margin*/
 }
 
 footer .social-media .circle:hover {
@@ -445,5 +445,4 @@ footer .social-media li {
 footer .container {
     display: flex;
     justify-content: space-between;
-    /* TODO: why does container contain this? */ /*corrected. made padding for footer*/
 }
