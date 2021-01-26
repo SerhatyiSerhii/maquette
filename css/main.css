@@ -89,8 +89,7 @@ nav .film-nav {
     left: 50%;
     margin: 0;
     top: 17px;
-    transform: translateX(-50%); /*Yes, it is centralized, but this ul doesn't go outside of its parent li. So I have make it go outside of parent*/ /* TODO: there is not much difference between right -9px and translateX(13px). It's not centralized, it's just moveв for several pixels */
-    /*:) I have found the solution*/
+    transform: translateX(-50%);
     display: none;
 }
 
