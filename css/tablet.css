@@ -1,0 +1,224 @@
+@media screen and (max-width: 768px) {
+
+    #togle-menu {
+        position: fixed;
+        display: block;
+        opacity: 0;
+    }
+
+    .menu-btn {
+        display: flex;
+        align-items: center;
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        width: 26px;
+        height: 26px;
+        cursor: pointer;
+        z-index: 1;
+    }
+
+    .menu-btn > span,
+    .menu-btn > span::before,
+    .menu-btn > span::after {
+        display: block;
+        position: absolute;
+        width: 100%;
+        height: 2px;
+        background-color: var(--main-color);
+        transition: 0.3s;
+    }
+
+    .menu-btn > span::before {
+        content: '';
+        top: -8px;
+    }
+
+    .menu-btn > span::after {
+        content: '';
+        top: 8px;
+    }
+
+    #togle-menu:checked ~ .menu-btn > span {
+        transform: rotate(45deg);
+    }
+
+    #togle-menu:checked ~ .menu-btn > span:before {
+        top: 0;
+        transform: rotate(0);
+    }
+
+    #togle-menu:checked ~ .menu-btn > span:after {
+        top: 0;
+        transform: rotate(90deg);
+    }
+
+    #togle-menu:checked ~ .box-menu {
+        display: block;
+    }
+
+    .box-menu > li {
+        position: relative;
+    }
+
+    nav {
+        position: relative;
+        z-index: 5;
+    }
+
+    nav > ul > li > a {
+        color: var(--main-color);
+    }
+
+    nav > ul > li > a:hover {
+        color: #fff;
+    }
+
+    nav ul {
+        margin: 0;
+        position: fixed;
+        right: 25px;
+        top: 25px;
+        display: none;
+    }
+
+    nav li {
+        display: list-item;
+        margin: 0;
+    }
+
+    nav .film-nav {
+        left: 0;
+        right: 80%
+    }
+
+    nav .film-nav li {
+        margin: -1px 0 0;
+    }
+
+    .container {
+        max-width: 640px;
+    }
+
+    .main-section {
+        background-position: left 0% top 0%;
+        background-size: contain;
+    }
+
+    .main-section h1 {
+        width: 100%
+    }
+
+    button {
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .film-content {
+        margin: 0 auto;
+    }
+
+    .film-image img {
+        margin: 15px auto 0;
+    }
+
+    .film-title-content {
+        text-align: center;
+    }
+
+    .film-title-content span {
+        top: -75px;
+        right: 50%;
+        transform: translateX(50%);
+    }
+
+    .film-description-content {
+        padding: 0;
+    }
+
+    .film-description-content p {
+        margin: 0 auto 55px;
+        text-align: center;
+    }
+
+    .film-description-content p::before {
+        width: 100%;
+        top: -20px;
+        left: 0;
+    }
+
+    .stright-direction-description .description-content {
+        flex-direction: column-reverse;
+    }
+
+    .reverse-direction-description .description-content {
+        flex-direction: column;
+    }
+
+    .reverse-direction-description .film-content {
+        margin: 0 auto;
+    }
+
+    .star-wars {
+        background-image: url('../images/jedirobot2.png'), url('../images/jedi2.png');
+        background-repeat: no-repeat, no-repeat;
+        background-position:  left 0px bottom 0px, right 0px bottom -7px;
+        background-size: 50% auto, 50% auto;
+    }
+
+    .runner {
+        background-image: url('../images/bladerunner_woman.png'), url('../images/bladerunner_man.png');
+        background-repeat: no-repeat, no-repeat;
+        background-position:  left 0px bottom 0px, right 0px bottom 0px;
+        background-size: 50% auto, 50% auto;
+    }
+
+    .godfuther {
+        background-image: url('../images/boss.png'), url('../images/gungster.png');
+        background-repeat: no-repeat, no-repeat;
+        background-position:  left 0px bottom 0px, right 0px bottom 0px;
+        background-size: 50% auto, 50% auto;
+    }
+
+    .slides-wrapper ul {
+        left: -535px;
+    }
+
+    .slides-wrapper ul li {
+        padding: 0 70px;
+    }
+
+    .slides-wrapper ul li div {
+        width: 415px;
+        height: 240px;
+    }
+
+    .btn-play {
+        transform: translate(-50%, -50%);
+        padding: 0;
+        width: 55px;
+        height: 55px;
+    }
+
+    .btn-play::before {
+        border-left: 14px solid #000;
+        border-top: 7px solid transparent;
+        border-bottom: 7px solid transparent;
+        left: 50%;
+        transform: translateX(-4px);
+    }
+
+    .btn-play:hover::before {
+        border-left: 14px solid #fff;
+    }
+
+    footer .container {
+        flex-direction: column-reverse;
+        text-align: center;
+    }
+
+    footer .policy li {
+        margin: 0 50px;
+    }
+}

@@ -6,6 +6,12 @@
     --main-color: #00a3ff;
 }
 
+#togle-menu {
+    position: absolute;
+    display: none;
+    margin: 0;
+}
+
 body {
     margin: 0;
     font-family: 'Roboto', sans-serif;
