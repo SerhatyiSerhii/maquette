@@ -112,14 +112,12 @@ nav .film-nav li {
     margin: -1px auto 0;
     border: 1px solid #515151;
     background-color: #000;
-    position: relative;
-    z-index: 1;
     transition: 0.3s;
 }
 
 nav .film-nav li:hover {
     border-color: var(--main-color);
-    z-index: 2;
+    z-index: 1;
 }
 
 nav .film-nav li a {

@@ -1,0 +1,97 @@
+@media screen and (min-width: 1025px) and (max-width: 1210px) {
+
+    body {
+        font-size: 15px;
+    }
+
+    button {
+        font-size: 15px;
+    }
+
+    .container {
+        max-width: 1025px;
+    }
+
+    .direction-description {
+        padding-top: 200px;
+    }
+
+    .main-section {
+        padding: 140px 0 0;
+    }
+
+    .main-section h1 {
+        width: 100%;
+        font-size: 60px;
+    }
+
+    .description-content {
+        padding: 0 15px;
+    }
+
+    .film-image img {
+        width: 345px;
+        height: auto;
+    }
+
+    .film-title-content span {
+        left: -75px;
+    }
+
+    .reverse-direction-description .film-content {
+        margin-left: 80px;
+    }
+
+    .central-direction-description {
+        padding-bottom: 262px;
+    }
+
+    .slides-wrapper .arrow-left {
+        left: 50%;
+        transform: translate(-435px, -50%);
+    }
+
+    .slides-wrapper .arrow-right {
+        right: 50%;
+        transform: translate(455px, -50%);
+    }
+
+    .slides-wrapper ul {
+        left: 50%;
+        transform: translateX(-35%);
+    }
+
+    .slides-wrapper ul li {
+        padding: 0 60px;
+    }
+
+    .slides-wrapper ul li div {
+        width: 700px;
+        height: 425px;
+    }
+
+    input[type=submit] {
+        font-size: 15px;
+    }
+
+    .star-wars {
+        background-image: url('../images/jedirobot2.png'), url('../images/jedi2.png');
+        background-repeat: no-repeat, no-repeat;
+        background-position: left 0px bottom 0px, right 0px bottom -8px;
+        background-size: 50% auto, 40% auto;
+    }
+
+    .runner {
+        background-image: url('../images/bladerunner_woman.png'), url('../images/bladerunner_man.png');
+        background-repeat: no-repeat, no-repeat;
+        background-position: left -25px bottom 0px, right -25px bottom 0px;
+        background-size: 50% auto, 50% auto;
+    }
+
+    .godfuther {
+        background-image: url('../images/boss.png'), url('../images/gungster.png');
+        background-repeat: no-repeat, no-repeat;
+        background-position: left -5px bottom 0px, right -5px bottom 0px;
+        background-size: 45% auto, 45% auto;
+    }
+}
