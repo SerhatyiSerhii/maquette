@@ -139,7 +139,7 @@
     }
 
     .main-section p {
-        width: 100%;
+        width: 365px;
         text-align: justify;
     }
 
@@ -186,7 +186,7 @@
 
     .film-description-content p {
         margin: 0 auto 25px;
-        text-align: justify;
+        line-height: 18px;
     }
 
     .film-description-content p::before {
