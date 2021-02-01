@@ -1,7 +1,7 @@
-@media screen and (min-width: 320px) and (max-width: 425px) {
+@media screen and (min-width: 426px) and (max-width: 767px) {
 
     body {
-        font-size: 14px;
+        font-size: 12px;
     }
 
     h2 {
@@ -22,7 +22,6 @@
         justify-content: center;
         align-items: center;
         cursor: pointer;
-        border: 1px solid #fff;
     }
 
     nav:hover > ul {
@@ -124,7 +123,7 @@
     }
 
     .container {
-        max-width: 425px;
+        max-width: 640px;;
     }
 
     .main-section {
@@ -135,13 +134,17 @@
 
     .main-section h1 {
         width: 100%;
-        font-size: 25px;
-        line-height: 35px;
-        margin-bottom: 40px;
+        font-size: 35px;
+        line-height: 45px;
     }
 
     .main-section p {
         width: 100%;
+        text-align: justify;
+    }
+
+    .main-section svg {
+        height: 45px;
     }
 
     button {
@@ -161,8 +164,8 @@
     }
 
     .film-image img {
-        margin: 0 auto 75px;
-        width: 260px;
+        margin: 0 auto 150px;
+        width: 370px;
         height: auto;
     }
 
@@ -171,10 +174,10 @@
     }
 
     .film-title-content span {
-        transform: translateX(50%);
+        transform: translateX(-185px);
         font-size: 115px;
         top: -80px;
-        left: -80px;
+        left: 50%;
     }
 
     .film-description-content {
@@ -183,7 +186,7 @@
 
     .film-description-content p {
         margin: 0 auto 25px;
-        width: 100%;
+        text-align: justify;
     }
 
     .film-description-content p::before {
@@ -204,7 +207,7 @@
     }
 
     .central-direction-description {
-        padding-bottom: 150px;
+        padding: 190px 0 255px;
     }
 
     .star-wars {
@@ -228,59 +231,55 @@
         background-size: 50% auto, 50% auto;
     }
 
-    .slider {
-        padding: 75px 0;
-    }
-
     .slider .arrow-left {
         left: 50%;
-        transform: translate(-149px, -50%);
+        transform: translate(-190px, -50%);
     }
 
     .slider .arrow-right {
-        left: 50%;
-        transform: translate(118px, -50%);
+        right: 50%;
+        transform: translate(205px, -50%);
     }
 
     .slider .arrow-left svg {
-        width: 28px;
+        width: 40px;
     }
 
     .slider .arrow-right svg {
-        width: 28px;
+        width: 40px;
     }
 
     .slides-wrapper ul {
         left: 50%;
-        transform: translateX(-405px);
+        transform: translateX(-520px);
     }
 
     .slides-wrapper ul li {
-        padding: 0 16px;
+        padding: 0 25px;
     }
 
     .slides-wrapper ul li div {
-        width: 235px;
-        height: 140px;
+        width: 300px;
+        height: 170px;
     }
 
     .btn-play {
         transform: translate(-50%, -50%);
         padding: 0;
-        width: 40px;
-        height: 40px;
+        width: 55px;
+        height: 55px;
     }
 
     .btn-play::before {
-        border-left: 10px solid #000;
-        border-top: 5px solid transparent;
-        border-bottom: 5px solid transparent;
+        border-left: 14px solid #000;
+        border-top: 7px solid transparent;
+        border-bottom: 7px solid transparent;
         left: 50%;
-        transform: translateX(-35%);
+        transform: translateX(-5px);
     }
 
     .btn-play:hover::before {
-        border-left: 10px solid #fff;
+        border-left: 14px solid #fff;
     }
 
     footer .container {
@@ -288,8 +287,13 @@
         text-align: center;
     }
 
+    footer .policy {
+        margin-top: 20px;
+    }
+
     footer .policy li {
         margin: 0 50px;
+        line-height: 55px;
     }
 
     .email-space input[type=text] {
@@ -301,12 +305,9 @@
         font-size: 14px;
     }
 
-    .sign-up {
-        padding-bottom: 45px;
-    }
-
     .sign-up .appeal {
         width: 100%;
+        text-align: justify;
     }
 
     .email-space {
@@ -317,9 +318,4 @@
         width: 100%;
         margin-bottom: 15px;
     }
-
-    footer .social-media li{
-        margin: 0 15px;
-    }
-
 }

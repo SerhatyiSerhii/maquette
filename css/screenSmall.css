@@ -1,11 +1,15 @@
-@media screen and (min-width: 1025px) and (max-width: 1210px) {
+@media screen and (min-width: 960px) and (max-width: 1210px) {
 
     body {
-        font-size: 15px;
+        font-size: 12px;
     }
 
     button {
         font-size: 15px;
+    }
+
+    h2 {
+        font-size: 25px;
     }
 
     .container {
@@ -22,7 +26,8 @@
 
     .main-section h1 {
         width: 100%;
-        font-size: 60px;
+        font-size: 45px;
+        line-height: 55px;
     }
 
     .description-content {
@@ -35,7 +40,19 @@
     }
 
     .film-title-content span {
-        left: -75px;
+        left: 50%;
+        top: -71px;
+        transform: translateX(-245px);
+        font-size: 100px;
+    }
+
+    .film-content {
+        width: 345px;
+    }
+
+    .film-description-content p {
+        width: 100%;
+        text-align: justify;
     }
 
     .reverse-direction-description .film-content {
