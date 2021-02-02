@@ -1,7 +1,4 @@
-/* TODO: rename all files to use - as word separator *//*corrected*/
-@media screen and (max-width: 1210px) { /* TODO: don't set strict windows, many of the styles beyond can be used for smaller screens thus avoiding styles duplicates. Remove min width rule in all files */
-    /*Corrected. min-width deleted in all @media-files*/
-
+@media screen and (max-width: 1210px) {
     body {
         font-size: 12px;
     }
@@ -38,13 +35,12 @@
 
     .film-image img {
         width: 345px;
-        height: 390px; /* TODO: better to define aspect ratio and set height explicitly *//*Corrected*/
+        height: 390px;
     }
 
     .film-title-content span {
         left: -73px;
         top: -71px;
-        /* TODO: why translate if you can use left? *//*Deleted*/
         font-size: 100px;
     }
 
@@ -53,9 +49,9 @@
         margin: 0;
     }
 
-    .film-description-content p {
-        width: auto; /* TODO: now your p element is out of its parent bounds. Why does it still have margin? *//*Corrected*/
-        margin: 0 0 55px 0;
+    .film-description-content p { /* TODO: btw, line height is too big for this screen size. line-height can accept not only pixels and other metrics, but coeficient: you can use 1.5 as value, to be one and a half of font-size */
+        width: auto; /* TODO: 100% was ok, the problem was in margin */
+        margin: 0 0 55px 0; /* TODO: does it make sense to use generic property? */
     }
 
     .reverse-direction-description .film-content {
@@ -66,39 +62,17 @@
         padding-bottom: 262px;
     }
 
-    .slides-wrapper .arrow-left { /* TODO: but why? original styles just have left 6%, why do you use 50% combined with translate? */
-        /*this is made in order to attached the arrow
-        to specific position on the screen avoiding fixed position.
-        The arrow is attached to the center of the screen.
-        With translate the position is adjusted.
-        In the result the changing of screen size doesn't effect
-        the position of arrow on the screen.
-        The position will be the same at scree in range of 960'-1210'*/
+    .slides-wrapper .arrow-left { /* TODO: don't know why, but it works. However looks strange. Let it be. Better to leave a small comment to not forget what it is for */
         left: 50%;
         transform: translate(-435px, -50%);
     }
 
-    .slides-wrapper .arrow-right { /* TODO: the same as for left */
-        /*this is made in order to attached the arrow
-        to specific position on the screen avoiding fixed position.
-        The arrow is attached to the center of the screen.
-        With translate the position is adjusted.
-        In the result the changing of screen size doesn't effect
-        the position of arrow on the screen.
-        The position will be the same at scree in range of 960'-1210'*/
+    .slides-wrapper .arrow-right { /* TODO: don't know why, but it works. However looks strange. Let it be. Better to leave a small comment to not forget what it is for */
         right: 50%;
         transform: translate(455px, -50%);
     }
 
-    .slides-wrapper ul { /* TODO: the same as for arrows */ /* TODO: li elements width reduced, but ul still has width from original styles. By the way, in original styles ul width is also too big */
-        /*this is made in order to attached the arrow
-        to specific position on the screen avoiding fixed position.
-        The arrow is attached to the center of the screen.
-        With translate the position is adjusted.
-        In the result the changing of screen size doesn't effect
-        the position of arrow on the screen.
-        The position will be the same at scree in range of 960'-1210'*/
-        /*width for ul is corrected*/
+    .slides-wrapper ul { /* TODO: don't know why, but it works. However looks strange. Let it be. Better to leave a small comment to not forget what it is for */
         left: 50%;
         transform: translateX(-1220px);
         width: 2470px;
@@ -113,25 +87,17 @@
         height: 425px;
     }
 
-    /* TODO: styles duplicate */ /*deleted. corrected on line 9 with comma*/
-
     .star-wars {
-        /* TODO: what about css styles inheritance? *//*deleted*/
-        /* TODO: what about css styles inheritance? *//*deleted*/
         background-position: left 0px bottom 0px, right 0px bottom -8px;
         background-size: 50% auto, 40% auto;
     }
 
     .runner {
-        /* TODO: what about css styles inheritance? *//*deleted*/
-        /* TODO: what about css styles inheritance? *//*deleted*/
         background-position: left -25px bottom 0px, right -25px bottom 0px;
         background-size: 50% auto, 50% auto;
     }
 
     .godfuther {
-        /* TODO: what about css styles inheritance? *//*deleted*/
-        /* TODO: what about css styles inheritance? *//*deleted*/
         background-position: left -5px bottom 0px, right -5px bottom 0px;
         background-size: 45% auto, 45% auto;
     }
