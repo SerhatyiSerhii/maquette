@@ -1,0 +1,138 @@
+/* TODO: rename all files to use - as word separator *//*corrected*/
+@media screen and (max-width: 1210px) { /* TODO: don't set strict windows, many of the styles beyond can be used for smaller screens thus avoiding styles duplicates. Remove min width rule in all files */
+    /*Corrected. min-width deleted in all @media-files*/
+
+    body {
+        font-size: 12px;
+    }
+
+    button, input[type=submit] {
+        font-size: 15px;
+    }
+
+    h2 {
+        font-size: 25px;
+    }
+
+    .container {
+        max-width: 1025px;
+    }
+
+    .direction-description {
+        padding-top: 200px;
+    }
+
+    .main-section {
+        padding: 140px 0 0;
+    }
+
+    .main-section h1 {
+        width: 100%;
+        font-size: 45px;
+        line-height: 55px;
+    }
+
+    .description-content {
+        padding: 0 15px;
+    }
+
+    .film-image img {
+        width: 345px;
+        height: 390px; /* TODO: better to define aspect ratio and set height explicitly *//*Corrected*/
+    }
+
+    .film-title-content span {
+        left: -73px;
+        top: -71px;
+        /* TODO: why translate if you can use left? *//*Deleted*/
+        font-size: 100px;
+    }
+
+    .film-content {
+        width: 345px;
+        margin: 0;
+    }
+
+    .film-description-content p {
+        width: auto; /* TODO: now your p element is out of its parent bounds. Why does it still have margin? *//*Corrected*/
+        margin: 0 0 55px 0;
+    }
+
+    .reverse-direction-description .film-content {
+        margin-left: 80px;
+    }
+
+    .central-direction-description {
+        padding-bottom: 262px;
+    }
+
+    .slides-wrapper .arrow-left { /* TODO: but why? original styles just have left 6%, why do you use 50% combined with translate? */
+        /*this is made in order to attached the arrow
+        to specific position on the screen avoiding fixed position.
+        The arrow is attached to the center of the screen.
+        With translate the position is adjusted.
+        In the result the changing of screen size doesn't effect
+        the position of arrow on the screen.
+        The position will be the same at scree in range of 960'-1210'*/
+        left: 50%;
+        transform: translate(-435px, -50%);
+    }
+
+    .slides-wrapper .arrow-right { /* TODO: the same as for left */
+        /*this is made in order to attached the arrow
+        to specific position on the screen avoiding fixed position.
+        The arrow is attached to the center of the screen.
+        With translate the position is adjusted.
+        In the result the changing of screen size doesn't effect
+        the position of arrow on the screen.
+        The position will be the same at scree in range of 960'-1210'*/
+        right: 50%;
+        transform: translate(455px, -50%);
+    }
+
+    .slides-wrapper ul { /* TODO: the same as for arrows */ /* TODO: li elements width reduced, but ul still has width from original styles. By the way, in original styles ul width is also too big */
+        /*this is made in order to attached the arrow
+        to specific position on the screen avoiding fixed position.
+        The arrow is attached to the center of the screen.
+        With translate the position is adjusted.
+        In the result the changing of screen size doesn't effect
+        the position of arrow on the screen.
+        The position will be the same at scree in range of 960'-1210'*/
+        /*width for ul is corrected*/
+        left: 50%;
+        transform: translateX(-1220px);
+        width: 2470px;
+    }
+
+    .slides-wrapper ul li {
+        padding: 0 60px;
+    }
+
+    .slides-wrapper ul li div {
+        width: 700px;
+        height: 425px;
+    }
+
+    /* TODO: styles duplicate */ /*deleted. corrected on line 9 with comma*/
+
+    .star-wars {
+        /* TODO: what about css styles inheritance? *//*deleted*/
+        /* TODO: what about css styles inheritance? *//*deleted*/
+        background-position: left 0px bottom 0px, right 0px bottom -8px;
+        background-size: 50% auto, 40% auto;
+    }
+
+    .runner {
+        /* TODO: what about css styles inheritance? *//*deleted*/
+        /* TODO: what about css styles inheritance? *//*deleted*/
+        background-position: left -25px bottom 0px, right -25px bottom 0px;
+        background-size: 50% auto, 50% auto;
+    }
+
+    .godfuther {
+        /* TODO: what about css styles inheritance? *//*deleted*/
+        /* TODO: what about css styles inheritance? *//*deleted*/
+        background-position: left -5px bottom 0px, right -5px bottom 0px;
+        background-size: 45% auto, 45% auto;
+    }
+}

@@ -1,11 +1,7 @@
-@media screen and (min-width: 426px) and (max-width: 767px) {
+@media screen and (max-width: 767px) {
 
     body {
         font-size: 12px;
-    }
-
-    h2 {
-        font-size: 30px;
     }
 
     header .container {
@@ -160,24 +156,28 @@
 
     .film-content {
         margin: 0 auto;
-        width: 100%;
+        width: 340px;
     }
 
     .film-image img {
         margin: 0 auto 150px;
-        width: 370px;
-        height: auto;
+        width: 340px;
+        height: 386px;
     }
 
     .film-title-content {
         text-align: center;
     }
 
+    .film-title-content h2 {
+        font-size: 30px;
+    }
+
     .film-title-content span {
         transform: translateX(-185px);
-        font-size: 115px;
-        top: -80px;
-        left: 50%;
+        font-size: 100px;
+        top: -67px;
+        left: 55%;
     }
 
     .film-description-content {
@@ -211,22 +211,16 @@
     }
 
     .star-wars {
-        background-image: url('../images/jedirobot2.png'), url('../images/jedi2.png');
-        background-repeat: no-repeat, no-repeat;
         background-position:  left 0px bottom 0px, right 0px bottom -7px;
         background-size: 50% auto, 50% auto;
     }
 
     .runner {
-        background-image: url('../images/bladerunner_woman.png'), url('../images/bladerunner_man.png');
-        background-repeat: no-repeat, no-repeat;
         background-position:  left 0px bottom 0px, right 0px bottom 0px;
         background-size: 50% auto, 50% auto;
     }
 
     .godfuther {
-        background-image: url('../images/boss.png'), url('../images/gungster.png');
-        background-repeat: no-repeat, no-repeat;
         background-position:  left 0px bottom 0px, right 0px bottom 0px;
         background-size: 50% auto, 50% auto;
     }
@@ -252,6 +246,7 @@
     .slides-wrapper ul {
         left: 50%;
         transform: translateX(-520px);
+        width: 1060px;
     }
 
     .slides-wrapper ul li {
@@ -306,7 +301,7 @@
     }
 
     .sign-up .appeal {
-        width: 100%;
+        width: 340px;
         text-align: justify;
     }
 

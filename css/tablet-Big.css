@@ -1,4 +1,4 @@
-@media screen and (min-width: 768px) and (max-width: 959px) {
+@media screen and (max-width: 959px) {
 
     body {
         font-size: 14px;
@@ -38,12 +38,13 @@
 
     .film-image img {
         width: 345px;
-        height: auto;
+        height: 391px;
         margin: 0 auto 150px;
     }
 
     .film-title-content span {
-        left: -10px;
+        left: -5px;
+        top: -63px;
     }
 
     .film-title-content h2 {
@@ -82,8 +83,9 @@
     }
 
     .slides-wrapper ul {
-        left: 49%;
-        transform: translateX(-28%);
+        left: 50%;
+        transform: translateX(-988px);
+        width: 1980px;
     }
 
     .slides-wrapper ul li {
@@ -119,22 +121,16 @@
     }
 
     .star-wars {
-        background-image: url('../images/jedirobot2.png'), url('../images/jedi2.png');
-        background-repeat: no-repeat, no-repeat;
         background-position: left 0px bottom 0px, right 0px bottom -8px;
         background-size: 50% auto, 40% auto;
     }
 
     .runner {
-        background-image: url('../images/bladerunner_woman.png'), url('../images/bladerunner_man.png');
-        background-repeat: no-repeat, no-repeat;
         background-position: left -25px bottom 0px, right -25px bottom 0px;
         background-size: 50% auto, 50% auto;
     }
 
     .godfuther {
-        background-image: url('../images/boss.png'), url('../images/gungster.png');
-        background-repeat: no-repeat, no-repeat;
         background-position: left -5px bottom 0px, right -5px bottom 0px;
         background-size: 45% auto, 45% auto;
     }
