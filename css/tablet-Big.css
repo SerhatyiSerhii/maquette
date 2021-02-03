@@ -3,41 +3,37 @@
         font-size: 14px;
     }
 
-    button {
-        font-size: 15px; /* TODO: this is style duplication I mentioned last time. Good example why sctrict media windows are not good */
-        left: 50%; /* TODO: button position is static; if you wanted to align centraly the button, you should have used text-align on the parent */
-        transform: translateX(50%);
-    }
+    /* TODO: this is style duplication I mentioned last time. Good example why sctrict media windows are not good */
+    /* TODO: button position is static; if you wanted to align centraly the button, you should have used text-align on the parent */
+    /*It is better to delete rules for button
+    as it has better view in original file*/
 
-    .container {/* TODO: this is style duplication I mentioned last time. Good example why sctrict media windows are not good */
-        max-width: 1025px;
-    }
+    /* TODO: this is style duplication I mentioned last time. Good example why sctrict media windows are not good */
+    /*correctd*/
 
     .direction-description {
         padding-top: 125px;
     }
 
-    .main-section {/* TODO: this is style duplication I mentioned last time. Good example why sctrict media windows are not good */
-        padding: 140px 0 0; /* TODO: btw, do we need to use generic property? */
-    }
+    /* TODO: this is style duplication I mentioned last time. Good example why sctrict media windows are not good */
+    /* TODO: btw, do we need to use generic property? */
+    /*corrected :)*/
 
-    .main-section h1 {/* TODO: this is style duplication I mentioned last time. Good example why sctrict media windows are not good */
-        width: 100%;
-        font-size: 45px;
-        line-height: 55px;
-    }
 
-    .description-content {/* TODO: this is style duplication I mentioned last time. Good example why sctrict media windows are not good */
-        padding: 0 15px;
-    }
+    /* TODO: this is style duplication I mentioned last time. Good example why sctrict media windows are not good */
+    /*corrected :)*/
+
+    /* TODO: this is style duplication I mentioned last time. Good example why sctrict media windows are not good */
+    /*corrected :)*/
 
     .film-content {
         margin: 0 auto;
     }
 
     .film-image img {
-        width: 345px;/* TODO: this is style duplication I mentioned last time. Good example why sctrict media windows are not good */
-        height: 391px;/* TODO: this is style duplication I mentioned last time. Good example why sctrict media windows are not good */
+        /* TODO: this is style duplication I mentioned last time. Good example why sctrict media windows are not good */
+        /* TODO: this is style duplication I mentioned last time. Good example why sctrict media windows are not good */
+        /*corrected :)*/
         margin: 0 auto 150px;
     }
 
@@ -47,16 +43,35 @@
     }
 
     .film-title-content h2 { /* TODO: tryin to achieve full accordance you use <br> in some h2. Seems like they are superfluous for tablets ans phones. How do you remove them? */
+        /*It is specifity.
+        All inbuild styles in HTML have 1000 specifity.
+        Every ID selection has 0100 specifity.
+        Every class and attribute selection has 0010 specifity.
+        Every element and pseudo element has 0001 specifity.
+
+        So, this rule has 0011 specifity.
+        While rule h2{} has only 0001 specifity
+
+        for example:
+                                                Thousend    Hundred    Dozens   Units   Result
+        h1                                          0           0         0       1      0001
+        h1 + p::first-letter                        0           0         0       3      0003
+        li > a[href*="en-US"] > .inline-warning     0           0         2       2      0022
+        #identifier                                 0           1         0       0      0100
+        <style>p {color:red}</style>                1           0         0       0      1000
+        */
         text-align: center;
         font-size: 35px;
     }
 
     .film-description-content p {
-        margin: 0 0 25px 2px; /* TODO: does it make sense to use generic property? */
+        margin-bottom: 25px;/* TODO: does it make sense to use generic property? */
         /* TODO: I can't get what these 2px change dramatically? :D */
+        /*corrected :)*/
     }
 
     .stright-direction-description .description-content { /* TODO: oh no, there is a typo in class name */
+        /*can't find a typo. The rule works fine*/
         flex-direction: column;
     }
 
@@ -68,22 +83,24 @@
         margin: 0 auto;
     }
 
-    .central-direction-description {/* TODO: this is style duplication I mentioned last time. Good example why sctrict media windows are not good */
-        padding-bottom: 262px;
-    }
+    /* TODO: this is style duplication I mentioned last time. Good example why sctrict media windows are not good */
+    /*corrected*/
 
     .slides-wrapper .arrow-left {
-        left: 50%;/* TODO: this is style duplication I mentioned last time. Good example why sctrict media windows are not good */
+        /* TODO: this is style duplication I mentioned last time. Good example why sctrict media windows are not good */
+        /*corrected*/
         transform: translate(-362px, -50%);
     }
 
     .slides-wrapper .arrow-right {
-        right: 50%;/* TODO: this is style duplication I mentioned last time. Good example why sctrict media windows are not good */
+        /* TODO: this is style duplication I mentioned last time. Good example why sctrict media windows are not good */
+        /*corrected*/
         transform: translate(357px, -50%);
     }
 
     .slides-wrapper ul {
-        left: 50%;/* TODO: this is style duplication I mentioned last time. Good example why sctrict media windows are not good */
+        /* TODO: this is style duplication I mentioned last time. Good example why sctrict media windows are not good */
+        /*corrected*/
         transform: translateX(-988px);
         width: 1980px;
     }
@@ -101,41 +118,40 @@
         padding: 0;
         width: 70px;
         height: 70px;
-        transform: translate(-50%, -50%);
+        transform: translate(50%, -50%);
     }
 
     .btn-play:before {
         left: 50%;
         transform:translateX(-35%);
-        border-left: 20px solid #000; /* TODO: since changed only border width, better to use specific property. Do you know, that even border-left is generic? */
-        border-top: 10px solid transparent; /* TODO: since changed only border width, better to use specific property. Do you know, that even border-top is generic? */
-        border-bottom: 10px solid transparent; /* TODO: since changed only border width, better to use specific property. Do you know, that even border-bottom is generic? */
+        /* TODO: since changed only border width, better to use specific property. Do you know, that even border-left is generic? */
+        /* TODO: since changed only border width, better to use specific property. Do you know, that even border-top is generic? */
+        /* TODO: since changed only border width, better to use specific property. Do you know, that even border-bottom is generic? */
+        /*corrected*/
+        border-width: 10px 20px;
+        border-right-width: 0;
+        border-color: transparent #000;
+        border-style: solid;
     }
 
     .btn-play:hover:before {
-        border-left: 20px solid #fff; /* TODO: since changed only border width, better to use specific property. Do you know, that even border-left is generic? */
+        /* TODO: since changed only border width, better to use specific property. Do you know, that even border-left is generic? */
+        /*corrected*/
+        border-left-width: 20px;
     }
 
-    input[type=submit] {
-        font-size: 15px;/* TODO: this is style duplication I mentioned last time. Good example why sctrict media windows are not good */
-    }
+    /* TODO: this is style duplication I mentioned last time. Good example why sctrict media windows are not good */
+    /*corrected*/
 
-    .star-wars {/* TODO: this is style duplication I mentioned last time. Good example why sctrict media windows are not good */
-        background-position: left 0px bottom 0px, right 0px bottom -8px;
-        background-size: 50% auto, 40% auto;
-    }
+    /* TODO: this is style duplication I mentioned last time. Good example why sctrict media windows are not good */
+    /*deleted*/
 
-    .runner {/* TODO: this is style duplication I mentioned last time. Good example why sctrict media windows are not good */
-        background-position: left -25px bottom 0px, right -25px bottom 0px;
-        background-size: 50% auto, 50% auto;
-    }
+    /* TODO: this is style duplication I mentioned last time. Good example why sctrict media windows are not good */
+    /*deleted*/
 
-    .godfuther {/* TODO: this is style duplication I mentioned last time. Good example why sctrict media windows are not good */
-        background-position: left -5px bottom 0px, right -5px bottom 0px;
-        background-size: 45% auto, 45% auto;
-    }
+    /* TODO: this is style duplication I mentioned last time. Good example why sctrict media windows are not good */
+    /*deleted*/
 
-    .sign-up .appeal {
-        text-align: justify; /* TODO: cannot remember myself ever using this property. I think you cannot do the same either */
-    }
+    /* TODO: cannot remember myself ever using this property. I think you cannot do the same either */
+    /*deleted*/
 }

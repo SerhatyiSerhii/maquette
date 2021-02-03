@@ -129,44 +129,32 @@
     }
 
     .main-section h1 {
-        width: 100%;
         font-size: 35px;
         line-height: 45px;
     }
 
     .main-section p {
         width: 365px;
-        text-align: justify;
     }
 
     .main-section svg {
         height: 45px;
     }
 
-    button {
+    button, .email-space input[type] {
         position: relative;
         left: 50%;
         transform: translateX(-50%);
         font-size: 14px;
     }
 
-    .direction-description {
-        padding-top: 125px;
-    }
-
     .film-content {
-        margin: 0 auto;
         width: 340px;
     }
 
     .film-image img {
-        margin: 0 auto 150px;
         width: 340px;
         height: 386px;
-    }
-
-    .film-title-content {
-        text-align: center;
     }
 
     .film-title-content h2 {
@@ -184,54 +172,20 @@
         padding: 0;
     }
 
-    .film-description-content p {
-        margin: 0 auto 25px;
-        line-height: 18px;
-    }
-
     .film-description-content p::before {
         top: -20px;
         left: 0;
-    }
-
-    .stright-direction-description .description-content {
-        flex-direction: column;
-    }
-
-    .reverse-direction-description .description-content {
-        flex-direction: column-reverse;
-    }
-
-    .reverse-direction-description .film-content {
-        margin: 0 auto;
     }
 
     .central-direction-description {
         padding: 190px 0 255px;
     }
 
-    .star-wars {
-        background-position:  left 0px bottom 0px, right 0px bottom -7px;
-        background-size: 50% auto, 50% auto;
-    }
-
-    .runner {
-        background-position:  left 0px bottom 0px, right 0px bottom 0px;
-        background-size: 50% auto, 50% auto;
-    }
-
-    .godfuther {
-        background-position:  left 0px bottom 0px, right 0px bottom 0px;
-        background-size: 50% auto, 50% auto;
-    }
-
     .slider .arrow-left {
-        left: 50%;
         transform: translate(-190px, -50%);
     }
 
     .slider .arrow-right {
-        right: 50%;
         transform: translate(205px, -50%);
     }
 
@@ -244,7 +198,6 @@
     }
 
     .slides-wrapper ul {
-        left: 50%;
         transform: translateX(-520px);
         width: 1060px;
     }
@@ -260,21 +213,19 @@
 
     .btn-play {
         transform: translate(-50%, -50%);
-        padding: 0;
         width: 55px;
         height: 55px;
     }
 
     .btn-play::before {
-        border-left: 14px solid #000;
-        border-top: 7px solid transparent;
-        border-bottom: 7px solid transparent;
         left: 50%;
         transform: translateX(-5px);
+        border-width: 7px 14px;
+        border-right-width: 0;
     }
 
     .btn-play:hover::before {
-        border-left: 14px solid #fff;
+        border-left-width: 14px;
     }
 
     footer .container {
@@ -291,18 +242,8 @@
         line-height: 55px;
     }
 
-    .email-space input[type=text] {
-        font-size: 14px;
-    }
-
-    .email-space input[type=submit] {
-        padding: 15px 57px;
-        font-size: 14px;
-    }
-
     .sign-up .appeal {
         width: 340px;
-        text-align: justify;
     }
 
     .email-space {

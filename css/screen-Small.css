@@ -20,7 +20,7 @@
     }
 
     .main-section {
-        padding: 140px 0 0;
+        padding-top: 140px;
     }
 
     .main-section h1 {
@@ -50,8 +50,15 @@
     }
 
     .film-description-content p { /* TODO: btw, line height is too big for this screen size. line-height can accept not only pixels and other metrics, but coeficient: you can use 1.5 as value, to be one and a half of font-size */
-        width: auto; /* TODO: 100% was ok, the problem was in margin */
-        margin: 0 0 55px 0; /* TODO: does it make sense to use generic property? */
+        /*corrected*/
+        line-height: 1.5;
+        width: 100%; /* TODO: 100% was ok, the problem was in margin */ /*corrected to 100%*/
+        /* TODO: does it make sense to use generic property? */
+        /*Corrected. If we apply only bottom rule,
+        the rule from original file will be applied
+        to the mockup*/
+        margin: 0;
+        margin-bottom: 55px;
     }
 
     .reverse-direction-description .film-content {
@@ -63,16 +70,19 @@
     }
 
     .slides-wrapper .arrow-left { /* TODO: don't know why, but it works. However looks strange. Let it be. Better to leave a small comment to not forget what it is for */
+        /*Attachment of arrow-left to specific place on screen*/
         left: 50%;
         transform: translate(-435px, -50%);
     }
 
     .slides-wrapper .arrow-right { /* TODO: don't know why, but it works. However looks strange. Let it be. Better to leave a small comment to not forget what it is for */
+        /*Attachment of arrow-right to specific place on screen*/
         right: 50%;
         transform: translate(455px, -50%);
     }
 
     .slides-wrapper ul { /* TODO: don't know why, but it works. However looks strange. Let it be. Better to leave a small comment to not forget what it is for */
+        /*Attachment of pictures to specific place on screen*/
         left: 50%;
         transform: translateX(-1220px);
         width: 2470px;
