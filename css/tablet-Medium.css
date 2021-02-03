@@ -1,5 +1,4 @@
 @media screen and (max-width: 767px) {
-
     body {
         font-size: 12px;
     }
@@ -13,7 +12,7 @@
         z-index: 5;
         width: 25px;
         height: 25px;
-        background-color: transparent;
+        background-color: transparent; /* TODO: did not find what it does */
         display: flex;
         justify-content: center;
         align-items: center;
@@ -28,19 +27,19 @@
     nav ul li {
         border: 1px solid #515151;
         background-color: #000;
-        margin: -1px auto 0;
+        margin: -1px auto 0; /* TODO: can be simplified I guess */
         width: 175px;
         height: 30px;
         text-align: center;
-        position: relative;
+        position: relative; /* TODO: did not find what it does */
     }
 
     nav ul li:hover {
         border-color: var(--main-color);
-        z-index: auto;
+        z-index: auto; /* TODO: did not find what it does */
     }
 
-    nav ul li:hover + li {
+    nav ul li:hover + li { /* in the goto dropdown you implemented it different way. Good job to find different ways of implemetations the same. After reading just remove this commet */
         border-top-color: var(--main-color);
     }
 
@@ -53,7 +52,7 @@
 
     nav ul li a:hover {
         text-decoration: none;
-        z-index: auto;
+        z-index: auto; /* TODO: did not find what it does */
     }
 
     nav ul {
@@ -64,8 +63,8 @@
     }
 
     nav li {
-        display: list-item;
-        margin: 0;
+        display: list-item; /* TODO: did not find what it does */
+        margin: 0; /* TODO: did not find what it does */
     }
 
     nav li:hover ul {
@@ -79,18 +78,18 @@
     }
 
     nav .film-nav li {
-        margin: -1px 0 0;
+        margin: -1px 0 0; /* TODO: did not find what it does */
     }
 
     nav span,
     nav span::before,
     nav span::after {
         position: absolute;
-        display: block;
+        display: block; /* TODO: did not find what it does */
         width: 18px;
         height: 2px;
         background-color: var(--main-color);
-        border-radius: 5px;
+        border-radius: 5px; /* TODO: did not find what it does */
         transition: 0.3s;
     }
 
@@ -110,7 +109,7 @@
 
     nav:hover span::before {
         top: 0;
-        transform: rotate(0);
+        transform: rotate(0); /* TODO: did not find what it does */
     }
 
     nav:hover span::after {
@@ -123,7 +122,7 @@
     }
 
     .main-section {
-        background-position: left 0% top 0%;
+        background-position: left 0% top 0%; /* TODO: did not find what it does */
         background-size: contain;
         padding: 85px 0 0;
     }
@@ -162,7 +161,7 @@
     }
 
     .film-title-content span {
-        transform: translateX(-185px);
+        transform: translateX(-185px); /* TODO: why not just left? */
         font-size: 100px;
         top: -67px;
         left: 55%;
@@ -193,7 +192,7 @@
         width: 40px;
     }
 
-    .slider .arrow-right svg {
+    .slider .arrow-right svg { /* TODO: this rule is so alike a previous one */
         width: 40px;
     }
 
@@ -218,14 +217,14 @@
     }
 
     .btn-play::before {
-        left: 50%;
-        transform: translateX(-5px);
+        left: 50%; /* TODO: did not find what it does */
+        transform: translateX(-5px); /* TODO: did not find what it does */
         border-width: 7px 14px;
         border-right-width: 0;
     }
 
     .btn-play:hover::before {
-        border-left-width: 14px;
+        border-left-width: 14px; /* TODO: in your main css on button hover you can set only border color, not full property. Then you can remove all these rules in smaller screens, because there will no need to reasign width */
     }
 
     footer .container {

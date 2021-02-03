@@ -3,37 +3,15 @@
         font-size: 14px;
     }
 
-    /* TODO: this is style duplication I mentioned last time. Good example why sctrict media windows are not good */
-    /* TODO: button position is static; if you wanted to align centraly the button, you should have used text-align on the parent */
-    /*It is better to delete rules for button
-    as it has better view in original file*/
-
-    /* TODO: this is style duplication I mentioned last time. Good example why sctrict media windows are not good */
-    /*correctd*/
-
     .direction-description {
         padding-top: 125px;
     }
-
-    /* TODO: this is style duplication I mentioned last time. Good example why sctrict media windows are not good */
-    /* TODO: btw, do we need to use generic property? */
-    /*corrected :)*/
-
-
-    /* TODO: this is style duplication I mentioned last time. Good example why sctrict media windows are not good */
-    /*corrected :)*/
-
-    /* TODO: this is style duplication I mentioned last time. Good example why sctrict media windows are not good */
-    /*corrected :)*/
 
     .film-content {
         margin: 0 auto;
     }
 
     .film-image img {
-        /* TODO: this is style duplication I mentioned last time. Good example why sctrict media windows are not good */
-        /* TODO: this is style duplication I mentioned last time. Good example why sctrict media windows are not good */
-        /*corrected :)*/
         margin: 0 auto 150px;
     }
 
@@ -42,36 +20,18 @@
         top: -63px;
     }
 
-    .film-title-content h2 { /* TODO: tryin to achieve full accordance you use <br> in some h2. Seems like they are superfluous for tablets ans phones. How do you remove them? */
-        /*It is specifity.
-        All inbuild styles in HTML have 1000 specifity.
-        Every ID selection has 0100 specifity.
-        Every class and attribute selection has 0010 specifity.
-        Every element and pseudo element has 0001 specifity.
-
-        So, this rule has 0011 specifity.
-        While rule h2{} has only 0001 specifity
-
-        for example:
-                                                Thousend    Hundred    Dozens   Units   Result
-        h1                                          0           0         0       1      0001
-        h1 + p::first-letter                        0           0         0       3      0003
-        li > a[href*="en-US"] > .inline-warning     0           0         2       2      0022
-        #identifier                                 0           1         0       0      0100
-        <style>p {color:red}</style>                1           0         0       0      1000
-        */
+    .film-title-content h2 {
         text-align: center;
         font-size: 35px;
     }
 
     .film-description-content p {
-        margin-bottom: 25px;/* TODO: does it make sense to use generic property? */
-        /* TODO: I can't get what these 2px change dramatically? :D */
-        /*corrected :)*/
+        margin-bottom: 25px;
     }
 
     .stright-direction-description .description-content { /* TODO: oh no, there is a typo in class name */
         /*can't find a typo. The rule works fine*/
+        /* TODO: yes, it works, but the word stright has a typo */
         flex-direction: column;
     }
 
@@ -83,24 +43,15 @@
         margin: 0 auto;
     }
 
-    /* TODO: this is style duplication I mentioned last time. Good example why sctrict media windows are not good */
-    /*corrected*/
-
     .slides-wrapper .arrow-left {
-        /* TODO: this is style duplication I mentioned last time. Good example why sctrict media windows are not good */
-        /*corrected*/
         transform: translate(-362px, -50%);
     }
 
     .slides-wrapper .arrow-right {
-        /* TODO: this is style duplication I mentioned last time. Good example why sctrict media windows are not good */
-        /*corrected*/
         transform: translate(357px, -50%);
     }
 
     .slides-wrapper ul {
-        /* TODO: this is style duplication I mentioned last time. Good example why sctrict media windows are not good */
-        /*corrected*/
         transform: translateX(-988px);
         width: 1980px;
     }
@@ -118,16 +69,12 @@
         padding: 0;
         width: 70px;
         height: 70px;
-        transform: translate(50%, -50%);
+        transform: translate(50%, -50%); /* you already have this style in bigger displays */
     }
 
     .btn-play:before {
         left: 50%;
         transform:translateX(-35%);
-        /* TODO: since changed only border width, better to use specific property. Do you know, that even border-left is generic? */
-        /* TODO: since changed only border width, better to use specific property. Do you know, that even border-top is generic? */
-        /* TODO: since changed only border width, better to use specific property. Do you know, that even border-bottom is generic? */
-        /*corrected*/
         border-width: 10px 20px;
         border-right-width: 0;
         border-color: transparent #000;
@@ -135,23 +82,6 @@
     }
 
     .btn-play:hover:before {
-        /* TODO: since changed only border width, better to use specific property. Do you know, that even border-left is generic? */
-        /*corrected*/
         border-left-width: 20px;
     }
-
-    /* TODO: this is style duplication I mentioned last time. Good example why sctrict media windows are not good */
-    /*corrected*/
-
-    /* TODO: this is style duplication I mentioned last time. Good example why sctrict media windows are not good */
-    /*deleted*/
-
-    /* TODO: this is style duplication I mentioned last time. Good example why sctrict media windows are not good */
-    /*deleted*/
-
-    /* TODO: this is style duplication I mentioned last time. Good example why sctrict media windows are not good */
-    /*deleted*/
-
-    /* TODO: cannot remember myself ever using this property. I think you cannot do the same either */
-    /*deleted*/
 }

@@ -1,10 +1,9 @@
 @media screen and (max-width: 425px) {
-
-    body {
+    body { /* style duplication */
         font-size: 12px;
     }
 
-    header .container {
+    header .container { /* style duplication */
         align-items: baseline;
     }
 
@@ -21,7 +20,7 @@
     .main-section p {
         width: 100%;
         line-height: 20px;
-        text-align: justify;
+        text-align: justify; /* TODO: another justify :D */
     }
 
     .main-section svg {
@@ -42,7 +41,7 @@
     }
 
     .film-title-content span {
-        transform: translateX(-95%);
+        transform: translateX(-95%); /* TODO: why not just left */
         font-size: 85px;
         top: -53px;
         left: 50%;
@@ -68,7 +67,7 @@
         width: 28px;
     }
 
-    .slider .arrow-right svg {
+    .slider .arrow-right svg { /* TODO: another rule so similar */
         width: 28px;
     }
 
@@ -92,13 +91,13 @@
     }
 
     .btn-play::before {
-        transform: translateX(-35%);
+        transform: translateX(-35%); /* TODO: don't know what for */
         border-width: 5px 10px;
         border-right-width: 0;
     }
 
     .btn-play:hover::before {
-        border-left-width: 10px;
+        border-left-width: 10px; /* TODO: already mentioned in medium css */
     }
 
     footer .policy li {
@@ -109,8 +108,8 @@
         font-size: 14px;
     }
 
-    .email-space input[type=submit] {
-        padding: 15px 57px;
+    .email-space input[type=submit] { /* TODO: it's beeter to wrap attribute values in doulbe quote: type="submit". Fix in all files */
+        padding: 15px 57px; /* TODO: don't know what for */
     }
 
     .sign-up {
@@ -121,7 +120,7 @@
         width: 100%;
     }
 
-    footer .social-media li{
+    footer .social-media li {
         margin: 0 15px;
     }
 
