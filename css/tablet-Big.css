@@ -29,9 +29,10 @@
         margin-bottom: 25px;
     }
 
-    .stright-direction-description .description-content { /* TODO: oh no, there is a typo in class name */
+    .straight-direction-description .description-content { /* TODO: oh no, there is a typo in class name */
         /*can't find a typo. The rule works fine*/
         /* TODO: yes, it works, but the word stright has a typo */
+        /*:) corrected*/
         flex-direction: column;
     }
 
@@ -69,7 +70,8 @@
         padding: 0;
         width: 70px;
         height: 70px;
-        transform: translate(50%, -50%); /* you already have this style in bigger displays */
+        /* you already have this style in bigger displays */
+        /*deleted :)*/
     }
 
     .btn-play:before {

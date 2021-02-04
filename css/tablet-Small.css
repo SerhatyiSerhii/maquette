@@ -1,11 +1,12 @@
 @media screen and (max-width: 425px) {
-    body { /* style duplication */
-        font-size: 12px;
-    }
+    /* style duplication */
+    /*deleted. The rules were copied from tablet-Medium
+    file while creating this file.*/
 
-    header .container { /* style duplication */
-        align-items: baseline;
-    }
+    /* style duplication */
+    /*deleted*/
+
+
 
     .container {
         max-width: 425px;
@@ -20,7 +21,8 @@
     .main-section p {
         width: 100%;
         line-height: 20px;
-        text-align: justify; /* TODO: another justify :D */
+        /* TODO: another justify :D */
+        /*deleted :)*/
     }
 
     .main-section svg {
@@ -41,10 +43,11 @@
     }
 
     .film-title-content span {
-        transform: translateX(-95%); /* TODO: why not just left */
+        /* TODO: why not just left */
+        /*deleted. The rule was set in tablet-Medium
+        file*/
         font-size: 85px;
         top: -53px;
-        left: 50%;
     }
 
     .central-direction-description {
@@ -63,13 +66,13 @@
         transform: translate(146px, -50%);
     }
 
-    .slider .arrow-left svg {
+    .slider .arrow-left svg, .slider .arrow-right svg {
         width: 28px;
     }
 
-    .slider .arrow-right svg { /* TODO: another rule so similar */
-        width: 28px;
-    }
+    /* TODO: another rule so similar */
+    /*corrected*/
+
 
     .slides-wrapper ul {
         transform: translateX(-404px);
@@ -91,13 +94,17 @@
     }
 
     .btn-play::before {
-        transform: translateX(-35%); /* TODO: don't know what for */
+        /* TODO: don't know what for */
+        /*deleted. The relu was set in tablet-Big file*/
         border-width: 5px 10px;
         border-right-width: 0;
     }
 
     .btn-play:hover::before {
         border-left-width: 10px; /* TODO: already mentioned in medium css */
+        /*corrected rule in the main file.
+        But the width should be reasigned as the rule
+        above changes the main width for btn-play::before*/
     }
 
     footer .policy li {
@@ -108,9 +115,11 @@
         font-size: 14px;
     }
 
-    .email-space input[type=submit] { /* TODO: it's beeter to wrap attribute values in doulbe quote: type="submit". Fix in all files */
-        padding: 15px 57px; /* TODO: don't know what for */
-    }
+        /* TODO: it's beeter to wrap attribute values in doulbe quote: type="submit". Fix in all files */
+        /*corrected*/
+        /* TODO: don't know what for */
+        /*deleted. The rule was set in main file.
+        The big difference in rules cxan't be seen.*/
 
     .sign-up {
         padding-bottom: 45px;

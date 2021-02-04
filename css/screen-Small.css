@@ -3,7 +3,7 @@
         font-size: 12px;
     }
 
-    button, input[type=submit] {
+    button, input[type="submit"] {
         font-size: 15px;
     }
 
@@ -52,8 +52,9 @@
     .film-description-content p {
         line-height: 1.5;
         width: 100%;
-        margin: 0;
-        margin-bottom: 55px; /* TODO: if you need to remove only margin-right why do you reset all margins and set bottom then? */
+        margin-left: 0;
+        /* TODO: if you need to remove only margin-right why do you reset all margins and set bottom then? */
+        /*corrected. set only margin-left :)*/
     }
 
     .reverse-direction-description .film-content {
@@ -65,19 +66,31 @@
     }
 
     .slides-wrapper .arrow-left {
-        /* Attachment of arrow-left to specific place on screen */ /* TODO: insafficient comment - it does not explain why you didn't use only left property */
+        /* Attachment of arrow-left to the center of the screen
+        from left side of arrow which makes it independent of
+        the screen's size and transformed to place between
+        films' images.*/
+        /* TODO: insafficient comment - it does not explain why you didn't use only left property */
         left: 50%;
         transform: translate(-435px, -50%);
     }
 
     .slides-wrapper .arrow-right {
-        /*Attachment of arrow-right to specific place on screen*/ /* TODO: insafficient comment - it does not explain why you didn't use only left property */
+        /* Attachment of arrow-right to the center of the screen
+        from right side of arrow which makes it independent of
+        the screen's size and transformed to place between
+        films' images.*/
+        /* TODO: insafficient comment - it does not explain why you didn't use only left property */
         right: 50%;
         transform: translate(455px, -50%);
     }
 
     .slides-wrapper ul {
-        /*Attachment of pictures to specific place on screen*/ /* TODO: insafficient comment - it does not explain why you didn't use only left property */
+        /* Attachment of tag to the center of the screen
+        from its left side which makes it independent of
+        the screen's size and transformed to place so the second image
+        exactly between arrows.*/
+        /* TODO: insafficient comment - it does not explain why you didn't use only left property */
         left: 50%;
         transform: translateX(-1220px);
         width: 2470px;
