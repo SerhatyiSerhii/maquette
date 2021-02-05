@@ -12,10 +12,6 @@
         z-index: 5;
         width: 25px;
         height: 25px;
-        /* TODO: did not find what it does */
-        /*While making the burger I put white background
-        and then made it transparent, but it makes no
-        impact on burger now. So, deleted :)*/
         display: flex;
         justify-content: center;
         align-items: center;
@@ -30,23 +26,14 @@
     nav ul li {
         border: 1px solid #515151;
         background-color: #000;
-        margin: -1px auto; /* TODO: can be simplified I guess */
-        /*corrected*/
+        margin: -1px auto 0;
         width: 175px;
         height: 30px;
         text-align: center;
-        /* TODO: did not find what it does */
-        /*deleted. It was decleared in the main file.
-        It makes impact on the position of Top dropdown
-        in the GoTo menu*/
     }
 
     nav ul li:hover {
         border-color: var(--main-color);
-        /* TODO: did not find what it does */
-        /*Was trying to  figure out how to change
-        color of all borders on hover. It doesn't make
-        any impact now. So, deleted :)*/
     }
 
     nav ul li:hover + li {
@@ -62,10 +49,6 @@
 
     nav ul li a:hover {
         text-decoration: none;
-        /* TODO: did not find what it does */
-        /*Looks like mistakenly put it here while
-        figuring out how to change borders color on
-        hover. Deleted :)*/
     }
 
     nav ul {
@@ -74,18 +57,6 @@
         position: absolute;
         display: none;
     }
-
-
-        /* TODO: did not find what it does */
-        /*it was made to make original nav list to
-        display as list. At the moment ul has absolute
-        position, li has specific width 175px
-        and nav has specific width 25px. These parameters
-        give the needed result as display:list-item.
-        So now it can be deleted.*/
-        /* TODO: did not find what it does */
-        /*deleted. it doesn't make amy impact as the
-        rule <nav ul li> above covers this rule. */
 
     nav li:hover ul {
         z-index: -1;
@@ -97,28 +68,14 @@
         width: 70px;
     }
 
-        /* TODO: did not find what it does */
-        /*The main file has this rule.
-        It is to adjust the position of li in
-        dropdown GoTo menu. Now it can be removed :)*/
-
     nav span,
     nav span::before,
     nav span::after {
         position: absolute;
-        /* TODO: did not find what it does */
-        /*With the position:absolute it doesn't have
-        any sense now. Without absolute position
-        it shows before and after elements.*/
         width: 18px;
         height: 2px;
         background-color: var(--main-color);
-        border-radius: 5px; /* TODO: did not find what it does */
-        /*it makes the lines with rounded ends.
-        It has barely seen effect on 100% scale,
-        but on 500% scale it can be seen. But
-        it can be removed as nobody is going to use
-        500% scale :)*/
+        border-radius: 5px;
         transition: 0.3s;
     }
 
@@ -138,8 +95,6 @@
 
     nav:hover span::before {
         top: 0;
-        /* TODO: did not find what it does */
-        /*deleted. It doesn't have any impact*/
     }
 
     nav:hover span::after {
@@ -152,8 +107,6 @@
     }
 
     .main-section {
-        /* TODO: did not find what it does */
-        /*deleted. It doesn't have any impact*/
         background-size: contain;
         padding: 85px 0 0;
     }
@@ -192,8 +145,6 @@
     }
 
     .film-title-content span {
-        /* TODO: why not just left? */
-        /*deleted*/
         font-size: 100px;
         top: -67px;
         left: 2px;
@@ -224,9 +175,6 @@
         width: 40px;
     }
 
-    /* TODO: this rule is so alike a previous one */
-    /*corrected*/
-
     .slides-wrapper ul {
         transform: translateX(-520px);
         width: 1060px;
@@ -248,12 +196,6 @@
     }
 
     .btn-play::before {
-        /* TODO: did not find what it does */
-        /*deleted. The same rule is in tablet-Big file*/
-        /* TODO: did not find what it does */
-        /*deleted. The similar rule is in
-        tablet-Big file. The big difference can't be
-        seen.*/
         border-width: 7px 14px;
         border-right-width: 0;
     }
@@ -263,6 +205,7 @@
         /*corrected rule in the main file.
         But the width should be reasigned as the rule
         above changes the main width for btn-play::before*/
+        /* TODO: have you tried to remove this rule from bigger screens? */
     }
 
     footer .container {
