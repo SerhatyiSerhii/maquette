@@ -200,13 +200,6 @@
         border-right-width: 0;
     }
 
-        /* TODO: in your main css on button hover you can set only border color, not full property. Then you can remove all these rules in smaller screens, because there will no need to reasign width */
-        /*corrected rule in the main file.
-        But the width should be reasigned as the rule
-        above changes the main width for btn-play::before*/
-        /* TODO: have you tried to remove this rule from bigger screens? */
-        /*corrected*/
-
     footer .container {
         flex-direction: column-reverse;
         text-align: center;

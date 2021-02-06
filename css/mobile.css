@@ -81,13 +81,6 @@
         border-right-width: 0;
     }
 
-        /*border-left-width: 10px;*/ /* TODO: already mentioned in medium css */
-        /*corrected rule in the main file.
-        But the width should be reasigned as the rule
-        above changes the main width for btn-play::before*/
-        /* TODO: have you tried to remove this rule from bigger screens? */
-        /*corrected*/
-
     footer .policy li {
         line-height: 40px;
     }
