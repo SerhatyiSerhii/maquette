@@ -69,16 +69,13 @@
         height: 70px;
     }
 
-    .btn-play:before { /* TODO: pseudo-elements better to use with double colon :: */
+    .btn-play::before { /* TODO: pseudo-elements better to use with double colon :: */
+        /*corrected*/
         left: 50%;
         transform:translateX(-35%);
         border-width: 10px 20px;
         border-right-width: 0;
         border-color: transparent #000;
         border-style: solid;
-    }
-
-    .btn-play:hover:before {
-        border-left-width: 20px;
     }
 }
