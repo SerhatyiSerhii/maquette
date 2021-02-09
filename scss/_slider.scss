@@ -1,0 +1,265 @@
+@import 'colors';
+
+@mixin width-1210 {
+    @media (max-width: 1210px) {
+        @content;
+    }
+}
+
+@mixin width-959 {
+    @media (max-width: 959px) {
+        @content;
+    }
+}
+
+@mixin width-767 {
+    @media (max-width: 767px) {
+        @content;
+    }
+}
+
+@mixin width-425 {
+    @media (max-width: 425px) {
+        @content;
+    }
+}
+
+.slider {
+    background-color: #fff;
+    overflow: hidden;
+    padding: 150px 0 145px;
+
+    .container {
+        position: relative;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    .arrow {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 2;
+    }
+
+    .arrow-left {
+        left: 6%;
+
+        @include width-1210 {
+            /* Attachment of arrow-left to the center of the screen
+            from left side of arrow which makes it independent of
+            the screen's size and transformed to place between
+            films' images.*/
+            left: 50%;
+            transform: translate(-435px, -50%);
+        }
+
+        @include width-959 {
+            transform: translate(-362px, -50%);
+        }
+
+        @include width-767 {
+            transform: translate(-190px, -50%);
+        }
+
+        @include width-425 {
+            transform: translate(-149px, -50%);
+        }
+    }
+
+    .arrow-right {
+        right: 6%;
+
+        @include width-1210 {
+            /* Attachment of arrow-right to the center of the screen
+            from right side of arrow which makes it independent of
+            the screen's size and transformed to place between
+            films' images.*/
+            right: 50%;
+            transform: translate(455px, -50%);
+        }
+
+        @include width-959 {
+            transform: translate(357px, -50%);
+        }
+
+        @include width-767 {
+            transform: translate(205px, -50%);
+        }
+
+        @include width-425 {
+            transform: translate(146px, -50%);
+        }
+    }
+
+    @include width-767 {
+        svg {
+            width: 40px;
+        }
+    }
+
+    @include width-425 {
+        padding: 75px 0;
+    }
+
+    @include width-425 {
+        svg {
+            width: 28px;
+        }
+    }
+}
+
+.slides-wrapper {
+    ul {
+        position: relative;
+        left: -951px;
+        width: 3100px;
+
+        li {
+            display: inline-block;
+            padding: 0 75px;
+
+            div {
+                position: relative;
+                width: 880px;
+                height: 540px;
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                }
+
+                @include width-1210 {
+                    width: 700px;
+                    height: 425px;
+                }
+
+                @include width-959 {
+                    width: 585px;
+                    height: 335px;
+                }
+
+                @include width-767 {
+                    width: 300px;
+                    height: 170px;
+                }
+
+                @include width-425 {
+                    width: 235px;
+                    height: 140px;
+                }
+            }
+
+            @include width-1210 {
+                padding: 0 60px;
+            }
+
+            @include width-959 {
+                padding: 0 35px;
+            }
+
+            @include width-767 {
+                padding: 0 25px;
+            }
+
+            @include width-425 {
+                padding: 0 16px;
+            }
+        }
+
+        @include width-1210 {
+            /* Attachment of tag to the center of the screen
+            from its left side which makes it independent of
+            the screen's size and transformed to place so the second image
+            exactly between arrows.*/
+            left: 50%;
+            transform: translateX(-1220px);
+            width: 2470px;
+        }
+
+        @include width-959 {
+            transform: translateX(-988px);
+            width: 1980px;
+        }
+
+        @include width-767 {
+            transform: translateX(-520px);
+            width: 1060px;
+        }
+
+        @include width-425 {
+            transform: translateX(-404px);
+            width: 810px;
+        }
+    }
+}
+
+.btn-play {
+    width: 85px;
+    height: 85px;
+    border-radius: 50%;
+    background-color: $main-color;
+    position: absolute;
+    top: 50%;
+    right: 50%;
+    transform: translate(50%, -50%);
+
+    &:hover {
+        &::before {
+            border-left-color: #fff;
+            transition: 0.3s;
+        }
+    }
+
+    &::before {
+        display: block;
+        content: '';
+        width: 0;
+        height: 0;
+        border-left: 29px solid #000;
+        border-top: 13px solid transparent;
+        border-bottom: 13px solid transparent;
+        position: relative;
+        top: 0;
+        left: -10px;
+        transition: 0.3s;
+
+        @include width-959 {
+            left: 50%;
+            transform:translateX(-35%);
+            border-width: 10px 20px;
+            border-right-width: 0;
+            border-color: transparent #000;
+            border-style: solid;
+        }
+
+        @include width-767 {
+            border-width: 7px 14px;
+            border-right-width: 0;
+        }
+
+        @include width-425 {
+            border-width: 5px 10px;
+            border-right-width: 0;
+        }
+    }
+
+    @include width-959 {
+        padding: 0;
+        width: 70px;
+        height: 70px;
+    }
+
+    @include width-767 {
+        transform: translate(-50%, -50%);
+        width: 55px;
+        height: 55px;
+    }
+
+    @include width-425 {
+        width: 40px;
+        height: 40px;
+    }
+}

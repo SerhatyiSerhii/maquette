@@ -1,0 +1,236 @@
+@import 'colors';
+
+@mixin width-1210 {
+    @media (max-width: 1210px) {
+        @content;
+    }
+}
+
+@mixin width-959 {
+    @media (max-width: 959px) {
+        @content;
+    }
+}
+
+@mixin width-767 {
+    @media (max-width: 767px) {
+        @content;
+    }
+}
+
+@mixin width-425 {
+    @media (max-width: 425px) {
+        @content;
+    }
+}
+
+h2 {
+    text-transform: uppercase;
+    font-size: 40px;
+
+    @include width-1210 {
+        font-size: 25px;
+    }
+}
+
+.direction-description {
+    padding-top: 237px;
+
+    @include width-1210 {
+        padding-top: 200px;
+    }
+
+    @include width-959 {
+        padding-top: 125px;
+    }
+}
+
+.description-content {
+    display: flex;
+    justify-content: space-between;
+
+    @include width-1210 {
+        padding: 0 15px;
+    }
+
+    @include width-959 {
+        flex-direction: column;
+    }
+}
+
+.film-image img {
+    width: 480px;
+    height: 545px;
+    display: block;
+
+    @include width-1210 {
+        width: 345px;
+        height: 390px;
+    }
+
+    @include width-959 {
+        margin: 0 auto 150px;
+    }
+
+    @include width-767 {
+        width: 340px;
+        height: 386px;
+    }
+
+    @include width-425 {
+        width: 233px;
+        height: 264px;
+    }
+}
+
+.film-content {
+    width: 480px;
+    margin-left: 111px;
+
+    @include width-1210 {
+        width: 345px;
+        margin: 0;
+    }
+
+    @include width-959 {
+        margin: 0 auto;
+    }
+
+    @include width-767 {
+        width: 340px;
+    }
+
+    @include width-425 {
+        width: 233px;
+    }
+}
+
+.film-title-content {
+    position: relative;
+
+    span {
+        font-weight: 500;
+        font-size: 135px;
+        color: $main-color;
+        opacity: 0.5;
+        position: absolute;
+        z-index: 1;
+        top: -90px;
+        left: -95px;
+
+        @include width-1210 {
+            left: -73px;
+            top: -71px;
+            font-size: 100px;
+        }
+
+        @include width-959 {
+            left: -5px;
+            top: -63px;
+        }
+
+        @include width-767 {
+            font-size: 100px;
+            top: -67px;
+            left: 2px;
+        }
+
+        @include width-425 {
+            font-size: 85px;
+            top: -53px;
+        }
+    }
+
+    h2 {
+        position: relative;
+        z-index: 2;
+        margin: 0 0 42px 0;
+
+        @include width-959 {
+            text-align: center;
+            font-size: 35px;
+        }
+
+        @include width-767 {
+            font-size: 30px;
+        }
+
+        @include width-425 {
+            font-size: 25px;
+        }
+    }
+}
+
+.film-description-content {
+    padding-left: 100px;
+
+    @include width-767 {
+        padding: 0;
+    }
+
+    p {
+        position: relative;
+        margin: 0 0 55px 2px;
+        width: 354px;
+        line-height: 24px;
+
+        &::before {
+            content: '';
+            display: block;
+            border: 1px solid;
+            border-color: $main-color;
+            box-sizing: border-box;
+            width: 60px;
+            position: absolute;
+            top: 5px;
+            left: -100px;
+
+            @include width-767 {
+                top: -20px;
+                left: 0;
+            }
+        }
+
+        @include width-1210 {
+            line-height: 1.5;
+            width: 100%;
+            margin-left: 0;
+        }
+
+        @include width-959 {
+            margin-bottom: 25px;
+        }
+    }
+}
+
+button, button:active, input[type="submit"], input[type="submit"]:active {
+    border-radius: 0;
+    text-transform: uppercase;
+    background-color: transparent;
+    border: 2px solid $main-color;
+    color: #fff;
+    padding: 18px 40px;
+    font-size: 16px;
+    transition: 0.3s;
+    outline: none;
+
+    @include width-1210 {
+        font-size: 15px;
+    }
+}
+
+button:hover, input[type="submit"]:hover {
+    cursor: pointer;
+    background-color: $main-color;
+    border-color: #fff;
+}
+
+button, button:active, .email-space input[type], .email-space input[type="submit"]:active {
+    @include width-767 {
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 14px;
+    }
+}
+

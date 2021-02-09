@@ -1,0 +1,29 @@
+@mixin width-1210 {
+    @media (max-width: 1210px) {
+        @content;
+    }
+}
+
+@mixin width-959 {
+    @media (max-width: 959px) {
+        @content;
+    }
+}
+
+.reverse-direction-description .film-content {
+    margin-left: 100px;
+
+    @include width-1210 {
+        margin-left: 80px;
+    }
+
+    @include width-959 {
+        margin: 0 auto;
+    }
+}
+
+.reverse-direction-description .description-content {
+    @include width-959 {
+        flex-direction: column-reverse;
+    }
+}

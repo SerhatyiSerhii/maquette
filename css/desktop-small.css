@@ -3,7 +3,7 @@
         font-size: 12px;
     }
 
-    button, input[type="submit"] {
+    button, button:active, input[type="submit"], input[type="submit"]:active {
         font-size: 15px;
     }
 

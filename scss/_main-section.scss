@@ -1,0 +1,98 @@
+@import 'colors';
+
+@mixin width-1210 {
+    @media (max-width: 1210px) {
+        @content;
+    }
+}
+
+@mixin width-767 {
+    @media (max-width: 767px) {
+        @content;
+    }
+}
+
+@mixin width-425 {
+    @media (max-width: 425px) {
+        @content;
+    }
+}
+
+.accent-text {
+    color: $main-color;
+}
+
+.main-section {
+    padding: 140px 0 70px;
+    background: url('images/headphones.png') no-repeat top right;
+    background-size: cover;
+
+    h1 {
+        margin-bottom: 55px;
+        font-size: 70px;
+        text-transform: uppercase;
+        width: 980px;
+        line-height: 80px;
+
+        @include width-1210 {
+            width: 100%;
+            font-size: 45px;
+            line-height: 55px;
+        }
+
+        @include width-767 {
+            font-size: 35px;
+            line-height: 45px;
+        }
+
+        @include width-425 {
+            font-size: 25px;
+            line-height: 35px;
+            margin-bottom: 40px;
+        }
+    }
+
+    p {
+        width: 480px;
+        line-height: 24px;
+        margin-bottom: 75px;
+
+        @include width-767 {
+            width: 365px;
+        }
+
+        @include width-425 {
+            width: 100%;
+            line-height: 20px;
+        }
+    }
+
+    @include width-1210 {
+        padding-top: 140px;
+    }
+
+    @include width-767 {
+        background-size: contain;
+        padding: 85px 0 0;
+    }
+
+    @include width-767 {
+        svg {
+            height: 45px;
+        }
+    }
+
+    @include width-425 {
+        svg {
+            height: 30px;
+        }
+    }
+}
+
+.arrow {
+    svg {
+        path {
+            stroke: $main-color;
+        }
+    }
+}

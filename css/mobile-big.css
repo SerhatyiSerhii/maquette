@@ -103,7 +103,7 @@
     }
 
     .container {
-        max-width: 640px;;
+        max-width: 640px;
     }
 
     .main-section {
@@ -124,7 +124,7 @@
         height: 45px;
     }
 
-    button, .email-space input[type] {
+    button, button:active, .email-space input[type], .email-space input[type="submit"]:active {
         position: relative;
         left: 50%;
         transform: translateX(-50%);

@@ -1,0 +1,179 @@
+@import 'colors';
+
+@mixin width-767 {
+    @media (max-width: 767px) {
+        @content;
+    }
+}
+
+@mixin width-425 {
+    @media (max-width: 425px) {
+        @content;
+    }
+}
+
+footer {
+    padding: 54px 0;
+
+    li {
+        display: inline-block;
+    }
+
+    .policy {
+        li {
+            line-height: 75px;
+            margin-right: 74px;
+            margin-left: 2px;
+
+            @include width-767 {
+                margin: 0 50px;
+                line-height: 55px;
+            }
+
+            @include width-425 {
+                line-height: 40px;
+            }
+        }
+
+        @include width-767 {
+            margin-top: 20px;
+        }
+
+        @include width-425 {
+            margin-top: 15px;
+        }
+    }
+
+    .circle {
+        transition: 0.3s;
+    }
+
+    .social-media {
+        .circle {
+            background-color: $main-color;
+            border-radius: 50%;
+            width: 53px;
+            height: 53px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: 0.3s;
+
+            svg {
+                height: 100%;
+            }
+
+            path {
+                transition: 0.3s;
+                fill: #fff;
+            }
+        }
+
+        .circle:hover {
+            background-color: #fff;
+
+            path {
+                fill: $main-color;
+            }
+        }
+
+        li {
+            margin-left: 29px;
+            margin-right: 12px;
+
+            @include width-425 {
+                margin: 0 15px;
+            }
+        }
+    }
+
+    .container {
+        display: flex;
+        justify-content: space-between;
+
+        @include width-767 {
+            flex-direction: column-reverse;
+            text-align: center;
+        }
+    }
+}
+
+.sign-up {
+    padding: 155px 0 85px;
+
+    .appeal {
+        width: 576px;
+        margin: 0 auto;
+
+        @include width-767 {
+            width: 340px;
+        }
+
+        @include width-425 {
+            width: 100%;
+        }
+    }
+
+    @include width-425 {
+        padding-bottom: 45px;
+    }
+}
+
+.email-space {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 69px;
+
+    input {
+        border: 2px solid $main-color;
+        background-color: transparent;
+        outline: none;
+        color: #fff;
+        border-radius: 0;
+
+        &:hover {
+            border-color: #fff;
+        }
+
+        &[type='text'] {
+            text-transform: uppercase;
+            font-size: 16px;
+            line-height: 19px;
+            padding: 17px 15px;
+            transition: 0.3s;
+            width: 380px;
+
+            @include width-767 {
+                width: 100%;
+                margin-bottom: 15px;
+            }
+        }
+
+        &[type='submit'] {
+            padding: 15px 55px;
+            line-height: 20px;
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+
+        @include width-425 {
+            &[type] {
+                font-size: 14px;
+            }
+        }
+    }
+
+    ::placeholder {
+        text-transform: uppercase;
+        font-size: 16px;
+        line-height: 19px;
+        color: #515151;
+        transition: 0.3s;
+    }
+
+    @include width-767 {
+        flex-direction: column;
+    }
+}

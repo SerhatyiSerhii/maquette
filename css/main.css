@@ -169,6 +169,18 @@ button, input[type="submit"] {
     outline: none;
 }
 
+button:active, input[type="submit"]:active {
+    border-radius: 0;
+    text-transform: uppercase;
+    background-color: transparent;
+    border: 2px solid var(--main-color);
+    color: #fff;
+    padding: 18px 40px;
+    font-size: 16px;
+    transition: 0.3s;
+    outline: none;
+}
+
 button:hover, input[type="submit"]:hover {
     cursor: pointer;
     background-color: var(--main-color);
@@ -409,7 +421,7 @@ footer .policy li {
     margin-left: 2px;
 }
 
-footer circle {
+footer .circle {
     transition: 0.3s;
 }
 
