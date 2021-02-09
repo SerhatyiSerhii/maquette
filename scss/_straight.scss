@@ -203,7 +203,7 @@ h2 {
     }
 }
 
-button, button:active, input[type="submit"], input[type="submit"]:active {
+button, button:active, input[type="submit"], input[type="submit"]:active { // TODO: these buttons are not straight specific, they are common
     border-radius: 0;
     text-transform: uppercase;
     background-color: transparent;
@@ -219,7 +219,7 @@ button, button:active, input[type="submit"], input[type="submit"]:active {
     }
 }
 
-button:hover, input[type="submit"]:hover {
+button:hover, input[type="submit"]:hover { // TODO: why didn't you try something like this: button, input[type="submit"] { &:hover { styles for button on hover } } ? rewrite all similiar selectors
     cursor: pointer;
     background-color: $main-color;
     border-color: #fff;

@@ -67,3 +67,11 @@
         background-size: 45% auto, 45% auto;
     }
 }
+
+// TODO: wouldn't it be easier just to write something like this?
+// @media screen and (max-width: 767px) {
+//     styles for central direction
+// }
+
+// and even if you decided to use mixins, why do you define absolutely the same mixins in all files?
+// nevertheless it is completely unreadable. rewrite accordingly to example above
