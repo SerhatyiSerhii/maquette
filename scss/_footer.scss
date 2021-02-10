@@ -1,17 +1,5 @@
 @import 'colors';
 
-@mixin width-767 {
-    @media (max-width: 767px) {
-        @content;
-    }
-}
-
-@mixin width-425 {
-    @media (max-width: 425px) {
-        @content;
-    }
-}
-
 footer {
     padding: 54px 0;
 
@@ -24,23 +12,6 @@ footer {
             line-height: 75px;
             margin-right: 74px;
             margin-left: 2px;
-
-            @include width-767 {
-                margin: 0 50px;
-                line-height: 55px;
-            }
-
-            @include width-425 {
-                line-height: 40px;
-            }
-        }
-
-        @include width-767 {
-            margin-top: 20px;
-        }
-
-        @include width-425 {
-            margin-top: 15px;
         }
     }
 
@@ -80,21 +51,12 @@ footer {
         li {
             margin-left: 29px;
             margin-right: 12px;
-
-            @include width-425 {
-                margin: 0 15px;
-            }
         }
     }
 
     .container {
         display: flex;
         justify-content: space-between;
-
-        @include width-767 {
-            flex-direction: column-reverse;
-            text-align: center;
-        }
     }
 }
 
@@ -104,18 +66,6 @@ footer {
     .appeal {
         width: 576px;
         margin: 0 auto;
-
-        @include width-767 {
-            width: 340px;
-        }
-
-        @include width-425 {
-            width: 100%;
-        }
-    }
-
-    @include width-425 {
-        padding-bottom: 45px;
     }
 }
 
@@ -142,11 +92,6 @@ footer {
             padding: 17px 15px;
             transition: 0.3s;
             width: 380px;
-
-            @include width-767 {
-                width: 100%;
-                margin-bottom: 15px;
-            }
         }
 
         &[type='submit'] {
@@ -155,12 +100,6 @@ footer {
 
             &:hover {
                 cursor: pointer;
-            }
-        }
-
-        @include width-425 {
-            &[type] {
-                font-size: 14px;
             }
         }
     }
@@ -172,8 +111,73 @@ footer {
         color: #515151;
         transition: 0.3s;
     }
+}
 
-    @include width-767 {
+@media screen and (max-width: 767px) {
+    footer {
+        .policy {
+            margin-top: 20px;
+
+            li {
+                margin: 0 50px;
+                line-height: 55px;
+            }
+        }
+
+        .container {
+            flex-direction: column-reverse;
+            text-align: center;
+        }
+    }
+
+    .sign-up {
+        .appeal {
+            width: 340px;
+        }
+    }
+
+    .email-space {
         flex-direction: column;
+
+        input {
+            &[type='text'] {
+                width: 100%;
+                margin-bottom: 15px;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 425px) {
+    footer {
+        .policy {
+            margin-top: 15px;
+
+            li {
+                line-height: 40px;
+            }
+        }
+
+        .social-media {
+            li {
+                margin: 0 15px;
+            }
+        }
+    }
+
+    .sign-up {
+        padding-bottom: 45px;
+
+        .appeal {
+            width: 100%;
+        }
+    }
+
+    .email-space {
+        input {
+            &[type] {
+                font-size: 14px;
+            }
+        }
     }
 }

@@ -1,108 +1,30 @@
 @import 'colors';
 
-@mixin width-1210 {
-    @media (max-width: 1210px) {
-        @content;
-    }
-}
-
-@mixin width-959 {
-    @media (max-width: 959px) {
-        @content;
-    }
-}
-
-@mixin width-767 {
-    @media (max-width: 767px) {
-        @content;
-    }
-}
-
-@mixin width-425 {
-    @media (max-width: 425px) {
-        @content;
-    }
-}
-
 h2 {
     text-transform: uppercase;
     font-size: 40px;
-
-    @include width-1210 {
-        font-size: 25px;
-    }
 }
 
 .direction-description {
     padding-top: 237px;
-
-    @include width-1210 {
-        padding-top: 200px;
-    }
-
-    @include width-959 {
-        padding-top: 125px;
-    }
 }
 
 .description-content {
     display: flex;
     justify-content: space-between;
-
-    @include width-1210 {
-        padding: 0 15px;
-    }
-
-    @include width-959 {
-        flex-direction: column;
-    }
 }
 
-.film-image img {
-    width: 480px;
-    height: 545px;
-    display: block;
-
-    @include width-1210 {
-        width: 345px;
-        height: 390px;
-    }
-
-    @include width-959 {
-        margin: 0 auto 150px;
-    }
-
-    @include width-767 {
-        width: 340px;
-        height: 386px;
-    }
-
-    @include width-425 {
-        width: 233px;
-        height: 264px;
+.film-image {
+    img {
+        width: 480px;
+        height: 545px;
+        display: block;
     }
 }
 
 .film-content {
     width: 480px;
     margin-left: 111px;
-
-    @include width-1210 {
-        width: 345px;
-        margin: 0;
-    }
-
-    @include width-959 {
-        margin: 0 auto;
-    }
-
-    @include width-767 {
-        width: 340px;
-    }
-
-    @include width-425 {
-        width: 233px;
-    }
 }
 
 .film-title-content {
@@ -117,56 +39,17 @@ h2 {
         z-index: 1;
         top: -90px;
         left: -95px;
-
-        @include width-1210 {
-            left: -73px;
-            top: -71px;
-            font-size: 100px;
-        }
-
-        @include width-959 {
-            left: -5px;
-            top: -63px;
-        }
-
-        @include width-767 {
-            font-size: 100px;
-            top: -67px;
-            left: 2px;
-        }
-
-        @include width-425 {
-            font-size: 85px;
-            top: -53px;
-        }
     }
 
     h2 {
         position: relative;
         z-index: 2;
         margin: 0 0 42px 0;
-
-        @include width-959 {
-            text-align: center;
-            font-size: 35px;
-        }
-
-        @include width-767 {
-            font-size: 30px;
-        }
-
-        @include width-425 {
-            font-size: 25px;
-        }
     }
 }
 
 .film-description-content {
     padding-left: 100px;
-
-    @include width-767 {
-        padding: 0;
-    }
 
     p {
         position: relative;
@@ -184,53 +67,146 @@ h2 {
             position: absolute;
             top: 5px;
             left: -100px;
-
-            @include width-767 {
-                top: -20px;
-                left: 0;
-            }
         }
+    }
+}
 
-        @include width-1210 {
+@media screen and (max-width: 1210px) {
+    h2 {
+        font-size: 25px;
+    }
+
+    .direction-description {
+        padding-top: 200px;
+    }
+
+    .description-content {
+        padding: 0 15px;
+    }
+
+    .film-image {
+        img {
+            width: 345px;
+            height: 390px;
+        }
+    }
+
+    .film-content {
+        width: 345px;
+        margin: 0;
+    }
+
+    .film-title-content {
+        span {
+            left: -73px;
+            top: -71px;
+            font-size: 100px;
+        }
+    }
+
+    .film-description-content {
+        p {
             line-height: 1.5;
             width: 100%;
             margin-left: 0;
         }
+    }
+}
 
-        @include width-959 {
+@media screen and (max-width: 959px) {
+    .direction-description {
+        padding-top: 125px;
+    }
+
+    .description-content {
+        flex-direction: column;
+    }
+
+    .film-image {
+        img {
+            margin: 0 auto 150px;
+        }
+    }
+
+    .film-content {
+        margin: 0 auto;
+    }
+
+    .film-title-content {
+        span {
+            left: -5px;
+            top: -63px;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 35px;
+        }
+    }
+
+    .film-description-content {
+        p {
             margin-bottom: 25px;
         }
     }
 }
 
-button, button:active, input[type="submit"], input[type="submit"]:active { // TODO: these buttons are not straight specific, they are common
-    border-radius: 0;
-    text-transform: uppercase;
-    background-color: transparent;
-    border: 2px solid $main-color;
-    color: #fff;
-    padding: 18px 40px;
-    font-size: 16px;
-    transition: 0.3s;
-    outline: none;
+@media screen and (max-width: 767px) {
+    .film-image {
+        img {
+            width: 340px;
+            height: 386px;
+        }
+    }
 
-    @include width-1210 {
-        font-size: 15px;
+    .film-content {
+        width: 340px;
+    }
+
+    .film-title-content {
+        span {
+            font-size: 100px;
+            top: -67px;
+            left: 2px;
+        }
+
+        h2 {
+            font-size: 30px;
+        }
+    }
+
+    .film-description-content {
+        padding: 0;
+
+        p {
+            &::before {
+                top: -20px;
+                left: 0;
+            }
+        }
     }
 }
 
-button:hover, input[type="submit"]:hover { // TODO: why didn't you try something like this: button, input[type="submit"] { &:hover { styles for button on hover } } ? rewrite all similiar selectors
-    cursor: pointer;
-    background-color: $main-color;
-    border-color: #fff;
-}
+@media screen and (max-width: 425px) {
+    .film-image {
+        img {
+            width: 233px;
+            height: 264px;
+        }
+    }
 
-button, button:active, .email-space input[type], .email-space input[type="submit"]:active {
-    @include width-767 {
-        position: relative;
-        left: 50%;
-        transform: translateX(-50%);
-        font-size: 14px;
+    .film-content {
+        width: 233px;
+    }
+
+    .film-title-content {
+        span {
+            font-size: 85px;
+            top: -53px;
+        }
+
+        h2 {
+            font-size: 25px;
+        }
     }
 }
-

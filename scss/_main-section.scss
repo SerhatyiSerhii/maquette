@@ -1,23 +1,5 @@
 @import 'colors';
 
-@mixin width-1210 {
-    @media (max-width: 1210px) {
-        @content;
-    }
-}
-
-@mixin width-767 {
-    @media (max-width: 767px) {
-        @content;
-    }
-}
-
-@mixin width-425 {
-    @media (max-width: 425px) {
-        @content;
-    }
-}
-
 .accent-text {
     color: $main-color;
 }
@@ -33,59 +15,12 @@
         text-transform: uppercase;
         width: 980px;
         line-height: 80px;
-
-        @include width-1210 {
-            width: 100%;
-            font-size: 45px;
-            line-height: 55px;
-        }
-
-        @include width-767 {
-            font-size: 35px;
-            line-height: 45px;
-        }
-
-        @include width-425 {
-            font-size: 25px;
-            line-height: 35px;
-            margin-bottom: 40px;
-        }
     }
 
     p {
         width: 480px;
         line-height: 24px;
         margin-bottom: 75px;
-
-        @include width-767 {
-            width: 365px;
-        }
-
-        @include width-425 {
-            width: 100%;
-            line-height: 20px;
-        }
-    }
-
-    @include width-1210 {
-        padding-top: 140px;
-    }
-
-    @include width-767 {
-        background-size: contain;
-        padding: 85px 0 0;
-    }
-
-    @include width-767 {
-        svg {
-            height: 45px;
-        }
-    }
-
-    @include width-425 {
-        svg {
-            height: 30px;
-        }
     }
 }
 
@@ -93,6 +28,116 @@
     svg {
         path {
             stroke: $main-color;
+        }
+    }
+}
+
+button, input[type="submit"] {
+    // TODO: these buttons are not straight specific, they are common
+    //corrected
+    border-radius: 0;
+    text-transform: uppercase;
+    background-color: transparent;
+    border: 2px solid $main-color;
+    color: #fff;
+    padding: 18px 40px;
+    font-size: 16px;
+    transition: 0.3s;
+    outline: none;
+
+    &:hover {
+        cursor: pointer;
+        background-color: $main-color;
+        border-color: #fff;
+    }
+
+    &:active {
+        border-radius: 0;
+        text-transform: uppercase;
+        background-color: transparent;
+        border: 2px solid $main-color;
+        color: #fff;
+        padding: 18px 40px;
+        font-size: 16px;
+        transition: 0.3s;
+        outline: none;
+    }
+}
+
+// TODO: why didn't you try something like this: button, input[type="submit"] { &:hover { styles for button on hover } } ? rewrite all similiar selectors
+//corrected
+
+@media screen and (max-width: 1210px) {
+    .main-section {
+        padding-top: 140px;
+
+        h1 {
+            width: 100%;
+            font-size: 45px;
+            line-height: 55px;
+        }
+    }
+
+    button, input[type="submit"] {
+        font-size: 15px;
+
+        &:active {
+            font-size: 15px;
+        }
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .main-section {
+        background-size: contain;
+        padding: 85px 0 0;
+
+        h1 {
+            font-size: 35px;
+            line-height: 45px;
+        }
+
+        p {
+            width: 365px;
+        }
+
+        svg {
+            height: 45px;
+        }
+    }
+
+    button, .email-space input[type] {
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 14px;
+    }
+
+    button, .email-space input[type="submit"] {
+        &:active {
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 14px;
+        }
+    }
+}
+
+@media screen and (max-width: 425px) {
+    .main-section {
+        h1 {
+            font-size: 25px;
+            line-height: 35px;
+            margin-bottom: 40px;
+        }
+
+        p {
+            width: 100%;
+            line-height: 20px;
+        }
+
+        svg {
+            height: 30px;
         }
     }
 }

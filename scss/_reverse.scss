@@ -1,29 +1,25 @@
-@mixin width-1210 {
-    @media (max-width: 1210px) {
-        @content;
+.reverse-direction-description {
+    .film-content {
+        margin-left: 100px;
     }
 }
 
-@mixin width-959 {
-    @media (max-width: 959px) {
-        @content;
+@media screen and (max-width: 1210px) {
+    .reverse-direction-description {
+        .film-content {
+            margin-left: 80px;
+        }
     }
 }
 
-.reverse-direction-description .film-content {
-    margin-left: 100px;
+@media screen and (max-width: 959px) {
+    .reverse-direction-description {
+        .film-content {
+            margin: 0 auto;
+        }
 
-    @include width-1210 {
-        margin-left: 80px;
-    }
-
-    @include width-959 {
-        margin: 0 auto;
-    }
-}
-
-.reverse-direction-description .description-content {
-    @include width-959 {
-        flex-direction: column-reverse;
+        .description-content {
+            flex-direction: column-reverse;
+        }
     }
 }
