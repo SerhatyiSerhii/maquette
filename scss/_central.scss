@@ -23,15 +23,6 @@
         url('images/gungster.png') no-repeat right -12px bottom -19px;
 }
 
-// TODO: wouldn't it be easier just to write something like this?
-// @media screen and (max-width: 767px) {
-//     styles for central direction
-// }
-
-// and even if you decided to use mixins, why do you define absolutely the same mixins in all files?
-// nevertheless it is completely unreadable. rewrite accordingly to example above
-// corrected
-
 @media screen and (max-width: 1210px) {
     .central-direction-description {
         padding-bottom: 262px;

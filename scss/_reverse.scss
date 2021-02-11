@@ -1,12 +1,12 @@
 .reverse-direction-description {
-    .film-content {
+    .film-content {// TODO: can be but doesn't make sense. Usualy nesting used when both parent and child selectors have styles
         margin-left: 100px;
     }
 }
 
 @media screen and (max-width: 1210px) {
     .reverse-direction-description {
-        .film-content {
+        .film-content {// TODO: can be but doesn't make sense. Usualy nesting used when both parent and child selectors have styles
             margin-left: 80px;
         }
     }

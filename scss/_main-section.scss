@@ -1,6 +1,6 @@
 @import 'colors';
 
-.accent-text {
+.accent-text { // TODO: this is common style
     color: $main-color;
 }
 
@@ -25,16 +25,14 @@
 }
 
 .arrow {
-    svg {
-        path {
+    svg { // TODO: can be but doesn't make sense. Usualy nesting used when both parent and child selectors have styles
+        path { // TODO: can be but doesn't make sense. Usualy nesting used when both parent and child selectors have styles
             stroke: $main-color;
         }
     }
 }
 
-button, input[type="submit"] {
-    // TODO: these buttons are not straight specific, they are common
-    //corrected
+button, input[type="submit"] {// TODO: this is common style
     border-radius: 0;
     text-transform: uppercase;
     background-color: transparent;
@@ -63,9 +61,6 @@ button, input[type="submit"] {
         outline: none;
     }
 }
-
-// TODO: why didn't you try something like this: button, input[type="submit"] { &:hover { styles for button on hover } } ? rewrite all similiar selectors
-//corrected
 
 @media screen and (max-width: 1210px) {
     .main-section {

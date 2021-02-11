@@ -40,7 +40,7 @@ footer {
             }
         }
 
-        .circle:hover {
+        .circle:hover { // TODO: this can be nested
             background-color: #fff;
 
             path {
@@ -159,7 +159,7 @@ footer {
         }
 
         .social-media {
-            li {
+            li { // TODO: can be but doesn't make sense. Usualy nesting used when both parent and child selectors have styles
                 margin: 0 15px;
             }
         }
@@ -174,8 +174,8 @@ footer {
     }
 
     .email-space {
-        input {
-            &[type] {
+        input { // TODO: can be but doesn't make sense. Usualy nesting used when both parent and child selectors have styles
+            &[type] { // TODO: can be but doesn't make sense. Usualy nesting used when both parent and child selectors have styles
                 font-size: 14px;
             }
         }

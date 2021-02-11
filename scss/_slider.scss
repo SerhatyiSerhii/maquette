@@ -64,7 +64,7 @@
     transform: translate(50%, -50%);
 
     &:hover {
-        &::before {
+        &::before {// TODO: can be but doesn't make sense. Usualy nesting used when both parent and child selectors have styles
             border-left-color: #fff;
             transition: 0.3s;
         }
@@ -107,7 +107,7 @@
     }
 
     .slides-wrapper {
-        ul {
+        ul {// TODO: can be but doesn't make sense. Usualy nesting used when both parent and child selectors have styles
             /* Attachment of tag to the center of the screen
             from its left side which makes it independent of
             the screen's size and transformed to place so the second image
@@ -140,7 +140,7 @@
     }
 
     .slides-wrapper {
-        ul {
+        ul {// TODO: can be but doesn't make sense. Usualy nesting used when both parent and child selectors have styles
             transform: translateX(-988px);
             width: 1980px;
 
@@ -187,7 +187,7 @@
     }
 
     .slides-wrapper {
-        ul {
+        ul {// TODO: can be but doesn't make sense. Usualy nesting used when both parent and child selectors have styles
             transform: translateX(-520px);
             width: 1060px;
 
@@ -232,7 +232,7 @@
     }
 
     .slides-wrapper {
-        ul {
+        ul {// TODO: can be but doesn't make sense. Usualy nesting used when both parent and child selectors have styles
             transform: translateX(-404px);
             width: 810px;
 
