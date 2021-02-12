@@ -4,7 +4,8 @@
   "description": "Top 10",
   "main": "index.js",
   "scripts": {
-    "scss": "sass --watch scss/styles.scss styles.css"
+    "scss": "sass --watch scss/styles.scss styles.css",
+    "build": "sass --no-source-map scss/styles.scss styles.css --style compressed"
   },
   "repository": {
     "type": "git",
