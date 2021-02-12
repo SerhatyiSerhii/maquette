@@ -73,6 +73,10 @@ h2 {
     font-size: 40px;
 }
 
+.arrow svg path {
+    stroke: $main-color;
+}
+
 @media screen and (max-width: 1210px) {
     body {
         font-size: 12px;
