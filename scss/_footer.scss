@@ -40,11 +40,14 @@ footer {
             }
         }
 
-        .circle:hover { // TODO: this can be nested
-            background-color: #fff;
+        .circle { // TODO: this can be nested
+            //corrected
+            &:hover{
+                background-color: #fff;
 
-            path {
-                fill: $main-color;
+                path {
+                    fill: $main-color;
+                }
             }
         }
 
@@ -158,11 +161,11 @@ footer {
             }
         }
 
-        .social-media {
-            li { // TODO: can be but doesn't make sense. Usualy nesting used when both parent and child selectors have styles
-                margin: 0 15px;
-            }
+        .social-media li { // TODO: can be but doesn't make sense. Usualy nesting used when both parent and child selectors have styles
+            //corrected
+            margin: 0 15px;
         }
+
     }
 
     .sign-up {
@@ -173,11 +176,10 @@ footer {
         }
     }
 
-    .email-space {
-        input { // TODO: can be but doesn't make sense. Usualy nesting used when both parent and child selectors have styles
-            &[type] { // TODO: can be but doesn't make sense. Usualy nesting used when both parent and child selectors have styles
-                font-size: 14px;
-            }
-        }
+    .email-space input[type] { // TODO: can be but doesn't make sense. Usualy nesting used when both parent and child selectors have styles
+        //corrected
+        // TODO: can be but doesn't make sense. Usualy nesting used when both parent and child selectors have styles
+        //corrected
+        font-size: 14px;
     }
 }

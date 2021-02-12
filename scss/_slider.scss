@@ -53,7 +53,8 @@
     }
 }
 
-.btn-play {
+.btn-play,
+.btn-play:active {
     width: 85px;
     height: 85px;
     border-radius: 50%;
@@ -63,12 +64,12 @@
     right: 50%;
     transform: translate(50%, -50%);
 
-    &:hover {
-        &::before {// TODO: can be but doesn't make sense. Usualy nesting used when both parent and child selectors have styles
-            border-left-color: #fff;
-            transition: 0.3s;
-        }
+    &:hover::before {// TODO: can be but doesn't make sense. Usualy nesting used when both parent and child selectors have styles
+        //corrected
+        border-left-color: #fff;
+        transition: 0.3s;
     }
+
 
     &::before {
         display: block;
@@ -83,6 +84,10 @@
         left: -10px;
         transition: 0.3s;
     }
+}
+
+.btn-play:hover:active::before {
+    border-left-color: #000;
 }
 
 @media screen and (max-width: 1210px) {
@@ -106,26 +111,26 @@
         }
     }
 
-    .slides-wrapper {
-        ul {// TODO: can be but doesn't make sense. Usualy nesting used when both parent and child selectors have styles
-            /* Attachment of tag to the center of the screen
-            from its left side which makes it independent of
-            the screen's size and transformed to place so the second image
-            exactly between arrows.*/
-            left: 50%;
-            transform: translateX(-1220px);
-            width: 2470px;
+    .slides-wrapper ul {// TODO: can be but doesn't make sense. Usualy nesting used when both parent and child selectors have styles
+        //corrected
+        /* Attachment of tag to the center of the screen
+        from its left side which makes it independent of
+        the screen's size and transformed to place so the second image
+        exactly between arrows.*/
+        left: 50%;
+        transform: translateX(-1220px);
+        width: 2470px;
 
-            li {
-                padding: 0 60px;
+        li {
+            padding: 0 60px;
 
-                div {
-                    width: 700px;
-                    height: 425px;
-                }
+            div {
+                width: 700px;
+                height: 425px;
             }
         }
     }
+
 }
 
 @media screen and (max-width: 959px) {
@@ -139,23 +144,24 @@
         }
     }
 
-    .slides-wrapper {
-        ul {// TODO: can be but doesn't make sense. Usualy nesting used when both parent and child selectors have styles
-            transform: translateX(-988px);
-            width: 1980px;
+    .slides-wrapper ul {// TODO: can be but doesn't make sense. Usualy nesting used when both parent and child selectors have styles
+        //corrected
+        transform: translateX(-988px);
+        width: 1980px;
 
-            li {
-                padding: 0 35px;
+        li {
+            padding: 0 35px;
 
-                div {
-                    width: 585px;
-                    height: 335px;
-                }
+            div {
+                width: 585px;
+                height: 335px;
             }
         }
     }
 
-    .btn-play {
+
+    .btn-play,
+    .btn-play:active {
         padding: 0;
         width: 70px;
         height: 70px;
@@ -186,23 +192,24 @@
         }
     }
 
-    .slides-wrapper {
-        ul {// TODO: can be but doesn't make sense. Usualy nesting used when both parent and child selectors have styles
-            transform: translateX(-520px);
-            width: 1060px;
+    .slides-wrapper ul {// TODO: can be but doesn't make sense. Usualy nesting used when both parent and child selectors have styles
+        //corrected
+        transform: translateX(-520px);
+        width: 1060px;
 
-            li {
-                padding: 0 25px;
+        li {
+            padding: 0 25px;
 
-                div {
-                    width: 300px;
-                    height: 170px;
-                }
+            div {
+                width: 300px;
+                height: 170px;
             }
         }
     }
 
-    .btn-play {
+
+    .btn-play,
+    .btn-play:active {
         transform: translate(-50%, -50%);
         width: 55px;
         height: 55px;
@@ -231,23 +238,24 @@
         }
     }
 
-    .slides-wrapper {
-        ul {// TODO: can be but doesn't make sense. Usualy nesting used when both parent and child selectors have styles
-            transform: translateX(-404px);
-            width: 810px;
+    .slides-wrapper ul {// TODO: can be but doesn't make sense. Usualy nesting used when both parent and child selectors have styles
+        //corrected
+        transform: translateX(-404px);
+        width: 810px;
 
-            li {
-                padding: 0 16px;
+        li {
+            padding: 0 16px;
 
-                div {
-                    width: 235px;
-                    height: 140px;
-                }
+            div {
+                width: 235px;
+                height: 140px;
             }
         }
     }
 
-    .btn-play {
+
+    .btn-play,
+    .btn-play:active {
         width: 40px;
         height: 40px;
 

@@ -10,39 +10,6 @@
     margin: 0;
 }
 
-body { // TODO: this is common style: create module _common and move this style there
-    margin: 0;
-    font-family: 'Roboto', sans-serif;
-    font-size: 16px;
-    font-weight: 400;
-    color: #fff;
-    background: #000;
-}
-
-ul { // TODO: this is common style
-    margin: 0;
-    padding: 0;
-    list-style-type: none;
-}
-
-a { // TODO: this is common style
-    text-decoration: none;
-    color: #fff;
-    text-transform: uppercase;
-    transition: 0.3s;
-
-    &:hover {
-        color: $main-color;
-        text-decoration: underline;
-    }
-}
-
-.container { // TODO: this is common style
-    max-width: 1220px;
-    padding: 0 20px;
-    margin: 0 auto;
-}
-
 .logo {
     width: 104px;
     height: 47px;
@@ -121,31 +88,7 @@ header {
     }
 }
 
-@media screen and (max-width: 1210px) {
-    body { // TODO: this is common style
-        font-size: 12px;
-    }
-
-    .container { // TODO: this is common style
-        max-width: 1025px;
-    }
-}
-
-@media screen and (max-width: 959px) {
-    body { // TODO: this is common style
-        font-size: 14px;
-    }
-}
-
 @media screen and (max-width: 767px) {
-    body { // TODO: this is common style
-        font-size: 12px;
-    }
-
-    .container { // TODO: this is common style
-        max-width: 640px;
-    }
-
     nav {
         position: relative;
         z-index: 5;
@@ -224,6 +167,7 @@ header {
         span,
         & span::before,
         & span::after { // TODO: comma-separated selectors better to have on different lines. Fix all such occurrences
+            //corrected
             position: absolute;
             width: 18px;
             height: 2px;
@@ -252,8 +196,3 @@ header {
     }
 }
 
-@media screen and (max-width: 425px) {
-    .container { // TODO: this is common style
-        max-width: 425px;
-    }
-}

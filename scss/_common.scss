@@ -1,0 +1,124 @@
+@import 'colors';
+
+body { // TODO: this is common style: create module _common and move this style there
+    // created and moved
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: #fff;
+    background: #000;
+}
+
+ul { // TODO: this is common style
+    //moved to _common file
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+a { // TODO: this is common style
+    //moved to _common file
+    text-decoration: none;
+    color: #fff;
+    text-transform: uppercase;
+    transition: 0.3s;
+
+    &:hover {
+        color: $main-color;
+        text-decoration: underline;
+    }
+}
+
+.container { // TODO: this is common style
+    //moved to _common file
+    max-width: 1220px;
+    padding: 0 20px;
+    margin: 0 auto;
+}
+
+.accent-text { // TODO: this is common style
+    //moved to _common file
+    color: $main-color;
+}
+
+button,
+input[type="submit"] {// TODO: this is common style
+    //moved to _common file
+    border-radius: 0;
+    text-transform: uppercase;
+    background-color: transparent;
+    border: 2px solid $main-color;
+    color: #fff;
+    padding: 18px 40px;
+    font-size: 16px;
+    transition: 0.3s;
+    outline: none;
+
+    &:hover {
+        cursor: pointer;
+        background-color: $main-color;
+        border-color: #fff;
+    }
+
+    &:active {
+        border-radius: 0;
+        text-transform: uppercase;
+        background-color: transparent;
+        border: 2px solid $main-color;
+        color: #fff;
+        padding: 18px 40px;
+        font-size: 16px;
+        transition: 0.3s;
+        outline: none;
+    }
+}
+
+h2 { // TODO: this is common style
+    //moved to _common file
+    text-transform: uppercase;
+    font-size: 40px;
+}
+
+@media screen and (max-width: 1210px) {
+    body { // TODO: this is common style
+        //moved to _common file
+        font-size: 12px;
+    }
+
+    .container { // TODO: this is common style
+        //moved to _common file
+        max-width: 1025px;
+    }
+
+    h2 { // TODO: this is common style
+        //moved to _common file
+        font-size: 25px;
+    }
+}
+
+@media screen and (max-width: 959px) {
+    body { // TODO: this is common style
+        //moved to _common file
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    body { // TODO: this is common style
+        //moved to _common file
+        font-size: 12px;
+    }
+
+    .container { // TODO: this is common style
+        //moved to _common file
+        max-width: 640px;
+    }
+}
+
+@media screen and (max-width: 425px) {
+    .container { // TODO: this is common style
+        //moved to _common file
+        max-width: 425px;
+    }
+}
