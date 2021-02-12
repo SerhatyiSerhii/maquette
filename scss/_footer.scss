@@ -42,6 +42,7 @@ footer {
 
         .circle { // TODO: this can be nested
             //corrected
+            // TODO: yoo already have circle clas just right above :D
             &:hover{
                 background-color: #fff;
 
@@ -161,8 +162,7 @@ footer {
             }
         }
 
-        .social-media li { // TODO: can be but doesn't make sense. Usualy nesting used when both parent and child selectors have styles
-            //corrected
+        .social-media li {
             margin: 0 15px;
         }
 
@@ -176,10 +176,7 @@ footer {
         }
     }
 
-    .email-space input[type] { // TODO: can be but doesn't make sense. Usualy nesting used when both parent and child selectors have styles
-        //corrected
-        // TODO: can be but doesn't make sense. Usualy nesting used when both parent and child selectors have styles
-        //corrected
+    .email-space input[type] {
         font-size: 14px;
     }
 }

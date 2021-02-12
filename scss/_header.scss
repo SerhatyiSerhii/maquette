@@ -166,8 +166,7 @@ header {
 
         span,
         & span::before,
-        & span::after { // TODO: comma-separated selectors better to have on different lines. Fix all such occurrences
-            //corrected
+        & span::after {
             position: absolute;
             width: 18px;
             height: 2px;
@@ -195,4 +194,3 @@ header {
         }
     }
 }
-

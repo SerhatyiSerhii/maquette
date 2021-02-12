@@ -1,7 +1,6 @@
 @import 'colors';
 
-body { // TODO: this is common style: create module _common and move this style there
-    // created and moved
+body {
     margin: 0;
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
@@ -10,15 +9,13 @@ body { // TODO: this is common style: create module _common and move this style 
     background: #000;
 }
 
-ul { // TODO: this is common style
-    //moved to _common file
+ul {
     margin: 0;
     padding: 0;
     list-style-type: none;
 }
 
-a { // TODO: this is common style
-    //moved to _common file
+a {
     text-decoration: none;
     color: #fff;
     text-transform: uppercase;
@@ -30,21 +27,18 @@ a { // TODO: this is common style
     }
 }
 
-.container { // TODO: this is common style
-    //moved to _common file
+.container {
     max-width: 1220px;
     padding: 0 20px;
     margin: 0 auto;
 }
 
-.accent-text { // TODO: this is common style
-    //moved to _common file
+.accent-text {
     color: $main-color;
 }
 
 button,
-input[type="submit"] {// TODO: this is common style
-    //moved to _common file
+input[type="submit"] {
     border-radius: 0;
     text-transform: uppercase;
     background-color: transparent;
@@ -74,51 +68,43 @@ input[type="submit"] {// TODO: this is common style
     }
 }
 
-h2 { // TODO: this is common style
-    //moved to _common file
+h2 {
     text-transform: uppercase;
     font-size: 40px;
 }
 
 @media screen and (max-width: 1210px) {
-    body { // TODO: this is common style
-        //moved to _common file
+    body {
         font-size: 12px;
     }
 
-    .container { // TODO: this is common style
-        //moved to _common file
+    .container {
         max-width: 1025px;
     }
 
-    h2 { // TODO: this is common style
-        //moved to _common file
+    h2 {
         font-size: 25px;
     }
 }
 
 @media screen and (max-width: 959px) {
-    body { // TODO: this is common style
-        //moved to _common file
+    body {
         font-size: 14px;
     }
 }
 
 @media screen and (max-width: 767px) {
-    body { // TODO: this is common style
-        //moved to _common file
+    body {
         font-size: 12px;
     }
 
-    .container { // TODO: this is common style
-        //moved to _common file
+    .container {
         max-width: 640px;
     }
 }
 
 @media screen and (max-width: 425px) {
-    .container { // TODO: this is common style
-        //moved to _common file
+    .container {
         max-width: 425px;
     }
 }

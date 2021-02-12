@@ -9,8 +9,7 @@
     justify-content: space-between;
 }
 
-.film-image img {// TODO: can be but doesn't make sense. Usualy nesting used when both parent and child selectors have styles
-    //corrected
+.film-image img {
     width: 480px;
     height: 545px;
     display: block;
@@ -75,8 +74,7 @@
         padding: 0 15px;
     }
 
-    .film-image img {// TODO: can be but doesn't make sense. Usualy nesting used when both parent and child selectors have styles
-        //corrected
+    .film-image img {
         width: 345px;
         height: 390px;
     }
@@ -87,16 +85,14 @@
         margin: 0;
     }
 
-    .film-title-content span {// TODO: can be but doesn't make sense. Usualy nesting used when both parent and child selectors have styles
-        //corrected
+    .film-title-content span {
         left: -73px;
         top: -71px;
         font-size: 100px;
     }
 
 
-    .film-description-content p {// TODO: can be but doesn't make sense. Usualy nesting used when both parent and child selectors have styles
-        //corrected
+    .film-description-content p {
         line-height: 1.5;
         width: 100%;
         margin-left: 0;
@@ -112,8 +108,7 @@
         flex-direction: column;
     }
 
-    .film-image img {// TODO: can be but doesn't make sense. Usualy nesting used when both parent and child selectors have styles
-        //corrected
+    .film-image img {
         margin: 0 auto 150px;
     }
 
@@ -134,16 +129,14 @@
         }
     }
 
-    .film-description-content p {// TODO: can be but doesn't make sense. Usualy nesting used when both parent and child selectors have styles
-        //corrected
+    .film-description-content p {
         margin-bottom: 25px;
     }
 
 }
 
 @media screen and (max-width: 767px) {
-    .film-image img {// TODO: can be but doesn't make sense. Usualy nesting used when both parent and child selectors have styles
-        //corrected
+    .film-image img {
         width: 340px;
         height: 386px;
     }
@@ -167,8 +160,7 @@
     .film-description-content {
         padding: 0;
 
-        p::before {// TODO: can be but doesn't make sense. Usualy nesting used when both parent and child selectors have styles
-            //corrected
+        p::before {
             top: -20px;
             left: 0;
         }
@@ -177,8 +169,7 @@
 }
 
 @media screen and (max-width: 425px) {
-    .film-image img {// TODO: can be but doesn't make sense. Usualy nesting used when both parent and child selectors have styles
-        //corrected
+    .film-image img {
         width: 233px;
         height: 264px;
     }
