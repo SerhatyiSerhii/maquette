@@ -32,12 +32,6 @@ nav {
         text-transform: uppercase;
         font-size: 14px;
         position: relative;
-
-        &:hover {
-            ul {
-                display: block;
-            }
-        }
     }
 
     .film-nav {
@@ -115,11 +109,11 @@ header {
 
             > ul {
                 display: block;
-                top: 0;
             }
         }
 
         ul {
+            top: 0;
             margin: 0;
             right: 24px;
             position: absolute;
