@@ -83,6 +83,16 @@ header {
 }
 
 @media screen and (max-width: 767px) {
+    #nav-wrapper {
+        width: 25px;
+        height: 25px;
+        background-color: transparent;
+        position: relative;
+        top: 0;
+        right: 0;
+        z-index: 6;
+    }
+
     nav {
         position: relative;
         z-index: 5;
@@ -93,24 +103,24 @@ header {
         align-items: center;
         cursor: pointer;
 
-        &:hover {
-            span {
-                transform: rotate(45deg);
+        // &:hover {
+        //     span {
+        //         transform: rotate(45deg);
 
-                &::before {
-                    top: 0;
-                }
+        //         &::before {
+        //             top: 0;
+        //         }
 
-                &::after {
-                    top: 0;
-                    transform: rotate(90deg);
-                }
-            }
+        //         &::after {
+        //             top: 0;
+        //             transform: rotate(90deg);
+        //         }
+        //     }
 
-            > ul {
-                display: block;
-            }
-        }
+        //     // > ul {
+        //     //     display: block;
+        //     // }
+        // }
 
         ul {
             top: 0;
@@ -179,6 +189,19 @@ header {
                 content: '';
                 top: 5px;
             }
+        }
+    }
+
+    span.pressed {
+        transform: rotate(45deg);
+
+        &::before {
+            top: 0;
+        }
+
+        &::after {
+            top: 0;
+            transform: rotate(90deg);
         }
     }
 

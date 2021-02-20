@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "scss": "sass --watch scss/styles.scss styles.css",
-    "build": "sass --no-source-map scss/styles.scss styles.css --style compressed"
+    "build": "sass --no-source-map scss/styles.scss styles.css --style compressed",
+    "jquery": "mkdir generated-scripts && cp node_modules/jquery/dist/jquery.min.js generated-scripts/"
+
   },
   "repository": {
     "type": "git",
@@ -16,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/SerhatyiSerhii/maquette/issues"
   },
-  "homepage": "https://github.com/SerhatyiSerhii/maquette#readme"
+  "homepage": "https://github.com/SerhatyiSerhii/maquette#readme",
+  "dependencies": {
+    "jquery": "^3.5.1"
+  }
 }
