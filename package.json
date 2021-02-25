@@ -6,7 +6,7 @@
   "scripts": {
     "scss": "sass --watch scss/styles.scss styles.css",
     "build": "sass --no-source-map scss/styles.scss styles.css --style compressed",
-    "jquery": "mkdir generated-scripts && cp node_modules/jquery/dist/jquery.min.js generated-scripts/"
+    "jquery": "rm -rf generated-scripts && mkdir generated-scripts && cp node_modules/jquery/dist/jquery.min.js generated-scripts/"
 
   },
   "repository": {

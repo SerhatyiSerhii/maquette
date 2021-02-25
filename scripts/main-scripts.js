@@ -1,54 +1,84 @@
-document.addEventListener('DOMContentLoaded', function() { // TODO: remove
-    $(function() {
-        //Smooth scroll to the film at Go-To menu
-        $('a.top-film').on('click', function(event) {
-            event.preventDefault();
+$(function () {
+    //Smooth scroll to the film at Go-To menu
+    $('a.top-film').on('click', function (event) {
+        event.preventDefault();
 
-            var topLink = $(this).attr('href');
+        var topLink = $(this).attr('href');
 
-            $('html').animate({
-                scrollTop: $(topLink).offset().top
-            }, 300);
-        });
+        $('html').animate({
+            scrollTop: $(topLink).offset().top
+        }, 300);
+    });
 
-        //Hover on Go-To menu
-        $('.go-to').hover(function() {
-            $('.film-nav').finish().slideToggle(300);
-        });
+    //Hover on Go-To menu
+    $('.go-to').hover(function () {
+        $('.film-nav').finish().slideToggle(300);
+    });
 
-        if (window.matchMedia('(max-width: 767px)').matches) { // TODO: support screen flip
+    // var windowWidth = $(window).outerWidth();
 
-            $("#nav-wrapper").on("click", function(event) {
-                event.stopPropagation(); // TODO: learn
-                $(".box-menu").finish().slideToggle(300); // TODO: code duplication
+    // if (windowWidth <= 767) { // TODO: support screen flip
 
-                $("span").toggleClass("pressed"); // TODO: SPAN???
-            });
+    //     function toggle() {
+    //         $('.box-menu').finish().slideToggle(300); // TODO: code duplication     Removed code duplication
+    //         $('#burger-img').toggleClass('pressed'); // TODO: SPAN???   Corrected
+    //     }
 
-            $(".film-nav a").on("click", function() { // TODO: bad selector
-                $("span").toggleClass("pressed");
-                $(".box-menu").finish().slideToggle(300);
-            });
+    //     $('#nav-wrapper').on('click', function (event) {
+    //         event.stopPropagation(); // TODO: learn     Completed
+    //         toggle();
+    //     });
 
-            $(document).click(function(event) { // TODO: use modern method to add event // TODO: rewrite using closest
-                var arr = []
+    //     $('.top-film').on('click', function () { // TODO: bad selector    Corrected
+    //         toggle();
+    //     });
 
-                for(var i = 0; i < $(".box-menu > li > a").length; i++){ // TODO: bad selector
-                    arr.push($(".box-menu > li > a")[i]);
-                }
+    //     $(document).on('click', function (event) { // TODO: use modern method to add event    Corrected // TODO: rewrite using closest   Made with closest
 
-                /*this part I don't like as I can't apply
-                FOR loop. If I apply FOR loop the click on
-                item in menu also hides the menu*/
+    //         if ($(event.target).closest(".box-menu").length === 0) {
+    //             $('.box-menu').finish().slideUp(300);
+    //             $('#burger-img').removeClass('pressed');
+    //         }
+    //     });
+    // }
 
-                if(event.target != arr[0] && // TODO: where did event come from?
-                    event.target != arr[1] &&
-                    event.target != arr[2] &&
-                    event.target != arr[3]) {
-                    $(".box-menu").hide();
-                    $("span").removeClass("pressed");
-                }
-            });
+    function addActive () {
+
+        function activeBox () {
+            $('.box-menu').toggleClass('active');
+            if ($('.box-menu').hasClass('active')) {
+                $('.active').css('display', 'block');
+            } else {
+                $('.box-menu').removeAttr('style');
+            }
+            $('#burger-img').toggleClass('pressed');
         }
-    })
+
+        function removeActiveBox () {
+            $('.box-menu').removeClass('active');
+            if ($('.box-menu').hasClass('active')) {
+                $('.active').css('display', 'block');
+            } else {
+                $('.box-menu').removeAttr('style');
+            }
+            $('#burger-img').removeClass('pressed');
+        }
+
+        $('#nav-wrapper').on('click', function (event) {
+            event.stopPropagation();
+            activeBox ();
+        });
+
+        $('.top-film').on('click', function () {
+            removeActiveBox ();
+        });
+
+        $(document).on('click', function (event) {
+            if ($(event.target).closest('.box-menu').length === 0) {
+                removeActiveBox ();
+            }
+        });
+    }
+
+    addActive();
 });
