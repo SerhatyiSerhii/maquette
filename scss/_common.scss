@@ -82,14 +82,14 @@ h2 {
 }
 
 .substrate {
-    background-color: rgba(255, 255, 255, 0.150);
+    background-color: rgba(255, 255, 255, 0.150); // TODO: why 150 has trailing 0?
     width: 100%;
     height: 100%;
     position: fixed;
     top: 0;
-    z-index: 5;
+    z-index: 5; // TODO: what for?
     opacity: 0;
-    visibility: hidden;
+    visibility: hidden; // TODO: there is significant difference between visibility and display. in this case visibility shouldn't be used.
     transition: 0.3s;
     display: flex;
     justify-content: center;
@@ -105,18 +105,18 @@ h2 {
         height: 70%;
         background-color: #000;
         border: 2px solid;
-        border-color: $main-color;
+        border-color: $main-color; // TODO: why not in generic property?
         text-align: center;
         position: relative;
 
         .listener-title {
             font-size: 35px;
             position: relative;
-            top: 20%;
+            top: 20%; // TODO: margin for this element, or padding for parent, but not top 20%
         }
 
         .listener {
-            top: 65%;
+            top: 65%; // TODO: remove absolute positioning for button in modal window. Use static.
         }
     }
 
@@ -183,7 +183,7 @@ h2 {
         max-width: 640px;
     }
 
-    .substrate .soundtrack-listener .listener-title {
+    .substrate .soundtrack-listener .listener-title { // TODO: do we need such a long selector?
         font-size: 30px;
     }
 }

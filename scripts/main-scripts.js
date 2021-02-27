@@ -15,8 +15,8 @@ $(function () {
     $('.arrow-down').on('click', function (event) {
         event.preventDefault();
 
-        $('html').animate({
-            scrollTop: $('#top-10').offset().top
+        $('html').animate({ // TODO: duplication, make function for html animation
+            scrollTop: $('#top-10').offset().top // TODO: hardcode, store id info in data- attribute or href
         });
     });
 
@@ -60,12 +60,13 @@ $(function () {
 
     // Substrate window on button 'Listen' click
     $('button').on('click', function () {
-        if (this.innerHTML == 'listen') {
+        if (this.innerHTML == 'listen') { // TODO: to add event for right buttons use specific selector, not button content
             $('.substrate').addClass('active');
             $('body').addClass('lock');
 
             // Get name of the film above the clicked button 'Listen'
-            let filmTitleListen = $(this).closest('.film-content').find('h2')[0].innerText;
+            // TODO: for such casses better to use data- attributes on elements and read data from these attributes, but not from content.
+            let filmTitleListen = $(this).closest('.film-content').find('h2')[0].innerText; // TODO: textContent is better property.
 
             // Put the film title into the substrate window
             let listenerTitle = $('.listener-title');
