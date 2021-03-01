@@ -1,3 +1,4 @@
+// TODO: don't mix variable declarations, for now use var
 $(function () {
     // Scroll to the film top
     function scrollToFilm(arg) {
@@ -18,11 +19,8 @@ $(function () {
     $('.arrow-down').on('click', function (event) {
         event.preventDefault();
 
-        let firstTopFilm = $(this).attr('href', '#top-10');
+        let firstTopFilm = $(this).attr('href', '#top-10'); // TODO: what's the point to add it here? add in template in href or data attribute
 
-        // $('html').animate({ // TODO: duplication, make function for html animation   Corrected
-        //     scrollTop: $(firstTopFilm).offset().top // TODO: hardcode, store id info in data- attribute or href  Corrected
-        // });
         scrollToFilm(firstTopFilm);
     });
 
@@ -66,8 +64,6 @@ $(function () {
 
     // Substrate window on button 'Listen' click
     $('.listen').on('click', function () {
-        // TODO: to add event for right buttons use specific selector, not button content
-        // Corrected
         $('body').addClass('lock');
         $('.substrate').removeClass('hidden');
         setTimeout(function() {
@@ -75,16 +71,11 @@ $(function () {
         }, 20);
 
         // Get name of the film above the clicked button 'Listen'
-
-        // TODO: for such casses better to use data- attributes on elements and read data from these attributes, but not from content.
-        // Corrected
-        // let filmTitleListen = $(this).closest('.film-content').find('h2')[0].textContent; // TODO: textContent is better property.  Corrected
         let filmTitleListen = $(this).closest('.film-content').find('h2')[0];
 
         // Put the film title into the substrate window
-        let listenerTitle = $('.listener-title');
+        let listenerTitle = $('.listener-title'); // TODO: no need to store in variable
 
-        // listenerTitle[0].textContent = filmTitleListen;
         listenerTitle[0].textContent = filmTitleListen.dataset.name;
     });
 
@@ -97,7 +88,7 @@ $(function () {
         });
     }
 
-    $('.close-listener').on('click', function(event) {
+    $('.close-listener').on('click', function(event) { // TODO; if you are not going to use function parameter, you can either omit it, or add underscore e.g. _event
         closeListener();
     });
 
