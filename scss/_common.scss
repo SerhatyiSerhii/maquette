@@ -82,49 +82,52 @@ h2 {
 }
 
 .substrate {
-    background-color: rgba(255, 255, 255, 0.150); // TODO: why 150 has trailing 0?
+    background-color: rgba(255, 255, 255, 0.15); // TODO: why 150 has trailing 0?   Corrected
     width: 100%;
     height: 100%;
     position: fixed;
     top: 0;
-    z-index: 5; // TODO: what for?
-    opacity: 0;
-    visibility: hidden; // TODO: there is significant difference between visibility and display. in this case visibility shouldn't be used.
+    z-index: 5; // TODO: what for?  This is to make the
+    // substrate manu to be on the top of other elements as
+    // h2-s at movies titles have z-index and appear above
+    // the substrate menu
     transition: 0.3s;
-    display: flex;
+    display: flex; // TODO: there is significant difference between visibility and display. in this case visibility shouldn't be used.
+    // Corrected
     justify-content: center;
     align-items: center;
 
-    &.active {
-        opacity: 1;
-        visibility: visible;
-    }
-
     .soundtrack-listener {
         width: 70%;
-        height: 70%;
+        height: 350px;
         background-color: #000;
-        border: 2px solid;
-        border-color: $main-color; // TODO: why not in generic property?
+        border: 2px solid $main-color;
+        // TODO: why not in generic property?   Corrected
         text-align: center;
         position: relative;
 
         .listener-title {
             font-size: 35px;
             position: relative;
-            top: 20%; // TODO: margin for this element, or padding for parent, but not top 20%
+            margin-top: 80px; // TODO: margin for this element, or padding for parent, but not top 20%
+            // Corrected
         }
 
         .listener {
-            top: 65%; // TODO: remove absolute positioning for button in modal window. Use static.
+            // TODO: remove absolute positioning for button in modal window. Use static.
+            // Corrected
+            position: static;
+            transform: translate(0%, 25%);
         }
     }
 
     .close-listener {
         width: 25px;
         height: 25px;
-        position: relative;
-        top: -37%;
+        position: absolute;
+        top: -25px;
+        right: -25px;
+
 
         &:hover {
             cursor: pointer;
@@ -138,20 +141,30 @@ h2 {
 
     .close-listener-cross,
     .close-listener-cross::before {
-        width: 100%;
+        width: 25px;
         height: 2px;
         background-color: $main-color;
         position: absolute;
-        top: 50%;
+        top: 11px;
+        left: 0;
         transform: rotate(45deg);
         transition: 0.3s;
     }
 
     .close-listener-cross::before {
         content: '';
-        top: auto;
+        top: 0;
+        left: 0;
         transform: rotate(90deg);
     }
+}
+
+.hidden {
+    display: none;
+}
+
+.visuallyHidden {
+    opacity: 0;
 }
 
 @media screen and (max-width: 1210px) {
@@ -184,6 +197,7 @@ h2 {
     }
 
     .substrate .soundtrack-listener .listener-title { // TODO: do we need such a long selector?
+        // Such a long selector to increase the specificity :)
         font-size: 30px;
     }
 }

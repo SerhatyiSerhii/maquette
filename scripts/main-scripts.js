@@ -1,23 +1,29 @@
 $(function () {
+    // Scroll to the film top
+    function scrollToFilm(arg) {
+        $('html').animate({
+            scrollTop: $(arg).offset().top
+        }, 300);
+    }
 
     // Smooth scroll to the film at Go-To menu
     $('a.top-film').on('click', function (event) {
         event.preventDefault();
 
         var topLink = $(this).attr('href');
-
-        $('html').animate({
-            scrollTop: $(topLink).offset().top
-        }, 300);
+        scrollToFilm(topLink);
     });
 
     // Scroll to Top10 on arrow-down click
     $('.arrow-down').on('click', function (event) {
         event.preventDefault();
 
-        $('html').animate({ // TODO: duplication, make function for html animation
-            scrollTop: $('#top-10').offset().top // TODO: hardcode, store id info in data- attribute or href
-        });
+        let firstTopFilm = $(this).attr('href', '#top-10');
+
+        // $('html').animate({ // TODO: duplication, make function for html animation   Corrected
+        //     scrollTop: $(firstTopFilm).offset().top // TODO: hardcode, store id info in data- attribute or href  Corrected
+        // });
+        scrollToFilm(firstTopFilm);
     });
 
     // Hover on Go-To menu
@@ -59,29 +65,39 @@ $(function () {
     });
 
     // Substrate window on button 'Listen' click
-    $('button').on('click', function () {
-        if (this.innerHTML == 'listen') { // TODO: to add event for right buttons use specific selector, not button content
-            $('.substrate').addClass('active');
-            $('body').addClass('lock');
+    $('.listen').on('click', function () {
+        // TODO: to add event for right buttons use specific selector, not button content
+        // Corrected
+        $('body').addClass('lock');
+        $('.substrate').removeClass('hidden');
+        setTimeout(function() {
+            $('.substrate').removeClass('visuallyHidden');
+        }, 20);
 
-            // Get name of the film above the clicked button 'Listen'
-            // TODO: for such casses better to use data- attributes on elements and read data from these attributes, but not from content.
-            let filmTitleListen = $(this).closest('.film-content').find('h2')[0].innerText; // TODO: textContent is better property.
+        // Get name of the film above the clicked button 'Listen'
 
-            // Put the film title into the substrate window
-            let listenerTitle = $('.listener-title');
+        // TODO: for such casses better to use data- attributes on elements and read data from these attributes, but not from content.
+        // Corrected
+        // let filmTitleListen = $(this).closest('.film-content').find('h2')[0].textContent; // TODO: textContent is better property.  Corrected
+        let filmTitleListen = $(this).closest('.film-content').find('h2')[0];
 
-            listenerTitle[0].textContent = filmTitleListen;
-        }
+        // Put the film title into the substrate window
+        let listenerTitle = $('.listener-title');
+
+        // listenerTitle[0].textContent = filmTitleListen;
+        listenerTitle[0].textContent = filmTitleListen.dataset.name;
     });
 
     // For closing substrate window and showing scroll on the page
     function closeListener() {
-        $('.substrate').removeClass('active');
         $('body').removeClass('lock');
+        $('.substrate').addClass('visuallyHidden');
+        $('.substrate').one('transitionend', function() {
+            $('.substrate').addClass('hidden');
+        });
     }
 
-    $('.close-listener').on('click', function() {
+    $('.close-listener').on('click', function(event) {
         closeListener();
     });
 
