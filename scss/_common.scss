@@ -109,7 +109,9 @@ h2 {
 
         .listener {
             position: static;
-            transform: translate(0%, 25%); // TODO: transform: none and margin for vertical alignment
+            transform: none; // TODO: transform: none and margin for vertical alignment
+            // Corrected
+            margin-top: 10px;
         }
     }
 
@@ -155,8 +157,45 @@ h2 {
     display: none;
 }
 
-.visuallyHidden {
+.visually-hidden {
     opacity: 0;
+}
+
+.btn-play.play-active::before,
+.btn-play.play-active:active::before {
+    left: -7px;
+    width: 5px;
+    height: 25px;;
+    border-width: 0 5px;
+    border-right: 5px solid #000;
+}
+
+.btn-play.play-active:hover::before {
+    border-right-color: #fff;
+}
+
+.btn-play.play-active:hover:active::before {
+    border-right-color: #000;
+}
+
+.music-length {
+    width: 75%;
+    height: 8px;
+    border: 2px solid $main-color;
+    margin: 25px auto 0;
+    display: flex;
+    box-sizing: content-box;
+    border-radius: 2px;
+}
+
+.current-length {
+    width: 0;
+    height: 8px;
+    background-color: #fff;
+}
+
+.timer {
+    margin-top: 20px;
 }
 
 @media screen and (max-width: 1210px) {
@@ -177,6 +216,11 @@ h2 {
     body {
         font-size: 14px;
     }
+
+    .btn-play.play-active::before,
+    .btn-play.play-active:active::before {
+        left: 45%;
+    }
 }
 
 @media screen and (max-width: 767px) {
@@ -188,10 +232,18 @@ h2 {
         max-width: 640px;
     }
 
-    .substrate .soundtrack-listener .listener-title { // TODO: do we need such a long selector?
-        // Such a long selector to increase the specificity :)
-        // TODO: but we don't need nesting styles for full size. This way specifity isn't required
-        font-size: 30px;
+    .substrate {
+        .soundtrack-listener {
+            .listener-title  { // TODO: do we need such a long selector?
+                // Such a long selector to increase the specificity :)
+                // TODO: but we don't need nesting styles for full size. This way specifity isn't required
+                // line 104 has specifity 30 as styles were applied through the nested
+                // items. If we apply only .listener-title class,
+                // Line 244 will have specifity 10 and line 104 will
+                // overwrite the media rule
+                font-size: 30px;
+            }
+        }
     }
 }
 
@@ -200,7 +252,11 @@ h2 {
         max-width: 425px;
     }
 
-    .substrate .soundtrack-listener .listener-title {
-        font-size: 25px;
+    .substrate {
+        .soundtrack-listener {
+            .listener-title {
+                font-size: 25px;
+            }
+        }
     }
 }
