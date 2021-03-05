@@ -1,5 +1,5 @@
-// TODO: don't mix variable declarations, for now use var
-// Corrected
+// TODO: remove all addEventListener and removeEventListener and use jQuery for this
+// TODO: some comments are superfluous
 $(function () {
     // Scroll to the film top
     function scrollToFilm(arg) {
@@ -20,8 +20,7 @@ $(function () {
     $('.arrow-down').on('click', function (event) {
         event.preventDefault();
 
-        var firstTopFilm = $(this).attr('href'); // TODO: what's the point to add it here? add in template in href or data attribute
-        // Corrected
+        var firstTopFilm = $(this).attr('href');
         scrollToFilm(firstTopFilm);
     });
 
@@ -75,12 +74,10 @@ $(function () {
         var filmTitleListen = $(this).closest('section')[0];
 
         // Put the film title into the substrate window
-        // var listenerTitle = $('.listener-title'); // TODO: no need to store in variable
-        // Corrected
-        $('.listener-title')[0].textContent = filmTitleListen.dataset.name;
+        $('.listener-title')[0].textContent = filmTitleListen.dataset.name;// TODO: use jquery
 
         // Set the name of an audio file to the corresponding movie into data-attribute of substrate window
-        $('.substrate')[0].setAttribute('data-audio-name', filmTitleListen.dataset.audioName);
+        $('.substrate')[0].setAttribute('data-audio-name', filmTitleListen.dataset.audioName); // TODO: does substrate window need this attribute?
 
         // Set the source of audio file
         var audioAtr = $('.substrate')[0].dataset.audioName;
@@ -107,11 +104,10 @@ $(function () {
         audioElement.pause();
         audioElement.currentTime = 0;
         $('.listener').removeClass('play-active');
-        inBar.style.width = 0;
+        inBar.style.width = 0; // TODO: use jQuery for this
     }
 
-    $('.close-listener').on('click', function() { // TODO; if you are not going to use function parameter, you can either omit it, or add underscore e.g. _event
-        // Corrected
+    $('.close-listener').on('click', function() {
         closeListener();
     });
 
@@ -133,17 +129,17 @@ $(function () {
     });
 
     //  Announcement of audio element
-    var audioElement = new Audio();
+    var audioElement = new Audio(); // TODO: add it as html element in template, and use jqeury to select from template
 
     // Links to outer progress bar and inner progress bar
-    var bar = $('.music-length')[0];
-    var inBar = $('.current-length')[0];
+    var bar = $('.music-length')[0]; // TODO: don't store in global variable, only in local when you need it
+    var inBar = $('.current-length')[0]; // TODO: don't store in global variable, only in local when you need it
 
     // Make listener button as an play-triangle once the music is finished
     audioElement.addEventListener('ended', function() {
         setTimeout(function() {
             $('.listener').removeClass('play-active')
-            inBar.style.width = 0;
+            inBar.style.width = 0; // TODO: use jquery
             audioElement.currentTime = 0;
         }, 500);
     })
@@ -155,39 +151,40 @@ $(function () {
     function progress(element) {
         var position = (element.currentTime / element.duration) * 100;
 
-        inBar.style.width = position + '%';
+        inBar.style.width = position + '%';// TODO: use jquery
 
         if (position < 100) {
             setTimeout(function() {
                 progress(element);
+                console.log('I\'m logging infinetely!!!!!!!!!!!!!'); // TODO: wow, try to run and stop music. Then look into console. Try to figure out, what's wrong and fix
             });
         }
 
-        currentTime(element);
+        currentTime(element); // TODO: why do you call it after setTimeout?
     }
 
     // Set the music's time on progress bar click
     bar.addEventListener('click', function(event) {
         // Get the inner width of outer progress bar
-        var barWidth = bar.clientWidth;
+        var barWidth = bar.clientWidth;// TODO: use jquery
         // Get the x coordinates of inner progress bar's left side
-        var inBarXCoor = inBar.getBoundingClientRect().left;
+        var inBarXCoor = inBar.getBoundingClientRect().left; // TODO: I believe, jquery also has method for this
         // Get the value of inner progres bar on click
         var inBarPosition = ((event.pageX - inBarXCoor)/barWidth)*100;
-        inBar.style.width = inBarPosition + '%';
+        inBar.style.width = inBarPosition + '%';// TODO: use jquery
         // Convert the value of inner progress bar into music seconds
         audioElement.currentTime = (inBarPosition * audioElement.duration)/100;
     });
 
 
     function currentTime(element) {
-        var min = Math.floor(audioElement.currentTime / 60);
+        var min = Math.floor(audioElement.currentTime / 60); // TODO: code duplication start
         var sec = Math.floor(audioElement.currentTime % 60);
 
         min = (min < 10) ? '0' + min : min;
-        sec = (sec < 10) ? '0' + sec : sec;
-        $('.timer')[0].textContent = min + ':' + sec;
-        totalTime(element)
+        sec = (sec < 10) ? '0' + sec : sec; // TODO: code duplication end
+        $('.timer')[0].textContent = min + ':' + sec;// TODO: use jquery
+        totalTime(element) // TODO: why current time calculate total time?
     }
 
     function totalTime(element) {
@@ -196,6 +193,6 @@ $(function () {
 
         min = (min < 10) ? '0' + min : min;
         sec = (sec < 10) ? '0' + sec : sec;
-        $('.timer')[0].textContent += ' / ' + min + ':' + sec;
+        $('.timer')[0].textContent += ' / ' + min + ':' + sec;// TODO: use jquery
     }
 });

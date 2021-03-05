@@ -109,8 +109,7 @@ h2 {
 
         .listener {
             position: static;
-            transform: none; // TODO: transform: none and margin for vertical alignment
-            // Corrected
+            transform: none;
             margin-top: 10px;
         }
     }
@@ -163,7 +162,7 @@ h2 {
 
 .btn-play.play-active::before,
 .btn-play.play-active:active::before {
-    left: -7px;
+    left: -7px; // TODO: it's actually centered horizontally
     width: 5px;
     height: 25px;;
     border-width: 0 5px;
@@ -180,11 +179,11 @@ h2 {
 
 .music-length {
     width: 75%;
-    height: 8px;
+    height: 8px; // TODO: not sure you need this
     border: 2px solid $main-color;
     margin: 25px auto 0;
-    display: flex;
-    box-sizing: content-box;
+    display: flex; // TODO: this
+    box-sizing: content-box; // TODO: and this. Actually I don't know reasons to reasign box-sizing
     border-radius: 2px;
 }
 
@@ -217,7 +216,7 @@ h2 {
         font-size: 14px;
     }
 
-    .btn-play.play-active::before,
+    .btn-play.play-active::before, // TODO: and if it was centered horizontaly, you wouldn't need it at all
     .btn-play.play-active:active::before {
         left: 45%;
     }
@@ -241,6 +240,7 @@ h2 {
                 // items. If we apply only .listener-title class,
                 // Line 244 will have specifity 10 and line 104 will
                 // overwrite the media rule
+                // TODO: so do we need nesting this selector on line 104?
                 font-size: 30px;
             }
         }
