@@ -1,5 +1,3 @@
-// TODO: remove all addEventListener and removeEventListener and use jQuery for this    Corrected
-// TODO: some comments are superfluous  Deleted several comments
 $(function () {
     // Scroll to the film top
     function scrollToFilm(arg) {
@@ -66,7 +64,7 @@ $(function () {
     $('.listen').on('click', function () {
         $('body').addClass('lock');
         $('.substrate').removeClass('hidden');
-        setTimeout(function() {
+        setTimeout(function () {
             $('.substrate').removeClass('visually-hidden');
         }, 20);
 
@@ -74,11 +72,10 @@ $(function () {
         var filmTitleListen = $(this).closest('section');
 
         // Put the film title into the substrate window
-        $('.listener-title')[0].textContent = filmTitleListen.attr('data-name');// TODO: use jquery  Corrected
+        $('.listener-title')[0].textContent = filmTitleListen.attr('data-name');// TODO: use jquery  Corrected // TODO: I meant setting text content through jquery
 
         // Set the name of an audio file to the corresponding movie into data-attribute of audio tag
-        // $('.substrate').attr('data-audio-name', filmTitleListen.attr('data-audio-name')); // TODO: does substrate window need this attribute?    Corrected. At the moment the data attribute is setting to audio tag
-        $('audio').attr('data-audio-name', filmTitleListen.attr('data-audio-name'));
+        $('audio').attr('data-audio-name', filmTitleListen.attr('data-audio-name')); // TODO: does audio element need this?
 
         // Set the source of audio file
         var audioAtr = $('audio').attr('data-audio-name');
@@ -86,7 +83,7 @@ $(function () {
 
 
         // Display the duration of music
-        $('audio').on('canplay',function() {
+        $('audio').on('canplay', function () {
             showTime($('audio')[0]);
         });
     });
@@ -98,20 +95,20 @@ $(function () {
         $('.substrate').on('transitionend', function some(e) {
             if (e.originalEvent.propertyName === 'opacity') {
                 $('.substrate').addClass('hidden');
-                $('.substrate').off('transitionend', some);
+                $('.substrate').off('transitionend', some); // TODO: earlierly you use jquery method .one to add one time event
             }
         });
 
         // Stop playing music on modal window close
+        // TODO: and here you can store audio to local var
         $('audio')[0].pause();
         $('audio')[0].currentTime = 0;
 
         $('.listener').removeClass('play-active');
-        //inBar.style.width = 0; // TODO: use jQuery for this   Corrected
         $('.current-length').css('width', 0);
     }
 
-    $('.close-listener').on('click', function() {
+    $('.close-listener').on('click', function () {
         closeListener();
     });
 
@@ -122,7 +119,7 @@ $(function () {
     });
 
     // Play or pause the music of a movie
-    $('.listener').on('click', function() {
+    $('.listener').on('click', function () {
         $(this).toggleClass('play-active');
 
         if ($(this).hasClass('play-active')) {
@@ -132,27 +129,21 @@ $(function () {
         }
     });
 
-    // var audioElement = new Audio(); // TODO: add it as html element in template, and use jqeury to select from template  Corrected
-
-    //var bar = $('.music-length')[0]; // TODO: don't store in global variable, only in local when you need it   Corrected
-    //var inBar = $('.current-length')[0]; // TODO: don't store in global variable, only in local when you need it   Corrected
-
     // Make listener button as an play-triangle once the music is finished
-    $('audio').on('ended', function() {
-        setTimeout(function() {
+    $('audio').on('ended', function () {
+        setTimeout(function () {
             $('.listener').removeClass('play-active')
-            //inBar.style.width = 0; // TODO: use jquery    Corrected
             $('.current-length').css('width', 0);
             $('audio')[0].currentTime = 0;
             showTime($('audio')[0]);
         }, 500);
     });
 
-    $('audio').on('playing', function(e) {
+    $('audio').on('playing', function (e) { // TODO: unused event
         progress($('audio')[0]);
     });
 
-    $('audio').on('pause', function() {
+    $('audio').on('pause', function () {
         clearTimeout(timer);
     });
 
@@ -161,58 +152,45 @@ $(function () {
     function progress(element) {
         var position = (element.currentTime / element.duration) * 100;
 
-        //inBar.style.width = position + '%';// TODO: use jquery    Corrected
         $('.current-length').css('width', position + '%');
 
         if (position < 100) {
-            timer = setTimeout(function() {
+            timer = setTimeout(function () {
                 progress(element);
-                console.log('I\'m logging infinetely!!!!!!!!!!!!!'); // TODO: wow, try to run and stop music. Then look into console. Try to figure out, what's wrong and fix   Corrected
-                showTime(element);
+                showTime(element); // TODO: setting time should be simultaneous to setting current bar position, not after
             }, 50);
         }
-        //showTime(element); // TODO: why do you call it after setTimeout?   Corrected
     }
 
     // Set the music's time on progress bar click
-    $('.music-length').on('click', function(event) {
+    $('.music-length').on('click', function (event) {
         clearTimeout(timer);
 
-        // var barWidth = bar.clientWidth;// TODO: use jquery   Corrected
         var barWidth = $('.music-length').innerWidth();
-
-
-        //var inBarXCoor = $('.current-length')[0].getBoundingClientRect().left; // TODO: I believe, jquery also has method for this     Corrected
         var inBarXCoor = $('.current-length').offset().left
+        var inBarPosition = ((event.pageX - inBarXCoor) / barWidth) * 100;
 
-        var inBarPosition = ((event.pageX - inBarXCoor)/barWidth)*100;
-        //inBar.style.width = inBarPosition + '%';// TODO: use jquery Corrected
         $('.current-length').css('width', inBarPosition + '%');
 
-        $('audio')[0].currentTime = (inBarPosition * $('audio')[0].duration)/100;
+        $('audio')[0].currentTime = (inBarPosition * $('audio')[0].duration) / 100;
 
         showTime($('audio')[0]);
     });
 
 
     function showTime(element) {
-        // var min = Math.floor($('audio')[0].currentTime / 60); // TODO: code duplication start    Corrected
-        // sec = (sec < 10) ? '0' + sec : sec; // TODO: code duplication end    Corrected
-        // $('.timer')[0].textContent = min + ':' + sec;// TODO: use jquery     Corrected
-        //totalTime(element) // TODO: why current time calculate total time?    Corrected
-
         var minSecCurTime = calcTime(element.currentTime);
         var minSecDurat = calcTime(element.duration);
         $('.timer').text(minSecCurTime[0] + ':' + minSecCurTime[1]);
-        $('.timer').text($('.timer')[0].textContent + ' / ' + minSecDurat[0] + ':' + minSecDurat[1]);
+        $('.timer').text($('.timer')[0].textContent + ' / ' + minSecDurat[0] + ':' + minSecDurat[1]); // TODO: this can be set in a single line
     }
 });
 
-function calcTime(e) {
+function calcTime(e) { // TODO: why this function defined outside, while others inside?
     var min = Math.floor(e / 60);
     var sec = Math.floor(e % 60);
 
     min = (min < 10) ? '0' + min : min;
     sec = (sec < 10) ? '0' + sec : sec;
-    return [min, sec];
+    return [min, sec]; // TODO: function can return ready string
 }

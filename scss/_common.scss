@@ -162,10 +162,7 @@ h2 {
 
 .btn-play.play-active::before,
 .btn-play.play-active:active::before {
-    transform: translateX(-50%); // TODO: it's actually centered horizontally
-    // Made a correction in _slider.scss as the centralized
-    // rules were applying at 959px.
-    // And at the moment it has a better position view while playing
+    transform: translateX(-50%);
     width: 5px;
     height: 25px;;
     border-width: 0 5px;
@@ -182,14 +179,8 @@ h2 {
 
 .music-length {
     width: 75%;
-    // TODO: not sure you need this
-    // Deleted
     border: 2px solid $main-color;
     margin: 25px auto 0;
-    // TODO: this
-    // TODO: and this. Actually I don't know reasons to reasign box-sizing
-    // Deleted. The height value of this selector
-    // were giving incorrect view of inner progress bar
     border-radius: 2px;
 }
 
@@ -237,15 +228,7 @@ h2 {
         max-width: 640px;
     }
 
-    .listener-title  { // TODO: do we need such a long selector?
-        // Such a long selector to increase the specificity :)
-        // TODO: but we don't need nesting styles for full size. This way specifity isn't required
-        // line 104 has specifity 30 as styles were applied through the nested
-        // items. If we apply only .listener-title class,
-        // Line 244 will have specifity 10 and line 104 will
-        // overwrite the media rule
-        // TODO: so do we need nesting this selector on line 104?
-        // Corrected :)
+    .listener-title  {
         font-size: 30px;
     }
 }
