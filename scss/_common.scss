@@ -87,7 +87,7 @@ h2 {
     height: 100%;
     position: fixed;
     top: 0;
-    z-index: 5; // ok, make sense :D
+    z-index: 5;
     transition: 0.3s;
     display: flex;
     justify-content: center;
@@ -100,12 +100,6 @@ h2 {
         border: 2px solid $main-color;
         text-align: center;
         position: relative;
-
-        .listener-title {
-            font-size: 35px;
-            position: relative;
-            margin-top: 80px;
-        }
 
         .listener {
             position: static;
@@ -152,6 +146,12 @@ h2 {
     }
 }
 
+.listener-title {
+    font-size: 35px;
+    position: relative;
+    margin-top: 80px;
+}
+
 .hidden {
     display: none;
 }
@@ -162,7 +162,10 @@ h2 {
 
 .btn-play.play-active::before,
 .btn-play.play-active:active::before {
-    left: -7px; // TODO: it's actually centered horizontally
+    transform: translateX(-50%); // TODO: it's actually centered horizontally
+    // Made a correction in _slider.scss as the centralized
+    // rules were applying at 959px.
+    // And at the moment it has a better position view while playing
     width: 5px;
     height: 25px;;
     border-width: 0 5px;
@@ -179,11 +182,14 @@ h2 {
 
 .music-length {
     width: 75%;
-    height: 8px; // TODO: not sure you need this
+    // TODO: not sure you need this
+    // Deleted
     border: 2px solid $main-color;
     margin: 25px auto 0;
-    display: flex; // TODO: this
-    box-sizing: content-box; // TODO: and this. Actually I don't know reasons to reasign box-sizing
+    // TODO: this
+    // TODO: and this. Actually I don't know reasons to reasign box-sizing
+    // Deleted. The height value of this selector
+    // were giving incorrect view of inner progress bar
     border-radius: 2px;
 }
 
@@ -195,6 +201,7 @@ h2 {
 
 .timer {
     margin-top: 20px;
+    font-size: 16px;
 }
 
 @media screen and (max-width: 1210px) {
@@ -216,9 +223,8 @@ h2 {
         font-size: 14px;
     }
 
-    .btn-play.play-active::before, // TODO: and if it was centered horizontaly, you wouldn't need it at all
-    .btn-play.play-active:active::before {
-        left: 45%;
+    .timer {
+        font-size: 14px;
     }
 }
 
@@ -231,19 +237,16 @@ h2 {
         max-width: 640px;
     }
 
-    .substrate {
-        .soundtrack-listener {
-            .listener-title  { // TODO: do we need such a long selector?
-                // Such a long selector to increase the specificity :)
-                // TODO: but we don't need nesting styles for full size. This way specifity isn't required
-                // line 104 has specifity 30 as styles were applied through the nested
-                // items. If we apply only .listener-title class,
-                // Line 244 will have specifity 10 and line 104 will
-                // overwrite the media rule
-                // TODO: so do we need nesting this selector on line 104?
-                font-size: 30px;
-            }
-        }
+    .listener-title  { // TODO: do we need such a long selector?
+        // Such a long selector to increase the specificity :)
+        // TODO: but we don't need nesting styles for full size. This way specifity isn't required
+        // line 104 has specifity 30 as styles were applied through the nested
+        // items. If we apply only .listener-title class,
+        // Line 244 will have specifity 10 and line 104 will
+        // overwrite the media rule
+        // TODO: so do we need nesting this selector on line 104?
+        // Corrected :)
+        font-size: 30px;
     }
 }
 
@@ -252,11 +255,8 @@ h2 {
         max-width: 425px;
     }
 
-    .substrate {
-        .soundtrack-listener {
-            .listener-title {
-                font-size: 25px;
-            }
-        }
+    .listener-title {
+        font-size: 25px;
     }
+
 }
