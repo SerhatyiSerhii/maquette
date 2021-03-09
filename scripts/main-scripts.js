@@ -89,10 +89,10 @@ $(function () {
     function closeListener() {
         $('body').removeClass('lock');
         $('.substrate').addClass('visually-hidden');
-        $('.substrate').on('transitionend', function some(e) {
+        $('.substrate').on('transitionend', function closeMdlWindow(e) {
             if (e.originalEvent.propertyName === 'opacity') {
                 $('.substrate').addClass('hidden');
-                $('.substrate').off('transitionend', some); // TODO: got it, make sense. But rename function some, the name is strange
+                $('.substrate').off('transitionend', closeMdlWindow); // TODO: got it, make sense. But rename function some, the name is strange    Renaimed :)
             }
         });
 
