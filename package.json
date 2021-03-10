@@ -4,8 +4,9 @@
   "description": "Top 10",
   "main": "index.js",
   "scripts": {
+    "build": "npm run scss:build && npm run jquery",
     "scss": "sass --watch scss/styles.scss styles.css",
-    "build": "sass --no-source-map scss/styles.scss styles.css --style compressed",
+    "scss:build": "sass --no-source-map scss/styles.scss styles.css --style compressed",
     "jquery": "rm -rf generated-scripts && mkdir generated-scripts && cp node_modules/jquery/dist/jquery.min.js generated-scripts/"
 
   },

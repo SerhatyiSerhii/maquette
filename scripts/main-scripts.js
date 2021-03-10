@@ -92,7 +92,7 @@ $(function () {
         $('.substrate').on('transitionend', function closeMdlWindow(e) {
             if (e.originalEvent.propertyName === 'opacity') {
                 $('.substrate').addClass('hidden');
-                $('.substrate').off('transitionend', closeMdlWindow); // TODO: got it, make sense. But rename function some, the name is strange    Renaimed :)
+                $('.substrate').off('transitionend', closeMdlWindow);
             }
         });
 
