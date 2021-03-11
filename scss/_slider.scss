@@ -34,10 +34,12 @@
         position: relative;
         left: -951px;
         width: 3100px;
+        display: flex;
 
         li {
             display: inline-block;
             padding: 0 75px;
+            transition: 1s;
 
             div {
                 position: relative;
@@ -84,6 +86,10 @@
         transform: translateX(-35%);
         transition: 0.3s;
     }
+}
+
+.slider .pusher {
+    margin-left: 0;
 }
 
 .btn-play:hover:active::before {

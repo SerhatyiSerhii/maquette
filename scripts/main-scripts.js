@@ -190,5 +190,57 @@ $(function () {
         sec = (sec < 10) ? '0' + sec : sec;
         return min + ':' + sec;
     }
+
+    // Move slides on side-dirrection arrows click
+    function sideArrowClick() {
+        $('.slider').each(function() {
+
+            var a = 2;
+            var parent = $(this);
+
+            parent.find('.arrow-left').on('click', function(event) {
+                event.preventDefault();
+                parent.find('li:first-child').addClass('pusher');
+                a--;
+                if (a < 1) {
+                    a = 3;
+                }
+                switch(a) {
+                    case 1:
+                        parent.find('.pusher').css('margin-left', '33%');
+                        break;
+                        case 2:
+                    parent.find('.pusher').css('margin-left', 0);
+                        break;
+                        case 3:
+                    parent.find('.pusher').css('margin-left', '-33%');
+                        break;
+                }
+            })
+
+            parent.find('.arrow-right').on('click', function(event) {
+                event.preventDefault();
+                parent.find('li:first-child').addClass('pusher');
+                a++;
+                if (a > 3) {
+                    a = 1;
+                }
+                switch(a) {
+                    case 1:
+                        parent.find('.pusher').css('margin-left', '33%');
+                        break;
+                        case 2:
+                    parent.find('.pusher').css('margin-left', 0);
+                        break;
+                        case 3:
+                    parent.find('.pusher').css('margin-left', '-33%');
+                        break;
+                }
+            })
+
+
+        })
+    }
+    sideArrowClick();
 });
 
