@@ -193,49 +193,74 @@ $(function () {
 
     // Move slides on side-dirrection arrows click
     function sideArrowClick() {
-        $('.slider').each(function() {
+        $('.slider').each(function () {
 
-            var a = 2;
             var parent = $(this);
+            var movePosition = parent.find('li').first().outerWidth();
 
-            parent.find('.arrow-left').on('click', function(event) {
+            var maxIndex = parent.find('li').last().index();
+
+            var currTranslate = parseInt(parent.find('ul').css('transform').split(',')[4]);
+            const constTranslate = -maxIndex * movePosition;
+
+
+            parent.find('.arrow-left').on('click', function (event) {
                 event.preventDefault();
-                parent.find('li:first-child').addClass('pusher');
-                a--;
-                if (a < 1) {
-                    a = 3;
+
+                currTranslate += movePosition;
+
+                if (currTranslate >= 0) {
+                    currTranslate = 0;
+                    parent.find('ul').css('transform', 'translateX(' + currTranslate/movePosition*100 + '%)');
+                } else {
+                    parent.find('ul').css('transform', 'translateX(' + currTranslate/movePosition*100 + '%)');
                 }
-                switch(a) {
-                    case 1:
-                        parent.find('.pusher').css('margin-left', '33%');
-                        break;
-                        case 2:
-                    parent.find('.pusher').css('margin-left', 0);
-                        break;
-                        case 3:
-                    parent.find('.pusher').css('margin-left', '-33%');
-                        break;
-                }
+
+
+                // parent.find('li').first().addClass('pusher');
+                // a--;
+                // if (a < 1) {
+                //     a = b;
+                // }
+                // switch (a) {
+                //     case 1:
+                //         parent.find('.pusher').css('margin-left', '33%');
+                //         break;
+                //     case 2:
+                //         parent.find('.pusher').css('margin-left', 0);
+                //         break;
+                //     case 3:
+                //         parent.find('.pusher').css('margin-left', '-33%');
+                //         break;
+                // }
             })
 
-            parent.find('.arrow-right').on('click', function(event) {
+            parent.find('.arrow-right').on('click', function (event) {
                 event.preventDefault();
-                parent.find('li:first-child').addClass('pusher');
-                a++;
-                if (a > 3) {
-                    a = 1;
+                if (currTranslate == constTranslate) {
+                    currTranslate = constTranslate;
+                    parent.find('ul').css('transform', 'translateX(' + currTranslate/movePosition*100 + '%)');
+                } else {
+                    currTranslate -= movePosition;
+                    parent.find('ul').css('transform', 'translateX(' + currTranslate/movePosition*100 + '%)');
                 }
-                switch(a) {
-                    case 1:
-                        parent.find('.pusher').css('margin-left', '33%');
-                        break;
-                        case 2:
-                    parent.find('.pusher').css('margin-left', 0);
-                        break;
-                        case 3:
-                    parent.find('.pusher').css('margin-left', '-33%');
-                        break;
-                }
+
+                // parent.find('li:first-child').addClass('pusher');
+                // a++;
+                // if (a > 3) {
+                //     a = 1;
+                // }
+                // switch (a) {
+                //     case 1:
+                //         parent.find('.pusher').css('margin-left', '33%');
+                //         break;
+                //     case 2:
+                //         parent.find('.pusher').css('margin-left', 0);
+                //         break;
+                //     case 3:
+                //         parent.find('.pusher').css('margin-left', '-33%');
+                //         break;
+                // }
             })
 
 
