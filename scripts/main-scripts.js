@@ -192,17 +192,22 @@ $(function () {
     }
 
     // Move slides on side-dirrection arrows click
-    function sideArrowClick() {
+    function sideArrowClick() { // TODO: rename function to something like initSlider
         $('.slider').each(function () {
-
+            // TODO:
+            // implementation looks perfect but can be significantly simplified
+            // you don't actually need width to calculate translate percentage
+            // index is enough
+            // you have min index - 0
+            // you found max index
+            // instead currTranslate you can set current active index - 1 (or 0 when you delete transform: traslate from css)
+            // and this indices - min, max, and current - are enough to calculate required translate
             var parent = $(this);
             var movePosition = parent.find('li').first().outerWidth();
 
             var maxIndex = parent.find('li').last().index();
-
             var currTranslate = parseInt(parent.find('ul').css('transform').split(',')[4]);
             const constTranslate = -maxIndex * movePosition;
-
 
             parent.find('.arrow-left').on('click', function (event) {
                 event.preventDefault();
@@ -211,59 +216,22 @@ $(function () {
 
                 if (currTranslate >= 0) {
                     currTranslate = 0;
-                    parent.find('ul').css('transform', 'translateX(' + currTranslate/movePosition*100 + '%)');
+                    parent.find('ul').css('transform', 'translateX(' + currTranslate/movePosition*100 + '%)'); // TODO: you do absolutely the same in else, do you really need to wrap it in if/else?
                 } else {
                     parent.find('ul').css('transform', 'translateX(' + currTranslate/movePosition*100 + '%)');
                 }
-
-
-                // parent.find('li').first().addClass('pusher');
-                // a--;
-                // if (a < 1) {
-                //     a = b;
-                // }
-                // switch (a) {
-                //     case 1:
-                //         parent.find('.pusher').css('margin-left', '33%');
-                //         break;
-                //     case 2:
-                //         parent.find('.pusher').css('margin-left', 0);
-                //         break;
-                //     case 3:
-                //         parent.find('.pusher').css('margin-left', '-33%');
-                //         break;
-                // }
             })
 
             parent.find('.arrow-right').on('click', function (event) {
                 event.preventDefault();
                 if (currTranslate == constTranslate) {
                     currTranslate = constTranslate;
-                    parent.find('ul').css('transform', 'translateX(' + currTranslate/movePosition*100 + '%)');
+                    parent.find('ul').css('transform', 'translateX(' + currTranslate/movePosition*100 + '%)'); // TODO: the same
                 } else {
                     currTranslate -= movePosition;
                     parent.find('ul').css('transform', 'translateX(' + currTranslate/movePosition*100 + '%)');
                 }
-
-                // parent.find('li:first-child').addClass('pusher');
-                // a++;
-                // if (a > 3) {
-                //     a = 1;
-                // }
-                // switch (a) {
-                //     case 1:
-                //         parent.find('.pusher').css('margin-left', '33%');
-                //         break;
-                //     case 2:
-                //         parent.find('.pusher').css('margin-left', 0);
-                //         break;
-                //     case 3:
-                //         parent.find('.pusher').css('margin-left', '-33%');
-                //         break;
-                // }
             })
-
-
         })
     }
     sideArrowClick();

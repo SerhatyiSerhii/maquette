@@ -35,7 +35,7 @@
         margin: 0 auto;
         width: 1030px;
         display: flex;
-        transform: translateX(-100%);
+        transform: translateX(-100%); // TODO: remove it
         transition: 1s;
 
         li {
@@ -120,13 +120,6 @@
     }
 
     .slides-wrapper ul {
-        /* Attachment of tag to the center of the screen
-        from its left side which makes it independent of
-        the screen's size and transformed to place so the second image
-        exactly between arrows.*/
-        // left: 50%;
-        // transform: translateX(-1220px);
-        // width: 2470px;
         width: 820px;
 
         li {
@@ -153,8 +146,6 @@
     }
 
     .slides-wrapper ul {
-        // transform: translateX(-988px);
-        // width: 1980px;
         width: 655px;
 
         li {
@@ -199,8 +190,6 @@
     }
 
     .slides-wrapper ul {
-        // transform: translateX(-520px);
-        // width: 1060px;
         width: 350px;
 
         li {
@@ -245,8 +234,6 @@
     }
 
     .slides-wrapper ul {
-        // transform: translateX(-404px);
-        // width: 810px;
         width: 267px;
 
         li {
