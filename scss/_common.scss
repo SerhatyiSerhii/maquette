@@ -197,7 +197,7 @@ h2 {
 
 .volume {
     border: 2px solid $main-color;
-    margin: 40px auto 0;
+    margin: 40px auto 0; // TODO: for such a little component better to use parent padding to adjust vertically
     width: 100px;
     overflow: hidden;
 }
@@ -208,7 +208,7 @@ h2 {
     background-color: #fff;
     position: relative;
     left: 91px;
-    transform: translateX(-5px);
+    transform: translateX(-5px); // TODO: can't understand what for
 }
 
 .volume-handle::after {
@@ -216,7 +216,7 @@ h2 {
     width: 91px;
     height: 8px;
     position: absolute;
-    background-color: rgba(0, 163, 255, 0.7);
+    background-color: rgba(0, 163, 255, 0.7); // TODO: instead of passing red green blue values you can pass just our color variable
     transform: translateX(5px);
 }
 

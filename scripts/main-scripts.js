@@ -105,7 +105,7 @@ $(function () {
         $('.current-length').css('width', 0);
 
         // Set the volume index to default
-        $('.volume-handle').css('left', '91px');
+        $('.volume-handle').css('left', '91px'); // TODO: never use magic numbers, magic strings etc. Find another way to set valume to max
         audio.volume = 1;
     }
 
@@ -142,9 +142,8 @@ $(function () {
 
     $('audio').on('playing', function () {
         //progress($('audio')[0]);
-        timer = setInterval(function() {
+        timer = setInterval(function () {
             progress($('audio')[0]);
-            console.log('test');
         }, 100);
     });
 
@@ -201,24 +200,11 @@ $(function () {
         return min + ':' + sec;
     }
 
-    // Move slides on side-dirrection arrows click
-    function initSlider() { // TODO: rename function to something like initSlider   Corrected
+    function initSlider() { // TODO: make function to accept initial slide index. Set translate on slider init. Pass index 1 to initSlider
         $('.slider').each(function () {
-            // TODO:
-            // implementation looks perfect but can be significantly simplified
-            // you don't actually need width to calculate translate percentage
-            // index is enough
-            // you have min index - 0
-            // you found max index
-            // instead currTranslate you can set current active index - 1 (or 0 when you delete transform: traslate from css)
-            // and this indices - min, max, and current - are enough to calculate required translate
-            // Corrected
             var parent = $(this);
-
             var currIndex = 0;
-
             var maxIndex = parent.find('li').last().index();
-
 
             parent.find('.arrow-left').on('click', function (event) {
                 event.preventDefault();
@@ -226,9 +212,9 @@ $(function () {
                 currIndex--;
                 settingTranslateX();
 
-                if (currIndex <= 0) {
+                if (currIndex <= 0) { // TODO: if you have separate function for setting translate, then you can check index to fit bounds in that function
                     currIndex = 0;
-                    settingTranslateX(); // TODO: you do absolutely the same in else, do you really need to wrap it in if/else?   Corrected
+                    settingTranslateX();
                 }
             })
 
@@ -238,50 +224,60 @@ $(function () {
                 currIndex++;
                 settingTranslateX();
 
-                if (currIndex >= maxIndex) {
+                if (currIndex >= maxIndex) { // TODO: the same
                     currIndex = maxIndex;
-                    settingTranslateX(); // TODO: the same   Corrected
+                    settingTranslateX();
                 }
             })
 
             function settingTranslateX() {
-                parent.find('ul').css('transform', 'translateX(' + -currIndex*100 + '%)');
+                parent.find('ul').css('transform', 'translateX(' + -currIndex * 100 + '%)');
             }
         })
     }
     initSlider();
 
     // Volume bar
-    $('.volume').on('mousedown', function(event) {
-        moveVolumeHandle(event);
+    $('.volume').on('mousedown', function (event) {
+        moveVolumeHandle(event); // TODO: do you need it? if it is for click - add it explicitly to click event
 
-        $('.volume').on('mousemove', function(event) {
+        $('.volume').on('mousemove', function (event) { // TODO: if mouse leaves bounds of .volume this stops working. Consider add event on document
             moveVolumeHandle(event);
         });
+
+        // TODO: hint
+        // you can avoid wrapping just handler in anonymous function
+        // the code below
+        // $('.volume').on('mousemove', function(event) {
+        //     moveVolumeHandle(event);
+        // });
+        // is the same as
+        // $('.volume').on('mousemove', moveVolumeHandle);
+
     });
 
-    $('.volume').on('mouseup', function() {
+    $('.volume').on('mouseup', function () { // TODO: do you need it if you have the same on document?
         $('.volume').off('mousemove');
     });
 
-    $(document).on('mouseup', function() {
+    $(document).on('mouseup', function () { // TODO: you don't need to remove mousemove each time mouseup happens on document. you need it just once if it was added. Consider to add it where mousemove event added
         $('.volume').off('mousemove');
     });
 
     function moveVolumeHandle(event) {
         var volumeLeftCoor = $('.volume').offset().left;
-        var volHandTransl = parseInt($('.volume-handle').css('transform').split(',')[4], 10); // -5
+        var volHandTransl = parseInt($('.volume-handle').css('transform').split(',')[4], 10); // -5 // TODO: think of better solution instead of parsing transform. Move it with left property at least
         var maxPos = $('.volume').width() + volHandTransl; // 91
         var volHandlPos = event.pageX - volumeLeftCoor;
-            if (volHandlPos >= maxPos) {
-                volHandlPos = maxPos;
-            } else if (volHandlPos <= -volHandTransl) {
-                volHandlPos = -volHandTransl;
-            }
+        if (volHandlPos >= maxPos) {
+            volHandlPos = maxPos;
+        } else if (volHandlPos <= -volHandTransl) {
+            volHandlPos = -volHandTransl;
+        }
         $('.volume-handle').css('left', volHandlPos + 'px');
 
         var volumeIndex = ((volHandlPos + volHandTransl) / (maxPos + volHandTransl));
-        var audio = $('audio')[0];
+        var audio = $('audio')[0]; // TODO: you don't need to store audio in variable here
         audio.volume = volumeIndex;
     }
 });
