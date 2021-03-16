@@ -103,6 +103,10 @@ $(function () {
 
         $('.listener').removeClass('play-active');
         $('.current-length').css('width', 0);
+
+        // Set the volume index to default
+        $('.volume-handle').css('left', '91px');
+        audio.volume = 1;
     }
 
     $('.close-listener').on('click', function () {
@@ -137,11 +141,16 @@ $(function () {
     });
 
     $('audio').on('playing', function () {
-        progress($('audio')[0]);
+        //progress($('audio')[0]);
+        timer = setInterval(function() {
+            progress($('audio')[0]);
+            console.log('test');
+        }, 100);
     });
 
     $('audio').on('pause', function () {
-        clearTimeout(timer);
+        // clearTimeout(timer);
+        clearInterval(timer);
     });
 
     var timer;
@@ -153,16 +162,17 @@ $(function () {
 
         showTime(element);
 
-        if (position < 100) {
-            timer = setTimeout(function () {
-                progress(element);
-            }, 50);
-        }
+        // if (position < 100) {
+        //     timer = setTimeout(function () {
+        //         progress(element);
+        //     }, 50);
+        // }
     }
 
     // Set the music's time on progress bar click
     $('.music-length').on('click', function (event) {
-        clearTimeout(timer);
+        // clearTimeout(timer);
+        clearInterval(timer);
 
         var barWidth = $('.music-length').innerWidth();
         var inBarXCoor = $('.current-length').offset().left
@@ -192,7 +202,7 @@ $(function () {
     }
 
     // Move slides on side-dirrection arrows click
-    function sideArrowClick() { // TODO: rename function to something like initSlider
+    function initSlider() { // TODO: rename function to something like initSlider   Corrected
         $('.slider').each(function () {
             // TODO:
             // implementation looks perfect but can be significantly simplified
@@ -202,38 +212,77 @@ $(function () {
             // you found max index
             // instead currTranslate you can set current active index - 1 (or 0 when you delete transform: traslate from css)
             // and this indices - min, max, and current - are enough to calculate required translate
+            // Corrected
             var parent = $(this);
-            var movePosition = parent.find('li').first().outerWidth();
+
+            var currIndex = 0;
 
             var maxIndex = parent.find('li').last().index();
-            var currTranslate = parseInt(parent.find('ul').css('transform').split(',')[4]);
-            const constTranslate = -maxIndex * movePosition;
+
 
             parent.find('.arrow-left').on('click', function (event) {
                 event.preventDefault();
 
-                currTranslate += movePosition;
+                currIndex--;
+                settingTranslateX();
 
-                if (currTranslate >= 0) {
-                    currTranslate = 0;
-                    parent.find('ul').css('transform', 'translateX(' + currTranslate/movePosition*100 + '%)'); // TODO: you do absolutely the same in else, do you really need to wrap it in if/else?
-                } else {
-                    parent.find('ul').css('transform', 'translateX(' + currTranslate/movePosition*100 + '%)');
+                if (currIndex <= 0) {
+                    currIndex = 0;
+                    settingTranslateX(); // TODO: you do absolutely the same in else, do you really need to wrap it in if/else?   Corrected
                 }
             })
 
             parent.find('.arrow-right').on('click', function (event) {
                 event.preventDefault();
-                if (currTranslate == constTranslate) {
-                    currTranslate = constTranslate;
-                    parent.find('ul').css('transform', 'translateX(' + currTranslate/movePosition*100 + '%)'); // TODO: the same
-                } else {
-                    currTranslate -= movePosition;
-                    parent.find('ul').css('transform', 'translateX(' + currTranslate/movePosition*100 + '%)');
+
+                currIndex++;
+                settingTranslateX();
+
+                if (currIndex >= maxIndex) {
+                    currIndex = maxIndex;
+                    settingTranslateX(); // TODO: the same   Corrected
                 }
             })
+
+            function settingTranslateX() {
+                parent.find('ul').css('transform', 'translateX(' + -currIndex*100 + '%)');
+            }
         })
     }
-    sideArrowClick();
+    initSlider();
+
+    // Volume bar
+    $('.volume').on('mousedown', function(event) {
+        moveVolumeHandle(event);
+
+        $('.volume').on('mousemove', function(event) {
+            moveVolumeHandle(event);
+        });
+    });
+
+    $('.volume').on('mouseup', function() {
+        $('.volume').off('mousemove');
+    });
+
+    $(document).on('mouseup', function() {
+        $('.volume').off('mousemove');
+    });
+
+    function moveVolumeHandle(event) {
+        var volumeLeftCoor = $('.volume').offset().left;
+        var volHandTransl = parseInt($('.volume-handle').css('transform').split(',')[4], 10); // -5
+        var maxPos = $('.volume').width() + volHandTransl; // 91
+        var volHandlPos = event.pageX - volumeLeftCoor;
+            if (volHandlPos >= maxPos) {
+                volHandlPos = maxPos;
+            } else if (volHandlPos <= -volHandTransl) {
+                volHandlPos = -volHandTransl;
+            }
+        $('.volume-handle').css('left', volHandlPos + 'px');
+
+        var volumeIndex = ((volHandlPos + volHandTransl) / (maxPos + volHandTransl));
+        var audio = $('audio')[0];
+        audio.volume = volumeIndex;
+    }
 });
 

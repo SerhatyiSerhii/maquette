@@ -35,7 +35,6 @@
         margin: 0 auto;
         width: 1030px;
         display: flex;
-        transform: translateX(-100%); // TODO: remove it
         transition: 1s;
 
         li {
@@ -115,7 +114,7 @@
             the screen's size and transformed to place between
             films' images.*/
             right: 50%;
-            transform: translate(455px, -50%);
+            transform: translate(435px, -50%);
         }
     }
 
@@ -137,7 +136,7 @@
 @media screen and (max-width: 959px) {
     .slider {
         .arrow-left {
-            transform: translate(-362px, -50%);
+            transform: translate(-357px, -50%);
         }
 
         .arrow-right {
@@ -177,7 +176,7 @@
 @media screen and (max-width: 767px) {
     .slider {
         .arrow-left {
-            transform: translate(-195px, -50%);
+            transform: translate(-197px, -50%);
         }
 
         .arrow-right {
@@ -221,11 +220,11 @@
         padding: 75px 0;
 
         .arrow-left {
-            transform: translate(-147px, -50%);
+            transform: translate(-148px, -50%);
         }
 
         .arrow-right {
-            transform: translate(149px, -50%);
+            transform: translate(148px, -50%);
         }
 
         svg {

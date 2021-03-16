@@ -149,7 +149,7 @@ h2 {
 .listener-title {
     font-size: 35px;
     position: relative;
-    margin-top: 80px;
+    margin-top: 35px;
 }
 
 .hidden {
@@ -193,6 +193,31 @@ h2 {
 .timer {
     margin-top: 20px;
     font-size: 16px;
+}
+
+.volume {
+    border: 2px solid $main-color;
+    margin: 40px auto 0;
+    width: 100px;
+    overflow: hidden;
+}
+
+.volume-handle {
+    width: 10px;
+    height: 8px;
+    background-color: #fff;
+    position: relative;
+    left: 91px;
+    transform: translateX(-5px);
+}
+
+.volume-handle::after {
+    content: '';
+    width: 91px;
+    height: 8px;
+    position: absolute;
+    background-color: rgba(0, 163, 255, 0.7);
+    transform: translateX(5px);
 }
 
 @media screen and (max-width: 1210px) {
