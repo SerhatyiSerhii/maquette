@@ -41,19 +41,59 @@
             display: inline-block;
             padding: 0 75px;
             transition: 1s;
-
-            div {
-                position: relative;
-                width: 880px;
-                height: 540px;
-
-                img {
-                    width: 100%;
-                    height: 100%;
-                }
-            }
         }
     }
+
+    img {
+        width: 100%;
+        height: 100%;
+    }
+
+    .video-wrapper {
+        display: none;
+    }
+}
+
+.frame {
+    position: relative;
+    width: 880px;
+    height: 540px;
+
+    &:hover {
+        .video-controls {
+            opacity: 1;
+        }
+
+        .playing-video.play-active {
+            opacity: 1;
+        }
+    }
+}
+
+.playing-video.play-active {
+    opacity: 0;
+}
+
+.video-controls {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: 0.3s;
+    padding-top: 75px;
+    width: 100%;
+    height: 100%;
+}
+
+.video-volume-handle::after {
+    transform: translateX(10px);
+}
+
+.music-length.video-length {
+    bottom: 75px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .btn-play,
@@ -97,6 +137,12 @@
     border-left-color: #000;
 }
 
+video {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+
 @media screen and (max-width: 1210px) {
     .slider {
         .arrow-left {
@@ -123,14 +169,13 @@
 
         li {
             padding: 0 60px;
-
-            div {
-                width: 700px;
-                height: 425px;
-            }
         }
     }
 
+    .frame {
+        width: 700px;
+        height: 425px;
+    }
 }
 
 @media screen and (max-width: 959px) {
@@ -149,14 +194,13 @@
 
         li {
             padding: 0 35px;
-
-            div {
-                width: 585px;
-                height: 335px;
-            }
         }
     }
 
+    .frame {
+        width: 585px;
+        height: 335px;
+    }
 
     .btn-play,
     .btn-play:active {
@@ -193,14 +237,13 @@
 
         li {
             padding: 0 25px;
-
-            div {
-                width: 300px;
-                height: 170px;
-            }
         }
     }
 
+    .frame {
+        width: 300px;
+        height: 170px;
+    }
 
     .btn-play,
     .btn-play:active {
@@ -237,12 +280,12 @@
 
         li {
             padding: 0 16px;
-
-            div {
-                width: 235px;
-                height: 140px;
-            }
         }
+    }
+
+    .frame {
+        width: 235px;
+        height: 140px;
     }
 
 

@@ -105,7 +105,9 @@ $(function () {
         $('.current-length').css('width', 0);
 
         // Set the volume index to default
-        $('.volume-handle').css('left', '91px'); // TODO: never use magic numbers, magic strings etc. Find another way to set valume to max
+        var volHandTransl = $('.volume-handle').width()*-0.5;
+        var maxPos = $('.volume').width() + volHandTransl;
+        $('.volume-handle').css('left', maxPos + volHandTransl + 'px'); // TODO: never use magic numbers, magic strings etc. Find another way to set valume to max   Corrected
         audio.volume = 1;
     }
 
@@ -141,15 +143,16 @@ $(function () {
     });
 
     $('audio').on('playing', function () {
-        //progress($('audio')[0]);
-        timer = setInterval(function () {
-            progress($('audio')[0]);
-        }, 100);
+        progress($('audio')[0]);
+        // timer = setInterval(function () {
+        //     progress($('audio')[0]);
+        // }, 100);
     });
 
     $('audio').on('pause', function () {
         // clearTimeout(timer);
-        clearInterval(timer);
+        // clearInterval(timer);
+        window.cancelAnimationFrame(timer);
     });
 
     var timer;
@@ -161,27 +164,33 @@ $(function () {
 
         showTime(element);
 
-        // if (position < 100) {
-        //     timer = setTimeout(function () {
-        //         progress(element);
-        //     }, 50);
-        // }
+        if (position < 100) {
+            // timer = setTimeout(function () {
+            //     progress(element);
+            // }, 50);
+            timer = window.requestAnimationFrame(function() {
+                progress(element);
+            });
+        }
     }
 
     // Set the music's time on progress bar click
     $('.music-length').on('click', function (event) {
         // clearTimeout(timer);
-        clearInterval(timer);
+        // clearInterval(timer);
+        if ($(this).closest('.soundtrack-listener').length != 0) {
+            window.cancelAnimationFrame(timer);
 
-        var barWidth = $('.music-length').innerWidth();
-        var inBarXCoor = $('.current-length').offset().left
-        var inBarPosition = ((event.pageX - inBarXCoor) / barWidth) * 100;
+            var barWidth = $('.music-length').innerWidth();
+            var inBarXCoor = $('.current-length').offset().left
+            var inBarPosition = ((event.pageX - inBarXCoor) / barWidth) * 100;
 
-        $('.current-length').css('width', inBarPosition + '%');
+            $('.current-length').css('width', inBarPosition + '%');
 
-        $('audio')[0].currentTime = (inBarPosition * $('audio')[0].duration) / 100;
+            $('audio')[0].currentTime = (inBarPosition * $('audio')[0].duration) / 100;
 
-        showTime($('audio')[0]);
+            showTime($('audio')[0]);
+        }
     });
 
 
@@ -200,11 +209,12 @@ $(function () {
         return min + ':' + sec;
     }
 
-    function initSlider() { // TODO: make function to accept initial slide index. Set translate on slider init. Pass index 1 to initSlider
+    function initSlider(index) { // TODO: make function to accept initial slide index. Set translate on slider init. Pass index 1 to initSlider     Done
         $('.slider').each(function () {
             var parent = $(this);
-            var currIndex = 0;
+            var currIndex = index;
             var maxIndex = parent.find('li').last().index();
+            settingTranslateX();
 
             parent.find('.arrow-left').on('click', function (event) {
                 event.preventDefault();
@@ -212,10 +222,10 @@ $(function () {
                 currIndex--;
                 settingTranslateX();
 
-                if (currIndex <= 0) { // TODO: if you have separate function for setting translate, then you can check index to fit bounds in that function
-                    currIndex = 0;
-                    settingTranslateX();
-                }
+                // if (currIndex <= 0) { // TODO: if you have separate function for setting translate, then you can check index to fit bounds in that function   Corrected
+                //     currIndex = 0;
+                //     settingTranslateX();
+                // }
             })
 
             parent.find('.arrow-right').on('click', function (event) {
@@ -223,27 +233,30 @@ $(function () {
 
                 currIndex++;
                 settingTranslateX();
-
-                if (currIndex >= maxIndex) { // TODO: the same
-                    currIndex = maxIndex;
-                    settingTranslateX();
-                }
             })
 
             function settingTranslateX() {
+                if (currIndex <= 0) {
+                    currIndex = 0;
+                } else if (currIndex >= maxIndex) {
+                    currIndex = maxIndex;
+                }
                 parent.find('ul').css('transform', 'translateX(' + -currIndex * 100 + '%)');
             }
         })
     }
-    initSlider();
+    initSlider(1);
 
     // Volume bar
-    $('.volume').on('mousedown', function (event) {
-        moveVolumeHandle(event); // TODO: do you need it? if it is for click - add it explicitly to click event
+    $('.volume').on('mousedown', function () {
 
-        $('.volume').on('mousemove', function (event) { // TODO: if mouse leaves bounds of .volume this stops working. Consider add event on document
-            moveVolumeHandle(event);
-        });
+        moveVolumeHandle(event); // TODO: do you need it? if it is for click - add it explicitly to click event   Click works like mouseup.
+        // The adjusting of volume with only click doesn't make any big difference
+        // with mousedown, but when we intend to adjust volume with mousemove event,
+        // then the click makes the big difference with the comparising with mousedown.
+        // Press the mouse, but don't move it to see the result.
+
+        $(document).on('mousemove', moveVolumeHandle); // TODO: if mouse leaves bounds of .volume this stops working. Consider add event on document    Corrected
 
         // TODO: hint
         // you can avoid wrapping just handler in anonymous function
@@ -254,19 +267,19 @@ $(function () {
         // is the same as
         // $('.volume').on('mousemove', moveVolumeHandle);
 
+        $(document).one('mouseup', function() {
+            $(document).off('mousemove');
+        });
     });
 
-    $('.volume').on('mouseup', function () { // TODO: do you need it if you have the same on document?
-        $('.volume').off('mousemove');
-    });
 
-    $(document).on('mouseup', function () { // TODO: you don't need to remove mousemove each time mouseup happens on document. you need it just once if it was added. Consider to add it where mousemove event added
-        $('.volume').off('mousemove');
-    });
+    // $(document).on('mouseup', function () { // TODO: you don't need to remove mousemove each time mouseup happens on document. you need it just once if it was added. Consider to add it where mousemove event added     Corrected
+    //     $('.volume').off('mousemove');
+    // });
 
     function moveVolumeHandle(event) {
         var volumeLeftCoor = $('.volume').offset().left;
-        var volHandTransl = parseInt($('.volume-handle').css('transform').split(',')[4], 10); // -5 // TODO: think of better solution instead of parsing transform. Move it with left property at least
+        var volHandTransl = $('.volume-handle').width()*-0.5; // -5 // TODO: think of better solution instead of parsing transform. Move it with left property at least     Corrected
         var maxPos = $('.volume').width() + volHandTransl; // 91
         var volHandlPos = event.pageX - volumeLeftCoor;
         if (volHandlPos >= maxPos) {
@@ -274,11 +287,34 @@ $(function () {
         } else if (volHandlPos <= -volHandTransl) {
             volHandlPos = -volHandTransl;
         }
-        $('.volume-handle').css('left', volHandlPos + 'px');
+        $('.volume-handle').css('left', volHandlPos + volHandTransl + 'px');
 
         var volumeIndex = ((volHandlPos + volHandTransl) / (maxPos + volHandTransl));
-        var audio = $('audio')[0]; // TODO: you don't need to store audio in variable here
-        audio.volume = volumeIndex;
+        $('audio')[0].volume = volumeIndex;// TODO: you don't need to store audio in variable here   Corrected
     }
+
+    // Playing video
+    $('.btn-play').on('click', function() {
+        if ($(this).closest('.slider').length != 0) {
+            $(this).toggleClass('playing-video play-active');
+
+            var image = $(this).prev();
+            if ($(this).hasClass('playing-video')) {
+                image.css('display', 'none');
+                $(this).siblings('.video-wrapper').css('display', 'block');
+            } else {
+                image.css('display', 'block');
+                $(this).siblings('.video-wrapper').css('display', 'none');
+            }
+
+            var video = $(this).siblings('.video-wrapper').find('video')[0];
+
+            if (video.paused) {
+                video.play();
+            } else {
+                video.pause();
+            }
+        }
+    });
 });
 
