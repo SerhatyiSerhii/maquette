@@ -201,25 +201,24 @@ h2 {
     margin: 0 auto; // TODO: for such a little component better to use parent padding to adjust vertically   Corrected
     width: 100px;
     overflow: hidden;
+    position: relative;
 }
 
 .volume-handle {
+    width: 86px;
+    height: 8px;
+    background-color: $main-color;
+    opacity: 0.5;
+    float: left;
+    // transform: translateX(-5px); // TODO: can't understand what for   Corrected
+}
+
+.label {
     width: 10px;
     height: 8px;
     background-color: #fff;
     position: relative;
     left: 86px;
-    // transform: translateX(-5px); // TODO: can't understand what for   Corrected
-}
-
-.volume-handle::after {
-    content: '';
-    width: 91px;
-    height: 8px;
-    position: absolute;
-    background-color: $main-color; // TODO: instead of passing red green blue values you can pass just our color variable   Corrected
-    opacity: 0.7;
-    transform: translateX(5px);
 }
 
 @media screen and (max-width: 1210px) {
