@@ -1,3 +1,4 @@
+// TODO: stop playing media if another media started
 $(function () {
     // Scroll to the film top
     function scrollToFilm(arg) {
@@ -81,7 +82,7 @@ $(function () {
 
         // Display the duration of music
         $('audio').on('canplay', function () {
-            showTime($(this)[0]);
+            showTime($(this)[0]); // TODO: WAT? What the difference between $(this)[0] and this
         });
     });
 
@@ -105,10 +106,10 @@ $(function () {
         $('.current-length').css('width', 0);
 
         // Set the volume index to default
-        var label = $('.label').width()*-1;
+        var label = $('.label').width() * -1;
         var maxPos = $('.volume').width() + label;
         $('audio').next().find('.volume-handle').css('width', maxPos + 'px');
-        $('audio').next().find('.label').css('left', maxPos + 'px');
+        $('audio').next().find('.label').css('left', maxPos + 'px'); // TODO: making label a volume-handle child will prevent from setting position for label
         audio.volume = 1;
     }
 
@@ -124,7 +125,7 @@ $(function () {
 
     // Play or pause the music of a movie
     $('.listener').on('click', function () {
-        $(this).toggleClass('play-active');
+        $(this).toggleClass('play-active'); // TODO: $(this) can be stored in variable
 
         if ($(this).hasClass('play-active')) {
             $(this).siblings('audio')[0].play();
@@ -140,21 +141,16 @@ $(function () {
             $('.listener').removeClass('play-active')
             audio.siblings('.music-length').find('.current-length').css('width', 0);
             audio[0].currentTime = 0;
-            showTime(audio[0]);
+            showTime(audio[0]); // TODO: WAT?
         }, 500);
     });
 
     $('audio').on('playing', function () {
-        progress($(this)[0]);
-        // timer = setInterval(function () {
-        //     progress($('audio')[0]);
-        // }, 100);
+        progress($(this)[0]); // TODO: WAT?
     });
 
     $('audio').on('pause', function () {
-        // clearTimeout(timer);
-        // clearInterval(timer);
-        window.cancelAnimationFrame(timer);
+        window.cancelAnimationFrame(timer); // TODO: can be used without window
     });
 
     var timer;
@@ -171,21 +167,16 @@ $(function () {
         showTime(element);
 
         if (position < 100) {
-            // timer = setTimeout(function () {
-            //     progress(element);
-            // }, 50);
-            timer = window.requestAnimationFrame(function() {
+            timer = window.requestAnimationFrame(function () { // TODO: can be used without window
                 progress(element);
             });
         }
     }
 
     // Set the music's time on progress bar click && video's time
-    $('.music-length').on('click', function () {
-        // clearTimeout(timer);
-        // clearInterval(timer);
-        if ($(this).closest('.soundtrack-listener').length != 0) {
-            window.cancelAnimationFrame(timer);
+    $('.music-length').on('click', function () { // TODO: many code duplication
+        if ($(this).closest('.soundtrack-listener').length != 0) { // TODO: maybe $(this) to variable?
+            window.cancelAnimationFrame(timer); // TODO: can be used without window
 
             var barWidth = $(this).innerWidth();
             var inBarXCoor = $(this).find('.current-length').offset().left;
@@ -197,7 +188,7 @@ $(function () {
 
             showTime($(this).siblings('audio')[0]);
         } else {
-            window.cancelAnimationFrame(timer);
+            window.cancelAnimationFrame(timer); // TODO: can be used without window
 
             var barWidth = $(this).innerWidth();
             var inBarXCoor = $(this).find('.current-length').offset().left;
@@ -224,7 +215,7 @@ $(function () {
         return min + ':' + sec;
     }
 
-    function initSlider(index) { // TODO: make function to accept initial slide index. Set translate on slider init. Pass index 1 to initSlider     Done
+    function initSlider(index) {
         $('.slider').each(function () {
             var parent = $(this);
             var currIndex = index;
@@ -236,11 +227,6 @@ $(function () {
 
                 currIndex--;
                 settingTranslateX();
-
-                // if (currIndex <= 0) { // TODO: if you have separate function for setting translate, then you can check index to fit bounds in that function   Corrected
-                //     currIndex = 0;
-                //     settingTranslateX();
-                // }
             })
 
             parent.find('.arrow-right').on('click', function (event) {
@@ -262,60 +248,33 @@ $(function () {
     }
     initSlider(1);
 
-    // Volume bar
-    // $('.volume').on('mousedown', function () {
-    //     var currentVolume = $(this);
-
-    //     moveVolumeHandle($(this)); // TODO: do you need it? if it is for click - add it explicitly to click event   Click works like mouseup.
-    //     // The adjusting of volume with only click doesn't make any big difference
-    //     // with mousedown, but when we intend to adjust volume with mousemove event,
-    //     // then the click makes the big difference with the comparising with mousedown.
-    //     // Press the mouse, but don't move it to see the result.
-
-    //     $(document).on('mousemove', function() {
-    //         moveVolumeHandle(currentVolume);
-    //     }); // TODO: if mouse leaves bounds of .volume this stops working. Consider add event on document    Corrected
-
-    //     // TODO: hint
-    //     // you can avoid wrapping just handler in anonymous function
-    //     // the code below
-    //     // $('.volume').on('mousemove', function(event) {
-    //     //     moveVolumeHandle(event);
-    //     // });
-    //     // is the same as
-    //     // $('.volume').on('mousemove', moveVolumeHandle);
-
-    //     $(document).one('mouseup', function() {
-    //         $(document).off('mousemove');
-    //     });
-    // });
-
-    $('.volume').on('mousedown', function() {
+    $('.volume').on('mousedown', function () {
         var currentVolume = $(this);
 
         putVolumeHandle(currentVolume);
 
-        $(document).on('mousemove', function() {
+        $(document).on('mousemove', function () {
             putVolumeHandle(currentVolume);
         });
 
-        $(document).on('mouseup', function() {
+        $(document).on('mouseup', function () {
             $(document).off('mousemove');
         });
     });
 
     function putVolumeHandle(el) {
-        var halfLabel = el.find('.label').width()*-0.5; // -5
+        // TODO: why -0.5?
+        var halfLabel = el.find('.label').width() * -0.5; // -5 // TODO: what is 5? what if label width cahnged - will you edit comment?
         var volumeLeftCoor = el.find('.volume-handle').offset().left;
-        var volHandlPos = event.pageX - volumeLeftCoor;
+        var volHandlPos = event.pageX - volumeLeftCoor; // TODO: where event come from?
 
         if (volHandlPos >= el.width() + halfLabel) {
             volHandlPos = el.width() + halfLabel;
         } else if (volHandlPos <= -halfLabel) {
             volHandlPos = -halfLabel;
         }
-        var halfLabel = el.find('.label').width()*-0.5;
-        el.find('.label').css('left', volHandlPos + halfLabel + 'px');
+        var halfLabel = el.find('.label').width() * -0.5; // TODO: looks like you have just already calculated it
+        el.find('.label').css('left', volHandlPos + halfLabel + 'px'); // TODO: making label a child of volume handle will remove this line
         el.find('.volume-handle').css('width', volHandlPos + halfLabel + 'px');
 
         var volumeIndex = (volHandlPos + halfLabel) / (el.width() + halfLabel * 2);
@@ -327,41 +286,15 @@ $(function () {
         }
     }
 
-    // $(document).on('mouseup', function () { // TODO: you don't need to remove mousemove each time mouseup happens on document. you need it just once if it was added. Consider to add it where mousemove event added     Corrected
-    //     $('.volume').off('mousemove');
-    // });
-
-    function moveVolumeHandle(el) {
-        var volumeLeftCoor = el.offset().left;
-        var volHandTransl = el.find('.volume-handle').width()*-0.5; // -5 // TODO: think of better solution instead of parsing transform. Move it with left property at least     Corrected
-        var maxPos = el.width() + volHandTransl; // 91
-        var volHandlPos = event.pageX - volumeLeftCoor;
-        if (volHandlPos >= maxPos) {
-            volHandlPos = maxPos;
-        } else if (volHandlPos <= -volHandTransl) {
-            volHandlPos = -volHandTransl;
-        }
-        el.find('.volume-handle').css('left', volHandlPos + volHandTransl + 'px');
-
-        var volumeIndex = ((volHandlPos + volHandTransl) / (maxPos + volHandTransl));
-        // el.siblings('audio')[0].volume = volumeIndex;// TODO: you don't need to store audio in variable here   Corrected
-
-        if (el.parent('.soundtrack-listener').length == 1) {
-            el.siblings('audio')[0].volume = volumeIndex;
-        } else {
-            el.parent().siblings('video')[0].volume = volumeIndex;
-        }
-    }
-
     // Playing video & video controls
-    $('.btn-play').on('click', function() {
-        if ($(this).closest('.slider').length != 0) {
+    $('.btn-play').on('click', function () { // TODO: consider add specific class for video buttons
+        if ($(this).closest('.slider').length != 0) { // TODO: consider addint $(this) to variable
             $(this).toggleClass('playing-video play-active');
 
             var image = $(this).prev();
             if ($(this).hasClass('playing-video')) {
                 image.css('display', 'none');
-                $(this).siblings('.video-wrapper').css('display', 'block');
+                $(this).siblings('.video-wrapper').css('display', 'block'); // TODO: you can even add $(this).siblings('.video-wrapper') to variable
             } else {
                 image.css('display', 'block');
                 $(this).siblings('.video-wrapper').css('display', 'none');
@@ -377,31 +310,31 @@ $(function () {
         }
     });
 
-    $('video').on('canplay', function() {
-        showTime($(this)[0]);
+    $('video').on('canplay', function () {
+        showTime($(this)[0]); // TODO: WAT?
     });
 
-    $('video').on('playing', function() {
-        progress($(this)[0]);
+    $('video').on('playing', function () {
+        progress($(this)[0]); // TODO: WAT?
     });
 
-    $('video').on('pause', function() {
-        window.cancelAnimationFrame(timer);
+    $('video').on('pause', function () {
+        window.cancelAnimationFrame(timer); // TODO: can be used without window
     });
 
-    $('video').on('ended', function() {
+    $('video').on('ended', function () {
         var video = $(this);
-        setTimeout(function() { // To update inner bar once video is finished
+        // TODO: remove
+        setTimeout(function () { // To update inner bar once video is finished
             progress(video[0]); // as offset().left has decimals and this decimals
         }, 50);                 // sometimes are visible on inner bar when cliscked to the end.
-        setTimeout(function() {
+        setTimeout(function () {
             video.parent().siblings('.btn-play').removeClass('playing-video play-active');
             video.siblings('.video-controls').find('.current-length').css('width', 0);
             video[0].currentTime = 0;
-            showTime(video[0]);
+            showTime(video[0]);  // TODO: WAT?
             video.parent().css('display', 'none');
             video.parent().siblings('img').css('display', 'block');
         }, 500);
     });
 });
-

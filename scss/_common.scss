@@ -198,19 +198,18 @@ h2 {
 
 .volume {
     border: 2px solid $main-color;
-    margin: 0 auto; // TODO: for such a little component better to use parent padding to adjust vertically   Corrected
+    margin: 0 auto;
     width: 100px;
     overflow: hidden;
     position: relative;
 }
 
 .volume-handle {
-    width: 86px;
+    width: 86px; // TODO: better to set max width in js on document loaded
     height: 8px;
     background-color: $main-color;
     opacity: 0.5;
     float: left;
-    // transform: translateX(-5px); // TODO: can't understand what for   Corrected
 }
 
 .label {
@@ -218,7 +217,7 @@ h2 {
     height: 8px;
     background-color: #fff;
     position: relative;
-    left: 86px;
+    left: 86px; // TODO: making it a child of valume-handle will require to set only 100%
 }
 
 @media screen and (max-width: 1210px) {

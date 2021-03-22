@@ -8,7 +8,6 @@
     "scss": "sass --watch scss/styles.scss styles.css",
     "scss:build": "sass --no-source-map scss/styles.scss styles.css --style compressed",
     "jquery": "rm -rf generated-scripts && mkdir generated-scripts && cp node_modules/jquery/dist/jquery.min.js generated-scripts/"
-
   },
   "repository": {
     "type": "git",
