@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 $(function () {
     // Scroll to the film top
@@ -141,10 +141,13 @@ $(function () {
     });
 
     function stopVideoPlaying(element) {
+
+        var elementParent = $(element).parent();
+
         element.pause();
-        $(element).parent().siblings('.btn-play').removeClass('playing-video play-active'); // TODO: add element parent to variable
-        $(element).parent().css('display', 'none');
-        $(element).parent().siblings('img').css('display', 'block');
+        elementParent.siblings('.btn-play').removeClass('playing-video play-active');
+        elementParent.css('display', 'none');
+        elementParent.siblings('img').css('display', 'block');
     }
 
     // Make listener button as an play-triangle once the music is finished
@@ -221,9 +224,9 @@ $(function () {
         $(element).siblings('.timer').text(minSecCurTime + ' / ' + minSecDurat);
     }
 
-    function calcTime(element) { // TODO: is it an element?
-        var min = Math.floor(element / 60);
-        var sec = Math.floor(element % 60);
+    function calcTime(time) {
+        var min = Math.floor(time / 60);
+        var sec = Math.floor(time % 60);
 
         min = (min < 10) ? '0' + min : min;
         sec = (sec < 10) ? '0' + sec : sec;
@@ -263,12 +266,12 @@ $(function () {
     }
     initSlider(1);
 
-    $('.volume').on('mousedown', function (event) {
+    $('.volume').on('mousedown', function (mouseDownEvent) {
         var currentVolume = $(this);
 
-        putVolumeHandle(currentVolume, event);
+        putVolumeHandle(currentVolume, mouseDownEvent);
 
-        $(document).on('mousemove', function (event) { // TODO: it's not recommended to shadow variables
+        $(document).on('mousemove', function (event) {
             putVolumeHandle(currentVolume, event);
         });
 
