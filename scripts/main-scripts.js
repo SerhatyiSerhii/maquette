@@ -1,4 +1,4 @@
-// TODO: stop playing media if another media started
+// TODO: stop playing media if another media started    Corrected
 $(function () {
     // Scroll to the film top
     function scrollToFilm(arg) {
@@ -82,7 +82,7 @@ $(function () {
 
         // Display the duration of music
         $('audio').on('canplay', function () {
-            showTime($(this)[0]); // TODO: WAT? What the difference between $(this)[0] and this
+            showTime(this); // TODO: WAT? What the difference between $(this)[0] and this   Corrected
         });
     });
 
@@ -109,7 +109,7 @@ $(function () {
         var label = $('.label').width() * -1;
         var maxPos = $('.volume').width() + label;
         $('audio').next().find('.volume-handle').css('width', maxPos + 'px');
-        $('audio').next().find('.label').css('left', maxPos + 'px'); // TODO: making label a volume-handle child will prevent from setting position for label
+        // $('audio').next().find('.label').css('left', maxPos + 'px'); // TODO: making label a volume-handle child will prevent from setting position for label     Corrected
         audio.volume = 1;
     }
 
@@ -125,12 +125,23 @@ $(function () {
 
     // Play or pause the music of a movie
     $('.listener').on('click', function () {
-        $(this).toggleClass('play-active'); // TODO: $(this) can be stored in variable
 
-        if ($(this).hasClass('play-active')) {
-            $(this).siblings('audio')[0].play();
+        var listener = $(this);
+
+        listener.toggleClass('play-active'); // TODO: $(this) can be stored in variable     Corrected
+
+        $('video').each(function() { // Stop video on audio play
+            var video = $(this);
+            video[0].pause();
+            video.parent().siblings('.btn-play').removeClass('playing-video play-active');
+            video.parent().css('display', 'none');
+            video.parent().siblings('img').css('display', 'block');
+        });
+
+        if (listener.hasClass('play-active')) {
+            listener.siblings('audio')[0].play();
         } else {
-            $(this).siblings('audio')[0].pause();
+            listener.siblings('audio')[0].pause();
         }
     });
 
@@ -139,18 +150,18 @@ $(function () {
         var audio = $(this);
         setTimeout(function () {
             $('.listener').removeClass('play-active')
-            audio.siblings('.music-length').find('.current-length').css('width', 0);
+            audio.siblings('.media-length').find('.current-length').css('width', 0);
             audio[0].currentTime = 0;
-            showTime(audio[0]); // TODO: WAT?
+            showTime(audio); // TODO: WAT? Corrected
         }, 500);
     });
 
     $('audio').on('playing', function () {
-        progress($(this)[0]); // TODO: WAT?
+        progress(this); // TODO: WAT?   Corrected
     });
 
     $('audio').on('pause', function () {
-        window.cancelAnimationFrame(timer); // TODO: can be used without window
+        cancelAnimationFrame(timer); // TODO: can be used without window    Corrected
     });
 
     var timer;
@@ -159,7 +170,7 @@ $(function () {
         var position = (element.currentTime / element.duration) * 100;
 
         if ($(element).parent('.soundtrack-listener').length === 1) {
-            $(element).siblings('.music-length').find('.current-length').css('width', position + '%');
+            $(element).siblings('.media-length').find('.current-length').css('width', position + '%');
         } else {
             $(element).siblings('.video-controls').find('.current-length').css('width', position + '%');
         }
@@ -167,38 +178,39 @@ $(function () {
         showTime(element);
 
         if (position < 100) {
-            timer = window.requestAnimationFrame(function () { // TODO: can be used without window
+            timer = requestAnimationFrame(function () { // TODO: can be used without window     Corrected
                 progress(element);
             });
         }
     }
 
     // Set the music's time on progress bar click && video's time
-    $('.music-length').on('click', function () { // TODO: many code duplication
-        if ($(this).closest('.soundtrack-listener').length != 0) { // TODO: maybe $(this) to variable?
-            window.cancelAnimationFrame(timer); // TODO: can be used without window
+    $('.media-length').on('click', function () { // TODO: many code duplication     Corrected
 
-            var barWidth = $(this).innerWidth();
-            var inBarXCoor = $(this).find('.current-length').offset().left;
-            var inBarPosition = ((event.pageX - inBarXCoor) / barWidth) * 100;
+        var musicLength = $(this);
 
-            $(this).find('.current-length').css('width', inBarPosition + '%');
+        cancelAnimationFrame(timer);
 
-            $(this).siblings('audio')[0].currentTime = (inBarPosition * $(this).siblings('audio')[0].duration) / 100;
-
-            showTime($(this).siblings('audio')[0]);
-        } else {
-            window.cancelAnimationFrame(timer); // TODO: can be used without window
-
-            var barWidth = $(this).innerWidth();
-            var inBarXCoor = $(this).find('.current-length').offset().left;
-            var inBarPosition = ((event.pageX - inBarXCoor) / barWidth) * 100;
-            $(this).find('.current-length').css('width', inBarPosition + '%');
-
-            $(this).closest('.video-controls').siblings('video')[0].currentTime = (inBarPosition * $(this).closest('.video-controls').siblings('video')[0].duration) / 100;
-            showTime($(this).closest('.video-wrapper').find('video')[0]);
-        }
+        setMediaVolumeInBarWidth(musicLength, event);
     });
+
+    function setMediaVolumeInBarWidth(element, event) {
+        var barWidth = element.innerWidth();
+        var inBarXCoor = element.find('.current-length').offset().left;
+        var inBarPosition = ((event.pageX - inBarXCoor) / barWidth) * 100;
+        element.find('.current-length').css('width', inBarPosition + '%');
+
+        if (element.closest('.soundtrack-listener').length != 0) {
+            element.siblings('audio')[0].currentTime = (inBarPosition * element.siblings('audio')[0].duration) / 100;
+
+            showTime(element.siblings('audio')[0]);
+        } else {
+
+            element.closest('.video-controls').siblings('video')[0].currentTime = (inBarPosition * element.closest('.video-controls').siblings('video')[0].duration) / 100;
+
+            showTime(element.closest('.video-wrapper').find('video')[0]);
+        }
+    }
 
     function showTime(element) {
         var minSecCurTime = calcTime(element.currentTime);
@@ -251,10 +263,10 @@ $(function () {
     $('.volume').on('mousedown', function () {
         var currentVolume = $(this);
 
-        putVolumeHandle(currentVolume);
+        putVolumeHandle(currentVolume, event);
 
         $(document).on('mousemove', function () {
-            putVolumeHandle(currentVolume);
+            putVolumeHandle(currentVolume, event);
         });
 
         $(document).on('mouseup', function () {
@@ -262,22 +274,21 @@ $(function () {
         });
     });
 
-    function putVolumeHandle(el) {
-        // TODO: why -0.5?
-        var halfLabel = el.find('.label').width() * -0.5; // -5 // TODO: what is 5? what if label width cahnged - will you edit comment?
+    function putVolumeHandle(el, event) {
+        // TODO: why -0.5?   Corrected
+        var halfLabel = el.find('.label').width() / 2; // TODO: what is 5? what if label width cahnged - will you edit comment?     Corrected
         var volumeLeftCoor = el.find('.volume-handle').offset().left;
-        var volHandlPos = event.pageX - volumeLeftCoor; // TODO: where event come from?
+        var volHandlPos = event.pageX - volumeLeftCoor; // TODO: where event come from?     Corrected
 
-        if (volHandlPos >= el.width() + halfLabel) {
-            volHandlPos = el.width() + halfLabel;
-        } else if (volHandlPos <= -halfLabel) {
-            volHandlPos = -halfLabel;
+        if (volHandlPos >= el.width() - halfLabel) {
+            volHandlPos = el.width() - halfLabel;
+        } else if (volHandlPos <= halfLabel) {
+            volHandlPos = halfLabel;
         }
-        var halfLabel = el.find('.label').width() * -0.5; // TODO: looks like you have just already calculated it
-        el.find('.label').css('left', volHandlPos + halfLabel + 'px'); // TODO: making label a child of volume handle will remove this line
-        el.find('.volume-handle').css('width', volHandlPos + halfLabel + 'px');
+        // el.find('.label').css('left', volHandlPos + halfLabel + 'px'); // TODO: making label a child of volume handle will remove this line   Corrected
+        el.find('.volume-handle').css('width', volHandlPos - halfLabel + 'px');
 
-        var volumeIndex = (volHandlPos + halfLabel) / (el.width() + halfLabel * 2);
+        var volumeIndex = (volHandlPos - halfLabel) / (el.width() - halfLabel * 2);
 
         if (el.parent('.soundtrack-listener').length == 1) {
             el.siblings('audio')[0].volume = volumeIndex;
@@ -287,54 +298,76 @@ $(function () {
     }
 
     // Playing video & video controls
-    $('.btn-play').on('click', function () { // TODO: consider add specific class for video buttons
-        if ($(this).closest('.slider').length != 0) { // TODO: consider addint $(this) to variable
-            $(this).toggleClass('playing-video play-active');
+    $('.promo-video').on('click', function () { // TODO: consider add specific class for video buttons   Corrected
+
+        var promoVideo = $(this);
+        var videoWrapper = promoVideo.siblings('.video-wrapper');
+
+        if (promoVideo.closest('.slider').length != 0) { // TODO: consider addint $(this) to variable    Corrected
+            promoVideo.toggleClass('playing-video play-active');
 
             var image = $(this).prev();
-            if ($(this).hasClass('playing-video')) {
+            if (promoVideo.hasClass('playing-video')) {
                 image.css('display', 'none');
-                $(this).siblings('.video-wrapper').css('display', 'block'); // TODO: you can even add $(this).siblings('.video-wrapper') to variable
+                videoWrapper.css('display', 'block'); // TODO: you can even add $(this).siblings('.video-wrapper') to variable   Corrected
             } else {
                 image.css('display', 'block');
-                $(this).siblings('.video-wrapper').css('display', 'none');
+                videoWrapper.css('display', 'none');
             }
 
-            var video = $(this).siblings('.video-wrapper').find('video')[0];
+            var currentVideo = promoVideo.siblings('.video-wrapper').find('video')[0];
+            var allVideos = $('video');
 
-            if (video.paused) {
-                video.play();
+            for (var i = 0; i < allVideos.length; i++) {
+                if (allVideos[i] != currentVideo) {
+                    allVideos[i].pause();
+                    $(allVideos[i]).parent().siblings('.btn-play').removeClass('playing-video play-active');
+                    $(allVideos[i]).parent().siblings('img').css('display', 'block');
+                    $(allVideos[i]).parent().css('display', 'none');
+                }
+            }
+
+            if (currentVideo.paused) {
+                currentVideo.play();
             } else {
-                video.pause();
+                currentVideo.pause();
             }
         }
     });
 
     $('video').on('canplay', function () {
-        showTime($(this)[0]); // TODO: WAT?
+        showTime(this); // TODO: WAT?    Corrected
     });
 
     $('video').on('playing', function () {
-        progress($(this)[0]); // TODO: WAT?
+        progress(this); // TODO: WAT?   Corrected
     });
 
     $('video').on('pause', function () {
-        window.cancelAnimationFrame(timer); // TODO: can be used without window
+        cancelAnimationFrame(timer); // TODO: can be used without window     Corrected
     });
 
     $('video').on('ended', function () {
         var video = $(this);
-        // TODO: remove
-        setTimeout(function () { // To update inner bar once video is finished
-            progress(video[0]); // as offset().left has decimals and this decimals
-        }, 50);                 // sometimes are visible on inner bar when cliscked to the end.
+        // TODO: remove     Corrected
+        // setTimeout(function () { // To update inner bar once video is finished
+        //     progress(video[0]); // as offset().left has decimals and this decimals
+        // }, 50);                 // sometimes are visible on inner bar when cliscked to the end.
         setTimeout(function () {
             video.parent().siblings('.btn-play').removeClass('playing-video play-active');
             video.siblings('.video-controls').find('.current-length').css('width', 0);
             video[0].currentTime = 0;
-            showTime(video[0]);  // TODO: WAT?
+            showTime(video);  // TODO: WAT?   Corrected
             video.parent().css('display', 'none');
             video.parent().siblings('img').css('display', 'block');
         }, 500);
+    });
+
+    $('.volume').each(function() {
+        var volumeBar = $(this);
+        var volumeHandle = volumeBar.find('.volume-handle');
+        var volumeLable = volumeHandle.find('.label');
+
+        volumeHandle.css('width', volumeBar.width() - volumeLable.width() + 'px');
     });
 });

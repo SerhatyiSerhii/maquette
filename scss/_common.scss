@@ -178,7 +178,7 @@ h2 {
     border-right-color: #000;
 }
 
-.music-length {
+.media-length {
     width: 75%;
     border: 2px solid $main-color;
     margin: 25px auto 0;
@@ -205,10 +205,10 @@ h2 {
 }
 
 .volume-handle {
-    width: 86px; // TODO: better to set max width in js on document loaded
+    width: 0; // TODO: better to set max width in js on document loaded     Corrected
     height: 8px;
-    background-color: $main-color;
-    opacity: 0.5;
+    background-color: rgba($main-color, 0.5);
+    opacity: 1;
     float: left;
 }
 
@@ -217,7 +217,7 @@ h2 {
     height: 8px;
     background-color: #fff;
     position: relative;
-    left: 86px; // TODO: making it a child of valume-handle will require to set only 100%
+    left: 100%; // TODO: making it a child of valume-handle will require to set only 100%   Corrected
 }
 
 @media screen and (max-width: 1210px) {
