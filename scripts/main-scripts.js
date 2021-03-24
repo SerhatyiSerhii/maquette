@@ -1,4 +1,4 @@
-// TODO: stop playing media if another media started    Corrected
+// TODO: add use strict
 $(function () {
     // Scroll to the film top
     function scrollToFilm(arg) {
@@ -82,7 +82,7 @@ $(function () {
 
         // Display the duration of music
         $('audio').on('canplay', function () {
-            showTime(this); // TODO: WAT? What the difference between $(this)[0] and this   Corrected
+            showTime(this);
         });
     });
 
@@ -109,7 +109,6 @@ $(function () {
         var label = $('.label').width() * -1;
         var maxPos = $('.volume').width() + label;
         $('audio').next().find('.volume-handle').css('width', maxPos + 'px');
-        // $('audio').next().find('.label').css('left', maxPos + 'px'); // TODO: making label a volume-handle child will prevent from setting position for label     Corrected
         audio.volume = 1;
     }
 
@@ -125,15 +124,14 @@ $(function () {
 
     // Play or pause the music of a movie
     $('.listener').on('click', function () {
-
         var listener = $(this);
 
-        listener.toggleClass('play-active'); // TODO: $(this) can be stored in variable     Corrected
+        listener.toggleClass('play-active');
 
-        $('video').each(function() { // Stop video on audio play
+        $('video').each(function () { // Stop video on audio play
             var video = $(this);
-            video[0].pause();
-            video.parent().siblings('.btn-play').removeClass('playing-video play-active');
+            video[0].pause(); // TODO: WAT?
+            video.parent().siblings('.btn-play').removeClass('playing-video play-active'); // TODO: make function stopVideo which will accept wideo and do all required manipulations. Notice you have three places where that function can be used
             video.parent().css('display', 'none');
             video.parent().siblings('img').css('display', 'block');
         });
@@ -152,16 +150,17 @@ $(function () {
             $('.listener').removeClass('play-active')
             audio.siblings('.media-length').find('.current-length').css('width', 0);
             audio[0].currentTime = 0;
-            showTime(audio); // TODO: WAT? Corrected
+            showTime(audio); // TODO: in different parts of your code this function accepts either html element or jquery element. Better to define only one way
+            // ok, from settimeout exptected 'this' is unreachable. You can either store 'this' in separate variable or return as it was before
         }, 500);
     });
 
     $('audio').on('playing', function () {
-        progress(this); // TODO: WAT?   Corrected
+        progress(this);
     });
 
     $('audio').on('pause', function () {
-        cancelAnimationFrame(timer); // TODO: can be used without window    Corrected
+        cancelAnimationFrame(timer);
     });
 
     var timer;
@@ -169,7 +168,7 @@ $(function () {
     function progress(element) {
         var position = (element.currentTime / element.duration) * 100;
 
-        if ($(element).parent('.soundtrack-listener').length === 1) {
+        if ($(element).parent('.soundtrack-listener').length === 1) { // TODO: consider adding $(element) to variable
             $(element).siblings('.media-length').find('.current-length').css('width', position + '%');
         } else {
             $(element).siblings('.video-controls').find('.current-length').css('width', position + '%');
@@ -178,19 +177,17 @@ $(function () {
         showTime(element);
 
         if (position < 100) {
-            timer = requestAnimationFrame(function () { // TODO: can be used without window     Corrected
+            timer = requestAnimationFrame(function () {
                 progress(element);
             });
         }
     }
 
     // Set the music's time on progress bar click && video's time
-    $('.media-length').on('click', function () { // TODO: many code duplication     Corrected
-
+    $('.media-length').on('click', function () {
         var musicLength = $(this);
 
         cancelAnimationFrame(timer);
-
         setMediaVolumeInBarWidth(musicLength, event);
     });
 
@@ -218,7 +215,7 @@ $(function () {
         $(element).siblings('.timer').text(minSecCurTime + ' / ' + minSecDurat);
     }
 
-    function calcTime(e) {
+    function calcTime(e) { // TODO: by the way, strange parameter name for seconds
         var min = Math.floor(e / 60);
         var sec = Math.floor(e % 60);
 
@@ -263,10 +260,10 @@ $(function () {
     $('.volume').on('mousedown', function () {
         var currentVolume = $(this);
 
-        putVolumeHandle(currentVolume, event);
+        putVolumeHandle(currentVolume, event); // TODO: where event come from?
 
         $(document).on('mousemove', function () {
-            putVolumeHandle(currentVolume, event);
+            putVolumeHandle(currentVolume, event); // TODO: where event come from?     Corrected
         });
 
         $(document).on('mouseup', function () {
@@ -275,17 +272,16 @@ $(function () {
     });
 
     function putVolumeHandle(el, event) {
-        // TODO: why -0.5?   Corrected
-        var halfLabel = el.find('.label').width() / 2; // TODO: what is 5? what if label width cahnged - will you edit comment?     Corrected
+        var halfLabel = el.find('.label').width() / 2;
         var volumeLeftCoor = el.find('.volume-handle').offset().left;
-        var volHandlPos = event.pageX - volumeLeftCoor; // TODO: where event come from?     Corrected
+        var volHandlPos = event.pageX - volumeLeftCoor;
 
         if (volHandlPos >= el.width() - halfLabel) {
             volHandlPos = el.width() - halfLabel;
         } else if (volHandlPos <= halfLabel) {
             volHandlPos = halfLabel;
         }
-        // el.find('.label').css('left', volHandlPos + halfLabel + 'px'); // TODO: making label a child of volume handle will remove this line   Corrected
+
         el.find('.volume-handle').css('width', volHandlPos - halfLabel + 'px');
 
         var volumeIndex = (volHandlPos - halfLabel) / (el.width() - halfLabel * 2);
@@ -298,18 +294,17 @@ $(function () {
     }
 
     // Playing video & video controls
-    $('.promo-video').on('click', function () { // TODO: consider add specific class for video buttons   Corrected
-
+    $('.promo-video').on('click', function () {
         var promoVideo = $(this);
         var videoWrapper = promoVideo.siblings('.video-wrapper');
 
-        if (promoVideo.closest('.slider').length != 0) { // TODO: consider addint $(this) to variable    Corrected
+        if (promoVideo.closest('.slider').length != 0) {
             promoVideo.toggleClass('playing-video play-active');
 
             var image = $(this).prev();
             if (promoVideo.hasClass('playing-video')) {
                 image.css('display', 'none');
-                videoWrapper.css('display', 'block'); // TODO: you can even add $(this).siblings('.video-wrapper') to variable   Corrected
+                videoWrapper.css('display', 'block');
             } else {
                 image.css('display', 'block');
                 videoWrapper.css('display', 'none');
@@ -336,34 +331,32 @@ $(function () {
     });
 
     $('video').on('canplay', function () {
-        showTime(this); // TODO: WAT?    Corrected
+        showTime(this);
     });
 
     $('video').on('playing', function () {
-        progress(this); // TODO: WAT?   Corrected
+        progress(this);
     });
 
     $('video').on('pause', function () {
-        cancelAnimationFrame(timer); // TODO: can be used without window     Corrected
+        cancelAnimationFrame(timer);
     });
 
     $('video').on('ended', function () {
         var video = $(this);
-        // TODO: remove     Corrected
-        // setTimeout(function () { // To update inner bar once video is finished
-        //     progress(video[0]); // as offset().left has decimals and this decimals
-        // }, 50);                 // sometimes are visible on inner bar when cliscked to the end.
+
         setTimeout(function () {
             video.parent().siblings('.btn-play').removeClass('playing-video play-active');
             video.siblings('.video-controls').find('.current-length').css('width', 0);
             video[0].currentTime = 0;
-            showTime(video);  // TODO: WAT?   Corrected
+            showTime(video); // TODO: in different parts of your code this function accepts either html element or jquery element. Better to define only one way
+            // ok, from settimeout exptected 'this' is unreachable. You can either store 'this' in separate variable or return as it was before
             video.parent().css('display', 'none');
             video.parent().siblings('img').css('display', 'block');
         }, 500);
     });
 
-    $('.volume').each(function() {
+    $('.volume').each(function () {
         var volumeBar = $(this);
         var volumeHandle = volumeBar.find('.volume-handle');
         var volumeLable = volumeHandle.find('.label');

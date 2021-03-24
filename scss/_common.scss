@@ -205,10 +205,10 @@ h2 {
 }
 
 .volume-handle {
-    width: 0; // TODO: better to set max width in js on document loaded     Corrected
+    width: 0; // TODO: probably can be removed
     height: 8px;
     background-color: rgba($main-color, 0.5);
-    opacity: 1;
+    opacity: 1; // TODO: what for?
     float: left;
 }
 
@@ -217,7 +217,7 @@ h2 {
     height: 8px;
     background-color: #fff;
     position: relative;
-    left: 100%; // TODO: making it a child of valume-handle will require to set only 100%   Corrected
+    left: 100%;
 }
 
 @media screen and (max-width: 1210px) {
