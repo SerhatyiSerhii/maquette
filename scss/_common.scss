@@ -205,10 +205,8 @@ h2 {
 }
 
 .volume-handle {
-    // width: 0; // TODO: probably can be removed   Corrected
     height: 8px;
     background-color: rgba($main-color, 0.5);
-    // opacity: 1; // TODO: what for?   Forgot to delete. Corrected
     float: left;
 }
 

@@ -1,5 +1,5 @@
-// TODO: add use strict     Corrected
 'use strict'
+
 $(function () {
     // Scroll to the film top
     function scrollToFilm(arg) {
@@ -129,13 +129,7 @@ $(function () {
 
         listener.toggleClass('play-active');
 
-        $('video').each(function () { // Stop video on audio play
-            // var video = $(this);
-            // this.pause(); // TODO: WAT?     Corrected
-            // video.parent().siblings('.btn-play').removeClass('playing-video play-active'); // TODO: make function stopVideo which will accept wideo and do all required manipulations. Notice you have three places where that function can be used   Corrected
-            // video.parent().css('display', 'none');
-            // video.parent().siblings('img').css('display', 'block');
-
+        $('video').each(function () {
             stopVideoPlaying(this);
         });
 
@@ -148,7 +142,7 @@ $(function () {
 
     function stopVideoPlaying(element) {
         element.pause();
-        $(element).parent().siblings('.btn-play').removeClass('playing-video play-active');
+        $(element).parent().siblings('.btn-play').removeClass('playing-video play-active'); // TODO: add element parent to variable
         $(element).parent().css('display', 'none');
         $(element).parent().siblings('img').css('display', 'block');
     }
@@ -161,9 +155,7 @@ $(function () {
             $('.listener').removeClass('play-active')
             audio.siblings('.media-length').find('.current-length').css('width', 0);
             audio[0].currentTime = 0;
-            showTime(thisAudio); // TODO: in different parts of your code this function accepts either html element or jquery element. Better to define only one way
-            // ok, from settimeout exptected 'this' is unreachable. You can either store 'this' in separate variable or return as it was before
-            // Corrected
+            showTime(thisAudio);
         }, 500);
     });
 
@@ -182,7 +174,7 @@ $(function () {
 
         var linkToElem = $(element);
 
-        if (linkToElem.parent('.soundtrack-listener').length === 1) { // TODO: consider adding $(element) to variable    Corrected
+        if (linkToElem.parent('.soundtrack-listener').length === 1) {
             linkToElem.siblings('.media-length').find('.current-length').css('width', position + '%');
         } else {
             linkToElem.siblings('.video-controls').find('.current-length').css('width', position + '%');
@@ -229,7 +221,7 @@ $(function () {
         $(element).siblings('.timer').text(minSecCurTime + ' / ' + minSecDurat);
     }
 
-    function calcTime(element) { // TODO: by the way, strange parameter name for seconds     Corrected
+    function calcTime(element) { // TODO: is it an element?
         var min = Math.floor(element / 60);
         var sec = Math.floor(element % 60);
 
@@ -274,10 +266,10 @@ $(function () {
     $('.volume').on('mousedown', function (event) {
         var currentVolume = $(this);
 
-        putVolumeHandle(currentVolume, event); // TODO: where event come from?   Corrected
+        putVolumeHandle(currentVolume, event);
 
-        $(document).on('mousemove', function (event) {
-            putVolumeHandle(currentVolume, event); // TODO: where event come from?     Corrected
+        $(document).on('mousemove', function (event) { // TODO: it's not recommended to shadow variables
+            putVolumeHandle(currentVolume, event);
         });
 
         $(document).on('mouseup', function () {
@@ -361,9 +353,7 @@ $(function () {
             stopVideoPlaying(thisVideo);
             video.siblings('.video-controls').find('.current-length').css('width', 0);
             thisVideo.currentTime = 0;
-            showTime(thisVideo); // TODO: in different parts of your code this function accepts either html element or jquery element. Better to define only one way
-            // ok, from settimeout exptected 'this' is unreachable. You can either store 'this' in separate variable or return as it was before
-            // Corrected
+            showTime(thisVideo);
         }, 500);
     });
 
