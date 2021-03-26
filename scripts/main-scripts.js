@@ -34,12 +34,12 @@ document.addEventListener('DOMContentLoaded', function () {
         $('#burger-img').toggleClass('pressed');
     }
 
-    $('#nav-wrapper').on('click', function (event) {
+    $('#nav-wrapper').on('click', function (event) { // TODO: remove jquery
         event.stopPropagation();
         toggleBurger();
     });
 
-    $('.top-film').on('click', function () {
+    $('.top-film').on('click', function () { // TODO: remove jquery
         if ($(window).outerWidth() < 768) {
             toggleBurger();
         }
@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 
-    $(window).on('resize', function () {
+    $(window).on('resize', function () { // TODO: remove jquery
         if ($(window).outerWidth() < 768) {
             $('.box-menu').hide();
         } else {
@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Substrate window on button 'Listen' click
-    $('.listen').on('click', function () {
+    $('.listen').on('click', function () { // TODO: remove jquery
         $('body').addClass('lock');
         $('.substrate').removeClass('hidden');
         setTimeout(function () {
@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // For closing substrate window and showing scroll on the page
-    function closeListener() {
+    function closeListener() { // TODO: remove jquery
         $('body').removeClass('lock');
         $('.substrate').addClass('visually-hidden');
         $('.substrate').on('transitionend', function closeMdlWindow(e) {
@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', function () {
         $('.current-length').css('width', 0);
 
         // Set the volume index to default
-        var label = $('.label').width() * -1;
+        var label = $('.label').width() * -1; // TODO: do we need -1?
         var maxPos = $('.volume').width() + label;
         $('audio').next().find('.volume-handle').css('width', maxPos + 'px');
         audio.volume = 1;
@@ -127,36 +127,11 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // $('.substrate').on('click', function (event) {
-    //     if ($(event.target).closest('.soundtrack-listener').length === 0) {
-    //         closeListener();
-    //     }
-    // });
-
-
-    // Play or pause the music of a movie
-
-    // $('.listener').on('click', function () {
-    //     var listener = $(this);
-
-    //     listener.toggleClass('play-active');
-
-    //     $('video').each(function () {
-    //         stopVideoPlaying(this);
-    //     });
-
-    //     if (listener.hasClass('play-active')) {
-    //         listener.siblings('audio')[0].play();
-    //     } else {
-    //         listener.siblings('audio')[0].pause();
-    //     }
-    // });
-
     var listener = document.getElementsByClassName('listener');
 
     for (var i = 0; i < listener.length; i++) {
         listener[i].addEventListener('click', function () {
-            var thisListener = this;
+            var thisListener = this; // TODO: no need
             var allVideos = document.getElementsByTagName('video');
 
             thisListener.classList.toggle('play-active');
@@ -195,7 +170,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Make listener button as an play-triangle once the music is finished
     var audio = document.getElementsByTagName('audio');
 
-    for (var i = 0; i < audio.length; i++) {
+    for (var i = 0; i < audio.length; i++) { // TODO: can be but as I know, we have only one audio
         audio[i].addEventListener('ended', function () {
             var thisAudio = this;
             var listener = thisAudio.parentNode.querySelector('.listener');
@@ -219,7 +194,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     var timer;
 
-    function progress(element) {
+    function progress(element) { // TODO: remove jquery
         var position = (element.currentTime / element.duration) * 100;
 
         var linkToElem = $(element);
@@ -239,15 +214,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Set the music's time on progress bar click && video's time
-
-    // $('.media-length').on('click', function (event) {
-    //     var musicLength = $(this);
-
-    //     cancelAnimationFrame(timer);
-    //     setMediaVolumeInBarWidth(musicLength, event);
-    // });
-
     var mediaLength = document.getElementsByClassName('media-length');
 
     for (var i = 0; i < mediaLength.length; i++) {
@@ -261,39 +227,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function setMediaVolumeInBarWidthJS(element, event) {
         var barWidth = element.clientWidth;
-        var inBarXCoor = element.querySelector('.current-length').getBoundingClientRect().left;
+        var inBarXCoor = element.querySelector('.current-length').getBoundingClientRect().left; // TODO: maybe current-length in variable?
         var inBarPosition = ((event.pageX - inBarXCoor) / barWidth) * 100;
         element.querySelector('.current-length').style.width = inBarPosition + '%';
 
         if (element.closest('.soundtrack-listener') != undefined) {
-            element.parentNode.querySelector('audio').currentTime = (inBarPosition * element.parentNode.querySelector('audio').duration) / 100;
+            element.parentNode.querySelector('audio').currentTime = (inBarPosition * element.parentNode.querySelector('audio').duration) / 100; // TODO: maybe audio in variable?
 
             showTime(element.parentNode.querySelector('audio'));
         } else {
 
-            element.closest('.video-controls').parentNode.querySelector('video').currentTime = (inBarPosition * element.closest('.video-controls').parentNode.querySelector('video').duration) / 100;
+            element.closest('.video-controls').parentNode.querySelector('video').currentTime = (inBarPosition * element.closest('.video-controls').parentNode.querySelector('video').duration) / 100; // TODO: maybe video in variable?
 
             showTime(element.closest('.video-wrapper').querySelector('video'));
         }
     }
-
-    // function setMediaVolumeInBarWidth(element, event) {
-    //     var barWidth = element.innerWidth();
-    //     var inBarXCoor = element.find('.current-length').offset().left;
-    //     var inBarPosition = ((event.pageX - inBarXCoor) / barWidth) * 100;
-    //     element.find('.current-length').css('width', inBarPosition + '%');
-
-    //     if (element.closest('.soundtrack-listener').length != 0) {
-    //         element.siblings('audio')[0].currentTime = (inBarPosition * element.siblings('audio')[0].duration) / 100;
-
-    //         showTime(element.siblings('audio')[0]);
-    //     } else {
-
-    //         element.closest('.video-controls').siblings('video')[0].currentTime = (inBarPosition * element.closest('.video-controls').siblings('video')[0].duration) / 100;
-
-    //         showTime(element.closest('.video-wrapper').find('video')[0]);
-    //     }
-    // }
 
     function showTime(element) {
         var minSecCurTime = calcTime(element.currentTime);
@@ -438,13 +386,14 @@ document.addEventListener('DOMContentLoaded', function () {
                     videoControlsSibling = siblings[i];
                 }
             }
+            // TODO: so why not simplified?
             // Can be simplified
             // var videoControlsSibling = thisVideo.parentNode.querySelector('.video-controls');
 
             var mediaLength = videoControlsSibling.querySelector('.media-length');
             var currentLength = mediaLength.querySelector('.current-length');
 
-            setTimeout(function() {
+            setTimeout(function () {
                 stopVideoPlaying(thisVideo);
                 currentLength.style.width = 0;
                 thisVideo.currentTime = 0;
