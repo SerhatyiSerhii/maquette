@@ -1,6 +1,6 @@
 'use strict';
 
-$(function () {
+document.addEventListener('DOMContentLoaded', function () {
     // Scroll to the film top
     function scrollToFilm(arg) {
         $('html').animate({
@@ -113,32 +113,74 @@ $(function () {
         audio.volume = 1;
     }
 
-    $('.close-listener').on('click', function () {
+    var modWindCloser = document.getElementsByClassName('close-listener');
+
+    modWindCloser[0].addEventListener('click', function () {
         closeListener();
     });
 
-    $('.substrate').on('click', function (event) {
-        if ($(event.target).closest('.soundtrack-listener').length === 0) {
+    var substrate = document.getElementsByClassName('substrate');
+
+    substrate[0].addEventListener('click', function (event) {
+        if (event.target.closest('.soundtrack-listener') == undefined) {
             closeListener();
         }
     });
 
+    // $('.substrate').on('click', function (event) {
+    //     if ($(event.target).closest('.soundtrack-listener').length === 0) {
+    //         closeListener();
+    //     }
+    // });
+
+
     // Play or pause the music of a movie
-    $('.listener').on('click', function () {
-        var listener = $(this);
 
-        listener.toggleClass('play-active');
+    // $('.listener').on('click', function () {
+    //     var listener = $(this);
 
-        $('video').each(function () {
-            stopVideoPlaying(this);
+    //     listener.toggleClass('play-active');
+
+    //     $('video').each(function () {
+    //         stopVideoPlaying(this);
+    //     });
+
+    //     if (listener.hasClass('play-active')) {
+    //         listener.siblings('audio')[0].play();
+    //     } else {
+    //         listener.siblings('audio')[0].pause();
+    //     }
+    // });
+
+    var listener = document.getElementsByClassName('listener');
+
+    for (var i = 0; i < listener.length; i++) {
+        listener[i].addEventListener('click', function () {
+            var thisListener = this;
+            var allVideos = document.getElementsByTagName('video');
+
+            thisListener.classList.toggle('play-active');
+
+            for (var j = 0; j < allVideos.length; j++) {
+                stopVideoPlayingJS(allVideos[j]);
+            }
+
+            if (thisListener.classList.contains('play-active')) {
+                thisListener.parentNode.querySelector('audio').play();
+            } else {
+                thisListener.parentNode.querySelector('audio').pause();
+            }
         });
+    }
 
-        if (listener.hasClass('play-active')) {
-            listener.siblings('audio')[0].play();
-        } else {
-            listener.siblings('audio')[0].pause();
-        }
-    });
+    function stopVideoPlayingJS(element) {
+        var elementParent = element.parentNode;
+
+        element.pause();
+        elementParent.parentNode.querySelector('.btn-play').classList.remove('playing-video', 'play-active');
+        elementParent.style.display = 'none';
+        elementParent.parentNode.querySelector('img').style.display = 'block';
+    }
 
     function stopVideoPlaying(element) {
 
@@ -151,24 +193,29 @@ $(function () {
     }
 
     // Make listener button as an play-triangle once the music is finished
-    $('audio').on('ended', function () {
-        var audio = $(this);
-        var thisAudio = this;
-        setTimeout(function () {
-            $('.listener').removeClass('play-active')
-            audio.siblings('.media-length').find('.current-length').css('width', 0);
-            audio[0].currentTime = 0;
-            showTime(thisAudio);
-        }, 500);
-    });
+    var audio = document.getElementsByTagName('audio');
 
-    $('audio').on('playing', function () {
-        progress(this);
-    });
+    for (var i = 0; i < audio.length; i++) {
+        audio[i].addEventListener('ended', function () {
+            var thisAudio = this;
+            var listener = thisAudio.parentNode.querySelector('.listener');
 
-    $('audio').on('pause', function () {
-        cancelAnimationFrame(timer);
-    });
+            setTimeout(function () {
+                listener.classList.remove('play-active');
+                thisAudio.parentNode.querySelector('.media-length').querySelector('.current-length').style.width = 0;
+                thisAudio.currentTime = 0;
+                showTime(thisAudio);
+            }, 500);
+        });
+
+        audio[i].addEventListener('playing', function () {
+            progress(this);
+        });
+
+        audio[i].addEventListener('pause', function () {
+            cancelAnimationFrame(timer);
+        });
+    }
 
     var timer;
 
@@ -193,30 +240,60 @@ $(function () {
     }
 
     // Set the music's time on progress bar click && video's time
-    $('.media-length').on('click', function () {
-        var musicLength = $(this);
 
-        cancelAnimationFrame(timer);
-        setMediaVolumeInBarWidth(musicLength, event);
-    });
+    // $('.media-length').on('click', function (event) {
+    //     var musicLength = $(this);
 
-    function setMediaVolumeInBarWidth(element, event) {
-        var barWidth = element.innerWidth();
-        var inBarXCoor = element.find('.current-length').offset().left;
+    //     cancelAnimationFrame(timer);
+    //     setMediaVolumeInBarWidth(musicLength, event);
+    // });
+
+    var mediaLength = document.getElementsByClassName('media-length');
+
+    for (var i = 0; i < mediaLength.length; i++) {
+        mediaLength[i].addEventListener('click', function (event) {
+            var musicLength = this;
+
+            cancelAnimationFrame(timer);
+            setMediaVolumeInBarWidthJS(musicLength, event);
+        });
+    }
+
+    function setMediaVolumeInBarWidthJS(element, event) {
+        var barWidth = element.clientWidth;
+        var inBarXCoor = element.querySelector('.current-length').getBoundingClientRect().left;
         var inBarPosition = ((event.pageX - inBarXCoor) / barWidth) * 100;
-        element.find('.current-length').css('width', inBarPosition + '%');
+        element.querySelector('.current-length').style.width = inBarPosition + '%';
 
-        if (element.closest('.soundtrack-listener').length != 0) {
-            element.siblings('audio')[0].currentTime = (inBarPosition * element.siblings('audio')[0].duration) / 100;
+        if (element.closest('.soundtrack-listener') != undefined) {
+            element.parentNode.querySelector('audio').currentTime = (inBarPosition * element.parentNode.querySelector('audio').duration) / 100;
 
-            showTime(element.siblings('audio')[0]);
+            showTime(element.parentNode.querySelector('audio'));
         } else {
 
-            element.closest('.video-controls').siblings('video')[0].currentTime = (inBarPosition * element.closest('.video-controls').siblings('video')[0].duration) / 100;
+            element.closest('.video-controls').parentNode.querySelector('video').currentTime = (inBarPosition * element.closest('.video-controls').parentNode.querySelector('video').duration) / 100;
 
-            showTime(element.closest('.video-wrapper').find('video')[0]);
+            showTime(element.closest('.video-wrapper').querySelector('video'));
         }
     }
+
+    // function setMediaVolumeInBarWidth(element, event) {
+    //     var barWidth = element.innerWidth();
+    //     var inBarXCoor = element.find('.current-length').offset().left;
+    //     var inBarPosition = ((event.pageX - inBarXCoor) / barWidth) * 100;
+    //     element.find('.current-length').css('width', inBarPosition + '%');
+
+    //     if (element.closest('.soundtrack-listener').length != 0) {
+    //         element.siblings('audio')[0].currentTime = (inBarPosition * element.siblings('audio')[0].duration) / 100;
+
+    //         showTime(element.siblings('audio')[0]);
+    //     } else {
+
+    //         element.closest('.video-controls').siblings('video')[0].currentTime = (inBarPosition * element.closest('.video-controls').siblings('video')[0].duration) / 100;
+
+    //         showTime(element.closest('.video-wrapper').find('video')[0]);
+    //     }
+    // }
 
     function showTime(element) {
         var minSecCurTime = calcTime(element.currentTime);
@@ -336,29 +413,58 @@ $(function () {
         }
     });
 
-    $('video').on('canplay', function () {
-        showTime(this);
-    });
+    var video = document.getElementsByTagName('video');
 
-    $('video').on('playing', function () {
-        progress(this);
-    });
+    for (var i = 0; i < video.length; i++) {
+        video[i].addEventListener('canplay', function () {
+            showTime(this);
+        });
 
-    $('video').on('pause', function () {
-        cancelAnimationFrame(timer);
-    });
+        video[i].addEventListener('playing', function () {
+            progress(this);
+        });
 
-    $('video').on('ended', function () {
-        var video = $(this);
-        var thisVideo = this;
+        video[i].addEventListener('pause', function () {
+            cancelAnimationFrame(timer);
+        });
 
-        setTimeout(function () {
-            stopVideoPlaying(thisVideo);
-            video.siblings('.video-controls').find('.current-length').css('width', 0);
-            thisVideo.currentTime = 0;
-            showTime(thisVideo);
-        }, 500);
-    });
+        video[i].addEventListener('ended', function () {
+            var thisVideo = this;
+            var siblings = getSiblings(thisVideo);
+            var videoControlsSibling;
+
+            for (var i = 0; i < siblings.length; i++) {
+                if (siblings[i].classList == "video-controls") {
+                    videoControlsSibling = siblings[i];
+                }
+            }
+            // Can be simplified
+            // var videoControlsSibling = thisVideo.parentNode.querySelector('.video-controls');
+
+            var mediaLength = videoControlsSibling.querySelector('.media-length');
+            var currentLength = mediaLength.querySelector('.current-length');
+
+            setTimeout(function() {
+                stopVideoPlaying(thisVideo);
+                currentLength.style.width = 0;
+                thisVideo.currentTime = 0;
+                showTime(thisVideo);
+            }, 500);
+        });
+    }
+
+    function getSiblings(element) {
+        var siblings = [];
+        var sibling = element.parentNode.firstChild.nextSibling;
+
+        while (sibling) {
+            if (sibling != element) {
+                siblings.push(sibling);
+            }
+            sibling = sibling.nextSibling.nextSibling
+        }
+        return siblings;
+    }
 
     $('.volume').each(function () {
         var volumeBar = $(this);
