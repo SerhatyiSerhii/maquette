@@ -34,16 +34,27 @@ document.addEventListener('DOMContentLoaded', function () {
         $('#burger-img').toggleClass('pressed');
     }
 
-    $('#nav-wrapper').on('click', function (event) { // TODO: remove jquery
+    addEvent('#nav-wrapper', 'click', function (event) {
         event.stopPropagation();
         toggleBurger();
     });
 
-    $('.top-film').on('click', function () { // TODO: remove jquery
-        if ($(window).outerWidth() < 768) {
+    // $('#nav-wrapper').on('click', function (event) { // TODO: remove jquery   Removed
+    //     event.stopPropagation();
+    //     toggleBurger();
+    // });
+
+    addEvent('.top-film', 'click', function () {
+        if (window.innerWidth < 768) {
             toggleBurger();
         }
     });
+
+    // $('.top-film').on('click', function () { // TODO: remove jquery   Removed
+    //     if ($(window).outerWidth() < 768) {
+    //         toggleBurger();
+    //     }
+    // });
 
     $(document).on('click', function (event) {
         if ($(window).outerWidth() < 768 && $(event.target).closest('.box-menu').length === 0) {
@@ -52,66 +63,178 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    window.addEventListener('resize', function () {
+        var boxMenu = document.getElementsByClassName('box-menu');
+        var burgerIMG = document.getElementById('burger-img');
 
-    $(window).on('resize', function () { // TODO: remove jquery
-        if ($(window).outerWidth() < 768) {
-            $('.box-menu').hide();
+        if (window.innerWidth < 768) {
+            boxMenu[0].style.display = 'none';
+            burgerIMG.classList.remove('pressed');
         } else {
-            $('.box-menu').show();
-            $('#burger-img').removeClass('pressed');
+            boxMenu[0].style.display = 'block';
+            burgerIMG.classList.remove('pressed');
         }
     });
 
+    // $(window).on('resize', function () { // TODO: remove jquery   Removed
+    //     if ($(window).outerWidth() < 768) {
+    //         $('.box-menu').hide();
+    //     } else {
+    //         $('.box-menu').show();
+    //         $('#burger-img').removeClass('pressed');
+    //     }
+    // });
+
     // Substrate window on button 'Listen' click
-    $('.listen').on('click', function () { // TODO: remove jquery
-        $('body').addClass('lock');
-        $('.substrate').removeClass('hidden');
-        setTimeout(function () {
-            $('.substrate').removeClass('visually-hidden');
-        }, 20);
+    var listen = document.getElementsByClassName('listen');
 
-        // Get name of the film above the clicked button 'Listen'
-        var filmTitleListen = $(this).closest('section');
+    for (var i = 0; i < listen.length; i++) {
+        listen[i].addEventListener('click', function () {
+            var body = document.body;
+            var thisListen = this;
+            var modaleWindow = document.getElementsByClassName('substrate');
+            var modaleWindowAudio = document.getElementsByTagName('audio');
+            var listenerTitle = document.getElementsByClassName('listener-title');
 
-        // Put the film title into the substrate window
-        $('.listener-title').text(filmTitleListen.attr('data-name'));
+            body.classList.add('lock');
 
-        // Set the source of audio file
-        var audioAtr = filmTitleListen.attr('data-audio-name');
-        $('audio').attr('src', 'audios/' + audioAtr + '.ogg');
+            for (var j = 0; j < modaleWindow.length; j++) {
+                modaleWindow[j].classList.remove('hidden');
+            }
 
+            setTimeout(function () {
+                for (var k = 0; k < modaleWindow.length; k++) {
+                    modaleWindow[k].classList.remove('visually-hidden');
+                }
+            }, 20);
 
-        // Display the duration of music
-        $('audio').on('canplay', function () {
-            showTime(this);
-        });
-    });
+            // Get name of the film above the clicked button 'Listen'
+            var filmTitleListen = thisListen.closest('section');
 
-    // For closing substrate window and showing scroll on the page
-    function closeListener() { // TODO: remove jquery
-        $('body').removeClass('lock');
-        $('.substrate').addClass('visually-hidden');
-        $('.substrate').on('transitionend', function closeMdlWindow(e) {
-            if (e.originalEvent.propertyName === 'opacity') {
-                $('.substrate').addClass('hidden');
-                $('.substrate').off('transitionend', closeMdlWindow);
+            // Put the film title into the substrate window
+            for (var l = 0; l < listenerTitle.length; l++) {
+                listenerTitle[l].textContent = filmTitleListen.getAttribute('data-name');
+            }
+
+            // Set the source of audio file
+            var audioAtr = filmTitleListen.getAttribute('data-audio-name');;
+
+            for (var m = 0; m < modaleWindowAudio.length; m++) {
+                modaleWindowAudio[m].setAttribute('src', 'audios/' + audioAtr + '.ogg');
+
+                // Display the duration of music
+                modaleWindowAudio[m].addEventListener('canplay', function () {
+                    showTime(this);
+                });
             }
         });
+    }
 
-        // Stop playing music on modal window close
-        var audio = $('audio')[0];
-        audio.pause();
-        audio.currentTime = 0;
+    // $('.listen').on('click', function () { // TODO: remove jquery     Removed
+    //     $('body').addClass('lock');
+    //     $('.substrate').removeClass('hidden');
+    //     setTimeout(function () {
+    //         $('.substrate').removeClass('visually-hidden');
+    //     }, 20);
 
-        $('.listener').removeClass('play-active');
-        $('.current-length').css('width', 0);
+    //     // Get name of the film above the clicked button 'Listen'
+    //     var filmTitleListen = $(this).closest('section');
+
+    //     // Put the film title into the substrate window
+    //     $('.listener-title').text(filmTitleListen.attr('data-name'));
+
+    //     // Set the source of audio file
+    //     var audioAtr = filmTitleListen.attr('data-audio-name');
+    //     $('audio').attr('src', 'audios/' + audioAtr + '.ogg');
+
+
+    //     // Display the duration of music
+    //     $('audio').on('canplay', function () {
+    //         showTime(this);
+    //     });
+    // });
+
+    // For closing substrate window and showing scroll on the page
+    function closeListener() {
+        var body = document.body;
+        var modaleWindow = document.getElementsByClassName('substrate');
+        var audio = document.getElementsByTagName('audio');
+        var modWindListener = document.getElementsByClassName('listener');
+        var currentLength = document.getElementsByClassName('current-length');
+
+        body.classList.remove('lock');
+
+        for (var i = 0; i < modaleWindow.length; i++) {
+            modaleWindow[i].classList.add('visually-hidden');
+
+            modaleWindow[i].addEventListener('transitionend', function closeMdlWindow(event) {
+                var thisModaleWindow = this;
+                if (event.propertyName === 'opacity') {
+                    thisModaleWindow.classList.add('hidden');
+                    thisModaleWindow.removeEventListener('transitionend', closeMdlWindow);
+                }
+            });
+        }
 
         // Set the volume index to default
-        var label = $('.label').width() * -1; // TODO: do we need -1?
-        var maxPos = $('.volume').width() + label;
-        $('audio').next().find('.volume-handle').css('width', maxPos + 'px');
-        audio.volume = 1;
+        var label = document.getElementsByClassName('label');
+        var volume;
+        var borderWidth;
+
+        for (var m = 0; m < label.length; m++) {
+            if (label[m].closest('.substrate') != null) {
+                volume = parseInt(getComputedStyle(label[m].closest('.volume')).getPropertyValue('width'));
+                borderWidth = parseInt(getComputedStyle(label[m].closest('.volume')).getPropertyValue('border-width'));
+                label = parseInt(getComputedStyle(label[m]).getPropertyValue('width'));
+            }
+        }
+        var maxPos = volume - label - borderWidth * 2;
+
+        // Stop playing music on modal window close
+        for (var j = 0; j < audio.length; j++) {
+            audio[j].pause();
+            audio[j].currentTime = 0;
+            audio[j].parentNode.querySelector('.volume').querySelector('.volume-handle').style.width = maxPos + 'px';
+            audio[j].volume = 1;
+        }
+
+        for (var k = 0; k < modWindListener.length; k++) {
+            modWindListener[k].classList.remove('play-active');
+        }
+
+        for (var l = 0; l < currentLength.length; l++) {
+            if (currentLength[l].closest('.soundtrack-listener') != undefined) {
+                currentLength[l].style.width = 0;
+            }
+        }
     }
+
+
+
+    // function closeListener() { // TODO: remove jquery     Removed
+    //     $('body').removeClass('lock');
+    //     $('.substrate').addClass('visually-hidden');
+    //     $('.substrate').on('transitionend', function closeMdlWindow(e) {
+    //         if (e.originalEvent.propertyName === 'opacity') {
+    //             $('.substrate').addClass('hidden');
+    //             $('.substrate').off('transitionend', closeMdlWindow);
+    //         }
+    //     });
+
+    //     // Stop playing music on modal window close
+    //     var audio = $('audio')[0];
+    //     audio.pause();
+    //     audio.currentTime = 0;
+
+    //     $('.listener').removeClass('play-active');
+    //     $('.current-length').css('width', 0);
+
+    //     // Set the volume index to default
+    //     var label = $('.label').width(); // TODO: do we need -1?     Corrected
+    //     var maxPos = $('.volume').width() - label;
+    //     $('audio').next().find('.volume-handle').css('width', maxPos + 'px');
+    //     audio.volume = 1;
+    // }
 
     var modWindCloser = document.getElementsByClassName('close-listener');
 
@@ -131,19 +254,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
     for (var i = 0; i < listener.length; i++) {
         listener[i].addEventListener('click', function () {
-            var thisListener = this; // TODO: no need
+            // var thisListener = this; // TODO: no need     Removed
             var allVideos = document.getElementsByTagName('video');
 
-            thisListener.classList.toggle('play-active');
+            this.classList.toggle('play-active');
 
             for (var j = 0; j < allVideos.length; j++) {
                 stopVideoPlayingJS(allVideos[j]);
             }
 
-            if (thisListener.classList.contains('play-active')) {
-                thisListener.parentNode.querySelector('audio').play();
+            if (this.classList.contains('play-active')) {
+                this.parentNode.querySelector('audio').play();
             } else {
-                thisListener.parentNode.querySelector('audio').pause();
+                this.parentNode.querySelector('audio').pause();
             }
         });
     }
@@ -168,41 +291,66 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Make listener button as an play-triangle once the music is finished
-    var audio = document.getElementsByTagName('audio');
 
-    for (var i = 0; i < audio.length; i++) { // TODO: can be but as I know, we have only one audio
-        audio[i].addEventListener('ended', function () {
-            var thisAudio = this;
-            var listener = thisAudio.parentNode.querySelector('.listener');
+    // for (var i = 0; i < audio.length; i++) { // TODO: can be but as I know, we have only one audio    Corrected
+        // audio[i].addEventListener('ended', function () {
+        //     var thisAudio = this;
+        //     var listener = thisAudio.parentNode.querySelector('.listener');
 
-            setTimeout(function () {
-                listener.classList.remove('play-active');
-                thisAudio.parentNode.querySelector('.media-length').querySelector('.current-length').style.width = 0;
-                thisAudio.currentTime = 0;
-                showTime(thisAudio);
-            }, 500);
-        });
+        //     setTimeout(function () {
+        //         listener.classList.remove('play-active');
+        //         thisAudio.parentNode.querySelector('.media-length').querySelector('.current-length').style.width = 0;
+        //         thisAudio.currentTime = 0;
+        //         showTime(thisAudio);
+        //     }, 500);
+        // });
 
-        audio[i].addEventListener('playing', function () {
-            progress(this);
-        });
+        // audio[i].addEventListener('playing', function () {
+        //     progress(this);
+        // });
 
-        audio[i].addEventListener('pause', function () {
-            cancelAnimationFrame(timer);
-        });
+        // audio[i].addEventListener('pause', function () {
+        //     cancelAnimationFrame(timer);
+        // });
+    // }
+
+    addEvent('audio', 'ended', function () {
+        var thisAudio = this;
+        var listener = thisAudio.parentNode.querySelector('.listener');
+
+        setTimeout(function () {
+            listener.classList.remove('play-active');
+            thisAudio.parentNode.querySelector('.media-length').querySelector('.current-length').style.width = 0;
+            thisAudio.currentTime = 0;
+            showTime(thisAudio);
+        }, 500);
+    });
+
+    addEvent('audio', 'playing', function () {
+        progress(this);
+    });
+
+    addEvent('audio', 'pause', function () {
+        cancelAnimationFrame(timer);
+    });
+
+    function addEvent(selector, event, handler) {
+        var elems = document.querySelectorAll(selector);
+
+        for (var i = 0; i < elems.length; i++) {
+            elems[i].addEventListener(event, handler);
+        }
     }
 
     var timer;
 
-    function progress(element) { // TODO: remove jquery
+    function progress(element) {
         var position = (element.currentTime / element.duration) * 100;
 
-        var linkToElem = $(element);
-
-        if (linkToElem.parent('.soundtrack-listener').length === 1) {
-            linkToElem.siblings('.media-length').find('.current-length').css('width', position + '%');
+        if (element.closest('.soundtrack-listener') != undefined) {
+            element.parentNode.querySelector('.media-length').querySelector('.current-length').style.width = position + '%';
         } else {
-            linkToElem.siblings('.video-controls').find('.current-length').css('width', position + '%');
+            element.parentNode.querySelector('.video-controls').querySelector('.media-length').querySelector('.current-length').style.width = position + '%';
         }
 
         showTime(element);
@@ -213,6 +361,26 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
     }
+
+    // function progress(element) { // TODO: remove jquery   Removed
+    //     var position = (element.currentTime / element.duration) * 100;
+
+    //     var linkToElem = $(element);
+
+    //     if (linkToElem.parent('.soundtrack-listener').length === 1) {
+    //         linkToElem.siblings('.media-length').find('.current-length').css('width', position + '%');
+    //     } else {
+    //         linkToElem.siblings('.video-controls').find('.current-length').css('width', position + '%');
+    //     }
+
+    //     showTime(element);
+
+    //     if (position < 100) {
+    //         timer = requestAnimationFrame(function () {
+    //             progress(element);
+    //         });
+    //     }
+    // }
 
     var mediaLength = document.getElementsByClassName('media-length');
 
@@ -227,17 +395,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function setMediaVolumeInBarWidthJS(element, event) {
         var barWidth = element.clientWidth;
-        var inBarXCoor = element.querySelector('.current-length').getBoundingClientRect().left; // TODO: maybe current-length in variable?
+        var elemCurLength = element.querySelector('.current-length');
+        var elemAudio = element.parentNode.querySelector('audio');
+        var inBarXCoor = elemCurLength.getBoundingClientRect().left; // TODO: maybe current-length in variable?     Corrected
         var inBarPosition = ((event.pageX - inBarXCoor) / barWidth) * 100;
-        element.querySelector('.current-length').style.width = inBarPosition + '%';
+        elemCurLength.style.width = inBarPosition + '%';
 
         if (element.closest('.soundtrack-listener') != undefined) {
-            element.parentNode.querySelector('audio').currentTime = (inBarPosition * element.parentNode.querySelector('audio').duration) / 100; // TODO: maybe audio in variable?
+            elemAudio.currentTime = (inBarPosition * elemAudio.duration) / 100; // TODO: maybe audio in variable?    Corrected
 
             showTime(element.parentNode.querySelector('audio'));
         } else {
+            var elemVideo = element.closest('.video-controls').parentNode.querySelector('video');
 
-            element.closest('.video-controls').parentNode.querySelector('video').currentTime = (inBarPosition * element.closest('.video-controls').parentNode.querySelector('video').duration) / 100; // TODO: maybe video in variable?
+            elemVideo.currentTime = (inBarPosition * elemVideo.duration) / 100; // TODO: maybe video in variable?    Corrected
 
             showTime(element.closest('.video-wrapper').querySelector('video'));
         }
@@ -378,15 +549,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
         video[i].addEventListener('ended', function () {
             var thisVideo = this;
-            var siblings = getSiblings(thisVideo);
-            var videoControlsSibling;
+            var videoControlsSibling = thisVideo.parentNode.querySelector('.video-controls');
 
-            for (var i = 0; i < siblings.length; i++) {
-                if (siblings[i].classList == "video-controls") {
-                    videoControlsSibling = siblings[i];
-                }
-            }
-            // TODO: so why not simplified?
+            // TODO: so why not simplified?     Corrected
             // Can be simplified
             // var videoControlsSibling = thisVideo.parentNode.querySelector('.video-controls');
 
@@ -400,19 +565,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 showTime(thisVideo);
             }, 500);
         });
-    }
-
-    function getSiblings(element) {
-        var siblings = [];
-        var sibling = element.parentNode.firstChild.nextSibling;
-
-        while (sibling) {
-            if (sibling != element) {
-                siblings.push(sibling);
-            }
-            sibling = sibling.nextSibling.nextSibling
-        }
-        return siblings;
     }
 
     $('.volume').each(function () {
