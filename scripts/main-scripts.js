@@ -53,14 +53,17 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     window.addEventListener('resize', function () {
-        var boxMenu = document.getElementsByClassName('box-menu');
+        var boxMenu = document.querySelector('.box-menu');
         var burgerIMG = document.getElementById('burger-img');
 
         if (window.innerWidth < 768) {
-            boxMenu[0].style.display = 'none'; // TODO: query selector allows you to avoid indexer
+            boxMenu.style.display = 'none'; // TODO: query selector allows you to avoid indexer     Corrected
             burgerIMG.classList.remove('pressed'); // TODO: in previous version you did not have this here
+            // Yes, but previous version had a little bug: once widnow is resized, the dropdown menu is closed, but
+            // burger is not shown. At the moment once the dropdown menu is closed
+            // the burger is shown.
         } else {
-            boxMenu[0].style.display = 'block';
+            boxMenu.style.display = 'block';
             burgerIMG.classList.remove('pressed');
         }
     });
@@ -75,111 +78,142 @@ document.addEventListener('DOMContentLoaded', function () {
     // });
 
     // Substrate window on button 'Listen' click
-    var listen = document.getElementsByClassName('listen'); // TODO: why not through addEvent?
 
-    for (var i = 0; i < listen.length; i++) {
-        listen[i].addEventListener('click', function () {
-            var body = document.body;
-            var thisListen = this; // TODO: no need
-            // TODO: too many loops for one instance of each element
-            // you definetely know that you have only one modal window while your site works
-            // so what's the point to look for all elements?
-            // also in muy opinion querySelector and querySelectorAll are much convenient than getElementsBy*
-            var modaleWindow = document.getElementsByClassName('substrate');
-            var modaleWindowAudio = document.getElementsByTagName('audio');
-            var listenerTitle = document.getElementsByClassName('listener-title');
+    addEvent('.listen', 'click', function () {
+        // var thisListen = this; // TODO: no need   Deleted
+        // TODO: too many loops for one instance of each element
+        // you definetely know that you have only one modal window while your site works
+        // so what's the point to look for all elements?
+        // also in muy opinion querySelector and querySelectorAll are much convenient than getElementsBy*
 
-            body.classList.add('lock');
+        // Actually this section doesn't require any loops. My first thought was that the
+        // additional substrate window can be added into the site.
+        var modaleWindow = document.querySelector('.substrate');
+        var modaleWindowAudio = document.querySelector('audio');
+        var listenerTitle = document.querySelector('.listener-title');
 
-            for (var j = 0; j < modaleWindow.length; j++) {
-                modaleWindow[j].classList.remove('hidden');
-            }
+        document.body.classList.add('lock');
 
-            setTimeout(function () {
-                for (var k = 0; k < modaleWindow.length; k++) {
-                    modaleWindow[k].classList.remove('visually-hidden');
-                }
-            }, 20);
+        modaleWindow.classList.remove('hidden');
 
-            // Get name of the film above the clicked button 'Listen'
-            var filmTitleListen = thisListen.closest('section');
+        setTimeout(function () {
+            modaleWindow.classList.remove('visually-hidden');
+        }, 20);
 
-            // Put the film title into the substrate window
-            for (var l = 0; l < listenerTitle.length; l++) {
-                listenerTitle[l].textContent = filmTitleListen.getAttribute('data-name'); // TODO: you can access data-attributes through dataset property
-            }
+        // Get name of the film above the clicked button 'Listen'
+        var filmTitleListen = this.closest('section');
 
-            // Set the source of audio file
-            var audioAtr = filmTitleListen.getAttribute('data-audio-name'); // TODO: you can access data-attributes through dataset property
+        // Put the film title into the substrate window
+        listenerTitle.textContent = filmTitleListen.dataset.name; // TODO: you can access data-attributes through dataset property   Corrected
 
-            for (var m = 0; m < modaleWindowAudio.length; m++) {
-                modaleWindowAudio[m].setAttribute('src', 'audios/' + audioAtr + '.ogg');
+        // Set the source of audio file
+        var audioAtr = filmTitleListen.dataset.audioName; // TODO: you can access data-attributes through dataset property   Corrected
 
-                // Display the duration of music
-                modaleWindowAudio[m].addEventListener('canplay', function () {
-                    showTime(this);
-                });
-            }
+        modaleWindowAudio.setAttribute('src', 'audios/' + audioAtr + '.ogg');
+
+        modaleWindowAudio.addEventListener('canplay', function () {
+            showTime(this);
         });
-    }
+    });
+
+    // var listen = document.getElementsByClassName('listen'); // TODO: why not through addEvent?    Corrected
+
+    // for (var i = 0; i < listen.length; i++) {
+    //     listen[i].addEventListener('click', function () {
+    //         var body = document.body;
+    //         var thisListen = this; // TODO: no need  Corrected
+    //         // TODO: too many loops for one instance of each element
+    //         // you definetely know that you have only one modal window while your site works
+    //         // so what's the point to look for all elements?
+    //         // also in muy opinion querySelector and querySelectorAll are much convenient than getElementsBy*
+    //         var modaleWindow = document.getElementsByClassName('substrate');
+    //         var modaleWindowAudio = document.getElementsByTagName('audio');
+    //         var listenerTitle = document.getElementsByClassName('listener-title');
+
+    //         body.classList.add('lock');
+
+    //         for (var j = 0; j < modaleWindow.length; j++) {
+    //             modaleWindow[j].classList.remove('hidden');
+    //         }
+
+    //         setTimeout(function () {
+    //             for (var k = 0; k < modaleWindow.length; k++) {
+    //                 modaleWindow[k].classList.remove('visually-hidden');
+    //             }
+    //         }, 20);
+
+    //         // Get name of the film above the clicked button 'Listen'
+    //         var filmTitleListen = thisListen.closest('section');
+
+    //         // Put the film title into the substrate window
+    //         for (var l = 0; l < listenerTitle.length; l++) {
+    //             listenerTitle[l].textContent = filmTitleListen.getAttribute('data-name'); // TODO: you can access data-attributes through dataset property    Corrected
+    //         }
+
+    //         // Set the source of audio file
+    //         var audioAtr = filmTitleListen.getAttribute('data-audio-name'); // TODO: you can access data-attributes through dataset property     Corrected
+
+    //         for (var m = 0; m < modaleWindowAudio.length; m++) {
+    //             modaleWindowAudio[m].setAttribute('src', 'audios/' + audioAtr + '.ogg');
+
+    //             // Display the duration of music
+    //             modaleWindowAudio[m].addEventListener('canplay', function () {
+    //                 showTime(this);
+    //             });
+    //         }
+    //     });
+    // }
 
     // For closing substrate window and showing scroll on the page
     function closeListener() {
-        var body = document.body; // TODO: no need
+        // var body = document.body; // TODO: no need   Removed
 
-        // TODO: the same: too many loops
-        var modaleWindow = document.getElementsByClassName('substrate');
+        // TODO: the same: too many loops    Corrected
+        var modaleWindow = document.querySelector('.substrate');
 
-        // TODO: you don't need to search through whole document if you have parent element for all of these
-        var audio = document.getElementsByTagName('audio');
-        var modWindListener = document.getElementsByClassName('listener');
-        var currentLength = document.getElementsByClassName('current-length');
+        // TODO: you don't need to search through whole document if you have parent element for all of these     Corrected
+        var audio = modaleWindow.querySelector('audio');
+        var modWindListener = modaleWindow.querySelector('.listener');
+        var currentLength = modaleWindow.querySelector('.current-length');
 
-        body.classList.remove('lock');
+        document.body.classList.remove('lock');
 
-        for (var i = 0; i < modaleWindow.length; i++) {
-            modaleWindow[i].classList.add('visually-hidden');
+        modaleWindow.classList.add('visually-hidden');
 
-            modaleWindow[i].addEventListener('transitionend', function closeMdlWindow(event) {
-                var thisModaleWindow = this;
-                if (event.propertyName === 'opacity') {
-                    thisModaleWindow.classList.add('hidden');
-                    thisModaleWindow.removeEventListener('transitionend', closeMdlWindow);
-                }
-            });
-        }
+        modaleWindow.addEventListener('transitionend', function closeMdlWindow(event) {
+            var thisModaleWindow = this;
+            if (event.propertyName === 'opacity') {
+                thisModaleWindow.classList.add('hidden');
+                thisModaleWindow.removeEventListener('transitionend', closeMdlWindow);
+            }
+        });
 
         // Set the volume index to default
-        var label = document.getElementsByClassName('label'); // TODO: here you store in this variable elements collection and lower - width of this element. Why?
-        var volume;
-        var borderWidth;
+        var label = modaleWindow.querySelector('.label'); // TODO: here you store in this variable elements collection and lower - width of this element. Why?
+        // This is to calculate the maximum position volume-handle
+        // should be moved once the modale window is closed
+        var labelWidth = getComputedStyle(label).getPropertyValue('width');
+        var volumeWidth = getComputedStyle(label.closest('.volume')).getPropertyValue('width');
+        var borderWidth = getComputedStyle(label.closest('.volume')).getPropertyValue('border-width');
 
-        for (var m = 0; m < label.length; m++) {
-            if (label[m].closest('.substrate') != null) { // TODO: here is null and a little bit lower undefined. Better to keep one style
-                volume = parseInt(getComputedStyle(label[m].closest('.volume')).getPropertyValue('width')); // TODO: looks like here and three lines lower a perfect case for variable
-                borderWidth = parseInt(getComputedStyle(label[m].closest('.volume')).getPropertyValue('border-width'));
-                label = parseInt(getComputedStyle(label[m]).getPropertyValue('width'));
-            }
+        if (label.closest('.substrate') != undefined) { // TODO: here is null and a little bit lower undefined. Better to keep one style     Corrected
+            volumeWidth = parseInt(volumeWidth); // TODO: looks like here and three lines lower a perfect case for variable     Corrected
+            borderWidth = parseInt(borderWidth);
+            labelWidth = parseInt(labelWidth);
         }
 
-        var maxPos = volume - label - borderWidth * 2;
+        var maxPos = volumeWidth - labelWidth - borderWidth * 2;
+        label.parentNode.style.width = maxPos + 'px';
 
         // Stop playing music on modal window close
-        for (var j = 0; j < audio.length; j++) {
-            audio[j].pause();
-            audio[j].currentTime = 0;
-            audio[j].parentNode.querySelector('.volume').querySelector('.volume-handle').style.width = maxPos + 'px';
-            audio[j].volume = 1;
-        }
+        audio.pause();
+        audio.currentTime = 0;
+        audio.volume = 1;
 
-        for (var k = 0; k < modWindListener.length; k++) {
-            modWindListener[k].classList.remove('play-active');
-        }
+        modWindListener.classList.remove('play-active');
 
-        for (var l = 0; l < currentLength.length; l++) {
-            if (currentLength[l].closest('.soundtrack-listener') != undefined) {
-                currentLength[l].style.width = 0;
-            }
+        if (currentLength.closest('.soundtrack-listener') != undefined) {
+            currentLength.style.width = 0;
         }
     }
 
@@ -269,11 +303,13 @@ document.addEventListener('DOMContentLoaded', function () {
     function progress(element) {
         var position = (element.currentTime / element.duration) * 100;
 
-        if (element.closest('.soundtrack-listener') != undefined) {
-            element.parentNode.querySelector('.media-length').querySelector('.current-length').style.width = position + '%'; // TODO: too many query selectors, aren't?
-        } else {
-            element.parentNode.querySelector('.video-controls').querySelector('.media-length').querySelector('.current-length').style.width = position + '%';
-        }
+        // if (element.closest('.soundtrack-listener') != undefined) {
+        //     element.parentNode.querySelector('.current-length').style.width = position + '%'; // TODO: too many query selectors, aren't?     Corrected
+        // } else {
+        //     element.parentNode.querySelector('.current-length').style.width = position + '%';
+        // }
+
+        element.parentNode.querySelector('.current-length').style.width = position + '%';
 
         showTime(element);
 
@@ -306,7 +342,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (element.closest('.soundtrack-listener') != undefined) {
             elemAudio.currentTime = (inBarPosition * elemAudio.duration) / 100;
 
-            showTime(element.parentNode.querySelector('audio')); // TODO: looks like this is in variable?
+            showTime(elemAudio); // TODO: looks like this is in variable?    Corrected
         } else {
             var elemVideo = element.closest('.video-controls').parentNode.querySelector('video');
 
@@ -451,9 +487,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
         video[i].addEventListener('ended', function () {
             var thisVideo = this;
-            var videoControlsSibling = thisVideo.parentNode.querySelector('.video-controls'); // TODO: no need
-            var mediaLength = videoControlsSibling.querySelector('.media-length'); // TODO: no need
-            var currentLength = mediaLength.querySelector('.current-length');
+            // var videoControlsSibling = thisVideo.parentNode.querySelector('.video-controls'); // TODO: no need    Corrected
+            // var mediaLength = videoControlsSibling.querySelector('.media-length'); // TODO: no need   Corrected
+            var currentLength = thisVideo.parentNode.querySelector('.current-length');
 
             setTimeout(function () {
                 stopVideoPlaying(thisVideo);
