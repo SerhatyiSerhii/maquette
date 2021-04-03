@@ -50,10 +50,6 @@
         position: absolute;
         top: 0;
     }
-
-    .video-wrapper {
-        // display: none; // TODO: no need. You can just cover video with img, and hide img when video is playing. z-index for help     Corrected
-    }
 }
 
 .timer.video-timer {
@@ -154,9 +150,8 @@
 }
 
 video {
-    width: 880px;
+    width: 880px; // TODO: WAT? perfect. now videos are broken on all screens except the biggest one
     height: 540px;
-    // position: absolute; // TODO: no need. You have enough elements in video-wrapper with absolute position to align   Corrected
 }
 
 @media screen and (max-width: 1210px) {

@@ -9,34 +9,18 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Smooth scroll to the film at Go-To menu
-    addEvent('a.top-film', 'click', function (event) {
+    addEvent('a.top-film', 'click', function (event) { // TODO: I believe 'a' can be skipped from selector
         event.preventDefault();
         var topLink = this.getAttribute('href');
         scrollToFilm(topLink);
     });
-
-
-    // $('a.top-film').on('click', function (event) { // TODO: remove jquery     Removed
-    //     event.preventDefault();
-
-    //     var topLink = $(this).attr('href');
-    //     console.log(topLink);
-    //     scrollToFilm(topLink);
-    // });
 
     // Scroll to Top10 on arrow-down click
     addEvent('.arrow-down', 'click', function (event) {
         event.preventDefault();
         var firstTopFilm = this.getAttribute('href');
         scrollToFilm(firstTopFilm);
-    })
-
-    // $('.arrow-down').on('click', function (event) { // TODO: remove jquery    Removed
-    //     event.preventDefault();
-
-    //     var firstTopFilm = $(this).attr('href');
-    //     scrollToFilm(firstTopFilm);
-    // });
+    });
 
     // Hover on Go-To menu
     $('.go-to').hover(function () {
@@ -70,25 +54,15 @@ document.addEventListener('DOMContentLoaded', function () {
         var boxMenu = document.querySelector('.box-menu');
         var burgerIMG = document.getElementById('burger-img');
 
-         // TODO: why removing .pressed code in if/else?     Corrected
-         burgerIMG.classList.remove('pressed');
-         // TODO: remove is/else at all. use ternary operator to set display value   Corrected
-         window.innerWidth < 768 ? boxMenu.style.display = 'none' : boxMenu.style.display = 'block';
-
-        // if (window.innerWidth < 768) {
-        //     boxMenu.style.display = 'none';
-        //     // burgerIMG.classList.remove('pressed');
-        // } else {
-        //     boxMenu.style.display = 'block';
-        //     // burgerIMG.classList.remove('pressed');
-        // }
+        burgerIMG.classList.remove('pressed');
+        window.innerWidth < 768 ? boxMenu.style.display = 'none' : boxMenu.style.display = 'block'; // TODO: code duplication in one line
     });
 
     // Substrate window on button 'Listen' click
     addEvent('.listen', 'click', function () {
         var modaleWindow = document.querySelector('.substrate');
-        var modaleWindowAudio = modaleWindow.querySelector('audio'); // TODO: you can query this from modaleWindow, to avoid traverse through the whole document     Corrected
-        var listenerTitle = modaleWindow.querySelector('.listener-title'); // TODO: you can query this from modaleWindow, to avoid traverse through the whole document   Corrected
+        var modaleWindowAudio = modaleWindow.querySelector('audio');
+        var listenerTitle = modaleWindow.querySelector('.listener-title');
         var volume = modaleWindow.querySelector('.volume');
         var volumeHandle = modaleWindow.querySelector('.volume-handle');
         var label = modaleWindow.querySelector('.label');
@@ -140,22 +114,12 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         // Set the volume index to default
-        // TODO: previously you select all the elements matching selector and iterate throught them to get computed styles.
-        // Because some of .label were now displayed and do not have width.
-        // Now you select elements specifically from modal window. This means they are displayed on the moment when this code is being executed.
-        // So you can avoid using getComputedStyle and use offsetWidth dirrectly.
-
-        // Corrected
-
         var volume = modaleWindow.querySelector('.volume');
         var volumeWidth = volume.clientWidth;
         var label = volume.querySelector('.label');
         var labelWidth = label.offsetWidth;
-        // var volumeWidth = getComputedStyle(label.closest('.volume')).getPropertyValue('width'); // TODO: to avoid superfluous traversing through DOM, query .volume first, and then .label from .volume   Corrected
-        // TODO: to avoid looking for border width and include it in calculation process - read about difference between offsetWidth, clientWidth, and scrollWidth   Done.Thanks :)
-
         var maxPos = volumeWidth - labelWidth;
-        label.parentNode.style.width = maxPos + 'px';
+        label.parentNode.style.width = maxPos + 'px'; // TODO: since you set it to max when modal open - you do not need it here
 
         // Stop playing music on modal window close
         audio.pause();
@@ -173,25 +137,11 @@ document.addEventListener('DOMContentLoaded', function () {
         closeListener();
     });
 
-    // var modWindCloser = document.getElementsByClassName('close-listener'); // TODO: querySelector to find one element?    Corrected
-
-    // modWindCloser[0].addEventListener('click', function () {
-    //     closeListener();
-    // });
-
     addEvent('.substrate', 'click', function (event) {
         if (event.target.closest('.soundtrack-listener') == undefined) {
             closeListener();
         }
     });
-
-    // var substrate = document.getElementsByClassName('substrate'); // TODO: querySelector to find one element?     Corrected
-
-    // substrate[0].addEventListener('click', function (event) {
-    //     if (event.target.closest('.soundtrack-listener') == undefined) {
-    //         closeListener();
-    //     }
-    // });
 
     addEvent('.listener', 'click', function () {
         var allVideos = document.getElementsByTagName('video');
@@ -209,43 +159,13 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // var listener = document.getElementsByClassName('listener'); // TODO: use addEvent     Corrected
-
-    // for (var i = 0; i < listener.length; i++) {
-    //     listener[i].addEventListener('click', function () {
-    //         var allVideos = document.getElementsByTagName('video');
-
-    //         this.classList.toggle('play-active');
-
-    //         for (var j = 0; j < allVideos.length; j++) {
-    //             stopVideoPlaying(allVideos[j]);
-    //         }
-
-    //         if (this.classList.contains('play-active')) {
-    //             this.parentNode.querySelector('audio').play();
-    //         } else {
-    //             this.parentNode.querySelector('audio').pause();
-    //         }
-    //     });
-    // }
-
-    function stopVideoPlaying(element) { // TODO: remove jquery analog and rename this function without 'JS'     Done
+    function stopVideoPlaying(element) {
         var elementParent = element.parentNode;
 
         element.pause();
         elementParent.parentNode.querySelector('.btn-play').classList.remove('playing-video', 'play-active');
         elementParent.parentNode.querySelector('img').style.display = 'block';
     }
-
-    // function stopVideoPlaying(element) {
-
-    //     var elementParent = $(element).parent();
-
-    //     element.pause();
-    //     elementParent.siblings('.btn-play').removeClass('playing-video play-active');
-    //     // elementParent.css('display', 'none');
-    //     elementParent.siblings('img').css('display', 'block');
-    // }
 
     addEvent('audio', 'ended', function () {
         var thisAudio = this;
@@ -292,22 +212,11 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     addEvent('.media-length', 'click', function (event) {
-        var musicLength = this;
+        var musicLength = this; // TODO: no need
 
         cancelAnimationFrame(timer);
         setMediaVolumeInBarWidth(musicLength, event);
     });
-
-    // var mediaLength = document.getElementsByClassName('media-length'); // TODO: use addEvent     Corrected
-
-    // for (var i = 0; i < mediaLength.length; i++) {
-    //     mediaLength[i].addEventListener('click', function (event) {
-    //         var musicLength = this;
-
-    //         cancelAnimationFrame(timer);
-    //         setMediaVolumeInBarWidth(musicLength, event);
-    //     });
-    // }
 
     function setMediaVolumeInBarWidth(element, event) {
         var barWidth = element.clientWidth;
@@ -330,10 +239,10 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    function showTime(element) { // TODO: remove jquery     Corrected
+    function showTime(element) {
         var minSecCurTime = calcTime(element.currentTime);
         var minSecDurat = calcTime(element.duration);
-        // $(element).siblings('.timer').text(minSecCurTime + ' / ' + minSecDurat);
+
         element.parentNode.querySelector('.timer').textContent = minSecCurTime + ' / ' + minSecDurat;
     }
 
@@ -347,7 +256,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function initSlider(index) {
-        $('.slider').each(function () {
+        $('.slider').each(function () { // TODO: remove jquery
             var parent = $(this);
             var currIndex = index;
             var maxIndex = parent.find('li').last().index();
@@ -416,20 +325,18 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Playing video & video controls
-    $('.promo-video').on('click', function () {
+    $('.promo-video').on('click', function () { // TODO: remove jquery
         var promoVideo = $(this);
-        var videoWrapper = promoVideo.siblings('.video-wrapper');
+        var videoWrapper = promoVideo.siblings('.video-wrapper'); // TODO: looks like unused variable
 
         if (promoVideo.closest('.slider').length != 0) {
             promoVideo.toggleClass('playing-video play-active');
 
             var image = $(this).prev();
-            if (promoVideo.hasClass('playing-video')) {
+            if (promoVideo.hasClass('playing-video')) { // TODO: another case for ternary operator
                 image.css('display', 'none');
-                // videoWrapper.css('display', 'block'); // TODO: no need. You can just cover video with img, and hide img when video is playing     Corrected
             } else {
                 image.css('display', 'block');
-                // videoWrapper.css('display', 'none'); // TODO: no need. You can just cover video with img, and hide img when video is playing     Corrected
             }
 
             var currentVideo = promoVideo.siblings('.video-wrapper').find('video')[0];
@@ -473,55 +380,13 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 500);
     });
 
-    // var video = document.getElementsByTagName('video'); // TODO: use addEvent    Corrected
-
-    // for (var i = 0; i < video.length; i++) {
-    //     // video[i].addEventListener('canplay', function () {
-    //     //     showTime(this);
-    //     // });
-
-    //     // video[i].addEventListener('playing', function () {
-    //     //     progress(this);
-    //     // });
-
-    //     // video[i].addEventListener('pause', function () {
-    //     //     cancelAnimationFrame(timer);
-    //     // });
-
-    //     // video[i].addEventListener('ended', function () {
-    //     //     var thisVideo = this;
-    //     //     var currentLength = thisVideo.parentNode.querySelector('.current-length');
-
-    //     //     setTimeout(function () {
-    //     //         stopVideoPlaying(thisVideo);
-    //     //         currentLength.style.width = 0;
-    //     //         thisVideo.currentTime = 0;
-    //     //         showTime(thisVideo);
-    //     //     }, 500);
-    //     // });
-    // }
-
     var volume = document.getElementsByClassName('volume');
 
     for (var item of volume) {
-        var volumeBar = item;
+        var volumeBar = item; // TODO: no need. if you want item to be named as volumeBar - just name it in loop declaration
         var volumeHandle = volumeBar.querySelector('.volume-handle');
         var volumeLable = volumeBar.querySelector('.label');
 
         volumeHandle.style.width = (volumeBar.clientWidth - volumeLable.clientWidth) + 'px';
     }
-
-    // One volume handle is hidden (the volume of modale window).
-    // So we can set its values while opening the modale window.
-
-    // $('.volume').each(function () { // TODO: remove jquery    Done
-    //     // currently to perform this calculations you need to use getComputedStyles
-    //     // But if you redo covering video with img, instead of setting display video to none
-    //     // you will be able to use offsetWidth/clientWidth
-    //     var volumeBar = $(this);
-    //     var volumeHandle = volumeBar.find('.volume-handle');
-    //     var volumeLable = volumeHandle.find('.label');
-
-    //     volumeHandle.css('width', volumeBar.width() - volumeLable.width() + 'px');
-    // });
 });
