@@ -47,16 +47,18 @@
     img {
         width: 100%;
         height: 100%;
+        position: absolute;
+        top: 0;
     }
 
     .video-wrapper {
-        display: none; // TODO: no need. You can just cover video with img, and hide img when video is playing. z-index for help
+        // display: none; // TODO: no need. You can just cover video with img, and hide img when video is playing. z-index for help     Corrected
     }
 }
 
 .timer.video-timer {
     position: absolute;
-    bottom: 35px;
+    bottom: 55px;
     left: 50%;
     transform: translateX(-50%);
     opacity: 0;
@@ -89,11 +91,12 @@
 
 .video-controls {
     position: absolute;
+    top: 0;
     left: 50%;
     transform: translateX(-50%);
     opacity: 0;
     transition: 0.3s;
-    padding-top: 75px;
+    padding-top: 50px;
     width: 100%;
     height: 100%;
 }
@@ -103,7 +106,7 @@
 }
 
 .media-length.video-length {
-    bottom: 75px;
+    bottom: 90px;
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
@@ -151,9 +154,9 @@
 }
 
 video {
-    width: 100%;
-    height: 100%;
-    position: absolute; // TODO: no need. You have enough elements in video-wrapper with absolute position to align
+    width: 880px;
+    height: 540px;
+    // position: absolute; // TODO: no need. You have enough elements in video-wrapper with absolute position to align   Corrected
 }
 
 @media screen and (max-width: 1210px) {

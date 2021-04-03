@@ -9,20 +9,34 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Smooth scroll to the film at Go-To menu
-    $('a.top-film').on('click', function (event) { // TODO: remove jquery
+    addEvent('a.top-film', 'click', function (event) {
         event.preventDefault();
-
-        var topLink = $(this).attr('href');
+        var topLink = this.getAttribute('href');
         scrollToFilm(topLink);
     });
 
-    // Scroll to Top10 on arrow-down click
-    $('.arrow-down').on('click', function (event) { // TODO: remove jquery
-        event.preventDefault();
 
-        var firstTopFilm = $(this).attr('href');
+    // $('a.top-film').on('click', function (event) { // TODO: remove jquery     Removed
+    //     event.preventDefault();
+
+    //     var topLink = $(this).attr('href');
+    //     console.log(topLink);
+    //     scrollToFilm(topLink);
+    // });
+
+    // Scroll to Top10 on arrow-down click
+    addEvent('.arrow-down', 'click', function (event) {
+        event.preventDefault();
+        var firstTopFilm = this.getAttribute('href');
         scrollToFilm(firstTopFilm);
-    });
+    })
+
+    // $('.arrow-down').on('click', function (event) { // TODO: remove jquery    Removed
+    //     event.preventDefault();
+
+    //     var firstTopFilm = $(this).attr('href');
+    //     scrollToFilm(firstTopFilm);
+    // });
 
     // Hover on Go-To menu
     $('.go-to').hover(function () {
@@ -56,22 +70,28 @@ document.addEventListener('DOMContentLoaded', function () {
         var boxMenu = document.querySelector('.box-menu');
         var burgerIMG = document.getElementById('burger-img');
 
-         // TODO: why removing .pressed code in if/else?
-         // TODO: remove is/else at all. use ternary operator to set display value
-        if (window.innerWidth < 768) {
-            boxMenu.style.display = 'none';
-            burgerIMG.classList.remove('pressed');
-        } else {
-            boxMenu.style.display = 'block';
-            burgerIMG.classList.remove('pressed');
-        }
+         // TODO: why removing .pressed code in if/else?     Corrected
+         burgerIMG.classList.remove('pressed');
+         // TODO: remove is/else at all. use ternary operator to set display value   Corrected
+         window.innerWidth < 768 ? boxMenu.style.display = 'none' : boxMenu.style.display = 'block';
+
+        // if (window.innerWidth < 768) {
+        //     boxMenu.style.display = 'none';
+        //     // burgerIMG.classList.remove('pressed');
+        // } else {
+        //     boxMenu.style.display = 'block';
+        //     // burgerIMG.classList.remove('pressed');
+        // }
     });
 
     // Substrate window on button 'Listen' click
     addEvent('.listen', 'click', function () {
         var modaleWindow = document.querySelector('.substrate');
-        var modaleWindowAudio = document.querySelector('audio'); // TODO: you can query this from modaleWindow, to avoid traverse through the whole document
-        var listenerTitle = document.querySelector('.listener-title'); // TODO: you can query this from modaleWindow, to avoid traverse through the whole document
+        var modaleWindowAudio = modaleWindow.querySelector('audio'); // TODO: you can query this from modaleWindow, to avoid traverse through the whole document     Corrected
+        var listenerTitle = modaleWindow.querySelector('.listener-title'); // TODO: you can query this from modaleWindow, to avoid traverse through the whole document   Corrected
+        var volume = modaleWindow.querySelector('.volume');
+        var volumeHandle = modaleWindow.querySelector('.volume-handle');
+        var label = modaleWindow.querySelector('.label');
 
         document.body.classList.add('lock');
 
@@ -95,6 +115,9 @@ document.addEventListener('DOMContentLoaded', function () {
         modaleWindowAudio.addEventListener('canplay', function () {
             showTime(this);
         });
+
+        // Set the volume lable to max
+        volumeHandle.style.width = (volume.clientWidth - label.clientWidth) + 'px';
     });
 
     // For closing substrate window and showing scroll on the page
@@ -121,19 +144,17 @@ document.addEventListener('DOMContentLoaded', function () {
         // Because some of .label were now displayed and do not have width.
         // Now you select elements specifically from modal window. This means they are displayed on the moment when this code is being executed.
         // So you can avoid using getComputedStyle and use offsetWidth dirrectly.
-        var label = modaleWindow.querySelector('.label');
-        var labelWidth = getComputedStyle(label).getPropertyValue('width');
-        var volumeWidth = getComputedStyle(label.closest('.volume')).getPropertyValue('width'); // TODO: to avoid superfluous traversing through DOM, query .volume first, and then .label from .volume
-        // TODO: to avoid looking for border width and include it in calculation process - read about difference between offsetWidth, clientWidth, and scrollWidth
-        var borderWidth = getComputedStyle(label.closest('.volume')).getPropertyValue('border-width');
 
-        if (label.closest('.substrate') != undefined) {
-            volumeWidth = parseInt(volumeWidth);
-            borderWidth = parseInt(borderWidth);
-            labelWidth = parseInt(labelWidth);
-        }
+        // Corrected
 
-        var maxPos = volumeWidth - labelWidth - borderWidth * 2;
+        var volume = modaleWindow.querySelector('.volume');
+        var volumeWidth = volume.clientWidth;
+        var label = volume.querySelector('.label');
+        var labelWidth = label.offsetWidth;
+        // var volumeWidth = getComputedStyle(label.closest('.volume')).getPropertyValue('width'); // TODO: to avoid superfluous traversing through DOM, query .volume first, and then .label from .volume   Corrected
+        // TODO: to avoid looking for border width and include it in calculation process - read about difference between offsetWidth, clientWidth, and scrollWidth   Done.Thanks :)
+
+        var maxPos = volumeWidth - labelWidth;
         label.parentNode.style.width = maxPos + 'px';
 
         // Stop playing music on modal window close
@@ -148,58 +169,83 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    var modWindCloser = document.getElementsByClassName('close-listener'); // TODO: querySelector to find one element?
-
-    modWindCloser[0].addEventListener('click', function () {
+    addEvent('.close-listener', 'click', function () {
         closeListener();
     });
 
-    var substrate = document.getElementsByClassName('substrate'); // TODO: querySelector to find one element?
+    // var modWindCloser = document.getElementsByClassName('close-listener'); // TODO: querySelector to find one element?    Corrected
 
-    substrate[0].addEventListener('click', function (event) {
+    // modWindCloser[0].addEventListener('click', function () {
+    //     closeListener();
+    // });
+
+    addEvent('.substrate', 'click', function (event) {
         if (event.target.closest('.soundtrack-listener') == undefined) {
             closeListener();
         }
     });
 
-    var listener = document.getElementsByClassName('listener'); // TODO: use addEvent
+    // var substrate = document.getElementsByClassName('substrate'); // TODO: querySelector to find one element?     Corrected
 
-    for (var i = 0; i < listener.length; i++) {
-        listener[i].addEventListener('click', function () {
-            var allVideos = document.getElementsByTagName('video');
+    // substrate[0].addEventListener('click', function (event) {
+    //     if (event.target.closest('.soundtrack-listener') == undefined) {
+    //         closeListener();
+    //     }
+    // });
 
-            this.classList.toggle('play-active');
+    addEvent('.listener', 'click', function () {
+        var allVideos = document.getElementsByTagName('video');
 
-            for (var j = 0; j < allVideos.length; j++) {
-                stopVideoPlayingJS(allVideos[j]);
-            }
+        this.classList.toggle('play-active');
 
-            if (this.classList.contains('play-active')) {
-                this.parentNode.querySelector('audio').play();
-            } else {
-                this.parentNode.querySelector('audio').pause();
-            }
-        });
-    }
+        for (var j = 0; j < allVideos.length; j++) {
+            stopVideoPlaying(allVideos[j]);
+        }
 
-    function stopVideoPlayingJS(element) { // TODO: remove jquery analog and rename this function without 'JS'
+        if (this.classList.contains('play-active')) {
+            this.parentNode.querySelector('audio').play();
+        } else {
+            this.parentNode.querySelector('audio').pause();
+        }
+    });
+
+    // var listener = document.getElementsByClassName('listener'); // TODO: use addEvent     Corrected
+
+    // for (var i = 0; i < listener.length; i++) {
+    //     listener[i].addEventListener('click', function () {
+    //         var allVideos = document.getElementsByTagName('video');
+
+    //         this.classList.toggle('play-active');
+
+    //         for (var j = 0; j < allVideos.length; j++) {
+    //             stopVideoPlaying(allVideos[j]);
+    //         }
+
+    //         if (this.classList.contains('play-active')) {
+    //             this.parentNode.querySelector('audio').play();
+    //         } else {
+    //             this.parentNode.querySelector('audio').pause();
+    //         }
+    //     });
+    // }
+
+    function stopVideoPlaying(element) { // TODO: remove jquery analog and rename this function without 'JS'     Done
         var elementParent = element.parentNode;
 
         element.pause();
         elementParent.parentNode.querySelector('.btn-play').classList.remove('playing-video', 'play-active');
-        elementParent.style.display = 'none';
         elementParent.parentNode.querySelector('img').style.display = 'block';
     }
 
-    function stopVideoPlaying(element) {
+    // function stopVideoPlaying(element) {
 
-        var elementParent = $(element).parent();
+    //     var elementParent = $(element).parent();
 
-        element.pause();
-        elementParent.siblings('.btn-play').removeClass('playing-video play-active');
-        elementParent.css('display', 'none');
-        elementParent.siblings('img').css('display', 'block');
-    }
+    //     element.pause();
+    //     elementParent.siblings('.btn-play').removeClass('playing-video play-active');
+    //     // elementParent.css('display', 'none');
+    //     elementParent.siblings('img').css('display', 'block');
+    // }
 
     addEvent('audio', 'ended', function () {
         var thisAudio = this;
@@ -245,18 +291,25 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    var mediaLength = document.getElementsByClassName('media-length'); // TODO: use addEvent
+    addEvent('.media-length', 'click', function (event) {
+        var musicLength = this;
 
-    for (var i = 0; i < mediaLength.length; i++) {
-        mediaLength[i].addEventListener('click', function (event) {
-            var musicLength = this;
+        cancelAnimationFrame(timer);
+        setMediaVolumeInBarWidth(musicLength, event);
+    });
 
-            cancelAnimationFrame(timer);
-            setMediaVolumeInBarWidthJS(musicLength, event);
-        });
-    }
+    // var mediaLength = document.getElementsByClassName('media-length'); // TODO: use addEvent     Corrected
 
-    function setMediaVolumeInBarWidthJS(element, event) {
+    // for (var i = 0; i < mediaLength.length; i++) {
+    //     mediaLength[i].addEventListener('click', function (event) {
+    //         var musicLength = this;
+
+    //         cancelAnimationFrame(timer);
+    //         setMediaVolumeInBarWidth(musicLength, event);
+    //     });
+    // }
+
+    function setMediaVolumeInBarWidth(element, event) {
         var barWidth = element.clientWidth;
         var elemCurLength = element.querySelector('.current-length');
         var elemAudio = element.parentNode.querySelector('audio');
@@ -277,10 +330,11 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    function showTime(element) { // TODO: remove jquery
+    function showTime(element) { // TODO: remove jquery     Corrected
         var minSecCurTime = calcTime(element.currentTime);
         var minSecDurat = calcTime(element.duration);
-        $(element).siblings('.timer').text(minSecCurTime + ' / ' + minSecDurat);
+        // $(element).siblings('.timer').text(minSecCurTime + ' / ' + minSecDurat);
+        element.parentNode.querySelector('.timer').textContent = minSecCurTime + ' / ' + minSecDurat;
     }
 
     function calcTime(time) {
@@ -372,10 +426,10 @@ document.addEventListener('DOMContentLoaded', function () {
             var image = $(this).prev();
             if (promoVideo.hasClass('playing-video')) {
                 image.css('display', 'none');
-                videoWrapper.css('display', 'block'); // TODO: no need. You can just cover video with img, and hide img when video is playing
+                // videoWrapper.css('display', 'block'); // TODO: no need. You can just cover video with img, and hide img when video is playing     Corrected
             } else {
                 image.css('display', 'block');
-                videoWrapper.css('display', 'none'); // TODO: no need. You can just cover video with img, and hide img when video is playing
+                // videoWrapper.css('display', 'none'); // TODO: no need. You can just cover video with img, and hide img when video is playing     Corrected
             }
 
             var currentVideo = promoVideo.siblings('.video-wrapper').find('video')[0];
@@ -395,42 +449,79 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    var video = document.getElementsByTagName('video'); // TODO: use addEvent
+    addEvent('video', 'canplay', function () {
+        showTime(this);
+    });
 
-    for (var i = 0; i < video.length; i++) {
-        video[i].addEventListener('canplay', function () {
-            showTime(this);
-        });
+    addEvent('video', 'playing', function () {
+        progress(this);
+    });
 
-        video[i].addEventListener('playing', function () {
-            progress(this);
-        });
+    addEvent('video', 'pause', function () {
+        cancelAnimationFrame(timer);
+    });
 
-        video[i].addEventListener('pause', function () {
-            cancelAnimationFrame(timer);
-        });
+    addEvent('video', 'ended', function () {
+        var thisVideo = this;
+        var currentLength = thisVideo.parentNode.querySelector('.current-length');
 
-        video[i].addEventListener('ended', function () {
-            var thisVideo = this;
-            var currentLength = thisVideo.parentNode.querySelector('.current-length');
+        setTimeout(function () {
+            stopVideoPlaying(thisVideo);
+            currentLength.style.width = 0;
+            thisVideo.currentTime = 0;
+            showTime(thisVideo);
+        }, 500);
+    });
 
-            setTimeout(function () {
-                stopVideoPlaying(thisVideo);
-                currentLength.style.width = 0;
-                thisVideo.currentTime = 0;
-                showTime(thisVideo);
-            }, 500);
-        });
+    // var video = document.getElementsByTagName('video'); // TODO: use addEvent    Corrected
+
+    // for (var i = 0; i < video.length; i++) {
+    //     // video[i].addEventListener('canplay', function () {
+    //     //     showTime(this);
+    //     // });
+
+    //     // video[i].addEventListener('playing', function () {
+    //     //     progress(this);
+    //     // });
+
+    //     // video[i].addEventListener('pause', function () {
+    //     //     cancelAnimationFrame(timer);
+    //     // });
+
+    //     // video[i].addEventListener('ended', function () {
+    //     //     var thisVideo = this;
+    //     //     var currentLength = thisVideo.parentNode.querySelector('.current-length');
+
+    //     //     setTimeout(function () {
+    //     //         stopVideoPlaying(thisVideo);
+    //     //         currentLength.style.width = 0;
+    //     //         thisVideo.currentTime = 0;
+    //     //         showTime(thisVideo);
+    //     //     }, 500);
+    //     // });
+    // }
+
+    var volume = document.getElementsByClassName('volume');
+
+    for (var item of volume) {
+        var volumeBar = item;
+        var volumeHandle = volumeBar.querySelector('.volume-handle');
+        var volumeLable = volumeBar.querySelector('.label');
+
+        volumeHandle.style.width = (volumeBar.clientWidth - volumeLable.clientWidth) + 'px';
     }
 
-    $('.volume').each(function () { // TODO: remove jquery
-        // currently to perform this calculations you need to use getComputedStyles
-        // But if you redo covering video with img, instead of setting display video to none
-        // you will be able to use offsetWidth/clientWidth
-        var volumeBar = $(this);
-        var volumeHandle = volumeBar.find('.volume-handle');
-        var volumeLable = volumeHandle.find('.label');
+    // One volume handle is hidden (the volume of modale window).
+    // So we can set its values while opening the modale window.
 
-        volumeHandle.css('width', volumeBar.width() - volumeLable.width() + 'px');
-    });
+    // $('.volume').each(function () { // TODO: remove jquery    Done
+    //     // currently to perform this calculations you need to use getComputedStyles
+    //     // But if you redo covering video with img, instead of setting display video to none
+    //     // you will be able to use offsetWidth/clientWidth
+    //     var volumeBar = $(this);
+    //     var volumeHandle = volumeBar.find('.volume-handle');
+    //     var volumeLable = volumeHandle.find('.label');
+
+    //     volumeHandle.css('width', volumeBar.width() - volumeLable.width() + 'px');
+    // });
 });
