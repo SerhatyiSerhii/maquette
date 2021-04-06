@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Smooth scroll to the film at Go-To menu
-    addEvent('a.top-film', 'click', function (event) { // TODO: I believe 'a' can be skipped from selector
+    addEvent('.top-film', 'click', function (event) { // TODO: I believe 'a' can be skipped from selector    Corrected
         event.preventDefault();
         var topLink = this.getAttribute('href');
         scrollToFilm(topLink);
@@ -55,7 +55,8 @@ document.addEventListener('DOMContentLoaded', function () {
         var burgerIMG = document.getElementById('burger-img');
 
         burgerIMG.classList.remove('pressed');
-        window.innerWidth < 768 ? boxMenu.style.display = 'none' : boxMenu.style.display = 'block'; // TODO: code duplication in one line
+        // window.innerWidth < 768 ? boxMenu.style.display = 'none' : boxMenu.style.display = 'block'; // TODO: code duplication in one line     Corrected
+        boxMenu.style.display = (window.innerWidth < 768) ? 'none' : 'block';
     });
 
     // Substrate window on button 'Listen' click
@@ -114,12 +115,15 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         // Set the volume index to default
-        var volume = modaleWindow.querySelector('.volume');
-        var volumeWidth = volume.clientWidth;
-        var label = volume.querySelector('.label');
-        var labelWidth = label.offsetWidth;
-        var maxPos = volumeWidth - labelWidth;
-        label.parentNode.style.width = maxPos + 'px'; // TODO: since you set it to max when modal open - you do not need it here
+        // var volume = modaleWindow.querySelector('.volume');
+        // var volumeWidth = volume.clientWidth;
+        // var label = volume.querySelector('.label');
+        // var labelWidth = label.offsetWidth;
+        // var maxPos = volumeWidth - labelWidth;
+        // label.parentNode.style.width = maxPos + 'px'; // TODO: since you set it to max when modal open - you do not need it here
+
+        // Disabled, but now while closing modale window we can see that current position of music drops to start,
+        // but volume position stays on its position.
 
         // Stop playing music on modal window close
         audio.pause();
@@ -212,10 +216,10 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     addEvent('.media-length', 'click', function (event) {
-        var musicLength = this; // TODO: no need
+        // var musicLength = this; // TODO: no need     Corrected
 
         cancelAnimationFrame(timer);
-        setMediaVolumeInBarWidth(musicLength, event);
+        setMediaVolumeInBarWidth(this, event);
     });
 
     function setMediaVolumeInBarWidth(element, event) {
@@ -256,25 +260,31 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function initSlider(index) {
-        $('.slider').each(function () { // TODO: remove jquery
-            var parent = $(this);
+
+        var slider = document.querySelectorAll('.slider');
+
+        slider.forEach(function (item) {
+            var parent = item;
             var currIndex = index;
-            var maxIndex = parent.find('li').last().index();
+            var maxIndex = parent.querySelectorAll('li').length - 1;
             settingTranslateX();
 
-            parent.find('.arrow-left').on('click', function (event) {
+            var arrowLeft = parent.querySelector('.arrow-left');
+            var arrowRight = parent.querySelector('.arrow-right');
+
+            arrowLeft.addEventListener('click', function (event) {
                 event.preventDefault();
 
                 currIndex--;
                 settingTranslateX();
-            })
+            });
 
-            parent.find('.arrow-right').on('click', function (event) {
+            arrowRight.addEventListener('click', function (event) {
                 event.preventDefault();
 
                 currIndex++;
                 settingTranslateX();
-            })
+            });
 
             function settingTranslateX() {
                 if (currIndex <= 0) {
@@ -282,9 +292,39 @@ document.addEventListener('DOMContentLoaded', function () {
                 } else if (currIndex >= maxIndex) {
                     currIndex = maxIndex;
                 }
-                parent.find('ul').css('transform', 'translateX(' + -currIndex * 100 + '%)');
+                parent.querySelector('ul').style.transform = 'translateX(' + -currIndex * 100 + '%)';
             }
-        })
+        });
+
+        // $('.slider').each(function () { // TODO: remove jquery    Removed
+        //     var parent = $(this);
+        //     var currIndex = index;
+        //     var maxIndex = parent.find('li').last().index();
+        //     settingTranslateX();
+
+        //     parent.find('.arrow-left').on('click', function (event) {
+        //         event.preventDefault();
+
+        //         currIndex--;
+        //         settingTranslateX();
+        //     })
+
+        //     parent.find('.arrow-right').on('click', function (event) {
+        //         event.preventDefault();
+
+        //         currIndex++;
+        //         settingTranslateX();
+        //     })
+
+        //     function settingTranslateX() {
+        //         if (currIndex <= 0) {
+        //             currIndex = 0;
+        //         } else if (currIndex >= maxIndex) {
+        //             currIndex = maxIndex;
+        //         }
+        //         parent.find('ul').css('transform', 'translateX(' + -currIndex * 100 + '%)');
+        //     }
+        // })
     }
     initSlider(1);
 
@@ -325,26 +365,22 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Playing video & video controls
-    $('.promo-video').on('click', function () { // TODO: remove jquery
-        var promoVideo = $(this);
-        var videoWrapper = promoVideo.siblings('.video-wrapper'); // TODO: looks like unused variable
+    addEvent('.promo-video', 'click', function () {
+        var promoVideo = this;
 
-        if (promoVideo.closest('.slider').length != 0) {
-            promoVideo.toggleClass('playing-video play-active');
+        if (promoVideo.closest('.slider') != undefined) {
+            promoVideo.classList.toggle('playing-video');
+            promoVideo.classList.toggle('play-active');
 
-            var image = $(this).prev();
-            if (promoVideo.hasClass('playing-video')) { // TODO: another case for ternary operator
-                image.css('display', 'none');
-            } else {
-                image.css('display', 'block');
-            }
+            var image = this.previousElementSibling;
+            image.style.display = promoVideo.classList.contains('playing-video') ? 'none' : 'block';
 
-            var currentVideo = promoVideo.siblings('.video-wrapper').find('video')[0];
-            var allVideos = $('video');
+            var currentVideo = promoVideo.parentNode.querySelector('video');
+            var allVideos = document.querySelectorAll('video');
 
-            for (var i = 0; i < allVideos.length; i++) {
-                if (allVideos[i] != currentVideo) {
-                    stopVideoPlaying(allVideos[i]);
+            for (var video of allVideos) {
+                if (video != currentVideo) {
+                    stopVideoPlaying(video);
                 }
             }
 
@@ -354,7 +390,39 @@ document.addEventListener('DOMContentLoaded', function () {
                 currentVideo.pause();
             }
         }
+
     });
+
+    // $('.promo-video').on('click', function () { // TODO: remove jquery    Removed
+    //     var promoVideo = $(this);
+    //     // var videoWrapper = promoVideo.siblings('.video-wrapper'); // TODO: looks like unused variable    Disabled
+
+    //     if (promoVideo.closest('.slider').length != 0) {
+    //         // promoVideo.toggleClass('playing-video play-active');
+
+    //         // var image = $(this).prev();
+    //         // if (promoVideo.hasClass('playing-video')) { // TODO: another case for ternary operator    Corrected
+    //         //     image.css('display', 'none');
+    //         // } else {
+    //         //     image.css('display', 'block');
+    //         // }
+
+    //         var currentVideo = promoVideo.siblings('.video-wrapper').find('video')[0];
+    //         var allVideos = $('video');
+
+    //         // for (var i = 0; i < allVideos.length; i++) {
+    //         //     if (allVideos[i] != currentVideo) {
+    //         //         stopVideoPlaying(allVideos[i]);
+    //         //     }
+    //         // }
+
+    //         // if (currentVideo.paused) {
+    //         //     currentVideo.play();
+    //         // } else {
+    //         //     currentVideo.pause();
+    //         // }
+    //     }
+    // });
 
     addEvent('video', 'canplay', function () {
         showTime(this);
@@ -383,10 +451,10 @@ document.addEventListener('DOMContentLoaded', function () {
     var volume = document.getElementsByClassName('volume');
 
     for (var item of volume) {
-        var volumeBar = item; // TODO: no need. if you want item to be named as volumeBar - just name it in loop declaration
-        var volumeHandle = volumeBar.querySelector('.volume-handle');
-        var volumeLable = volumeBar.querySelector('.label');
+        // var volumeBar = item; // TODO: no need. if you want item to be named as volumeBar - just name it in loop declaration     Corrected
+        var volumeHandle = item.querySelector('.volume-handle');
+        var volumeLable = item.querySelector('.label');
 
-        volumeHandle.style.width = (volumeBar.clientWidth - volumeLable.clientWidth) + 'px';
+        volumeHandle.style.width = (item.clientWidth - volumeLable.clientWidth) + 'px';
     }
 });

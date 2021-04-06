@@ -150,8 +150,10 @@
 }
 
 video {
-    width: 880px; // TODO: WAT? perfect. now videos are broken on all screens except the biggest one
-    height: 540px;
+    width: 100%; // TODO: WAT? perfect. now videos are broken on all screens except the biggest one     Corrected
+    height: 100%;
+    position: absolute; // Video's width and height fill the rectangular 'frame', but the show-line
+                        // is less than video itself. To centrilise the show-line I use absolute position
 }
 
 @media screen and (max-width: 1210px) {
