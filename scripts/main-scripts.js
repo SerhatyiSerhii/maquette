@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Smooth scroll to the film at Go-To menu
-    addEvent('.top-film', 'click', function (event) { // TODO: I believe 'a' can be skipped from selector    Corrected
+    addEvent('.top-film', 'click', function (event) {
         event.preventDefault();
         var topLink = this.getAttribute('href');
         scrollToFilm(topLink);
@@ -55,7 +55,6 @@ document.addEventListener('DOMContentLoaded', function () {
         var burgerIMG = document.getElementById('burger-img');
 
         burgerIMG.classList.remove('pressed');
-        // window.innerWidth < 768 ? boxMenu.style.display = 'none' : boxMenu.style.display = 'block'; // TODO: code duplication in one line     Corrected
         boxMenu.style.display = (window.innerWidth < 768) ? 'none' : 'block';
     });
 
@@ -113,17 +112,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 thisModaleWindow.removeEventListener('transitionend', closeMdlWindow);
             }
         });
-
-        // Set the volume index to default
-        // var volume = modaleWindow.querySelector('.volume');
-        // var volumeWidth = volume.clientWidth;
-        // var label = volume.querySelector('.label');
-        // var labelWidth = label.offsetWidth;
-        // var maxPos = volumeWidth - labelWidth;
-        // label.parentNode.style.width = maxPos + 'px'; // TODO: since you set it to max when modal open - you do not need it here
-
-        // Disabled, but now while closing modale window we can see that current position of music drops to start,
-        // but volume position stays on its position.
 
         // Stop playing music on modal window close
         audio.pause();
@@ -216,8 +204,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     addEvent('.media-length', 'click', function (event) {
-        // var musicLength = this; // TODO: no need     Corrected
-
         cancelAnimationFrame(timer);
         setMediaVolumeInBarWidth(this, event);
     });
@@ -264,7 +250,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var slider = document.querySelectorAll('.slider');
 
         slider.forEach(function (item) {
-            var parent = item;
+            var parent = item; // TODO: but why? why don't you just call parameter as parent?
             var currIndex = index;
             var maxIndex = parent.querySelectorAll('li').length - 1;
             settingTranslateX();
@@ -295,40 +281,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 parent.querySelector('ul').style.transform = 'translateX(' + -currIndex * 100 + '%)';
             }
         });
-
-        // $('.slider').each(function () { // TODO: remove jquery    Removed
-        //     var parent = $(this);
-        //     var currIndex = index;
-        //     var maxIndex = parent.find('li').last().index();
-        //     settingTranslateX();
-
-        //     parent.find('.arrow-left').on('click', function (event) {
-        //         event.preventDefault();
-
-        //         currIndex--;
-        //         settingTranslateX();
-        //     })
-
-        //     parent.find('.arrow-right').on('click', function (event) {
-        //         event.preventDefault();
-
-        //         currIndex++;
-        //         settingTranslateX();
-        //     })
-
-        //     function settingTranslateX() {
-        //         if (currIndex <= 0) {
-        //             currIndex = 0;
-        //         } else if (currIndex >= maxIndex) {
-        //             currIndex = maxIndex;
-        //         }
-        //         parent.find('ul').css('transform', 'translateX(' + -currIndex * 100 + '%)');
-        //     }
-        // })
     }
     initSlider(1);
 
-    $('.volume').on('mousedown', function (mouseDownEvent) {
+    $('.volume').on('mousedown', function (mouseDownEvent) { // TODO: remove jquery
         var currentVolume = $(this);
 
         putVolumeHandle(currentVolume, mouseDownEvent);
@@ -342,7 +298,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    function putVolumeHandle(el, event) {
+    function putVolumeHandle(el, event) { // TODO: remove jquery
         var halfLabel = el.find('.label').width() / 2;
         var volumeLeftCoor = el.find('.volume-handle').offset().left;
         var volHandlPos = event.pageX - volumeLeftCoor;
@@ -357,7 +313,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         var volumeIndex = (volHandlPos - halfLabel) / (el.width() - halfLabel * 2);
 
-        if (el.parent('.soundtrack-listener').length == 1) {
+        if (el.parent('.soundtrack-listener').length == 1) { // TODO: never use unstrict comparing!!! the only acceptable case - when you compare with null or undefined: plese - explain me why.
             el.siblings('audio')[0].volume = volumeIndex;
         } else {
             el.parent().siblings('video')[0].volume = volumeIndex;
@@ -366,7 +322,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Playing video & video controls
     addEvent('.promo-video', 'click', function () {
-        var promoVideo = this;
+        var promoVideo = this; // TODO: no need
 
         if (promoVideo.closest('.slider') != undefined) {
             promoVideo.classList.toggle('playing-video');
@@ -379,7 +335,7 @@ document.addEventListener('DOMContentLoaded', function () {
             var allVideos = document.querySelectorAll('video');
 
             for (var video of allVideos) {
-                if (video != currentVideo) {
+                if (video != currentVideo) { // TODO: never use unstrict comparing!!! the only acceptable case - when you compare with null or undefined: plese - explain me why.
                     stopVideoPlaying(video);
                 }
             }
@@ -393,37 +349,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     });
 
-    // $('.promo-video').on('click', function () { // TODO: remove jquery    Removed
-    //     var promoVideo = $(this);
-    //     // var videoWrapper = promoVideo.siblings('.video-wrapper'); // TODO: looks like unused variable    Disabled
-
-    //     if (promoVideo.closest('.slider').length != 0) {
-    //         // promoVideo.toggleClass('playing-video play-active');
-
-    //         // var image = $(this).prev();
-    //         // if (promoVideo.hasClass('playing-video')) { // TODO: another case for ternary operator    Corrected
-    //         //     image.css('display', 'none');
-    //         // } else {
-    //         //     image.css('display', 'block');
-    //         // }
-
-    //         var currentVideo = promoVideo.siblings('.video-wrapper').find('video')[0];
-    //         var allVideos = $('video');
-
-    //         // for (var i = 0; i < allVideos.length; i++) {
-    //         //     if (allVideos[i] != currentVideo) {
-    //         //         stopVideoPlaying(allVideos[i]);
-    //         //     }
-    //         // }
-
-    //         // if (currentVideo.paused) {
-    //         //     currentVideo.play();
-    //         // } else {
-    //         //     currentVideo.pause();
-    //         // }
-    //     }
-    // });
-
+    // TODO: our addEvent function has significant flaw - it traverses the DOM every time it is called.
+    // let's optimise it a bit. Let addEvent to accept collection of elements instead of selector
+    // this will improve performance for cases like below
     addEvent('video', 'canplay', function () {
         showTime(this);
     });
@@ -451,7 +379,6 @@ document.addEventListener('DOMContentLoaded', function () {
     var volume = document.getElementsByClassName('volume');
 
     for (var item of volume) {
-        // var volumeBar = item; // TODO: no need. if you want item to be named as volumeBar - just name it in loop declaration     Corrected
         var volumeHandle = item.querySelector('.volume-handle');
         var volumeLable = item.querySelector('.label');
 
