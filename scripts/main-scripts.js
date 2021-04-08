@@ -250,13 +250,13 @@ document.addEventListener('DOMContentLoaded', function () {
         var slider = document.querySelectorAll('.slider');
 
         slider.forEach(function (item) {
-            var parent = item; // TODO: but why? why don't you just call parameter as parent?
+            // var parent = item; // TODO: but why? why don't you just call parameter as parent?     Corrected. Missed that it doesn't make sense.
             var currIndex = index;
-            var maxIndex = parent.querySelectorAll('li').length - 1;
+            var maxIndex = item.querySelectorAll('li').length - 1;
             settingTranslateX();
 
-            var arrowLeft = parent.querySelector('.arrow-left');
-            var arrowRight = parent.querySelector('.arrow-right');
+            var arrowLeft = item.querySelector('.arrow-left');
+            var arrowRight = item.querySelector('.arrow-right');
 
             arrowLeft.addEventListener('click', function (event) {
                 event.preventDefault();
@@ -278,66 +278,104 @@ document.addEventListener('DOMContentLoaded', function () {
                 } else if (currIndex >= maxIndex) {
                     currIndex = maxIndex;
                 }
-                parent.querySelector('ul').style.transform = 'translateX(' + -currIndex * 100 + '%)';
+                item.querySelector('ul').style.transform = 'translateX(' + -currIndex * 100 + '%)';
             }
         });
     }
     initSlider(1);
 
-    $('.volume').on('mousedown', function (mouseDownEvent) { // TODO: remove jquery
-        var currentVolume = $(this);
+    addEvent('.volume', 'mousedown', function (mouseDownEvent) {
+        var currentVolume = this;
 
         putVolumeHandle(currentVolume, mouseDownEvent);
 
-        $(document).on('mousemove', function (event) {
+        document.addEventListener('mousemove', moveLable);
+
+        document.addEventListener('mouseup', function () {
+            document.removeEventListener('mousemove', moveLable);
+        });
+
+        function moveLable(event) {
             putVolumeHandle(currentVolume, event);
-        });
+        }
+    })
 
-        $(document).on('mouseup', function () {
-            $(document).off('mousemove');
-        });
-    });
+    // $('.volume').on('mousedown', function (mouseDownEvent) { // TODO: remove jquery   Removed
+    //     var currentVolume = $(this);
 
-    function putVolumeHandle(el, event) { // TODO: remove jquery
-        var halfLabel = el.find('.label').width() / 2;
-        var volumeLeftCoor = el.find('.volume-handle').offset().left;
+    //     putVolumeHandle(currentVolume, mouseDownEvent);
+
+    //     $(document).on('mousemove', function (event) {
+    //         putVolumeHandle(currentVolume, event);
+    //     });
+
+    //     $(document).on('mouseup', function () {
+    //         $(document).off('mousemove');
+    //     });
+    // });
+
+    function putVolumeHandle(el, event) {
+        var halfLabel = el.querySelector('.label').clientWidth / 2;
+        var volumeLeftCoor = el.querySelector('.volume-handle').getBoundingClientRect().left;
         var volHandlPos = event.pageX - volumeLeftCoor;
 
-        if (volHandlPos >= el.width() - halfLabel) {
-            volHandlPos = el.width() - halfLabel;
+        if (volHandlPos >= el.clientWidth - halfLabel) {
+            volHandlPos = el.clientWidth - halfLabel;
         } else if (volHandlPos <= halfLabel) {
             volHandlPos = halfLabel;
         }
 
-        el.find('.volume-handle').css('width', volHandlPos - halfLabel + 'px');
+        el.querySelector('.volume-handle').style.width = volHandlPos - halfLabel + 'px';
 
-        var volumeIndex = (volHandlPos - halfLabel) / (el.width() - halfLabel * 2);
+        var volumeIndex = (volHandlPos - halfLabel) / (el.clientWidth - halfLabel * 2);
 
-        if (el.parent('.soundtrack-listener').length == 1) { // TODO: never use unstrict comparing!!! the only acceptable case - when you compare with null or undefined: plese - explain me why.
-            el.siblings('audio')[0].volume = volumeIndex;
+        if (el.closest('.soundtrack-listener') != undefined) {
+            el.parentNode.querySelector('audio').volume = volumeIndex;
         } else {
-            el.parent().siblings('video')[0].volume = volumeIndex;
+            el.closest('.video-wrapper').querySelector('video').volume = volumeIndex;
         }
     }
 
+    // function putVolumeHandle(el, event) { // TODO: remove jquery     Removed
+    //     var halfLabel = el.find('.label').width() / 2;
+    //     var volumeLeftCoor = el.find('.volume-handle').offset().left;
+    //     var volHandlPos = event.pageX - volumeLeftCoor;
+
+    //     if (volHandlPos >= el.width() - halfLabel) {
+    //         volHandlPos = el.width() - halfLabel;
+    //     } else if (volHandlPos <= halfLabel) {
+    //         volHandlPos = halfLabel;
+    //     }
+
+    //     el.find('.volume-handle').css('width', volHandlPos - halfLabel + 'px');
+
+    //     var volumeIndex = (volHandlPos - halfLabel) / (el.width() - halfLabel * 2);
+
+    //     if (el.parent('.soundtrack-listener').length === 1) { // TODO: never use unstrict comparing!!! the only acceptable case - when you compare with null or undefined: plese - explain me why.
+    //         el.siblings('audio')[0].volume = volumeIndex;       // Corrected. Strict comparing checks types of elements.
+    //     } else {                                                // Strict comparing will not convert items to a common type which will make false as boolean as nothing is equeal to null/undefined.
+    //         el.parent().siblings('video')[0].volume = volumeIndex;
+    //     }
+    // }
+
     // Playing video & video controls
     addEvent('.promo-video', 'click', function () {
-        var promoVideo = this; // TODO: no need
+        // var promoVideo = this; // TODO: no need   Corrected
 
-        if (promoVideo.closest('.slider') != undefined) {
-            promoVideo.classList.toggle('playing-video');
-            promoVideo.classList.toggle('play-active');
+        if (this.closest('.slider') != undefined) {
+            this.classList.toggle('playing-video');
+            this.classList.toggle('play-active');
 
             var image = this.previousElementSibling;
-            image.style.display = promoVideo.classList.contains('playing-video') ? 'none' : 'block';
+            image.style.display = this.classList.contains('playing-video') ? 'none' : 'block';
 
-            var currentVideo = promoVideo.parentNode.querySelector('video');
+            var currentVideo = this.parentNode.querySelector('video');
             var allVideos = document.querySelectorAll('video');
 
             for (var video of allVideos) {
-                if (video != currentVideo) { // TODO: never use unstrict comparing!!! the only acceptable case - when you compare with null or undefined: plese - explain me why.
-                    stopVideoPlaying(video);
-                }
+                if (video !== currentVideo) { // TODO: never use unstrict comparing!!! the only acceptable case - when you compare with null or undefined: plese - explain me why.
+                    stopVideoPlaying(video);  // Corrected. Strict comparing checks types of elements.
+                }                             // Strict comparing will not convert items to a common type which will make false as boolean as nothing is equeal to null/undefined.
             }
 
             if (currentVideo.paused) {
@@ -352,19 +390,29 @@ document.addEventListener('DOMContentLoaded', function () {
     // TODO: our addEvent function has significant flaw - it traverses the DOM every time it is called.
     // let's optimise it a bit. Let addEvent to accept collection of elements instead of selector
     // this will improve performance for cases like below
-    addEvent('video', 'canplay', function () {
+
+    // Is it like this?
+    function addEventCollect(collection, event, handler) {
+        for (var item of collection) {
+            item.addEventListener(event, handler);
+        }
+    }
+
+    var video = document.querySelectorAll('video');
+
+    addEventCollect(video, 'canplay', function () {
         showTime(this);
     });
 
-    addEvent('video', 'playing', function () {
+    addEventCollect(video, 'playing', function () {
         progress(this);
     });
 
-    addEvent('video', 'pause', function () {
+    addEventCollect(video, 'pause', function () {
         cancelAnimationFrame(timer);
     });
 
-    addEvent('video', 'ended', function () {
+    addEventCollect(video, 'ended', function () {
         var thisVideo = this;
         var currentLength = thisVideo.parentNode.querySelector('.current-length');
 
