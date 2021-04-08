@@ -23,11 +23,11 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Hover on Go-To menu
-    $('.go-to').hover(function () {
+    $('.go-to').hover(function () { // TODO: remove jquery, no need to animate
         $('.film-nav').finish().slideToggle(300);
     });
 
-    function toggleBurger() {
+    function toggleBurger() { // TODO: remove jquery, no need to animate
         $('.box-menu').finish().slideToggle(300);
         $('#burger-img').toggleClass('pressed');
     }
@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    $(document).on('click', function (event) {
+    $(document).on('click', function (event) { // TODO: remove jquery, no need to animate
         if ($(window).outerWidth() < 768 && $(event.target).closest('.box-menu').length === 0) {
             $('.box-menu').finish().slideUp(300);
             $('#burger-img').removeClass('pressed');
@@ -250,7 +250,6 @@ document.addEventListener('DOMContentLoaded', function () {
         var slider = document.querySelectorAll('.slider');
 
         slider.forEach(function (item) {
-            // var parent = item; // TODO: but why? why don't you just call parameter as parent?     Corrected. Missed that it doesn't make sense.
             var currIndex = index;
             var maxIndex = item.querySelectorAll('li').length - 1;
             settingTranslateX();
@@ -291,7 +290,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         document.addEventListener('mousemove', moveLable);
 
-        document.addEventListener('mouseup', function () {
+        document.addEventListener('mouseup', function () { // TODO: this should be onetime event
             document.removeEventListener('mousemove', moveLable);
         });
 
@@ -300,32 +299,18 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     })
 
-    // $('.volume').on('mousedown', function (mouseDownEvent) { // TODO: remove jquery   Removed
-    //     var currentVolume = $(this);
-
-    //     putVolumeHandle(currentVolume, mouseDownEvent);
-
-    //     $(document).on('mousemove', function (event) {
-    //         putVolumeHandle(currentVolume, event);
-    //     });
-
-    //     $(document).on('mouseup', function () {
-    //         $(document).off('mousemove');
-    //     });
-    // });
-
     function putVolumeHandle(el, event) {
         var halfLabel = el.querySelector('.label').clientWidth / 2;
         var volumeLeftCoor = el.querySelector('.volume-handle').getBoundingClientRect().left;
         var volHandlPos = event.pageX - volumeLeftCoor;
 
-        if (volHandlPos >= el.clientWidth - halfLabel) {
+        if (volHandlPos >= el.clientWidth - halfLabel) { // TODO: subtraction can be save to variable
             volHandlPos = el.clientWidth - halfLabel;
         } else if (volHandlPos <= halfLabel) {
             volHandlPos = halfLabel;
         }
 
-        el.querySelector('.volume-handle').style.width = volHandlPos - halfLabel + 'px';
+        el.querySelector('.volume-handle').style.width = volHandlPos - halfLabel + 'px'; // TODO: subtraction can be save to variable
 
         var volumeIndex = (volHandlPos - halfLabel) / (el.clientWidth - halfLabel * 2);
 
@@ -336,32 +321,8 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // function putVolumeHandle(el, event) { // TODO: remove jquery     Removed
-    //     var halfLabel = el.find('.label').width() / 2;
-    //     var volumeLeftCoor = el.find('.volume-handle').offset().left;
-    //     var volHandlPos = event.pageX - volumeLeftCoor;
-
-    //     if (volHandlPos >= el.width() - halfLabel) {
-    //         volHandlPos = el.width() - halfLabel;
-    //     } else if (volHandlPos <= halfLabel) {
-    //         volHandlPos = halfLabel;
-    //     }
-
-    //     el.find('.volume-handle').css('width', volHandlPos - halfLabel + 'px');
-
-    //     var volumeIndex = (volHandlPos - halfLabel) / (el.width() - halfLabel * 2);
-
-    //     if (el.parent('.soundtrack-listener').length === 1) { // TODO: never use unstrict comparing!!! the only acceptable case - when you compare with null or undefined: plese - explain me why.
-    //         el.siblings('audio')[0].volume = volumeIndex;       // Corrected. Strict comparing checks types of elements.
-    //     } else {                                                // Strict comparing will not convert items to a common type which will make false as boolean as nothing is equeal to null/undefined.
-    //         el.parent().siblings('video')[0].volume = volumeIndex;
-    //     }
-    // }
-
     // Playing video & video controls
     addEvent('.promo-video', 'click', function () {
-        // var promoVideo = this; // TODO: no need   Corrected
-
         if (this.closest('.slider') != undefined) {
             this.classList.toggle('playing-video');
             this.classList.toggle('play-active');
@@ -373,9 +334,9 @@ document.addEventListener('DOMContentLoaded', function () {
             var allVideos = document.querySelectorAll('video');
 
             for (var video of allVideos) {
-                if (video !== currentVideo) { // TODO: never use unstrict comparing!!! the only acceptable case - when you compare with null or undefined: plese - explain me why.
-                    stopVideoPlaying(video);  // Corrected. Strict comparing checks types of elements.
-                }                             // Strict comparing will not convert items to a common type which will make false as boolean as nothing is equeal to null/undefined.
+                if (video !== currentVideo) {
+                    stopVideoPlaying(video);
+                }
             }
 
             if (currentVideo.paused) {
@@ -387,18 +348,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
     });
 
-    // TODO: our addEvent function has significant flaw - it traverses the DOM every time it is called.
-    // let's optimise it a bit. Let addEvent to accept collection of elements instead of selector
-    // this will improve performance for cases like below
-
     // Is it like this?
+    // TODO: yes. rename to addEvent, remove original addEvent, and update all occurances
     function addEventCollect(collection, event, handler) {
         for (var item of collection) {
             item.addEventListener(event, handler);
         }
     }
 
-    var video = document.querySelectorAll('video');
+    var video = document.querySelectorAll('video'); // TODO: bad variable name, that's not a video, but videos
 
     addEventCollect(video, 'canplay', function () {
         showTime(this);

@@ -153,10 +153,8 @@
 video {
     width: 100%;
     height: 100%;
-    // position: absolute; // Video's width and height fill the rectangular 'frame', but the show-line
-                        // is less than video itself. To centrilise the show-line I use absolute position
-                        // TODO: maybe just display flex on .frame?
-                        // No, some videos are originally small and display flex reduces videos size to original
+    // No, some videos are originally small and display flex reduces videos size to original
+    // TODO: what about setting width and height for .video-wrapper?
 }
 
 @media screen and (max-width: 1210px) {
