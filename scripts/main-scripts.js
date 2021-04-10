@@ -9,46 +9,82 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Smooth scroll to the film at Go-To menu
-    addEvent('.top-film', 'click', function (event) {
+    var allTopFilms = document.querySelectorAll('.top-film');
+
+    addEvent(allTopFilms, 'click', function (event) {
         event.preventDefault();
         var topLink = this.getAttribute('href');
         scrollToFilm(topLink);
     });
 
     // Scroll to Top10 on arrow-down click
-    addEvent('.arrow-down', 'click', function (event) {
+    var arrowDown = document.getElementsByClassName('arrow-down');
+
+    addEvent(arrowDown, 'click', function (event) {
         event.preventDefault();
         var firstTopFilm = this.getAttribute('href');
         scrollToFilm(firstTopFilm);
     });
 
     // Hover on Go-To menu
-    $('.go-to').hover(function () { // TODO: remove jquery, no need to animate
-        $('.film-nav').finish().slideToggle(300);
+    var goToNav = document.getElementsByClassName('go-to');
+    var filmNavMenu = document.querySelector('.film-nav');
+
+    addEvent(goToNav, 'mouseover', function () {
+        filmNavMenu.style.display = 'block';
     });
 
-    function toggleBurger() { // TODO: remove jquery, no need to animate
-        $('.box-menu').finish().slideToggle(300);
-        $('#burger-img').toggleClass('pressed');
+    addEvent(goToNav, 'mouseleave', function () {
+        filmNavMenu.style.display = 'none';
+    });
+
+    // $('.go-to').hover(function () { // TODO: remove jquery, no need to animate    Removed.
+    //     $('.film-nav').finish().slideToggle(300);
+    // });
+
+    function toggleBurger() {
+        var boxMenu = document.querySelector('.box-menu');
+        var burgerImg = document.querySelector('#burger-img');
+
+        boxMenu.style.display = (boxMenu.style.display === '' || boxMenu.style.display === 'none') ? 'block' : 'none';
+
+        burgerImg.classList.toggle('pressed');
     }
 
-    addEvent('#nav-wrapper', 'click', function (event) {
+    // function toggleBurger() { // TODO: remove jquery, no need to animate     Removed.
+    //     $('.box-menu').finish().slideToggle(300);
+    //     $('#burger-img').toggleClass('pressed');
+    // }
+
+    var navWrapper = document.querySelectorAll('#nav-wrapper');
+
+    addEvent(navWrapper, 'click', function (event) {
         event.stopPropagation();
         toggleBurger();
     });
 
-    addEvent('.top-film', 'click', function () {
+    addEvent(allTopFilms, 'click', function () {
         if (window.innerWidth < 768) {
             toggleBurger();
         }
     });
 
-    $(document).on('click', function (event) { // TODO: remove jquery, no need to animate
-        if ($(window).outerWidth() < 768 && $(event.target).closest('.box-menu').length === 0) {
-            $('.box-menu').finish().slideUp(300);
-            $('#burger-img').removeClass('pressed');
+    document.addEventListener('click', function (event) {
+        if (window.innerWidth < 768 && event.target.closest('.box-menu') == undefined) {
+            var boxMenu = document.querySelector('.box-menu');
+            var burgerImg = document.querySelector('#burger-img');
+
+            boxMenu.style.display = 'none';
+            burgerImg.classList.remove('pressed');
         }
     });
+
+    // $(document).on('click', function (event) { // TODO: remove jquery, no need to animate    Removed
+    //     if ($(window).outerWidth() < 768 && $(event.target).closest('.box-menu').length === 0) {
+    //         $('.box-menu').finish().slideUp(300);
+    //         $('#burger-img').removeClass('pressed');
+    //     }
+    // });
 
     window.addEventListener('resize', function () {
         var boxMenu = document.querySelector('.box-menu');
@@ -59,7 +95,10 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Substrate window on button 'Listen' click
-    addEvent('.listen', 'click', function () {
+
+    var allListenBtns = document.querySelectorAll('.listen');
+
+    addEvent(allListenBtns, 'click', function () {
         var modaleWindow = document.querySelector('.substrate');
         var modaleWindowAudio = modaleWindow.querySelector('audio');
         var listenerTitle = modaleWindow.querySelector('.listener-title');
@@ -125,17 +164,23 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    addEvent('.close-listener', 'click', function () {
+    var iconCloseListener = document.getElementsByClassName('close-listener');
+
+    addEvent(iconCloseListener, 'click', function () {
         closeListener();
     });
 
-    addEvent('.substrate', 'click', function (event) {
+    var substrateWindow = document.getElementsByClassName('substrate');
+
+    addEvent(substrateWindow, 'click', function (event) {
         if (event.target.closest('.soundtrack-listener') == undefined) {
             closeListener();
         }
     });
 
-    addEvent('.listener', 'click', function () {
+    var allListeners = document.querySelectorAll('.listener');
+
+    addEvent(allListeners, 'click', function () {
         var allVideos = document.getElementsByTagName('video');
 
         this.classList.toggle('play-active');
@@ -159,7 +204,9 @@ document.addEventListener('DOMContentLoaded', function () {
         elementParent.parentNode.querySelector('img').style.display = 'block';
     }
 
-    addEvent('audio', 'ended', function () {
+    var allAudios = document.querySelectorAll('audio');
+
+    addEvent(allAudios, 'ended', function () {
         var thisAudio = this;
         var listener = thisAudio.parentNode.querySelector('.listener');
 
@@ -171,21 +218,13 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 500);
     });
 
-    addEvent('audio', 'playing', function () {
+    addEvent(allAudios, 'playing', function () {
         progress(this);
     });
 
-    addEvent('audio', 'pause', function () {
+    addEvent(allAudios, 'pause', function () {
         cancelAnimationFrame(timer);
     });
-
-    function addEvent(selector, event, handler) {
-        var elems = document.querySelectorAll(selector);
-
-        for (var i = 0; i < elems.length; i++) {
-            elems[i].addEventListener(event, handler);
-        }
-    }
 
     var timer;
 
@@ -203,7 +242,9 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    addEvent('.media-length', 'click', function (event) {
+    var allMediaLengths = document.querySelectorAll('.media-length');
+
+    addEvent(allMediaLengths, 'click', function (event) {
         cancelAnimationFrame(timer);
         setMediaVolumeInBarWidth(this, event);
     });
@@ -283,19 +324,28 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     initSlider(1);
 
-    addEvent('.volume', 'mousedown', function (mouseDownEvent) {
+    var allVolumes = document.querySelectorAll('.volume');
+
+    addEvent(allVolumes, 'mousedown', function (mouseDownEvent) {
         var currentVolume = this;
 
         putVolumeHandle(currentVolume, mouseDownEvent);
 
         document.addEventListener('mousemove', moveLable);
 
-        document.addEventListener('mouseup', function () { // TODO: this should be onetime event
-            document.removeEventListener('mousemove', moveLable);
-        });
+        document.addEventListener('mouseup', OneMouseUp);
+
+        // document.addEventListener('mouseup', function () { // TODO: this should be onetime event     Corrected
+        //     document.removeEventListener('mousemove', moveLable);
+        // });
 
         function moveLable(event) {
             putVolumeHandle(currentVolume, event);
+        }
+
+        function OneMouseUp() {
+            document.removeEventListener('mousemove', moveLable);
+            document.removeEventListener('mouseup', OneMouseUp);
         }
     })
 
@@ -303,16 +353,19 @@ document.addEventListener('DOMContentLoaded', function () {
         var halfLabel = el.querySelector('.label').clientWidth / 2;
         var volumeLeftCoor = el.querySelector('.volume-handle').getBoundingClientRect().left;
         var volHandlPos = event.pageX - volumeLeftCoor;
+        var elMaxWidth = el.clientWidth - halfLabel;
 
-        if (volHandlPos >= el.clientWidth - halfLabel) { // TODO: subtraction can be save to variable
-            volHandlPos = el.clientWidth - halfLabel;
+        if (volHandlPos >= elMaxWidth) { // TODO: subtraction can be save to variable    Corrected
+            volHandlPos = elMaxWidth;
         } else if (volHandlPos <= halfLabel) {
             volHandlPos = halfLabel;
         }
 
-        el.querySelector('.volume-handle').style.width = volHandlPos - halfLabel + 'px'; // TODO: subtraction can be save to variable
+        var calcCenterOfLable = volHandlPos - halfLabel;
 
-        var volumeIndex = (volHandlPos - halfLabel) / (el.clientWidth - halfLabel * 2);
+        el.querySelector('.volume-handle').style.width = calcCenterOfLable + 'px'; // TODO: subtraction can be save to variable     Corrected
+
+        var volumeIndex = (calcCenterOfLable) / (el.clientWidth - halfLabel * 2);
 
         if (el.closest('.soundtrack-listener') != undefined) {
             el.parentNode.querySelector('audio').volume = volumeIndex;
@@ -322,7 +375,9 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Playing video & video controls
-    addEvent('.promo-video', 'click', function () {
+    var allPromoVideos = document.querySelectorAll('.promo-video');
+
+    addEvent(allPromoVideos, 'click', function () {
         if (this.closest('.slider') != undefined) {
             this.classList.toggle('playing-video');
             this.classList.toggle('play-active');
@@ -349,28 +404,28 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Is it like this?
-    // TODO: yes. rename to addEvent, remove original addEvent, and update all occurances
-    function addEventCollect(collection, event, handler) {
+    // TODO: yes. rename to addEvent, remove original addEvent, and update all occurances    Corrected
+    function addEvent(collection, event, handler) {
         for (var item of collection) {
             item.addEventListener(event, handler);
         }
     }
 
-    var video = document.querySelectorAll('video'); // TODO: bad variable name, that's not a video, but videos
+    var allVideos = document.querySelectorAll('video'); // TODO: bad variable name, that's not a video, but videos   Corrected
 
-    addEventCollect(video, 'canplay', function () {
+    addEvent(allVideos, 'canplay', function () {
         showTime(this);
     });
 
-    addEventCollect(video, 'playing', function () {
+    addEvent(allVideos, 'playing', function () {
         progress(this);
     });
 
-    addEventCollect(video, 'pause', function () {
+    addEvent(allVideos, 'pause', function () {
         cancelAnimationFrame(timer);
     });
 
-    addEventCollect(video, 'ended', function () {
+    addEvent(allVideos, 'ended', function () {
         var thisVideo = this;
         var currentLength = thisVideo.parentNode.querySelector('.current-length');
 

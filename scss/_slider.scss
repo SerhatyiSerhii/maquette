@@ -154,7 +154,12 @@ video {
     width: 100%;
     height: 100%;
     // No, some videos are originally small and display flex reduces videos size to original
-    // TODO: what about setting width and height for .video-wrapper?
+    // TODO: what about setting width and height for .video-wrapper?     Corrected
+}
+
+.video-wrapper {
+    width: 880px;
+    height: 540px;
 }
 
 @media screen and (max-width: 1210px) {
@@ -190,6 +195,11 @@ video {
         width: 700px;
         height: 425px;
     }
+
+    .video-wrapper {
+        width: 700px;
+        height: 425px;
+    }
 }
 
 @media screen and (max-width: 959px) {
@@ -212,6 +222,11 @@ video {
     }
 
     .frame {
+        width: 585px;
+        height: 335px;
+    }
+
+    .video-wrapper {
         width: 585px;
         height: 335px;
     }
@@ -259,6 +274,11 @@ video {
     }
 
     .frame {
+        width: 300px;
+        height: 170px;
+    }
+
+    .video-wrapper {
         width: 300px;
         height: 170px;
     }
@@ -314,6 +334,11 @@ video {
     }
 
     .frame {
+        width: 235px;
+        height: 140px;
+    }
+
+    .video-wrapper {
         width: 235px;
         height: 140px;
     }
