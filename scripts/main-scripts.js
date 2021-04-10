@@ -2,7 +2,7 @@
 
 document.addEventListener('DOMContentLoaded', function () {
     // Scroll to the film top
-    function scrollToFilm(arg) {
+    function scrollToFilm(arg) { // TODO: remove jquery, animate
         $('html').animate({
             scrollTop: $(arg).offset().top
         }, 300);
@@ -30,6 +30,8 @@ document.addEventListener('DOMContentLoaded', function () {
     var goToNav = document.getElementsByClassName('go-to');
     var filmNavMenu = document.querySelector('.film-nav');
 
+    // TODO: there are two pairs of event: mouseover/mouseout, mouseenter/mouseleave
+    // learn them and don't mix these events for opposite actions
     addEvent(goToNav, 'mouseover', function () {
         filmNavMenu.style.display = 'block';
     });
@@ -38,23 +40,16 @@ document.addEventListener('DOMContentLoaded', function () {
         filmNavMenu.style.display = 'none';
     });
 
-    // $('.go-to').hover(function () { // TODO: remove jquery, no need to animate    Removed.
-    //     $('.film-nav').finish().slideToggle(300);
-    // });
-
     function toggleBurger() {
         var boxMenu = document.querySelector('.box-menu');
         var burgerImg = document.querySelector('#burger-img');
 
+        // TODO: what you use: boxMenu.style.display === '' || boxMenu.style.display === 'none'
+        // what would I use: boxMenu.style.display === 'block
         boxMenu.style.display = (boxMenu.style.display === '' || boxMenu.style.display === 'none') ? 'block' : 'none';
 
         burgerImg.classList.toggle('pressed');
     }
-
-    // function toggleBurger() { // TODO: remove jquery, no need to animate     Removed.
-    //     $('.box-menu').finish().slideToggle(300);
-    //     $('#burger-img').toggleClass('pressed');
-    // }
 
     var navWrapper = document.querySelectorAll('#nav-wrapper');
 
@@ -79,13 +74,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // $(document).on('click', function (event) { // TODO: remove jquery, no need to animate    Removed
-    //     if ($(window).outerWidth() < 768 && $(event.target).closest('.box-menu').length === 0) {
-    //         $('.box-menu').finish().slideUp(300);
-    //         $('#burger-img').removeClass('pressed');
-    //     }
-    // });
-
     window.addEventListener('resize', function () {
         var boxMenu = document.querySelector('.box-menu');
         var burgerIMG = document.getElementById('burger-img');
@@ -95,7 +83,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Substrate window on button 'Listen' click
-
     var allListenBtns = document.querySelectorAll('.listen');
 
     addEvent(allListenBtns, 'click', function () {
@@ -335,15 +322,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
         document.addEventListener('mouseup', OneMouseUp);
 
-        // document.addEventListener('mouseup', function () { // TODO: this should be onetime event     Corrected
-        //     document.removeEventListener('mousemove', moveLable);
-        // });
-
         function moveLable(event) {
             putVolumeHandle(currentVolume, event);
         }
 
-        function OneMouseUp() {
+        // TODO: pascal case used only to name classes
+        function OneMouseUp() { // TODO: to implement one time event you used function declaration. Try to use named function expression (NFE)
             document.removeEventListener('mousemove', moveLable);
             document.removeEventListener('mouseup', OneMouseUp);
         }
@@ -355,7 +339,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var volHandlPos = event.pageX - volumeLeftCoor;
         var elMaxWidth = el.clientWidth - halfLabel;
 
-        if (volHandlPos >= elMaxWidth) { // TODO: subtraction can be save to variable    Corrected
+        if (volHandlPos >= elMaxWidth) {
             volHandlPos = elMaxWidth;
         } else if (volHandlPos <= halfLabel) {
             volHandlPos = halfLabel;
@@ -363,7 +347,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         var calcCenterOfLable = volHandlPos - halfLabel;
 
-        el.querySelector('.volume-handle').style.width = calcCenterOfLable + 'px'; // TODO: subtraction can be save to variable     Corrected
+        el.querySelector('.volume-handle').style.width = calcCenterOfLable + 'px';
 
         var volumeIndex = (calcCenterOfLable) / (el.clientWidth - halfLabel * 2);
 
@@ -403,15 +387,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
     });
 
-    // Is it like this?
-    // TODO: yes. rename to addEvent, remove original addEvent, and update all occurances    Corrected
     function addEvent(collection, event, handler) {
         for (var item of collection) {
             item.addEventListener(event, handler);
         }
     }
 
-    var allVideos = document.querySelectorAll('video'); // TODO: bad variable name, that's not a video, but videos   Corrected
+    var allVideos = document.querySelectorAll('video');
 
     addEvent(allVideos, 'canplay', function () {
         showTime(this);
