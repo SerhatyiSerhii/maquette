@@ -3,20 +3,13 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Scroll to the film top
     function scrollToFilm(arg) {
-        var page = document.getElementsByTagName('html');
+        var page = document.getElementsByTagName('html'); // TODO: do you have several htlm tags?
 
-        page[0].scrollTo({
+        page[0].scrollTo({ // TODO: such an approach do not allow you to control animation duration. Write your own implementation
             top: document.querySelector(arg).getBoundingClientRect().top,
             behavior: 'smooth'
         });
     }
-
-    // function scrollToFilm(arg) { // TODO: remove jquery, animate     Removed
-    //     console.log($(arg).offset().top);
-    //     $('html').animate({
-    //         scrollTop: $(arg).offset().top
-    //     }, 300);
-    // }
 
     // Smooth scroll to the film at Go-To menu
     var allTopFilms = document.querySelectorAll('.top-film');
@@ -40,9 +33,6 @@ document.addEventListener('DOMContentLoaded', function () {
     var goToNav = document.getElementsByClassName('go-to');
     var filmNavMenu = document.querySelector('.film-nav');
 
-    // TODO: there are two pairs of event: mouseover/mouseout, mouseenter/mouseleave
-    // learn them and don't mix these events for opposite actions
-    // Done. Corrected
     addEvent(goToNav, 'mouseenter', function () {
         filmNavMenu.style.display = 'block';
     });
@@ -55,11 +45,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var boxMenu = document.querySelector('.box-menu');
         var burgerImg = document.querySelector('#burger-img');
 
-        // TODO: what you use: boxMenu.style.display === '' || boxMenu.style.display === 'none'
-        // what would I use: boxMenu.style.display === 'block
-        // Corrected
         boxMenu.style.display = (boxMenu.style.display === 'block') ? 'none' : 'block';
-
         burgerImg.classList.toggle('pressed');
     }
 
@@ -332,24 +318,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
         document.addEventListener('mousemove', moveLable);
 
-        // document.addEventListener('mouseup', oneMouseUp);
-
         function moveLable(event) {
             putVolumeHandle(currentVolume, event);
         }
-
-        // TODO: pascal case used only to name classes   Corrected. Accidentally set the first letter as capital
-        // function oneMouseUp() { // TODO: to implement one time event you used function declaration. Try to use named function expression (NFE)    Done.
-        //     document.removeEventListener('mousemove', moveLable);
-        //     document.removeEventListener('mouseup', oneMouseUp);
-        // }
 
         var mouseUp = function oneMouseUp() {
             document.removeEventListener('mousemove', moveLable);
             document.removeEventListener('mouseup', oneMouseUp);
         }
 
-        document.addEventListener('mouseup', mouseUp);
+        document.addEventListener('mouseup', mouseUp);// TODO: you don't need to store NFE in variable. just put it here
     })
 
     function putVolumeHandle(el, event) {
