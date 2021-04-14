@@ -3,21 +3,34 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Scroll to the film top
     function scrollToFilm(arg) {
-        var startingPosition = window.pageYOffset; // TODO: try to use html's scrollTop property
+        // var startingPosition = window.pageYOffset; // TODO: try to use html's scrollTop property     Corrected
+        var startingPosition =  document.querySelector('html').scrollTop;
         var endingPosition = document.querySelector(arg).offsetTop;
         var distance = endingPosition - startingPosition;
 
         function go(duration) {
-            var oldTimestamp = null; // TODO: You can use performance.now() here as a starting point. newTimestamp is equivalent of performance.now(). So you don't need to hanlde case when oldTimestamp is null.
+            // var oldTimestamp = null; // TODO: You can use performance.now() here as a starting point. newTimestamp is equivalent of performance.now(). So you don't need to hanlde case when oldTimestamp is null.   Corrected
+            var start = performance.now();
 
-            function step(newTimestamp) {
-                if (oldTimestamp !== null) {
-                    startingPosition += (distance * (newTimestamp - oldTimestamp)) / duration; // TODO: you don't need to override startPosition.
-                    if (startingPosition >= endingPosition) startingPosition = endingPosition;
-                    window.scrollTo(0, startingPosition); // TODO: try to override html's scrollTop property
-                }
-                oldTimestamp = newTimestamp; // TODO: you don't need to override oldTimestamp.
-                if (startingPosition < endingPosition) {
+            // function step(newTimestamp) {
+            //     if (oldTimestamp !== null) {
+            //         startingPosition += (distance * (newTimestamp - oldTimestamp)) / duration; // TODO: you don't need to override startPosition.     Corrected
+            //         if (startingPosition >= endingPosition) startingPosition = endingPosition;
+            //         window.scrollTo(0, startingPosition); // TODO: try to override html's scrollTop property     Corrected
+            //     }
+            //     oldTimestamp = newTimestamp; // TODO: you don't need to override oldTimestamp.    Corrected
+            //     if (startingPosition < endingPosition) {
+            //         requestAnimationFrame(step);
+            //     }
+            // }
+
+            function step() {
+                var toScroll = startingPosition;
+                toScroll += (distance * (performance.now() - start)) / duration;
+                if (toScroll >= endingPosition) toScroll = endingPosition;
+                document.querySelector('html').scrollTop = toScroll;
+
+                if (toScroll < endingPosition) {
                     requestAnimationFrame(step);
                 }
             }
@@ -25,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
             requestAnimationFrame(step);
         }
 
-        go(500); // TODO: we had duration 300
+        go(300); // TODO: we had duration 300    Corrected
     }
 
     // Smooth scroll to the film at Go-To menu
