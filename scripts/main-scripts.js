@@ -3,12 +3,38 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Scroll to the film top
     function scrollToFilm(arg) {
-        var page = document.getElementsByTagName('html'); // TODO: do you have several htlm tags?
+        // var page = document.getElementsByTagName('html'); // TODO: do you have several htlm tags?
+        // Corrected. It works with querySelector, but for some reason tags head and body are selected
+        // var page = document.querySelector('html');    Actually, it doesn't needed anymore :)
 
-        page[0].scrollTo({ // TODO: such an approach do not allow you to control animation duration. Write your own implementation
-            top: document.querySelector(arg).getBoundingClientRect().top,
-            behavior: 'smooth'
-        });
+        var startingPosition = window.pageYOffset;
+        var endingPosition = document.querySelector(arg).offsetTop;
+        var distance = endingPosition - startingPosition;
+
+        function go(duration) {
+            var oldTimestamp = null;
+
+            function step(newTimestamp) {
+                if (oldTimestamp !== null) {
+                    startingPosition += (distance * (newTimestamp - oldTimestamp)) / duration;
+                    if (startingPosition >= endingPosition) startingPosition = endingPosition;
+                    window.scrollTo(0, startingPosition);
+                }
+                oldTimestamp = newTimestamp;
+                if (startingPosition < endingPosition) {
+                    requestAnimationFrame(step);
+                }
+            }
+
+            requestAnimationFrame(step);
+        }
+
+        go(500);
+
+        // page.scrollTo({ // TODO: such an approach do not allow you to control animation duration. Write your own implementation   Corrected
+        //     top: document.querySelector(arg).getBoundingClientRect().top,
+        //     behavior: 'smooth'
+        // });
     }
 
     // Smooth scroll to the film at Go-To menu
@@ -322,12 +348,15 @@ document.addEventListener('DOMContentLoaded', function () {
             putVolumeHandle(currentVolume, event);
         }
 
-        var mouseUp = function oneMouseUp() {
+        // var mouseUp = function oneMouseUp() {
+        //     document.removeEventListener('mousemove', moveLable);
+        //     document.removeEventListener('mouseup', oneMouseUp);
+        // }
+
+        document.addEventListener('mouseup', function oneMouseUp() {
             document.removeEventListener('mousemove', moveLable);
             document.removeEventListener('mouseup', oneMouseUp);
-        }
-
-        document.addEventListener('mouseup', mouseUp);// TODO: you don't need to store NFE in variable. just put it here
+        });// TODO: you don't need to store NFE in variable. just put it here    Corrected
     })
 
     function putVolumeHandle(el, event) {
