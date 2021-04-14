@@ -3,18 +3,20 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Scroll to the film top
     function scrollToFilm(arg) {
-        var startingPosition =  document.querySelector('html').scrollTop;
+        var page = document.querySelector('html');
+        var startingPosition =  page.scrollTop;
         var endingPosition = document.querySelector(arg).offsetTop;
         var distance = endingPosition - startingPosition;
 
         function go(duration) {
             var start = performance.now();
 
-            function step() {
-                var toScroll = startingPosition; // TODO: no need to split on several lines
-                toScroll += (distance * (performance.now() - start)) / duration; // TODO: superfluous calculation performance.now() comes as parameter
-                if (toScroll >= endingPosition) toScroll = endingPosition;
-                document.querySelector('html').scrollTop = toScroll; // TODO: html should be saved to variable
+            function step(newTimestamp) {
+                var toScroll = startingPosition + (distance * (newTimestamp - start)) / duration;
+                if (toScroll >= endingPosition) {
+                    toScroll = endingPosition;
+                }
+                page.scrollTop = toScroll;
 
                 if (toScroll < endingPosition) {
                     requestAnimationFrame(step);
