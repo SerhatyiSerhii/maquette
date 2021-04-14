@@ -3,24 +3,20 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Scroll to the film top
     function scrollToFilm(arg) {
-        // var page = document.getElementsByTagName('html'); // TODO: do you have several htlm tags?
-        // Corrected. It works with querySelector, but for some reason tags head and body are selected
-        // var page = document.querySelector('html');    Actually, it doesn't needed anymore :)
-
-        var startingPosition = window.pageYOffset;
+        var startingPosition = window.pageYOffset; // TODO: try to use html's scrollTop property
         var endingPosition = document.querySelector(arg).offsetTop;
         var distance = endingPosition - startingPosition;
 
         function go(duration) {
-            var oldTimestamp = null;
+            var oldTimestamp = null; // TODO: You can use performance.now() here as a starting point. newTimestamp is equivalent of performance.now(). So you don't need to hanlde case when oldTimestamp is null.
 
             function step(newTimestamp) {
                 if (oldTimestamp !== null) {
-                    startingPosition += (distance * (newTimestamp - oldTimestamp)) / duration;
+                    startingPosition += (distance * (newTimestamp - oldTimestamp)) / duration; // TODO: you don't need to override startPosition.
                     if (startingPosition >= endingPosition) startingPosition = endingPosition;
-                    window.scrollTo(0, startingPosition);
+                    window.scrollTo(0, startingPosition); // TODO: try to override html's scrollTop property
                 }
-                oldTimestamp = newTimestamp;
+                oldTimestamp = newTimestamp; // TODO: you don't need to override oldTimestamp.
                 if (startingPosition < endingPosition) {
                     requestAnimationFrame(step);
                 }
@@ -29,12 +25,7 @@ document.addEventListener('DOMContentLoaded', function () {
             requestAnimationFrame(step);
         }
 
-        go(500);
-
-        // page.scrollTo({ // TODO: such an approach do not allow you to control animation duration. Write your own implementation   Corrected
-        //     top: document.querySelector(arg).getBoundingClientRect().top,
-        //     behavior: 'smooth'
-        // });
+        go(500); // TODO: we had duration 300
     }
 
     // Smooth scroll to the film at Go-To menu
@@ -348,15 +339,10 @@ document.addEventListener('DOMContentLoaded', function () {
             putVolumeHandle(currentVolume, event);
         }
 
-        // var mouseUp = function oneMouseUp() {
-        //     document.removeEventListener('mousemove', moveLable);
-        //     document.removeEventListener('mouseup', oneMouseUp);
-        // }
-
         document.addEventListener('mouseup', function oneMouseUp() {
             document.removeEventListener('mousemove', moveLable);
             document.removeEventListener('mouseup', oneMouseUp);
-        });// TODO: you don't need to store NFE in variable. just put it here    Corrected
+        });
     })
 
     function putVolumeHandle(el, event) {
