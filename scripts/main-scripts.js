@@ -1,7 +1,7 @@
 'use strict';
 
 document.addEventListener('DOMContentLoaded', function () {
-    // Adding modale window through JS-builder
+    // Adding modale window through JS-builder // TODO: encapsulate in function
     var substrate = document.createElement('div');
     substrate.classList.add('substrate', 'visually-hidden', 'hidden');
 
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     var makeTimer = document.createElement('div');
     makeTimer.classList.add('timer');
-    makeTimer.innerHTML = '00:00 / 00:00';
+    makeTimer.innerHTML = '00:00 / 00:00'; // TODO: use textContent
     soundtrackListener.appendChild(makeTimer);
 
     var makeCloseListener = document.createElement('a');
@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function () {
     makeCLCross.classList.add('close-listener-cross');
     makeCloseListener.appendChild(makeCLCross);
 
-    var body = document.querySelector('body');
+    var body = document.querySelector('body'); // TODO: you can found body in document.body
     body.appendChild(substrate);
 
 
