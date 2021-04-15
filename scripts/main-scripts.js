@@ -1,6 +1,62 @@
 'use strict';
 
 document.addEventListener('DOMContentLoaded', function () {
+    // Adding modale window through JS-builder
+    var substrate = document.createElement('div');
+    substrate.classList.add('substrate', 'visually-hidden', 'hidden');
+
+    var soundtrackListener = document.createElement('div');
+    soundtrackListener.classList.add('soundtrack-listener');
+    substrate.appendChild(soundtrackListener);
+
+    var makeAudio = document.createElement('audio');
+    soundtrackListener.appendChild(makeAudio);
+
+    var makeVolume = document.createElement('div');
+    makeVolume.classList.add('volume');
+    soundtrackListener.appendChild(makeVolume);
+
+    var makeVouleHandle = document.createElement('div');
+    makeVouleHandle.classList.add('volume-handle');
+    makeVolume.appendChild(makeVouleHandle);
+
+    var makeLabel = document.createElement('div');
+    makeLabel.classList.add('label');
+    makeVouleHandle.appendChild(makeLabel);
+
+    var makeH2 = document.createElement('h2');
+    makeH2.classList.add('listener-title');
+    soundtrackListener.appendChild(makeH2);
+
+    var makeButton = document.createElement('button');
+    makeButton.classList.add('btn-play' , 'listener');
+    soundtrackListener.appendChild(makeButton);
+
+    var makeMediaLength = document.createElement('div');
+    makeMediaLength.classList.add('media-length');
+    soundtrackListener.appendChild(makeMediaLength);
+
+    var makeCurrentLength = document.createElement('div');
+    makeCurrentLength.classList.add('current-length');
+    makeMediaLength.appendChild(makeCurrentLength);
+
+    var makeTimer = document.createElement('div');
+    makeTimer.classList.add('timer');
+    makeTimer.innerHTML = '00:00 / 00:00';
+    soundtrackListener.appendChild(makeTimer);
+
+    var makeCloseListener = document.createElement('a');
+    makeCloseListener.classList.add('close-listener');
+    soundtrackListener.appendChild(makeCloseListener);
+
+    var makeCLCross = document.createElement('span');
+    makeCLCross.classList.add('close-listener-cross');
+    makeCloseListener.appendChild(makeCLCross);
+
+    var body = document.querySelector('body');
+    body.appendChild(substrate);
+
+
     // Scroll to the film top
     function scrollToFilm(arg) {
         var page = document.querySelector('html');
