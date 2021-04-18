@@ -17,17 +17,21 @@ document.addEventListener('DOMContentLoaded', function () {
         var arrows = [
             {
                 classDirection: 'arrow-left',
-                classCommon: 'arrow',
-                svg: `<svg width="60" height="43" viewBox="0 0 60 43" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M27 41.5L2 21.5M2 21.5L28 1M2 21.5L60 21.5" stroke-width="2" />
+                classCommon: 'arrow', // TODO: no need
+                svg: (
+                    `<svg width="60" height="43" viewBox="0 0 60 43" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M27 41.5L2 21.5M2 21.5L28 1M2 21.5L60 21.5" stroke-width="2" />
                     </svg>`
+                )
             },
             {
                 classDirection: 'arrow-right',
                 classCommon: 'arrow',
-                svg: `<svg width="60" height="43" viewBox="0 0 60 43" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M33 41.5L58 21.5M58 21.5L32 1M58 21.5L0 21.5" stroke-width="2" />
+                svg: (
+                    `<svg width="60" height="43" viewBox="0 0 60 43" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M33 41.5L58 21.5M58 21.5L32 1M58 21.5L0 21.5" stroke-width="2" />
                     </svg>`
+                )
             }
         ];
 
@@ -42,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var makeUL = document.createElement('ul');
         makeSlidesWrapper.appendChild(makeUL);
 
-        var videoSources = [
+        var videoSources = [ // TODO: create these elements through document.createElement
             {
                 source: '<source src="videos/o-brother-where-art-thou.mp4">',
                 img: '<img src="images/o-brother-image.jpg" alt="confess before the end">'
@@ -71,7 +75,7 @@ document.addEventListener('DOMContentLoaded', function () {
             var makeVideoWrapper = document.createElement('div');
             makeVideoWrapper.classList.add('video-wrapper');
 
-            var movieImage = makeFrame.querySelector('img');
+            var movieImage = makeFrame.querySelector('img'); // TODO: don't use querySelectro for elements you create
             makeFrame.insertBefore(makeVideoWrapper, movieImage);
 
             var makeButton = document.createElement('button');
@@ -149,14 +153,14 @@ document.addEventListener('DOMContentLoaded', function () {
         makeFilmTitleContent.classList.add('film-title-content');
         makeFilmContent.appendChild(makeFilmTitleContent);
 
-        var filmTitleContChildren = [
+        var filmTitleContChildren = [ // TODO: bad idea. do it either for all elements, or for no one.
             {
                 tag: 'span',
                 content: '.01'
             },
             {
                 tag: 'h2',
-                content: `THE LORD <br />OF THE RINGS`
+                content: `THE LORD OF THE RINGS`
             }
         ];
 
@@ -200,33 +204,27 @@ document.addEventListener('DOMContentLoaded', function () {
         makeContainer.appendChild(makeAppeal);
 
         var makeH2 = document.createElement('h2');
-        makeH2.textContent = 'Sign up to receive the latest updates and news'; // TODO: don't use query selector. you can store element in variable     Corrected
+        makeH2.textContent = 'Sign up to receive the latest updates and news';
         makeAppeal.appendChild(makeH2);
 
         makeAppeal.appendChild(document.createElement('form'));
-        makeAppeal.querySelector('form').appendChild(document.createElement('div'));
+        makeAppeal.querySelector('form').appendChild(document.createElement('div')); // TODO: what about these query selectors?
         makeAppeal.querySelector('form').querySelector('div').classList.add('email-space');
 
         var emailSpace = makeAppeal.querySelector('.email-space');
 
-        // for (var i = 0; i < 2; i++) { // TODO: no need    Corrected
-        //     emailSpace.appendChild(document.createElement('input'));
-        // }
         emailSpace.appendChild(document.createElement('input'));
         emailSpace.appendChild(document.createElement('input'));
 
         var emailSpaceArr = emailSpace.children;
 
-        emailSpaceArr[0].setAttribute('type', 'text');
+        emailSpaceArr[0].setAttribute('type', 'text'); // TODO: create variable for each input
         emailSpaceArr[0].setAttribute('name', 'email');
         emailSpaceArr[0].setAttribute('placeholder', 'enter your email');
         emailSpaceArr[0].setAttribute('autocomplete', 'off');
 
         emailSpaceArr[1].setAttribute('type', 'submit');
         emailSpaceArr[1].setAttribute('value', 'submit');
-
-        // var body = document.body;
-        // body.appendChild(makeSignUp); // TODO: originaly this section was in main     Missed it. Corrected :)
 
         var main = document.querySelector('main');
         main.appendChild(makeSignUp);
@@ -283,9 +281,9 @@ document.addEventListener('DOMContentLoaded', function () {
             `<svg width="10" height="20" viewBox="0 0 10 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M8.71507 9.53953H6.13306V19.874H2.2999V9.53953H0V6.35969H2.2999V4.44383C2.30143 1.65511 3.41841 0 6.5869 0H9.19958V3.17984H7.4463C6.21279 3.17984 6.13306 3.65682 6.13306 4.54956V6.35969H9.19958L8.71507 9.53953Z" fill="white" />
             </svg>`
-        ]; // TODO: fill this array with svgs.   Corrected
+        ];
 
-        for (var i = 0; i < sMChildren.length; i++) { // TODO: and use here its length, like you did for containerBranches and policies     Corrected
+        for (var i = 0; i < sMChildren.length; i++) {
             var makeListItm = document.createElement('li');
             var makeLink = document.createElement('a');
             makeLink.setAttribute('href', '#');
