@@ -1,8 +1,179 @@
 'use strict';
 
 document.addEventListener('DOMContentLoaded', function () {
+    // Adding section 04
+    function createSection04() {
+        var makeSection = document.createElement('section');
+        makeSection.classList.add('straight-direction-description', 'direction-description');
+        makeSection.setAttribute('id', 'top-04');
+        makeSection.setAttribute('data-name', 'O BROTHER, WHERE ART THOU?');
+        makeSection.setAttribute('data-audio-name', 'o-brother-where-art-thou');
+
+        var makeContainer = document.createElement('div');
+        makeContainer.classList.add('container');
+        makeSection.appendChild(makeContainer);
+
+        var makeDescriptionContent = document.createElement('div');
+        makeDescriptionContent.classList.add('description-content');
+        makeContainer.appendChild(makeDescriptionContent);
+
+        var makeFilmImage = document.createElement('div');
+        makeFilmImage.classList.add('film-image');
+        makeDescriptionContent.appendChild(makeFilmImage);
+
+        var makeImage = document.createElement('img');
+        makeImage.setAttribute('src', 'images/o-brother.jpg');
+        makeImage.setAttribute('alt', 'o brother where art thou');
+        makeFilmImage.appendChild(makeImage);
+
+        var makeFilmContent = document.createElement('div');
+        makeFilmContent.classList.add('film-content');
+        makeDescriptionContent.appendChild(makeFilmContent);
+
+        var makeFilmTitleContent = document.createElement('div');
+        makeFilmTitleContent.classList.add('film-title-content');
+        makeFilmContent.appendChild(makeFilmTitleContent);
+
+        var makeSpan = document.createElement('span');
+        makeSpan.textContent = '.04';
+        makeFilmTitleContent.appendChild(makeSpan);
+
+        var makeH2 = document.createElement('h2');
+        makeH2.textContent = 'O BROTHER, WHERE ART THOU?';
+        makeFilmTitleContent.appendChild(makeH2);
+
+        var makeFilmDescripContent = document.createElement('div');
+        makeFilmDescripContent.classList.add('film-description-content');
+        makeFilmContent.appendChild(makeFilmDescripContent);
+
+        var makeAboutFilm = document.createElement('p');
+        makeAboutFilm.textContent = `O Brother, Where Art Thou? is a movie that fires on all cylinders. It takes place in the Great Depression and involves a
+        group of convicts who go on a wild journey to find a treasure of sorts. With this film based
+        in a stylistic period in history, the soundtrack was designed to match it.`
+        makeFilmDescripContent.appendChild(makeAboutFilm);
+
+        var makeButton = document.createElement('button');
+        makeButton.classList.add('listen');
+        makeButton.textContent = 'listen';
+        makeFilmDescripContent.appendChild(makeButton);
+
+        var main = document.querySelector('main');
+        main.appendChild(makeSection);
+    }
+
+    // Adding section 03
+    function createSection03() {
+        var makeSection = document.createElement('section');
+        makeSection.classList.add('reverse-direction-description', 'direction-description');
+        makeSection.setAttribute('id', 'top-03');
+        makeSection.setAttribute('data-name', '2001: A SPACE ODYSSEY');
+        makeSection.setAttribute('data-audio-name', '2001-a-space-odyssey');
+
+        var makeContainer = document.createElement('div');
+        makeContainer.classList.add('container');
+        makeSection.appendChild(makeContainer);
+
+        var makeDescriptionContent = document.createElement('div');
+        makeDescriptionContent.classList.add('description-content');
+        makeContainer.appendChild(makeDescriptionContent);
+
+        var makeFilmContent = document.createElement('div');
+        makeFilmContent.classList.add('film-content');
+        makeDescriptionContent.appendChild(makeFilmContent);
+
+        var makeFilmImage = document.createElement('div');
+        makeFilmImage.classList.add('film-image');
+        makeDescriptionContent.appendChild(makeFilmImage);
+
+        var makeImage = document.createElement('img');
+        makeImage.setAttribute('src', 'images/davebowman.jpg');
+        makeImage.setAttribute('alt', 'space odyssey');
+        makeFilmImage.appendChild(makeImage);
+
+        var makeFilmTitleContent = document.createElement('div');
+        makeFilmTitleContent.classList.add('film-title-content');
+        makeFilmContent.appendChild(makeFilmTitleContent);
+
+        var makeSpan = document.createElement('span');
+        makeSpan.textContent = '.03';
+        makeFilmTitleContent.appendChild(makeSpan);
+
+        var makeH2 = document.createElement('h2');
+        makeH2.textContent = '2001: A SPACE ODYSSEY';
+        makeFilmTitleContent.appendChild(makeH2);
+
+        var makeFilmDescripContent = document.createElement('div');
+        makeFilmDescripContent.classList.add('film-description-content');
+        makeFilmContent.appendChild(makeFilmDescripContent);
+
+        var makeAboutFilm = document.createElement('p');
+        makeAboutFilm.textContent = `The movie tries very hard to sell the idea of what space exploration would be like, and its themes of isolation and sophistication
+        are further enhanced by its soundtrack. 2001: A Space Odyssey makes use of classical themes
+        and motifs to narrow down a tone that makes the movie feel all its own.`
+        makeFilmDescripContent.appendChild(makeAboutFilm);
+
+        var makeButton = document.createElement('button');
+        makeButton.classList.add('listen');
+        makeButton.textContent = 'listen';
+        makeFilmDescripContent.appendChild(makeButton);
+
+        var main = document.querySelector('main');
+        main.appendChild(makeSection);
+    }
+
+    // Adding section 02
+    function createSection02() {
+        var makeSection = document.createElement('section');
+        makeSection.classList.add('central-direction-description', 'direction-description', 'godfuther');
+        makeSection.setAttribute('id', 'top-02');
+        makeSection.setAttribute('data-name', 'THE GODFATHER');
+        makeSection.setAttribute('data-audio-name', 'the-godfather');
+
+        var makeContainer = document.createElement('div');
+        makeContainer.classList.add('container');
+        makeSection.appendChild(makeContainer);
+
+        var makeDescriptionContent = document.createElement('div');
+        makeDescriptionContent.classList.add('description-content');
+        makeContainer.appendChild(makeDescriptionContent);
+
+        var makeFilmContent = document.createElement('div');
+        makeFilmContent.classList.add('film-content');
+        makeDescriptionContent.appendChild(makeFilmContent);
+
+        var makeFilmTitleContent = document.createElement('div');
+        makeFilmTitleContent.classList.add('film-title-content');
+        makeFilmContent.appendChild(makeFilmTitleContent);
+
+        var makeSpan = document.createElement('span');
+        makeSpan.textContent = '.02';
+        makeFilmTitleContent.appendChild(makeSpan);
+
+        var makeH2 = document.createElement('h2');
+        makeH2.textContent = 'THE GODFATHER';
+        makeFilmTitleContent.appendChild(makeH2);
+
+        var makeFilmDescripContent = document.createElement('div');
+        makeFilmDescripContent.classList.add('film-description-content');
+        makeFilmContent.appendChild(makeFilmDescripContent);
+
+        var makeAboutFilm = document.createElement('p');
+        makeAboutFilm.textContent = `The Godfather is one of cinema's best works. There are so many pieces in that movie that just work, and the soundtrack is
+        part of it. Because the movie deals with crime, gangs, and the works, the music is designed
+        to reflect that.`
+        makeFilmDescripContent.appendChild(makeAboutFilm);
+
+        var makeButton = document.createElement('button');
+        makeButton.classList.add('listen');
+        makeButton.textContent = 'listen';
+        makeFilmDescripContent.appendChild(makeButton);
+
+        var main = document.querySelector('main');
+        main.appendChild(makeSection);
+    }
+
     // Adding slider
-    function createSlider() {
+    function createSlider3() {
         var makeSection = document.createElement('section');
         makeSection.classList.add('slider');
 
@@ -17,7 +188,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var arrows = [
             {
                 classDirection: 'arrow-left',
-                classCommon: 'arrow', // TODO: no need
+                // classCommon: 'arrow', // TODO: no need    Corrected
                 svg: (
                     `<svg width="60" height="43" viewBox="0 0 60 43" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M27 41.5L2 21.5M2 21.5L28 1M2 21.5L60 21.5" stroke-width="2" />
@@ -38,7 +209,7 @@ document.addEventListener('DOMContentLoaded', function () {
         arrows.forEach(function (element) {
             var makeArrow = document.createElement('a');
             makeArrow.setAttribute('href', '#');
-            makeArrow.classList.add(element.classDirection, element.classCommon);
+            makeArrow.classList.add(element.classDirection, 'arrow');
             makeArrow.innerHTML = element.svg;
             makeSlidesWrapper.appendChild(makeArrow);
         });
@@ -46,75 +217,246 @@ document.addEventListener('DOMContentLoaded', function () {
         var makeUL = document.createElement('ul');
         makeSlidesWrapper.appendChild(makeUL);
 
-        var videoSources = [ // TODO: create these elements through document.createElement
-            {
-                source: '<source src="videos/o-brother-where-art-thou.mp4">',
-                img: '<img src="images/o-brother-image.jpg" alt="confess before the end">'
-            },
+        // var videoSources = [ // TODO: create these elements through document.createElement    Corrected
+        //     {
+        //         source: '<source src="videos/o-brother-where-art-thou.mp4">',
+        //         img: '<img src="images/o-brother-image.jpg" alt="confess before the end">'
+        //     },
 
-            {
-                source: '<source src="videos/the-godfather.mp4">',
-                img: '<img src="images/group33.jpg" alt="gungsters discussing a deal">'
-            },
+        //     {
+        //         source: '<source src="videos/the-godfather.mp4">',
+        //         img: '<img src="images/group33.jpg" alt="gungsters discussing a deal">'
+        //     },
 
-            {
-                source: '<source src="videos/2001-a-space-odyssey.mp4">',
-                img: '<img src="images/amanda.jpg" alt="amanda from a space odyssey">'
-            }
-        ];
+        //     {
+        //         source: '<source src="videos/2001-a-space-odyssey.mp4">',
+        //         img: '<img src="images/amanda.jpg" alt="amanda from a space odyssey">'
+        //     }
+        // ];
 
-        videoSources.forEach(function (element) {
-            var makeListItm =  document.createElement('li');
-            makeUL.appendChild(makeListItm);
+        // videoSources.forEach(function (element) {
+        //     var makeListItm =  document.createElement('li');
+        //     makeUL.appendChild(makeListItm);
 
-            var makeFrame = document.createElement('div');
-            makeFrame.classList.add('frame');
-            makeListItm.appendChild(makeFrame);
-            makeFrame.innerHTML = element.img;
+        //     var makeFrame = document.createElement('div');
+        //     makeFrame.classList.add('frame');
+        //     makeListItm.appendChild(makeFrame);
+        //     makeFrame.innerHTML = element.img;
 
-            var makeVideoWrapper = document.createElement('div');
-            makeVideoWrapper.classList.add('video-wrapper');
+        //     var makeVideoWrapper = document.createElement('div');
+        //     makeVideoWrapper.classList.add('video-wrapper');
 
-            var movieImage = makeFrame.querySelector('img'); // TODO: don't use querySelectro for elements you create
-            makeFrame.insertBefore(makeVideoWrapper, movieImage);
+        //     var movieImage = makeFrame.querySelector('img'); // TODO: don't use querySelectro for elements you create     Corrected
+        //     makeFrame.insertBefore(makeVideoWrapper, movieImage);
 
-            var makeButton = document.createElement('button');
-            makeButton.classList.add('btn-play', 'promo-video');
-            makeFrame.appendChild(makeButton);
+        //     var makeButton = document.createElement('button');
+        //     makeButton.classList.add('btn-play', 'promo-video');
+        //     makeFrame.appendChild(makeButton);
 
-            var makeVideo = document.createElement('video');
-            makeVideo.innerHTML = element.source;
-            makeVideoWrapper.appendChild(makeVideo);
+        //     var makeVideo = document.createElement('video');
+        //     makeVideo.innerHTML = element.source;
+        //     makeVideoWrapper.appendChild(makeVideo);
 
-            var makeTimer = document.createElement('div');
-            makeTimer.classList.add('timer', 'video-timer');
-            makeTimer.textContent = '00:00 / 00:00';
-            makeVideoWrapper.appendChild(makeTimer);
+        //     var makeTimer = document.createElement('div');
+        //     makeTimer.classList.add('timer', 'video-timer');
+        //     makeTimer.textContent = '00:00 / 00:00';
+        //     makeVideoWrapper.appendChild(makeTimer);
 
-            var makeVideoControls = document.createElement('div');
-            makeVideoControls.classList.add('video-controls');
-            makeVideoWrapper.appendChild(makeVideoControls);
+        //     var makeVideoControls = document.createElement('div');
+        //     makeVideoControls.classList.add('video-controls');
+        //     makeVideoWrapper.appendChild(makeVideoControls);
 
-            var makeVolume = document.createElement('div');
-            makeVolume.classList.add('volume', 'video-volume');
-            makeVideoControls.appendChild(makeVolume);
+        //     var makeVolume = document.createElement('div');
+        //     makeVolume.classList.add('volume', 'video-volume');
+        //     makeVideoControls.appendChild(makeVolume);
 
-            var makeVolumeHandle = document.createElement('div');
-            makeVolumeHandle.classList.add('volume-handle', 'video-volume-handle');
-            makeVolume.appendChild(makeVolumeHandle);
+        //     var makeVolumeHandle = document.createElement('div');
+        //     makeVolumeHandle.classList.add('volume-handle', 'video-volume-handle');
+        //     makeVolume.appendChild(makeVolumeHandle);
 
-            var makeLabel = document.createElement('div');
-            makeLabel.classList.add('label');
-            makeVolumeHandle.appendChild(makeLabel);
+        //     var makeLabel = document.createElement('div');
+        //     makeLabel.classList.add('label');
+        //     makeVolumeHandle.appendChild(makeLabel);
 
-            var makeMediaLength = document.createElement('div');
-            makeMediaLength.classList.add('media-length', 'video-length');
-            makeVideoControls.appendChild(makeMediaLength);
+        //     var makeMediaLength = document.createElement('div');
+        //     makeMediaLength.classList.add('media-length', 'video-length');
+        //     makeVideoControls.appendChild(makeMediaLength);
 
-            var makeCurrentLength = document.createElement('div');
-            makeCurrentLength.classList.add('current-length');
-            makeMediaLength.appendChild(makeCurrentLength);
-        });
+        //     var makeCurrentLength = document.createElement('div');
+        //     makeCurrentLength.classList.add('current-length');
+        //     makeMediaLength.appendChild(makeCurrentLength);
+        // });
+
+        makeUL.appendChild(document.createElement('li'));
+        makeUL.appendChild(document.createElement('li'));
+        makeUL.appendChild(document.createElement('li'));
+
+        var makeULChildren = makeUL.children;
+
+        // Adding first frame
+        var makeFrame1 = document.createElement('div');
+        makeFrame1.classList.add('frame');
+
+        var firstFrame = makeULChildren[0].appendChild(makeFrame1);
+
+        var makeVideoWrapper = document.createElement('div');
+        makeVideoWrapper.classList.add('video-wrapper');
+        firstFrame.appendChild(makeVideoWrapper);
+
+        var makeVideo = document.createElement('video');
+        makeVideoWrapper.appendChild(makeVideo);
+
+        var makeSource = document.createElement('source');
+        makeSource.setAttribute('src', 'videos/o-brother-where-art-thou.mp4');
+        makeVideo.appendChild(makeSource);
+
+        var makeTimer = document.createElement('div');
+        makeTimer.classList.add('timer', 'video-timer');
+        makeTimer.textContent = '00:00 / 00:00';
+        makeVideoWrapper.appendChild(makeTimer);
+
+        var makeVideoControls = document.createElement('div');
+        makeVideoControls.classList.add('video-controls');
+        makeVideoWrapper.appendChild(makeVideoControls);
+
+        var makeVolume = document.createElement('div');
+        makeVolume.classList.add('volume', 'video-volume');
+        makeVideoControls.appendChild(makeVolume);
+
+        var makeVolumeHandle = document.createElement('div');
+        makeVolumeHandle.classList.add('volume-handle', 'video-volume-handle');
+        makeVolume.appendChild(makeVolumeHandle);
+
+        var makeLabel = document.createElement('div');
+        makeLabel.classList.add('label');
+        makeVolumeHandle.appendChild(makeLabel);
+
+        var makeMediaLength = document.createElement('div');
+        makeMediaLength.classList.add('media-length', 'video-length');
+        makeVideoControls.appendChild(makeMediaLength);
+
+        var makeCurrentLength = document.createElement('div');
+        makeCurrentLength.classList.add('current-length');
+        makeMediaLength.appendChild(makeCurrentLength);
+
+        var makeImage = document.createElement('img');
+        makeImage.setAttribute('src', 'images/o-brother-image.jpg');
+        makeImage.setAttribute('alt', 'confess before the end');
+        firstFrame.appendChild(makeImage);
+
+        var makeButton = document.createElement('button');
+        makeButton.classList.add('btn-play', 'promo-video');
+        firstFrame.appendChild(makeButton);
+
+        // Adding second frame
+        var makeFrame2 = document.createElement('div');
+        makeFrame2.classList.add('frame');
+
+        var secondFrame = makeULChildren[1].appendChild(makeFrame2);
+
+        var makeVideoWrapper = document.createElement('div');
+        makeVideoWrapper.classList.add('video-wrapper');
+        secondFrame.appendChild(makeVideoWrapper);
+
+        var makeVideo = document.createElement('video');
+        makeVideoWrapper.appendChild(makeVideo);
+
+        var makeSource = document.createElement('source');
+        makeSource.setAttribute('src', 'videos/the-godfather.mp4');
+        makeVideo.appendChild(makeSource);
+
+        var makeTimer = document.createElement('div');
+        makeTimer.classList.add('timer', 'video-timer');
+        makeTimer.textContent = '00:00 / 00:00';
+        makeVideoWrapper.appendChild(makeTimer);
+
+        var makeVideoControls = document.createElement('div');
+        makeVideoControls.classList.add('video-controls');
+        makeVideoWrapper.appendChild(makeVideoControls);
+
+        var makeVolume = document.createElement('div');
+        makeVolume.classList.add('volume', 'video-volume');
+        makeVideoControls.appendChild(makeVolume);
+
+        var makeVolumeHandle = document.createElement('div');
+        makeVolumeHandle.classList.add('volume-handle', 'video-volume-handle');
+        makeVolume.appendChild(makeVolumeHandle);
+
+        var makeLabel = document.createElement('div');
+        makeLabel.classList.add('label');
+        makeVolumeHandle.appendChild(makeLabel);
+
+        var makeMediaLength = document.createElement('div');
+        makeMediaLength.classList.add('media-length', 'video-length');
+        makeVideoControls.appendChild(makeMediaLength);
+
+        var makeCurrentLength = document.createElement('div');
+        makeCurrentLength.classList.add('current-length');
+        makeMediaLength.appendChild(makeCurrentLength);
+
+        var makeImage = document.createElement('img');
+        makeImage.setAttribute('src', 'images/group33.jpg');
+        makeImage.setAttribute('alt', 'gungsters discussing a deal');
+        secondFrame.appendChild(makeImage);
+
+        var makeButton = document.createElement('button');
+        makeButton.classList.add('btn-play', 'promo-video');
+        secondFrame.appendChild(makeButton);
+
+        // Adding third frame
+        var makeFrame3 = document.createElement('div');
+        makeFrame3.classList.add('frame');
+
+        var thirdFrame = makeULChildren[2].appendChild(makeFrame3);
+
+        var makeVideoWrapper = document.createElement('div');
+        makeVideoWrapper.classList.add('video-wrapper');
+        thirdFrame.appendChild(makeVideoWrapper);
+
+        var makeVideo = document.createElement('video');
+        makeVideoWrapper.appendChild(makeVideo);
+
+        var makeSource = document.createElement('source');
+        makeSource.setAttribute('src', 'videos/2001-a-space-odyssey.mp4');
+        makeVideo.appendChild(makeSource);
+
+        var makeTimer = document.createElement('div');
+        makeTimer.classList.add('timer', 'video-timer');
+        makeTimer.textContent = '00:00 / 00:00';
+        makeVideoWrapper.appendChild(makeTimer);
+
+        var makeVideoControls = document.createElement('div');
+        makeVideoControls.classList.add('video-controls');
+        makeVideoWrapper.appendChild(makeVideoControls);
+
+        var makeVolume = document.createElement('div');
+        makeVolume.classList.add('volume', 'video-volume');
+        makeVideoControls.appendChild(makeVolume);
+
+        var makeVolumeHandle = document.createElement('div');
+        makeVolumeHandle.classList.add('volume-handle', 'video-volume-handle');
+        makeVolume.appendChild(makeVolumeHandle);
+
+        var makeLabel = document.createElement('div');
+        makeLabel.classList.add('label');
+        makeVolumeHandle.appendChild(makeLabel);
+
+        var makeMediaLength = document.createElement('div');
+        makeMediaLength.classList.add('media-length', 'video-length');
+        makeVideoControls.appendChild(makeMediaLength);
+
+        var makeCurrentLength = document.createElement('div');
+        makeCurrentLength.classList.add('current-length');
+        makeMediaLength.appendChild(makeCurrentLength);
+
+        var makeImage = document.createElement('img');
+        makeImage.setAttribute('src', 'images/amanda.jpg');
+        makeImage.setAttribute('alt', 'amanda from a space odyssey');
+        thirdFrame.appendChild(makeImage);
+
+        var makeButton = document.createElement('button');
+        makeButton.classList.add('btn-play', 'promo-video');
+        thirdFrame.appendChild(makeButton);
 
         var main = document.querySelector('main');
         main.appendChild(makeSection);
@@ -153,22 +495,30 @@ document.addEventListener('DOMContentLoaded', function () {
         makeFilmTitleContent.classList.add('film-title-content');
         makeFilmContent.appendChild(makeFilmTitleContent);
 
-        var filmTitleContChildren = [ // TODO: bad idea. do it either for all elements, or for no one.
-            {
-                tag: 'span',
-                content: '.01'
-            },
-            {
-                tag: 'h2',
-                content: `THE LORD OF THE RINGS`
-            }
-        ];
+        // var filmTitleContChildren = [ // TODO: bad idea. do it either for all elements, or for no one.    Corrected
+        //     {
+        //         tag: 'span',
+        //         content: '.01'
+        //     },
+        //     {
+        //         tag: 'h2',
+        //         content: `THE LORD OF THE RINGS`
+        //     }
+        // ];
 
-        filmTitleContChildren.forEach(function (element) {
-            var child = document.createElement(element.tag);
-            child.innerHTML = element.content;
-            makeFilmTitleContent.appendChild(child);
-        });
+        // filmTitleContChildren.forEach(function (element) {
+        //     var child = document.createElement(element.tag);
+        //     child.innerHTML = element.content;
+        //     makeFilmTitleContent.appendChild(child);
+        // });
+
+        var makeSpan = document.createElement('span');
+        makeSpan.textContent = '.01';
+        makeFilmTitleContent.appendChild(makeSpan);
+
+        var makeH2 = document.createElement('h2');
+        makeH2.textContent = 'THE LORD OF THE RINGS';
+        makeFilmTitleContent.appendChild(makeH2);
 
         var makeFilmDescripContent = document.createElement('div');
         makeFilmDescripContent.classList.add('film-description-content');
@@ -207,24 +557,33 @@ document.addEventListener('DOMContentLoaded', function () {
         makeH2.textContent = 'Sign up to receive the latest updates and news';
         makeAppeal.appendChild(makeH2);
 
-        makeAppeal.appendChild(document.createElement('form'));
-        makeAppeal.querySelector('form').appendChild(document.createElement('div')); // TODO: what about these query selectors?
-        makeAppeal.querySelector('form').querySelector('div').classList.add('email-space');
+        var makeForm = document.createElement('form');
+        makeAppeal.appendChild(makeForm);
+
+        var makeEmailSpace = document.createElement('div');
+        makeEmailSpace.classList.add('email-space');
+        makeForm.appendChild(makeEmailSpace);
+
+        // makeAppeal.querySelector('form').appendChild(document.createElement('div')); // TODO: what about these query selectors?   Corrected
+        // makeAppeal.querySelector('form').querySelector('div').classList.add('email-space');
 
         var emailSpace = makeAppeal.querySelector('.email-space');
 
         emailSpace.appendChild(document.createElement('input'));
         emailSpace.appendChild(document.createElement('input'));
 
-        var emailSpaceArr = emailSpace.children;
+        var submitBtn = emailSpace.children;
 
-        emailSpaceArr[0].setAttribute('type', 'text'); // TODO: create variable for each input
-        emailSpaceArr[0].setAttribute('name', 'email');
-        emailSpaceArr[0].setAttribute('placeholder', 'enter your email');
-        emailSpaceArr[0].setAttribute('autocomplete', 'off');
+        var enterEmail = submitBtn[0];
+        var submitBtn = submitBtn[1];
 
-        emailSpaceArr[1].setAttribute('type', 'submit');
-        emailSpaceArr[1].setAttribute('value', 'submit');
+        enterEmail.setAttribute('type', 'text'); // TODO: create variable for each input    Corrected
+        enterEmail.setAttribute('name', 'email');
+        enterEmail.setAttribute('placeholder', 'enter your email');
+        enterEmail.setAttribute('autocomplete', 'off');
+
+        submitBtn.setAttribute('type', 'submit');
+        submitBtn.setAttribute('value', 'submit');
 
         var main = document.querySelector('main');
         main.appendChild(makeSignUp);
@@ -354,7 +713,10 @@ document.addEventListener('DOMContentLoaded', function () {
         body.appendChild(substrate);
     }
 
-    createSlider();
+    createSection04();
+    createSection03();
+    createSection02();
+    createSlider3();
     createSection01();
     createSignUp();
     createFooter();
