@@ -188,7 +188,6 @@ document.addEventListener('DOMContentLoaded', function () {
         var arrows = [
             {
                 classDirection: 'arrow-left',
-                // classCommon: 'arrow', // TODO: no need    Corrected
                 svg: (
                     `<svg width="60" height="43" viewBox="0 0 60 43" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M27 41.5L2 21.5M2 21.5L28 1M2 21.5L60 21.5" stroke-width="2" />
@@ -197,7 +196,7 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             {
                 classDirection: 'arrow-right',
-                classCommon: 'arrow',
+                classCommon: 'arrow', // TODO: why don't you check everything when there is a note?
                 svg: (
                     `<svg width="60" height="43" viewBox="0 0 60 43" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M33 41.5L58 21.5M58 21.5L32 1M58 21.5L0 21.5" stroke-width="2" />
@@ -246,7 +245,7 @@ document.addEventListener('DOMContentLoaded', function () {
         //     var makeVideoWrapper = document.createElement('div');
         //     makeVideoWrapper.classList.add('video-wrapper');
 
-        //     var movieImage = makeFrame.querySelector('img'); // TODO: don't use querySelectro for elements you create     Corrected
+        //     var movieImage = makeFrame.querySelector('img');
         //     makeFrame.insertBefore(makeVideoWrapper, movieImage);
 
         //     var makeButton = document.createElement('button');
@@ -287,7 +286,7 @@ document.addEventListener('DOMContentLoaded', function () {
         //     makeMediaLength.appendChild(makeCurrentLength);
         // });
 
-        makeUL.appendChild(document.createElement('li'));
+        makeUL.appendChild(document.createElement('li')); // TODO: what the duplication? it's awful. what was wrong with forEach?
         makeUL.appendChild(document.createElement('li'));
         makeUL.appendChild(document.createElement('li'));
 
@@ -495,23 +494,6 @@ document.addEventListener('DOMContentLoaded', function () {
         makeFilmTitleContent.classList.add('film-title-content');
         makeFilmContent.appendChild(makeFilmTitleContent);
 
-        // var filmTitleContChildren = [ // TODO: bad idea. do it either for all elements, or for no one.    Corrected
-        //     {
-        //         tag: 'span',
-        //         content: '.01'
-        //     },
-        //     {
-        //         tag: 'h2',
-        //         content: `THE LORD OF THE RINGS`
-        //     }
-        // ];
-
-        // filmTitleContChildren.forEach(function (element) {
-        //     var child = document.createElement(element.tag);
-        //     child.innerHTML = element.content;
-        //     makeFilmTitleContent.appendChild(child);
-        // });
-
         var makeSpan = document.createElement('span');
         makeSpan.textContent = '.01';
         makeFilmTitleContent.appendChild(makeSpan);
@@ -564,9 +546,6 @@ document.addEventListener('DOMContentLoaded', function () {
         makeEmailSpace.classList.add('email-space');
         makeForm.appendChild(makeEmailSpace);
 
-        // makeAppeal.querySelector('form').appendChild(document.createElement('div')); // TODO: what about these query selectors?   Corrected
-        // makeAppeal.querySelector('form').querySelector('div').classList.add('email-space');
-
         var emailSpace = makeAppeal.querySelector('.email-space');
 
         emailSpace.appendChild(document.createElement('input'));
@@ -577,7 +556,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var enterEmail = submitBtn[0];
         var submitBtn = submitBtn[1];
 
-        enterEmail.setAttribute('type', 'text'); // TODO: create variable for each input    Corrected
+        enterEmail.setAttribute('type', 'text');
         enterEmail.setAttribute('name', 'email');
         enterEmail.setAttribute('placeholder', 'enter your email');
         enterEmail.setAttribute('autocomplete', 'off');
@@ -713,7 +692,7 @@ document.addEventListener('DOMContentLoaded', function () {
         body.appendChild(substrate);
     }
 
-    createSection04();
+    createSection04(); // TODO: functions about sections are almost the same. for how long will you duplicate code?
     createSection03();
     createSection02();
     createSlider3();
