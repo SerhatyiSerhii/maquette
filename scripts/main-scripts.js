@@ -1,13 +1,48 @@
 'use strict';
 
 document.addEventListener('DOMContentLoaded', function () {
-    // Adding section 04
-    function createSection04() {
+    // Adding main Section
+    function createMainSection() {
+        var makeSection = document.createElement('section');
+        makeSection.classList.add('main-section');
+
+        var makeContainer = document.createElement('div');
+        makeContainer.classList.add('container');
+        makeSection.appendChild(makeContainer);
+
+        var makeH1 = document.createElement('h1');
+        makeContainer.appendChild(makeH1);
+
+        var makeSpan = document.createElement('span');
+        makeSpan.classList.add('accent-text');
+        makeSpan.textContent = 'The 10'
+        makeH1.appendChild(makeSpan);
+        makeH1.appendChild(document.createElement('br'));
+        makeH1.innerHTML += 'Best Movie Soundtracks of All-Time';
+
+        var makeMainP = document.createElement('p');
+        makeMainP.textContent = 'Awesome movie soundtracks can turn a good movie like Guardians Of The Galaxy or Star Wars into iconic ones.'
+        makeContainer.appendChild(makeMainP);
+
+        var makeArrowDown = document.createElement('a');
+        makeArrowDown.setAttribute('href', '#top-10');
+        makeArrowDown.classList.add('arrow-down', 'arrow');
+        makeArrowDown.innerHTML = `<svg width="43" height="60" viewBox="0 0 43 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M1 33L21 58M21 58L41.5 32M21 58V0" stroke-width="2" />
+        </svg>`
+        makeContainer.appendChild(makeArrowDown);
+
+        var main = document.querySelector('main');
+        main.appendChild(makeSection);
+    }
+
+    // Adding straight section
+    function createStraightSection(id, dataName, dataAudioName, imgSrc, imgAlt, filmPos, filmDesc) {
         var makeSection = document.createElement('section');
         makeSection.classList.add('straight-direction-description', 'direction-description');
-        makeSection.setAttribute('id', 'top-04');
-        makeSection.setAttribute('data-name', 'O BROTHER, WHERE ART THOU?');
-        makeSection.setAttribute('data-audio-name', 'o-brother-where-art-thou');
+        makeSection.setAttribute('id', id);
+        makeSection.setAttribute('data-name', dataName);
+        makeSection.setAttribute('data-audio-name', dataAudioName);
 
         var makeContainer = document.createElement('div');
         makeContainer.classList.add('container');
@@ -22,8 +57,8 @@ document.addEventListener('DOMContentLoaded', function () {
         makeDescriptionContent.appendChild(makeFilmImage);
 
         var makeImage = document.createElement('img');
-        makeImage.setAttribute('src', 'images/o-brother.jpg');
-        makeImage.setAttribute('alt', 'o brother where art thou');
+        makeImage.setAttribute('src', imgSrc);
+        makeImage.setAttribute('alt', imgAlt);
         makeFilmImage.appendChild(makeImage);
 
         var makeFilmContent = document.createElement('div');
@@ -35,11 +70,11 @@ document.addEventListener('DOMContentLoaded', function () {
         makeFilmContent.appendChild(makeFilmTitleContent);
 
         var makeSpan = document.createElement('span');
-        makeSpan.textContent = '.04';
+        makeSpan.textContent = filmPos;
         makeFilmTitleContent.appendChild(makeSpan);
 
         var makeH2 = document.createElement('h2');
-        makeH2.textContent = 'O BROTHER, WHERE ART THOU?';
+        makeH2.textContent = dataName;
         makeFilmTitleContent.appendChild(makeH2);
 
         var makeFilmDescripContent = document.createElement('div');
@@ -47,9 +82,7 @@ document.addEventListener('DOMContentLoaded', function () {
         makeFilmContent.appendChild(makeFilmDescripContent);
 
         var makeAboutFilm = document.createElement('p');
-        makeAboutFilm.textContent = `O Brother, Where Art Thou? is a movie that fires on all cylinders. It takes place in the Great Depression and involves a
-        group of convicts who go on a wild journey to find a treasure of sorts. With this film based
-        in a stylistic period in history, the soundtrack was designed to match it.`
+        makeAboutFilm.textContent = filmDesc;
         makeFilmDescripContent.appendChild(makeAboutFilm);
 
         var makeButton = document.createElement('button');
@@ -61,73 +94,13 @@ document.addEventListener('DOMContentLoaded', function () {
         main.appendChild(makeSection);
     }
 
-    // Adding section 03
-    function createSection03() {
+    // Adding central section
+    function createCentralSection(imgClass, id, dataName, dataAudioName, filmPos, filmDesc) {
         var makeSection = document.createElement('section');
-        makeSection.classList.add('reverse-direction-description', 'direction-description');
-        makeSection.setAttribute('id', 'top-03');
-        makeSection.setAttribute('data-name', '2001: A SPACE ODYSSEY');
-        makeSection.setAttribute('data-audio-name', '2001-a-space-odyssey');
-
-        var makeContainer = document.createElement('div');
-        makeContainer.classList.add('container');
-        makeSection.appendChild(makeContainer);
-
-        var makeDescriptionContent = document.createElement('div');
-        makeDescriptionContent.classList.add('description-content');
-        makeContainer.appendChild(makeDescriptionContent);
-
-        var makeFilmContent = document.createElement('div');
-        makeFilmContent.classList.add('film-content');
-        makeDescriptionContent.appendChild(makeFilmContent);
-
-        var makeFilmImage = document.createElement('div');
-        makeFilmImage.classList.add('film-image');
-        makeDescriptionContent.appendChild(makeFilmImage);
-
-        var makeImage = document.createElement('img');
-        makeImage.setAttribute('src', 'images/davebowman.jpg');
-        makeImage.setAttribute('alt', 'space odyssey');
-        makeFilmImage.appendChild(makeImage);
-
-        var makeFilmTitleContent = document.createElement('div');
-        makeFilmTitleContent.classList.add('film-title-content');
-        makeFilmContent.appendChild(makeFilmTitleContent);
-
-        var makeSpan = document.createElement('span');
-        makeSpan.textContent = '.03';
-        makeFilmTitleContent.appendChild(makeSpan);
-
-        var makeH2 = document.createElement('h2');
-        makeH2.textContent = '2001: A SPACE ODYSSEY';
-        makeFilmTitleContent.appendChild(makeH2);
-
-        var makeFilmDescripContent = document.createElement('div');
-        makeFilmDescripContent.classList.add('film-description-content');
-        makeFilmContent.appendChild(makeFilmDescripContent);
-
-        var makeAboutFilm = document.createElement('p');
-        makeAboutFilm.textContent = `The movie tries very hard to sell the idea of what space exploration would be like, and its themes of isolation and sophistication
-        are further enhanced by its soundtrack. 2001: A Space Odyssey makes use of classical themes
-        and motifs to narrow down a tone that makes the movie feel all its own.`
-        makeFilmDescripContent.appendChild(makeAboutFilm);
-
-        var makeButton = document.createElement('button');
-        makeButton.classList.add('listen');
-        makeButton.textContent = 'listen';
-        makeFilmDescripContent.appendChild(makeButton);
-
-        var main = document.querySelector('main');
-        main.appendChild(makeSection);
-    }
-
-    // Adding section 02
-    function createSection02() {
-        var makeSection = document.createElement('section');
-        makeSection.classList.add('central-direction-description', 'direction-description', 'godfuther');
-        makeSection.setAttribute('id', 'top-02');
-        makeSection.setAttribute('data-name', 'THE GODFATHER');
-        makeSection.setAttribute('data-audio-name', 'the-godfather');
+        makeSection.classList.add('central-direction-description', 'direction-description', imgClass);
+        makeSection.setAttribute('id', id);
+        makeSection.setAttribute('data-name', dataName);
+        makeSection.setAttribute('data-audio-name', dataAudioName);
 
         var makeContainer = document.createElement('div');
         makeContainer.classList.add('container');
@@ -146,11 +119,11 @@ document.addEventListener('DOMContentLoaded', function () {
         makeFilmContent.appendChild(makeFilmTitleContent);
 
         var makeSpan = document.createElement('span');
-        makeSpan.textContent = '.02';
+        makeSpan.textContent = filmPos;
         makeFilmTitleContent.appendChild(makeSpan);
 
         var makeH2 = document.createElement('h2');
-        makeH2.textContent = 'THE GODFATHER';
+        makeH2.textContent = dataName;
         makeFilmTitleContent.appendChild(makeH2);
 
         var makeFilmDescripContent = document.createElement('div');
@@ -158,9 +131,7 @@ document.addEventListener('DOMContentLoaded', function () {
         makeFilmContent.appendChild(makeFilmDescripContent);
 
         var makeAboutFilm = document.createElement('p');
-        makeAboutFilm.textContent = `The Godfather is one of cinema's best works. There are so many pieces in that movie that just work, and the soundtrack is
-        part of it. Because the movie deals with crime, gangs, and the works, the music is designed
-        to reflect that.`
+        makeAboutFilm.textContent = filmDesc;
         makeFilmDescripContent.appendChild(makeAboutFilm);
 
         var makeButton = document.createElement('button');
@@ -173,7 +144,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Adding slider
-    function createSlider3() {
+    function createSlider(array) {
         var makeSection = document.createElement('section');
         makeSection.classList.add('slider');
 
@@ -196,7 +167,7 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             {
                 classDirection: 'arrow-right',
-                classCommon: 'arrow', // TODO: why don't you check everything when there is a note?
+                // classCommon: 'arrow', // TODO: why don't you check everything when there is a note?   Corrected. I don't have a note. I found how to underline unused code, but it doesn't mark properties of objects.
                 svg: (
                     `<svg width="60" height="43" viewBox="0 0 60 43" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M33 41.5L58 21.5M58 21.5L32 1M58 21.5L0 21.5" stroke-width="2" />
@@ -216,258 +187,77 @@ document.addEventListener('DOMContentLoaded', function () {
         var makeUL = document.createElement('ul');
         makeSlidesWrapper.appendChild(makeUL);
 
-        // var videoSources = [ // TODO: create these elements through document.createElement    Corrected
-        //     {
-        //         source: '<source src="videos/o-brother-where-art-thou.mp4">',
-        //         img: '<img src="images/o-brother-image.jpg" alt="confess before the end">'
-        //     },
+        array.forEach(function (element) {
+            var makeListItm = document.createElement('li');
+            makeUL.appendChild(makeListItm);
 
-        //     {
-        //         source: '<source src="videos/the-godfather.mp4">',
-        //         img: '<img src="images/group33.jpg" alt="gungsters discussing a deal">'
-        //     },
+            var makeFrame = document.createElement('div');
+            makeFrame.classList.add('frame');
+            makeListItm.appendChild(makeFrame);
 
-        //     {
-        //         source: '<source src="videos/2001-a-space-odyssey.mp4">',
-        //         img: '<img src="images/amanda.jpg" alt="amanda from a space odyssey">'
-        //     }
-        // ];
+            var makeVideoWrapper = document.createElement('div');
+            makeVideoWrapper.classList.add('video-wrapper');
+            makeFrame.appendChild(makeVideoWrapper);
 
-        // videoSources.forEach(function (element) {
-        //     var makeListItm =  document.createElement('li');
-        //     makeUL.appendChild(makeListItm);
+            var makeVideo = document.createElement('video');
+            makeVideoWrapper.appendChild(makeVideo);
 
-        //     var makeFrame = document.createElement('div');
-        //     makeFrame.classList.add('frame');
-        //     makeListItm.appendChild(makeFrame);
-        //     makeFrame.innerHTML = element.img;
+            var makeSource = document.createElement('source');
+            makeSource.setAttribute('src', element.src);
+            makeVideo.appendChild(makeSource);
 
-        //     var makeVideoWrapper = document.createElement('div');
-        //     makeVideoWrapper.classList.add('video-wrapper');
+            var makeTimer = document.createElement('div');
+            makeTimer.classList.add('timer', 'video-timer');
+            makeTimer.textContent = '00:00 / 00:00';
+            makeVideoWrapper.appendChild(makeTimer);
 
-        //     var movieImage = makeFrame.querySelector('img');
-        //     makeFrame.insertBefore(makeVideoWrapper, movieImage);
+            var makeVideoControls = document.createElement('div');
+            makeVideoControls.classList.add('video-controls');
+            makeVideoWrapper.appendChild(makeVideoControls);
 
-        //     var makeButton = document.createElement('button');
-        //     makeButton.classList.add('btn-play', 'promo-video');
-        //     makeFrame.appendChild(makeButton);
+            var makeVolume = document.createElement('div');
+            makeVolume.classList.add('volume', 'video-volume');
+            makeVideoControls.appendChild(makeVolume);
 
-        //     var makeVideo = document.createElement('video');
-        //     makeVideo.innerHTML = element.source;
-        //     makeVideoWrapper.appendChild(makeVideo);
+            var makeVolumeHandle = document.createElement('div');
+            makeVolumeHandle.classList.add('volume-handle', 'video-volume-handle');
+            makeVolume.appendChild(makeVolumeHandle);
 
-        //     var makeTimer = document.createElement('div');
-        //     makeTimer.classList.add('timer', 'video-timer');
-        //     makeTimer.textContent = '00:00 / 00:00';
-        //     makeVideoWrapper.appendChild(makeTimer);
+            var makeLabel = document.createElement('div');
+            makeLabel.classList.add('label');
+            makeVolumeHandle.appendChild(makeLabel);
 
-        //     var makeVideoControls = document.createElement('div');
-        //     makeVideoControls.classList.add('video-controls');
-        //     makeVideoWrapper.appendChild(makeVideoControls);
+            var makeMediaLength = document.createElement('div');
+            makeMediaLength.classList.add('media-length', 'video-length');
+            makeVideoControls.appendChild(makeMediaLength);
 
-        //     var makeVolume = document.createElement('div');
-        //     makeVolume.classList.add('volume', 'video-volume');
-        //     makeVideoControls.appendChild(makeVolume);
+            var makeCurrentLength = document.createElement('div');
+            makeCurrentLength.classList.add('current-length');
+            makeMediaLength.appendChild(makeCurrentLength);
 
-        //     var makeVolumeHandle = document.createElement('div');
-        //     makeVolumeHandle.classList.add('volume-handle', 'video-volume-handle');
-        //     makeVolume.appendChild(makeVolumeHandle);
+            var makeImage = document.createElement('img');
+            makeImage.setAttribute('src', element.imgSrc);
+            makeImage.setAttribute('alt', element.imgAlt);
+            makeFrame.appendChild(makeImage);
 
-        //     var makeLabel = document.createElement('div');
-        //     makeLabel.classList.add('label');
-        //     makeVolumeHandle.appendChild(makeLabel);
+            var makeButton = document.createElement('button');
+            makeButton.classList.add('btn-play', 'promo-video');
+            makeFrame.appendChild(makeButton);
+        });
 
-        //     var makeMediaLength = document.createElement('div');
-        //     makeMediaLength.classList.add('media-length', 'video-length');
-        //     makeVideoControls.appendChild(makeMediaLength);
-
-        //     var makeCurrentLength = document.createElement('div');
-        //     makeCurrentLength.classList.add('current-length');
-        //     makeMediaLength.appendChild(makeCurrentLength);
-        // });
-
-        makeUL.appendChild(document.createElement('li')); // TODO: what the duplication? it's awful. what was wrong with forEach?
-        makeUL.appendChild(document.createElement('li'));
-        makeUL.appendChild(document.createElement('li'));
-
-        var makeULChildren = makeUL.children;
-
-        // Adding first frame
-        var makeFrame1 = document.createElement('div');
-        makeFrame1.classList.add('frame');
-
-        var firstFrame = makeULChildren[0].appendChild(makeFrame1);
-
-        var makeVideoWrapper = document.createElement('div');
-        makeVideoWrapper.classList.add('video-wrapper');
-        firstFrame.appendChild(makeVideoWrapper);
-
-        var makeVideo = document.createElement('video');
-        makeVideoWrapper.appendChild(makeVideo);
-
-        var makeSource = document.createElement('source');
-        makeSource.setAttribute('src', 'videos/o-brother-where-art-thou.mp4');
-        makeVideo.appendChild(makeSource);
-
-        var makeTimer = document.createElement('div');
-        makeTimer.classList.add('timer', 'video-timer');
-        makeTimer.textContent = '00:00 / 00:00';
-        makeVideoWrapper.appendChild(makeTimer);
-
-        var makeVideoControls = document.createElement('div');
-        makeVideoControls.classList.add('video-controls');
-        makeVideoWrapper.appendChild(makeVideoControls);
-
-        var makeVolume = document.createElement('div');
-        makeVolume.classList.add('volume', 'video-volume');
-        makeVideoControls.appendChild(makeVolume);
-
-        var makeVolumeHandle = document.createElement('div');
-        makeVolumeHandle.classList.add('volume-handle', 'video-volume-handle');
-        makeVolume.appendChild(makeVolumeHandle);
-
-        var makeLabel = document.createElement('div');
-        makeLabel.classList.add('label');
-        makeVolumeHandle.appendChild(makeLabel);
-
-        var makeMediaLength = document.createElement('div');
-        makeMediaLength.classList.add('media-length', 'video-length');
-        makeVideoControls.appendChild(makeMediaLength);
-
-        var makeCurrentLength = document.createElement('div');
-        makeCurrentLength.classList.add('current-length');
-        makeMediaLength.appendChild(makeCurrentLength);
-
-        var makeImage = document.createElement('img');
-        makeImage.setAttribute('src', 'images/o-brother-image.jpg');
-        makeImage.setAttribute('alt', 'confess before the end');
-        firstFrame.appendChild(makeImage);
-
-        var makeButton = document.createElement('button');
-        makeButton.classList.add('btn-play', 'promo-video');
-        firstFrame.appendChild(makeButton);
-
-        // Adding second frame
-        var makeFrame2 = document.createElement('div');
-        makeFrame2.classList.add('frame');
-
-        var secondFrame = makeULChildren[1].appendChild(makeFrame2);
-
-        var makeVideoWrapper = document.createElement('div');
-        makeVideoWrapper.classList.add('video-wrapper');
-        secondFrame.appendChild(makeVideoWrapper);
-
-        var makeVideo = document.createElement('video');
-        makeVideoWrapper.appendChild(makeVideo);
-
-        var makeSource = document.createElement('source');
-        makeSource.setAttribute('src', 'videos/the-godfather.mp4');
-        makeVideo.appendChild(makeSource);
-
-        var makeTimer = document.createElement('div');
-        makeTimer.classList.add('timer', 'video-timer');
-        makeTimer.textContent = '00:00 / 00:00';
-        makeVideoWrapper.appendChild(makeTimer);
-
-        var makeVideoControls = document.createElement('div');
-        makeVideoControls.classList.add('video-controls');
-        makeVideoWrapper.appendChild(makeVideoControls);
-
-        var makeVolume = document.createElement('div');
-        makeVolume.classList.add('volume', 'video-volume');
-        makeVideoControls.appendChild(makeVolume);
-
-        var makeVolumeHandle = document.createElement('div');
-        makeVolumeHandle.classList.add('volume-handle', 'video-volume-handle');
-        makeVolume.appendChild(makeVolumeHandle);
-
-        var makeLabel = document.createElement('div');
-        makeLabel.classList.add('label');
-        makeVolumeHandle.appendChild(makeLabel);
-
-        var makeMediaLength = document.createElement('div');
-        makeMediaLength.classList.add('media-length', 'video-length');
-        makeVideoControls.appendChild(makeMediaLength);
-
-        var makeCurrentLength = document.createElement('div');
-        makeCurrentLength.classList.add('current-length');
-        makeMediaLength.appendChild(makeCurrentLength);
-
-        var makeImage = document.createElement('img');
-        makeImage.setAttribute('src', 'images/group33.jpg');
-        makeImage.setAttribute('alt', 'gungsters discussing a deal');
-        secondFrame.appendChild(makeImage);
-
-        var makeButton = document.createElement('button');
-        makeButton.classList.add('btn-play', 'promo-video');
-        secondFrame.appendChild(makeButton);
-
-        // Adding third frame
-        var makeFrame3 = document.createElement('div');
-        makeFrame3.classList.add('frame');
-
-        var thirdFrame = makeULChildren[2].appendChild(makeFrame3);
-
-        var makeVideoWrapper = document.createElement('div');
-        makeVideoWrapper.classList.add('video-wrapper');
-        thirdFrame.appendChild(makeVideoWrapper);
-
-        var makeVideo = document.createElement('video');
-        makeVideoWrapper.appendChild(makeVideo);
-
-        var makeSource = document.createElement('source');
-        makeSource.setAttribute('src', 'videos/2001-a-space-odyssey.mp4');
-        makeVideo.appendChild(makeSource);
-
-        var makeTimer = document.createElement('div');
-        makeTimer.classList.add('timer', 'video-timer');
-        makeTimer.textContent = '00:00 / 00:00';
-        makeVideoWrapper.appendChild(makeTimer);
-
-        var makeVideoControls = document.createElement('div');
-        makeVideoControls.classList.add('video-controls');
-        makeVideoWrapper.appendChild(makeVideoControls);
-
-        var makeVolume = document.createElement('div');
-        makeVolume.classList.add('volume', 'video-volume');
-        makeVideoControls.appendChild(makeVolume);
-
-        var makeVolumeHandle = document.createElement('div');
-        makeVolumeHandle.classList.add('volume-handle', 'video-volume-handle');
-        makeVolume.appendChild(makeVolumeHandle);
-
-        var makeLabel = document.createElement('div');
-        makeLabel.classList.add('label');
-        makeVolumeHandle.appendChild(makeLabel);
-
-        var makeMediaLength = document.createElement('div');
-        makeMediaLength.classList.add('media-length', 'video-length');
-        makeVideoControls.appendChild(makeMediaLength);
-
-        var makeCurrentLength = document.createElement('div');
-        makeCurrentLength.classList.add('current-length');
-        makeMediaLength.appendChild(makeCurrentLength);
-
-        var makeImage = document.createElement('img');
-        makeImage.setAttribute('src', 'images/amanda.jpg');
-        makeImage.setAttribute('alt', 'amanda from a space odyssey');
-        thirdFrame.appendChild(makeImage);
-
-        var makeButton = document.createElement('button');
-        makeButton.classList.add('btn-play', 'promo-video');
-        thirdFrame.appendChild(makeButton);
+        // makeUL.appendChild(document.createElement('li')); // TODO: what the duplication? it's awful. what was wrong with forEach?    Corrected. I thought I shoudn't use forEach :D
 
         var main = document.querySelector('main');
         main.appendChild(makeSection);
     }
 
-    // Adding moovie section 01
-    function createSection01() {
+    // Adding reverse section
+    function createReverseSection(id, dataName, dataAudioName, imgSrc, imgAlt, filmPos, filmDesc) {
         var makeSection = document.createElement('section');
         makeSection.classList.add('reverse-direction-description', 'direction-description');
-        makeSection.setAttribute('id', 'top-01');
-        makeSection.setAttribute('data-name', 'THE LORD OF THE RINGS');
-        makeSection.setAttribute('data-audio-name', 'the-lord-of-the-rings');
+        makeSection.setAttribute('id', id);
+        makeSection.setAttribute('data-name', dataName);
+        makeSection.setAttribute('data-audio-name', dataAudioName);
 
         var makeContainer = document.createElement('div');
         makeContainer.classList.add('container');
@@ -486,8 +276,8 @@ document.addEventListener('DOMContentLoaded', function () {
         makeDescriptionContent.appendChild(makeFilmImage);
 
         var makeImage = document.createElement('img');
-        makeImage.setAttribute('src', 'images/frodo.jpg');
-        makeImage.setAttribute('alt', 'Frodo and the ring');
+        makeImage.setAttribute('src', imgSrc);
+        makeImage.setAttribute('alt', imgAlt);
         makeFilmImage.appendChild(makeImage);
 
         var makeFilmTitleContent = document.createElement('div');
@@ -495,11 +285,11 @@ document.addEventListener('DOMContentLoaded', function () {
         makeFilmContent.appendChild(makeFilmTitleContent);
 
         var makeSpan = document.createElement('span');
-        makeSpan.textContent = '.01';
+        makeSpan.textContent = filmPos;
         makeFilmTitleContent.appendChild(makeSpan);
 
         var makeH2 = document.createElement('h2');
-        makeH2.textContent = 'THE LORD OF THE RINGS';
+        makeH2.textContent = dataName;
         makeFilmTitleContent.appendChild(makeH2);
 
         var makeFilmDescripContent = document.createElement('div');
@@ -507,10 +297,7 @@ document.addEventListener('DOMContentLoaded', function () {
         makeFilmContent.appendChild(makeFilmDescripContent);
 
         var makeAboutFilm = document.createElement('p');
-        makeAboutFilm.textContent = `Everything about the soundtrack in The Lord of the Rings is excellent, which is one of the many reasons that the trilogy
-        remains one of the most beloved in cinema history. Where Peter Jackson had a frame of reference
-        with Tolkien's detailed descriptions, Howard Shore had to match those visuals with music
-        all his own.`
+        makeAboutFilm.textContent = filmDesc
         makeFilmDescripContent.appendChild(makeAboutFilm);
 
         var makeButton = document.createElement('button');
@@ -692,11 +479,179 @@ document.addEventListener('DOMContentLoaded', function () {
         body.appendChild(substrate);
     }
 
-    createSection04(); // TODO: functions about sections are almost the same. for how long will you duplicate code?
-    createSection03();
-    createSection02();
-    createSlider3();
-    createSection01();
+    createMainSection();
+    createStraightSection(
+        'top-10',
+        'GUARDIANS OF THE GALAXY VOL. 2',
+        'guardinas-of-the-galaxy-vol-2',
+        'images/guardians.jpg',
+        'guardians of the galaxy',
+        '.10',
+        `While the Awesome Mix Vol. 1 in Guardians of the Galaxy was resonant with a lot of people, it was the soundtrack in Guardians
+        of the Galaxy Vol. 2 that improved on the formula. The first film featured songs that were
+        fun and upbeat but didn't have much to do with the film's story.`
+    );
+    createReverseSection(
+        'top-09',
+        'JURASSIC PARK',
+        'jurassic-park',
+        'images/jurassic.jpg',
+        'jurassic park',
+        '.09',
+        `John Williams did a lot of music for many popular franchises. After his work on Star Wars, he would later do the score for
+        Jurassic Park. This dinosaur film was full of epic shots and tense moments that were further
+        brought to life by Williams' music.`
+    );
+    createCentralSection(
+        'star-wars',
+        'top-08',
+        'STAR WARS: A NEW HOPE',
+        'star-wars-a-new-hope',
+        '.08',
+        `When Star Wars: A New Hope was released, it introduced many iconic themes that people would recognize decades after. That
+        was thanks to John Williams, who put together the iconic fanfare, the Imperial March, and
+        so many more great tracks.`
+    );
+    createSlider(
+        [
+            {
+                src: 'videos/star-wars-a-new-hope.mp4',
+                imgSrc: 'images/conference_room.jpg',
+                imgAlt: 'Dart Waider at the conference room'
+            },
+
+            {
+                src: 'videos/jurassic-park.mp4',
+                imgSrc: 'images/dino_pet.jpg',
+                imgAlt: 'petting the dino'
+            },
+
+            {
+                src: 'videos/guardinas-of-the-galaxy-vol-2.mp4',
+                imgSrc: 'images/little_tree.jpg',
+                imgAlt: 'little tree presses a button'
+            }
+        ]
+    );
+    createStraightSection(
+        'top-07',
+        'BABY DRIVER',
+        'baby-driver',
+        'images/baby_driver.jpg',
+        'baby-driver',
+        '.07',
+        `Baby Driver's soundtrack is similar to Guardians of the Galaxy in many ways. It uses a lot of older songs to provide a backdrop
+        to the film's many beats. However, what Edgar Wright did with the music was so far beyond
+        that.`
+    );
+    createReverseSection(
+        'top-06',
+        'GOODFELLAS',
+        'goodfellas',
+        'images/goodfellas.jpg',
+        'goodfellas',
+        '.06',
+        `Martin Scorcese's movie Goodfellas remains one of his best to date. The movie deals with gangs, drugs, and everything else
+        in between. It's a crime movie that isn't afraid to deal with the dark side of life. Going
+        along with every scene is a great soundtrack full of hand-picked songs that compliment every
+        moment they appear in.`
+    );
+    createCentralSection(
+        'runner',
+        'top-05',
+        'BLADE RUNNER',
+        'blade-runner',
+        '.05',
+        `It's astounding that Blade Runner didn't become as popular as other movies released in its time. It arguably has one of the
+        best soundtracks in movie history, with every tune being a perfect match with the action
+        on-screen.`
+    );
+    createSlider(
+        [
+            {
+                src: 'videos/blade-runner.mp4',
+                imgSrc: 'images/bladerunner.jpg',
+                imgAlt: 'bladerunner heroes'
+            },
+
+            {
+                src: 'videos/goodfellas.mp4',
+                imgSrc: 'images/culture.jpg',
+                imgAlt: 'high buildings'
+            },
+
+            {
+                src: 'videos/baby-driver.mp4',
+                imgSrc: 'images/Baby-Driver_driver.jpg',
+                imgAlt: 'driver'
+            }
+        ]
+    );
+    createStraightSection(
+        'top-04',
+        'O BROTHER, WHERE ART THOU?',
+        'o-brother-where-art-thou',
+        'images/o-brother.jpg',
+        'o brother where art thou',
+        '.04',
+        `O Brother, Where Art Thou? is a movie that fires on all cylinders. It takes place in the Great Depression and involves a
+        group of convicts who go on a wild journey to find a treasure of sorts. With this film based
+        in a stylistic period in history, the soundtrack was designed to match it.`
+    ); // TODO: functions about sections are almost the same. for how long will you duplicate code?     Will it be correct to set functions with arguments like this?
+    createReverseSection(
+        'top-03',
+        '2001: A SPACE ODYSSEY',
+        '2001-a-space-odyssey',
+        'images/davebowman.jpg',
+        'space odyssey',
+        '.03',
+        `The movie tries very hard to sell the idea of what space exploration would be like, and its themes of isolation and sophistication
+        are further enhanced by its soundtrack. 2001: A Space Odyssey makes use of classical themes
+        and motifs to narrow down a tone that makes the movie feel all its own.`
+    );
+    createCentralSection(
+        'godfuther',
+        'top-02',
+        'THE GODFATHER',
+        'the-godfather',
+        '.02',
+        `The Godfather is one of cinema's best works. There are so many pieces in that movie that just work, and the soundtrack is
+        part of it. Because the movie deals with crime, gangs, and the works, the music is designed
+        to reflect that.`
+    );
+    createSlider(
+        [
+            {
+                src: 'videos/o-brother-where-art-thou.mp4',
+                imgSrc: 'images/o-brother-image.jpg',
+                imgAlt: 'confess before the end'
+            },
+
+            {
+                src: 'videos/the-godfather.mp4',
+                imgSrc: 'images/group33.jpg',
+                imgAlt: 'gungsters discussing a deal'
+            },
+
+            {
+                src: 'videos/2001-a-space-odyssey.mp4',
+                imgSrc: 'images/amanda.jpg',
+                imgAlt: 'amanda from a space odyssey'
+            }
+        ]
+    );
+    createReverseSection(
+        'top-01',
+        'THE LORD OF THE RINGS',
+        'the-lord-of-the-rings',
+        'images/frodo.jpg',
+        'Frodo and the ring',
+        '.01',
+        `Everything about the soundtrack in The Lord of the Rings is excellent, which is one of the many reasons that the trilogy
+        remains one of the most beloved in cinema history. Where Peter Jackson had a frame of reference
+        with Tolkien's detailed descriptions, Howard Shore had to match those visuals with music
+        all his own.`
+    );
     createSignUp();
     createFooter();
     createModaleWindow();
