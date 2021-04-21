@@ -27,14 +27,20 @@ document.addEventListener('DOMContentLoaded', function () {
         var makeArrowDown = document.createElement('a');
         makeArrowDown.setAttribute('href', '#top-10');
         makeArrowDown.classList.add('arrow-down', 'arrow');
-        makeArrowDown.innerHTML = `<svg width="43" height="60" viewBox="0 0 43 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M1 33L21 58M21 58L41.5 32M21 58V0" stroke-width="2" />
-        </svg>`
+        makeArrowDown.innerHTML = (
+            `<svg width="43" height="60" viewBox="0 0 43 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1 33L21 58M21 58L41.5 32M21 58V0" stroke-width="2" />
+            </svg>`
+        );
         makeContainer.appendChild(makeArrowDown);
 
         var main = document.querySelector('main');
         main.appendChild(makeSection);
     }
+
+    // TODO: create__section functions still have many duplications.
+    // also these functions have too many arguments. Combine in one argument.
+    // and id have no sense. Id is the same as film position. no sense to add dot for film position.
 
     // Adding straight section
     function createStraightSection(id, dataName, dataAudioName, imgSrc, imgAlt, filmPos, filmDesc) {
@@ -167,7 +173,6 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             {
                 classDirection: 'arrow-right',
-                // classCommon: 'arrow', // TODO: why don't you check everything when there is a note?   Corrected. I don't have a note. I found how to underline unused code, but it doesn't mark properties of objects.
                 svg: (
                     `<svg width="60" height="43" viewBox="0 0 60 43" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M33 41.5L58 21.5M58 21.5L32 1M58 21.5L0 21.5" stroke-width="2" />
@@ -244,8 +249,6 @@ document.addEventListener('DOMContentLoaded', function () {
             makeButton.classList.add('btn-play', 'promo-video');
             makeFrame.appendChild(makeButton);
         });
-
-        // makeUL.appendChild(document.createElement('li')); // TODO: what the duplication? it's awful. what was wrong with forEach?    Corrected. I thought I shoudn't use forEach :D
 
         var main = document.querySelector('main');
         main.appendChild(makeSection);
@@ -597,7 +600,7 @@ document.addEventListener('DOMContentLoaded', function () {
         `O Brother, Where Art Thou? is a movie that fires on all cylinders. It takes place in the Great Depression and involves a
         group of convicts who go on a wild journey to find a treasure of sorts. With this film based
         in a stylistic period in history, the soundtrack was designed to match it.`
-    ); // TODO: functions about sections are almost the same. for how long will you duplicate code?     Will it be correct to set functions with arguments like this?
+    );
     createReverseSection(
         'top-03',
         '2001: A SPACE ODYSSEY',
