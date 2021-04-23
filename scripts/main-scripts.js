@@ -1,6 +1,74 @@
 'use strict';
 
 document.addEventListener('DOMContentLoaded', function () {
+    // Adding header
+    function createHeader(array) {
+        var makeHeader = document.createElement('header');
+
+        var makeContainer = document.createElement('div');
+        makeContainer.classList.add('container');
+        makeHeader.appendChild(makeContainer);
+
+        var makeLogo = document.createElement('a');
+        makeLogo.classList.add('logo');
+        makeLogo.setAttribute('href', '#');
+        makeContainer.appendChild(makeLogo);
+
+        var makeLogoImg = document.createElement('img');
+        makeLogoImg.setAttribute('src', 'images/the-top-logo.svg');
+        makeLogoImg.setAttribute('alt', 'the-top-logo');
+        makeLogo.appendChild(makeLogoImg);
+
+        var makeNav = document.createElement('nav');
+        makeContainer.appendChild(makeNav);
+
+        var makeNavWrapper = document.createElement('div');
+        makeNavWrapper.setAttribute('id', 'nav-wrapper');
+        makeNav.appendChild(makeNavWrapper);
+
+        var makeBurger = document.createElement('span');
+        makeBurger.setAttribute('id', 'burger-img');
+        makeNavWrapper.appendChild(makeBurger);
+
+        var makeUl = document.createElement('ul');
+        makeUl.classList.add('box-menu');
+        makeNav.appendChild(makeUl);
+
+        var navigation = ['Search', 'Add to the Favorites', 'FAQ', 'Go to'];
+
+        navigation.forEach(function (item) {
+            var makeListItm = document.createElement('li');
+            makeUl.appendChild(makeListItm);
+
+            var makeLink = document.createElement('a');
+            makeLink.setAttribute('href', '#');
+            makeLink.classList.add('box-menu-item');
+            makeLink.textContent = item;
+            makeListItm.appendChild(makeLink);
+
+            if (item === 'Go to') {
+                makeListItm.classList.add('go-to');
+
+                var makeFilmNav = document.createElement('ul');
+                makeFilmNav.classList.add('film-nav');
+                makeListItm.appendChild(makeFilmNav);
+
+                for (var element of array) {
+                    var makeListItm = document.createElement('li');
+                    makeFilmNav.appendChild(makeListItm);
+
+                    var makeLink = document.createElement('a');
+                    makeLink.setAttribute('href', '#top-' + element);
+                    makeLink.classList.add('top-film');
+                    makeLink.textContent = '.' + element;
+                    makeListItm.appendChild(makeLink);
+                }
+            }
+        });
+
+        document.body.appendChild(makeHeader);
+    }
+
     // Adding main Section
     function createMainSection() {
         var makeSection = document.createElement('section');
@@ -41,112 +109,99 @@ document.addEventListener('DOMContentLoaded', function () {
     // TODO: create__section functions still have many duplications.
     // also these functions have too many arguments. Combine in one argument.
     // and id have no sense. Id is the same as film position. no sense to add dot for film position.
+    // Corrected
 
-    // Adding straight section
-    function createStraightSection(id, dataName, dataAudioName, imgSrc, imgAlt, filmPos, filmDesc) {
-        var makeSection = document.createElement('section');
-        makeSection.classList.add('straight-direction-description', 'direction-description');
-        makeSection.setAttribute('id', id);
-        makeSection.setAttribute('data-name', dataName);
-        makeSection.setAttribute('data-audio-name', dataAudioName);
+    // Adding movie section
+    function createMovieSection(mainObj) {
 
-        var makeContainer = document.createElement('div');
-        makeContainer.classList.add('container');
-        makeSection.appendChild(makeContainer);
+        function setAttribute(element, obj) {
+            for (var key in obj) {
+                element.setAttribute(key, obj[key]);
+            }
+        }
 
-        var makeDescriptionContent = document.createElement('div');
-        makeDescriptionContent.classList.add('description-content');
-        makeContainer.appendChild(makeDescriptionContent);
+        function MakeElemem(element, ...classes) {
+            var elem = document.createElement(element);
 
-        var makeFilmImage = document.createElement('div');
-        makeFilmImage.classList.add('film-image');
-        makeDescriptionContent.appendChild(makeFilmImage);
+            for (var item of classes) {
+                elem.classList.add(item);
+            }
 
-        var makeImage = document.createElement('img');
-        makeImage.setAttribute('src', imgSrc);
-        makeImage.setAttribute('alt', imgAlt);
-        makeFilmImage.appendChild(makeImage);
+            return elem;
+        }
 
-        var makeFilmContent = document.createElement('div');
-        makeFilmContent.classList.add('film-content');
-        makeDescriptionContent.appendChild(makeFilmContent);
+        function insert(map) {
+            map.forEach(function (value, key) {
+                for (var item of value) {
+                    key.appendChild(item);
+                }
+            });
+        }
 
-        var makeFilmTitleContent = document.createElement('div');
-        makeFilmTitleContent.classList.add('film-title-content');
-        makeFilmContent.appendChild(makeFilmTitleContent);
+        var makeSection = new MakeElemem('section', mainObj.sectionClass, 'direction-description');
+        setAttribute(makeSection, { 'id': 'top-' + mainObj.position, 'data-name': mainObj.name, 'data-audio-name': mainObj.audioName });
 
-        var makeSpan = document.createElement('span');
-        makeSpan.textContent = filmPos;
-        makeFilmTitleContent.appendChild(makeSpan);
+        var makeContainer = new MakeElemem('div', 'container');
 
-        var makeH2 = document.createElement('h2');
-        makeH2.textContent = dataName;
-        makeFilmTitleContent.appendChild(makeH2);
+        var makeDescriptionContent = new MakeElemem('div', 'description-content');
 
-        var makeFilmDescripContent = document.createElement('div');
-        makeFilmDescripContent.classList.add('film-description-content');
-        makeFilmContent.appendChild(makeFilmDescripContent);
+        if (mainObj.sectionClass === 'central-direction-description') {
+            makeSection.classList.add(mainObj.imgClass);
+        } else {
+            var makeFilmImage = new MakeElemem('div', 'film-image');
 
-        var makeAboutFilm = document.createElement('p');
-        makeAboutFilm.textContent = filmDesc;
-        makeFilmDescripContent.appendChild(makeAboutFilm);
+            var makeImage = new MakeElemem('img');
+            setAttribute(makeImage, { 'src': mainObj.imgSrc, 'alt': mainObj.imgAlt });
 
-        var makeButton = document.createElement('button');
-        makeButton.classList.add('listen');
+            var imgMap = new Map();
+            imgMap.set(makeFilmImage, [makeImage]);
+            insert(imgMap);
+        }
+
+        var makeFilmContent = new MakeElemem('div', 'film-content');
+
+        var makeFilmTitleContent = new MakeElemem('div', 'film-title-content');
+
+        var makeSpan = new MakeElemem('span');
+        makeSpan.textContent = '.' + mainObj.position;
+
+        var makeH2 = new MakeElemem('h2');
+        makeH2.textContent = mainObj.name;
+
+        var makeFilmDescripContent = new MakeElemem('div', 'film-description-content');
+
+        var makeAboutFilm = new MakeElemem('p');
+        makeAboutFilm.textContent = mainObj.about;
+
+        var makeButton = new MakeElemem('button', 'listen');
         makeButton.textContent = 'listen';
-        makeFilmDescripContent.appendChild(makeButton);
 
         var main = document.querySelector('main');
-        main.appendChild(makeSection);
-    }
 
-    // Adding central section
-    function createCentralSection(imgClass, id, dataName, dataAudioName, filmPos, filmDesc) {
-        var makeSection = document.createElement('section');
-        makeSection.classList.add('central-direction-description', 'direction-description', imgClass);
-        makeSection.setAttribute('id', id);
-        makeSection.setAttribute('data-name', dataName);
-        makeSection.setAttribute('data-audio-name', dataAudioName);
+        var map = new Map([
+            [makeSection, [makeContainer]],
+            [makeContainer, [makeDescriptionContent]],
+            [makeFilmTitleContent, [makeSpan, makeH2]],
+            [makeFilmContent, [makeFilmTitleContent, makeFilmDescripContent]],
+            [makeFilmDescripContent, [makeAboutFilm, makeButton]],
+            [main, [makeSection]]
+        ]);
 
-        var makeContainer = document.createElement('div');
-        makeContainer.classList.add('container');
-        makeSection.appendChild(makeContainer);
+        insert(map);
 
-        var makeDescriptionContent = document.createElement('div');
-        makeDescriptionContent.classList.add('description-content');
-        makeContainer.appendChild(makeDescriptionContent);
-
-        var makeFilmContent = document.createElement('div');
-        makeFilmContent.classList.add('film-content');
-        makeDescriptionContent.appendChild(makeFilmContent);
-
-        var makeFilmTitleContent = document.createElement('div');
-        makeFilmTitleContent.classList.add('film-title-content');
-        makeFilmContent.appendChild(makeFilmTitleContent);
-
-        var makeSpan = document.createElement('span');
-        makeSpan.textContent = filmPos;
-        makeFilmTitleContent.appendChild(makeSpan);
-
-        var makeH2 = document.createElement('h2');
-        makeH2.textContent = dataName;
-        makeFilmTitleContent.appendChild(makeH2);
-
-        var makeFilmDescripContent = document.createElement('div');
-        makeFilmDescripContent.classList.add('film-description-content');
-        makeFilmContent.appendChild(makeFilmDescripContent);
-
-        var makeAboutFilm = document.createElement('p');
-        makeAboutFilm.textContent = filmDesc;
-        makeFilmDescripContent.appendChild(makeAboutFilm);
-
-        var makeButton = document.createElement('button');
-        makeButton.classList.add('listen');
-        makeButton.textContent = 'listen';
-        makeFilmDescripContent.appendChild(makeButton);
-
-        var main = document.querySelector('main');
-        main.appendChild(makeSection);
+        if (mainObj.sectionClass === 'straight-direction-description') {
+            var straightMap = new Map();
+            straightMap.set(makeDescriptionContent, [makeFilmImage, makeFilmContent]);
+            insert(straightMap);
+        } else if (mainObj.sectionClass === 'reverse-direction-description') {
+            var reverseMap = new Map();
+            reverseMap.set(makeDescriptionContent, [makeFilmContent, makeFilmImage]);
+            insert(reverseMap);
+        } else {
+            var centralMap = new Map();
+            centralMap.set(makeDescriptionContent, [makeFilmContent]);
+            insert(centralMap);
+        }
     }
 
     // Adding slider
@@ -249,64 +304,6 @@ document.addEventListener('DOMContentLoaded', function () {
             makeButton.classList.add('btn-play', 'promo-video');
             makeFrame.appendChild(makeButton);
         });
-
-        var main = document.querySelector('main');
-        main.appendChild(makeSection);
-    }
-
-    // Adding reverse section
-    function createReverseSection(id, dataName, dataAudioName, imgSrc, imgAlt, filmPos, filmDesc) {
-        var makeSection = document.createElement('section');
-        makeSection.classList.add('reverse-direction-description', 'direction-description');
-        makeSection.setAttribute('id', id);
-        makeSection.setAttribute('data-name', dataName);
-        makeSection.setAttribute('data-audio-name', dataAudioName);
-
-        var makeContainer = document.createElement('div');
-        makeContainer.classList.add('container');
-        makeSection.appendChild(makeContainer);
-
-        var makeDescriptionContent = document.createElement('div');
-        makeDescriptionContent.classList.add('description-content');
-        makeContainer.appendChild(makeDescriptionContent);
-
-        var makeFilmContent = document.createElement('div');
-        makeFilmContent.classList.add('film-content');
-        makeDescriptionContent.appendChild(makeFilmContent);
-
-        var makeFilmImage = document.createElement('div');
-        makeFilmImage.classList.add('film-image');
-        makeDescriptionContent.appendChild(makeFilmImage);
-
-        var makeImage = document.createElement('img');
-        makeImage.setAttribute('src', imgSrc);
-        makeImage.setAttribute('alt', imgAlt);
-        makeFilmImage.appendChild(makeImage);
-
-        var makeFilmTitleContent = document.createElement('div');
-        makeFilmTitleContent.classList.add('film-title-content');
-        makeFilmContent.appendChild(makeFilmTitleContent);
-
-        var makeSpan = document.createElement('span');
-        makeSpan.textContent = filmPos;
-        makeFilmTitleContent.appendChild(makeSpan);
-
-        var makeH2 = document.createElement('h2');
-        makeH2.textContent = dataName;
-        makeFilmTitleContent.appendChild(makeH2);
-
-        var makeFilmDescripContent = document.createElement('div');
-        makeFilmDescripContent.classList.add('film-description-content');
-        makeFilmContent.appendChild(makeFilmDescripContent);
-
-        var makeAboutFilm = document.createElement('p');
-        makeAboutFilm.textContent = filmDesc
-        makeFilmDescripContent.appendChild(makeAboutFilm);
-
-        var makeButton = document.createElement('button');
-        makeButton.classList.add('listen');
-        makeButton.textContent = 'listen';
-        makeFilmDescripContent.appendChild(makeButton);
 
         var main = document.querySelector('main');
         main.appendChild(makeSection);
@@ -482,38 +479,46 @@ document.addEventListener('DOMContentLoaded', function () {
         body.appendChild(substrate);
     }
 
+    createHeader(['10', '09', '08', '07', '06', '05', '04', '03', '02', '01']);
+    document.body.appendChild(document.createElement('main'));
     createMainSection();
-    createStraightSection(
-        'top-10',
-        'GUARDIANS OF THE GALAXY VOL. 2',
-        'guardinas-of-the-galaxy-vol-2',
-        'images/guardians.jpg',
-        'guardians of the galaxy',
-        '.10',
-        `While the Awesome Mix Vol. 1 in Guardians of the Galaxy was resonant with a lot of people, it was the soundtrack in Guardians
-        of the Galaxy Vol. 2 that improved on the formula. The first film featured songs that were
-        fun and upbeat but didn't have much to do with the film's story.`
+    createMovieSection(
+        {
+            sectionClass: 'straight-direction-description',
+            position: '10',
+            name: 'GUARDIANS OF THE GALAXY VOL. 2',
+            audioName: 'guardinas-of-the-galaxy-vol-2',
+            imgSrc: 'images/guardians.jpg',
+            imgAlt: 'guardians of the galaxy',
+            about: `While the Awesome Mix Vol. 1 in Guardians of the Galaxy was resonant with a lot of people, it was the soundtrack in Guardians
+            of the Galaxy Vol. 2 that improved on the formula. The first film featured songs that were
+            fun and upbeat but didn't have much to do with the film's story.`
+        }
     );
-    createReverseSection(
-        'top-09',
-        'JURASSIC PARK',
-        'jurassic-park',
-        'images/jurassic.jpg',
-        'jurassic park',
-        '.09',
-        `John Williams did a lot of music for many popular franchises. After his work on Star Wars, he would later do the score for
-        Jurassic Park. This dinosaur film was full of epic shots and tense moments that were further
-        brought to life by Williams' music.`
+    createMovieSection(
+        {
+            sectionClass: 'reverse-direction-description',
+            position: '09',
+            name: 'JURASSIC PARK',
+            audioName: 'jurassic-park',
+            imgSrc: 'images/jurassic.jpg',
+            imgAlt: 'jurassic park',
+            about: `John Williams did a lot of music for many popular franchises. After his work on Star Wars, he would later do the score for
+            Jurassic Park. This dinosaur film was full of epic shots and tense moments that were further
+            brought to life by Williams' music.`
+        }
     );
-    createCentralSection(
-        'star-wars',
-        'top-08',
-        'STAR WARS: A NEW HOPE',
-        'star-wars-a-new-hope',
-        '.08',
-        `When Star Wars: A New Hope was released, it introduced many iconic themes that people would recognize decades after. That
-        was thanks to John Williams, who put together the iconic fanfare, the Imperial March, and
-        so many more great tracks.`
+    createMovieSection(
+        {
+            sectionClass: 'central-direction-description',
+            imgClass: 'star-wars',
+            position: '08',
+            name: 'STAR WARS: A NEW HOPE',
+            audioName: 'star-wars-a-new-hope',
+            about: `When Star Wars: A New Hope was released, it introduced many iconic themes that people would recognize decades after. That
+            was thanks to John Williams, who put together the iconic fanfare, the Imperial March, and
+            so many more great tracks.`
+        }
     );
     createSlider(
         [
@@ -536,38 +541,44 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         ]
     );
-    createStraightSection(
-        'top-07',
-        'BABY DRIVER',
-        'baby-driver',
-        'images/baby_driver.jpg',
-        'baby-driver',
-        '.07',
-        `Baby Driver's soundtrack is similar to Guardians of the Galaxy in many ways. It uses a lot of older songs to provide a backdrop
-        to the film's many beats. However, what Edgar Wright did with the music was so far beyond
-        that.`
+    createMovieSection(
+        {
+            sectionClass: 'straight-direction-description',
+            position: '07',
+            name: 'BABY DRIVER',
+            audioName: 'baby-driver',
+            imgSrc: 'images/baby_driver.jpg',
+            imgAlt: 'baby-driver',
+            about: `Baby Driver's soundtrack is similar to Guardians of the Galaxy in many ways. It uses a lot of older songs to provide a backdrop
+            to the film's many beats. However, what Edgar Wright did with the music was so far beyond
+            that.`
+        }
     );
-    createReverseSection(
-        'top-06',
-        'GOODFELLAS',
-        'goodfellas',
-        'images/goodfellas.jpg',
-        'goodfellas',
-        '.06',
-        `Martin Scorcese's movie Goodfellas remains one of his best to date. The movie deals with gangs, drugs, and everything else
-        in between. It's a crime movie that isn't afraid to deal with the dark side of life. Going
-        along with every scene is a great soundtrack full of hand-picked songs that compliment every
-        moment they appear in.`
+    createMovieSection(
+        {
+            sectionClass: 'reverse-direction-description',
+            position: '06',
+            name: 'GOODFELLAS',
+            audioName: 'goodfellas',
+            imgSrc: 'images/goodfellas.jpg',
+            imgAlt: 'goodfellas',
+            about: `Martin Scorcese's movie Goodfellas remains one of his best to date. The movie deals with gangs, drugs, and everything else
+            in between. It's a crime movie that isn't afraid to deal with the dark side of life. Going
+            along with every scene is a great soundtrack full of hand-picked songs that compliment every
+            moment they appear in.`
+        }
     );
-    createCentralSection(
-        'runner',
-        'top-05',
-        'BLADE RUNNER',
-        'blade-runner',
-        '.05',
-        `It's astounding that Blade Runner didn't become as popular as other movies released in its time. It arguably has one of the
-        best soundtracks in movie history, with every tune being a perfect match with the action
-        on-screen.`
+    createMovieSection(
+        {
+            sectionClass: 'central-direction-description',
+            imgClass: 'runner',
+            position: '05',
+            name: 'BLADE RUNNER',
+            audioName: 'blade-runner',
+            about: `It's astounding that Blade Runner didn't become as popular as other movies released in its time. It arguably has one of the
+            best soundtracks in movie history, with every tune being a perfect match with the action
+            on-screen.`
+        }
     );
     createSlider(
         [
@@ -590,37 +601,43 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         ]
     );
-    createStraightSection(
-        'top-04',
-        'O BROTHER, WHERE ART THOU?',
-        'o-brother-where-art-thou',
-        'images/o-brother.jpg',
-        'o brother where art thou',
-        '.04',
-        `O Brother, Where Art Thou? is a movie that fires on all cylinders. It takes place in the Great Depression and involves a
-        group of convicts who go on a wild journey to find a treasure of sorts. With this film based
-        in a stylistic period in history, the soundtrack was designed to match it.`
+    createMovieSection(
+        {
+            sectionClass: 'straight-direction-description',
+            position: '04',
+            name: 'O BROTHER, WHERE ART THOU?',
+            audioName: 'o-brother-where-art-thou',
+            imgSrc: 'images/o-brother.jpg',
+            imgAlt: 'o brother where art thou',
+            about: `O Brother, Where Art Thou? is a movie that fires on all cylinders. It takes place in the Great Depression and involves a
+            group of convicts who go on a wild journey to find a treasure of sorts. With this film based
+            in a stylistic period in history, the soundtrack was designed to match it.`
+        }
     );
-    createReverseSection(
-        'top-03',
-        '2001: A SPACE ODYSSEY',
-        '2001-a-space-odyssey',
-        'images/davebowman.jpg',
-        'space odyssey',
-        '.03',
-        `The movie tries very hard to sell the idea of what space exploration would be like, and its themes of isolation and sophistication
-        are further enhanced by its soundtrack. 2001: A Space Odyssey makes use of classical themes
-        and motifs to narrow down a tone that makes the movie feel all its own.`
+    createMovieSection(
+        {
+            sectionClass: 'reverse-direction-description',
+            position: '03',
+            name: '2001: A SPACE ODYSSEY',
+            audioName: '2001-a-space-odyssey',
+            imgSrc: 'images/davebowman.jpg',
+            imgAlt: 'space odyssey',
+            about: `The movie tries very hard to sell the idea of what space exploration would be like, and its themes of isolation and sophistication
+            are further enhanced by its soundtrack. 2001: A Space Odyssey makes use of classical themes
+            and motifs to narrow down a tone that makes the movie feel all its own.`
+        }
     );
-    createCentralSection(
-        'godfuther',
-        'top-02',
-        'THE GODFATHER',
-        'the-godfather',
-        '.02',
-        `The Godfather is one of cinema's best works. There are so many pieces in that movie that just work, and the soundtrack is
-        part of it. Because the movie deals with crime, gangs, and the works, the music is designed
-        to reflect that.`
+    createMovieSection(
+        {
+            sectionClass: 'central-direction-description',
+            imgClass: 'godfuther',
+            position: '02',
+            name: 'THE GODFATHER',
+            audioName: 'the-godfather',
+            about: `The Godfather is one of cinema's best works. There are so many pieces in that movie that just work, and the soundtrack is
+            part of it. Because the movie deals with crime, gangs, and the works, the music is designed
+            to reflect that.`
+        }
     );
     createSlider(
         [
@@ -643,17 +660,19 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         ]
     );
-    createReverseSection(
-        'top-01',
-        'THE LORD OF THE RINGS',
-        'the-lord-of-the-rings',
-        'images/frodo.jpg',
-        'Frodo and the ring',
-        '.01',
-        `Everything about the soundtrack in The Lord of the Rings is excellent, which is one of the many reasons that the trilogy
-        remains one of the most beloved in cinema history. Where Peter Jackson had a frame of reference
-        with Tolkien's detailed descriptions, Howard Shore had to match those visuals with music
-        all his own.`
+    createMovieSection(
+        {
+            sectionClass: 'reverse-direction-description',
+            position: '01',
+            name: 'THE LORD OF THE RINGS',
+            audioName: 'the-lord-of-the-rings',
+            imgSrc: 'images/frodo.jpg',
+            imgAlt: 'Frodo and the ring',
+            about: `Everything about the soundtrack in The Lord of the Rings is excellent, which is one of the many reasons that the trilogy
+            remains one of the most beloved in cinema history. Where Peter Jackson had a frame of reference
+            with Tolkien's detailed descriptions, Howard Shore had to match those visuals with music
+            all his own.`
+        }
     );
     createSignUp();
     createFooter();
