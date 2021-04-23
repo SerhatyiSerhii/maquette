@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function () {
         makeSpan.textContent = 'The 10'
         makeH1.appendChild(makeSpan);
         makeH1.appendChild(document.createElement('br'));
-        makeH1.innerHTML += 'Best Movie Soundtracks of All-Time';
+        makeH1.innerHTML += 'Best Movie Soundtracks of All-Time'; // TODO: also you can try to create text node and append it as child instead of adding text to innerHTML
 
         var makeMainP = document.createElement('p');
         makeMainP.textContent = 'Awesome movie soundtracks can turn a good movie like Guardians Of The Galaxy or Star Wars into iconic ones.'
@@ -102,14 +102,9 @@ document.addEventListener('DOMContentLoaded', function () {
         );
         makeContainer.appendChild(makeArrowDown);
 
-        var main = document.querySelector('main');
+        var main = document.querySelector('main'); // TODO: to remove querySelector, you can store main in variable and pass as argument. Redo for all, where main queried.
         main.appendChild(makeSection);
     }
-
-    // TODO: create__section functions still have many duplications.
-    // also these functions have too many arguments. Combine in one argument.
-    // and id have no sense. Id is the same as film position. no sense to add dot for film position.
-    // Corrected
 
     // Adding movie section
     function createMovieSection(mainObj) {
@@ -120,7 +115,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
 
-        function MakeElemem(element, ...classes) {
+        function MakeElemem(element, ...classes) { // TODO: no sense to use with new. Rename to camel case and remove new.
             var elem = document.createElement(element);
 
             for (var item of classes) {
@@ -178,7 +173,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         var main = document.querySelector('main');
 
-        var map = new Map([
+        var map = new Map([ // in two weeks you won't understand what's going on here :D
             [makeSection, [makeContainer]],
             [makeContainer, [makeDescriptionContent]],
             [makeFilmTitleContent, [makeSpan, makeH2]],
@@ -189,10 +184,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
         insert(map);
 
-        if (mainObj.sectionClass === 'straight-direction-description') {
-            var straightMap = new Map();
+        if (mainObj.sectionClass === 'straight-direction-description') { // TODO: good point for switch structure
+            var straightMap = new Map(); // TODO: you duplicate creating map in all cases of if/else
             straightMap.set(makeDescriptionContent, [makeFilmImage, makeFilmContent]);
-            insert(straightMap);
+            insert(straightMap); // TODO: and here duplicate insertion
         } else if (mainObj.sectionClass === 'reverse-direction-description') {
             var reverseMap = new Map();
             reverseMap.set(makeDescriptionContent, [makeFilmContent, makeFilmImage]);
@@ -418,7 +413,7 @@ document.addEventListener('DOMContentLoaded', function () {
             makeContainer.lastChild.appendChild(makeListItm);
         }
 
-        var body = document.body;
+        var body = document.body; // TODO: no need
         body.appendChild(makeFooter);
     }
 
@@ -728,11 +723,11 @@ document.addEventListener('DOMContentLoaded', function () {
     var goToNav = document.getElementsByClassName('go-to');
     var filmNavMenu = document.querySelector('.film-nav');
 
-    addEvent(goToNav, 'mouseenter', function () {
+    addEvent(goToNav, 'mouseenter', function () { // TODO: move to builder
         filmNavMenu.style.display = 'block';
     });
 
-    addEvent(goToNav, 'mouseleave', function () {
+    addEvent(goToNav, 'mouseleave', function () { // TODO: move to builder
         filmNavMenu.style.display = 'none';
     });
 
@@ -1085,19 +1080,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
     var allVideos = document.querySelectorAll('video');
 
-    addEvent(allVideos, 'canplay', function () {
+    addEvent(allVideos, 'canplay', function () { // TODO: move to builder
         showTime(this);
     });
 
-    addEvent(allVideos, 'playing', function () {
+    addEvent(allVideos, 'playing', function () { // TODO: move to builder
         progress(this);
     });
 
-    addEvent(allVideos, 'pause', function () {
+    addEvent(allVideos, 'pause', function () { // TODO: move to builder
         cancelAnimationFrame(timer);
     });
 
-    addEvent(allVideos, 'ended', function () {
+    addEvent(allVideos, 'ended', function () { // TODO: move to builder
         var thisVideo = this;
         var currentLength = thisVideo.parentNode.querySelector('.current-length');
 
