@@ -53,6 +53,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 makeFilmNav.classList.add('film-nav');
                 makeListItm.appendChild(makeFilmNav);
 
+                makeListItm.addEventListener('mouseenter', function () {
+                    makeFilmNav.style.display = 'block';
+                });
+
+                makeListItm.addEventListener('mouseleave', function () {
+                    makeFilmNav.style.display = 'none';
+                });
+
                 for (var element of array) {
                     var makeListItm = document.createElement('li');
                     makeFilmNav.appendChild(makeListItm);
@@ -70,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Adding main Section
-    function createMainSection() {
+    function createMainSection(main) {
         var makeSection = document.createElement('section');
         makeSection.classList.add('main-section');
 
@@ -86,7 +94,8 @@ document.addEventListener('DOMContentLoaded', function () {
         makeSpan.textContent = 'The 10'
         makeH1.appendChild(makeSpan);
         makeH1.appendChild(document.createElement('br'));
-        makeH1.innerHTML += 'Best Movie Soundtracks of All-Time'; // TODO: also you can try to create text node and append it as child instead of adding text to innerHTML
+        makeH1.appendChild(document.createTextNode('Best Movie Soundtracks of All-Time'));
+        // makeH1.innerHTML += 'Best Movie Soundtracks of All-Time'; // TODO: also you can try to create text node and append it as child instead of adding text to innerHTML    Corrected
 
         var makeMainP = document.createElement('p');
         makeMainP.textContent = 'Awesome movie soundtracks can turn a good movie like Guardians Of The Galaxy or Star Wars into iconic ones.'
@@ -102,12 +111,12 @@ document.addEventListener('DOMContentLoaded', function () {
         );
         makeContainer.appendChild(makeArrowDown);
 
-        var main = document.querySelector('main'); // TODO: to remove querySelector, you can store main in variable and pass as argument. Redo for all, where main queried.
+        // var main = document.querySelector('main'); // TODO: to remove querySelector, you can store main in variable and pass as argument. Redo for all, where main queried.   Corrected
         main.appendChild(makeSection);
     }
 
     // Adding movie section
-    function createMovieSection(mainObj) {
+    function createMovieSection(mainObj, main) {
 
         function setAttribute(element, obj) {
             for (var key in obj) {
@@ -115,7 +124,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
 
-        function MakeElemem(element, ...classes) { // TODO: no sense to use with new. Rename to camel case and remove new.
+        function makeElemem(element, ...classes) { // TODO: no sense to use with new. Rename to camel case and remove new.   Corrected
             var elem = document.createElement(element);
 
             for (var item of classes) {
@@ -133,19 +142,19 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
 
-        var makeSection = new MakeElemem('section', mainObj.sectionClass, 'direction-description');
+        var makeSection = makeElemem('section', mainObj.sectionClass, 'direction-description');
         setAttribute(makeSection, { 'id': 'top-' + mainObj.position, 'data-name': mainObj.name, 'data-audio-name': mainObj.audioName });
 
-        var makeContainer = new MakeElemem('div', 'container');
+        var makeContainer = makeElemem('div', 'container');
 
-        var makeDescriptionContent = new MakeElemem('div', 'description-content');
+        var makeDescriptionContent = makeElemem('div', 'description-content');
 
         if (mainObj.sectionClass === 'central-direction-description') {
             makeSection.classList.add(mainObj.imgClass);
         } else {
-            var makeFilmImage = new MakeElemem('div', 'film-image');
+            var makeFilmImage = makeElemem('div', 'film-image');
 
-            var makeImage = new MakeElemem('img');
+            var makeImage = makeElemem('img');
             setAttribute(makeImage, { 'src': mainObj.imgSrc, 'alt': mainObj.imgAlt });
 
             var imgMap = new Map();
@@ -153,27 +162,30 @@ document.addEventListener('DOMContentLoaded', function () {
             insert(imgMap);
         }
 
-        var makeFilmContent = new MakeElemem('div', 'film-content');
+        var makeFilmContent = makeElemem('div', 'film-content');
 
-        var makeFilmTitleContent = new MakeElemem('div', 'film-title-content');
+        var makeFilmTitleContent = makeElemem('div', 'film-title-content');
 
-        var makeSpan = new MakeElemem('span');
+        var makeSpan = makeElemem('span');
         makeSpan.textContent = '.' + mainObj.position;
 
-        var makeH2 = new MakeElemem('h2');
+        var makeH2 = makeElemem('h2');
         makeH2.textContent = mainObj.name;
 
-        var makeFilmDescripContent = new MakeElemem('div', 'film-description-content');
+        var makeFilmDescripContent = makeElemem('div', 'film-description-content');
 
-        var makeAboutFilm = new MakeElemem('p');
+        var makeAboutFilm = makeElemem('p');
         makeAboutFilm.textContent = mainObj.about;
 
-        var makeButton = new MakeElemem('button', 'listen');
+        var makeButton = makeElemem('button', 'listen');
         makeButton.textContent = 'listen';
 
-        var main = document.querySelector('main');
-
         var map = new Map([ // in two weeks you won't understand what's going on here :D
+            // Originally I made a function:
+            // funciton insert(element, array) {
+            //  for (var item of array) element.appendChild(item);
+            // }
+            // We can make a set of simplier functions, but there will be code duplication :)
             [makeSection, [makeContainer]],
             [makeContainer, [makeDescriptionContent]],
             [makeFilmTitleContent, [makeSpan, makeH2]],
@@ -184,23 +196,38 @@ document.addEventListener('DOMContentLoaded', function () {
 
         insert(map);
 
-        if (mainObj.sectionClass === 'straight-direction-description') { // TODO: good point for switch structure
-            var straightMap = new Map(); // TODO: you duplicate creating map in all cases of if/else
-            straightMap.set(makeDescriptionContent, [makeFilmImage, makeFilmContent]);
-            insert(straightMap); // TODO: and here duplicate insertion
-        } else if (mainObj.sectionClass === 'reverse-direction-description') {
-            var reverseMap = new Map();
-            reverseMap.set(makeDescriptionContent, [makeFilmContent, makeFilmImage]);
-            insert(reverseMap);
-        } else {
-            var centralMap = new Map();
-            centralMap.set(makeDescriptionContent, [makeFilmContent]);
-            insert(centralMap);
+        // if (mainObj.sectionClass === 'straight-direction-description') { // TODO: good point for switch structure     Corrected
+        //     var straightMap = new Map(); // TODO: you duplicate creating map in all cases of if/else     Corrected
+        //     straightMap.set(makeDescriptionContent, [makeFilmImage, makeFilmContent]);
+        //     insert(straightMap); // TODO: and here duplicate insertion   Corrected
+        // } else if (mainObj.sectionClass === 'reverse-direction-description') {
+        //     var reverseMap = new Map();
+        //     reverseMap.set(makeDescriptionContent, [makeFilmContent, makeFilmImage]);
+        //     insert(reverseMap);
+        // } else {
+        //     var centralMap = new Map();
+        //     centralMap.set(makeDescriptionContent, [makeFilmContent]);
+        //     insert(centralMap);
+        // }
+
+        var sectionMap = new Map();
+
+        switch (mainObj.sectionClass) {
+            case 'straight-direction-description':
+                sectionMap.set(makeDescriptionContent, [makeFilmImage, makeFilmContent]);
+                break;
+            case 'reverse-direction-description':
+                sectionMap.set(makeDescriptionContent, [makeFilmContent, makeFilmImage]);
+                break;
+            default:
+                sectionMap.set(makeDescriptionContent, [makeFilmContent]);
         }
+
+        insert(sectionMap);
     }
 
     // Adding slider
-    function createSlider(array) {
+    function createSlider(array, main) {
         var makeSection = document.createElement('section');
         makeSection.classList.add('slider');
 
@@ -257,6 +284,18 @@ document.addEventListener('DOMContentLoaded', function () {
             var makeVideo = document.createElement('video');
             makeVideoWrapper.appendChild(makeVideo);
 
+            makeVideo.addEventListener('canplay', function() {
+                showTime(this);
+            });
+
+            makeVideo.addEventListener('playing', function () {
+                progress(this);
+            });
+
+            makeVideo.addEventListener('pause', function () {
+                cancelAnimationFrame(timer);
+            });
+
             var makeSource = document.createElement('source');
             makeSource.setAttribute('src', element.src);
             makeVideo.appendChild(makeSource);
@@ -290,6 +329,16 @@ document.addEventListener('DOMContentLoaded', function () {
             makeCurrentLength.classList.add('current-length');
             makeMediaLength.appendChild(makeCurrentLength);
 
+            makeVideo.addEventListener('ended', function () {
+                var thisVideo = this;
+
+                setTimeout(function () {
+                    stopVideoPlaying(thisVideo);
+                    makeCurrentLength.style.width = 0;
+                    thisVideo.currentTime = 0;
+                }, 500);
+            });
+
             var makeImage = document.createElement('img');
             makeImage.setAttribute('src', element.imgSrc);
             makeImage.setAttribute('alt', element.imgAlt);
@@ -300,12 +349,11 @@ document.addEventListener('DOMContentLoaded', function () {
             makeFrame.appendChild(makeButton);
         });
 
-        var main = document.querySelector('main');
         main.appendChild(makeSection);
     }
 
     // Adding Sign Up section
-    function createSignUp() {
+    function createSignUp(main) {
         var makeSignUp = document.createElement('section');
         makeSignUp.classList.add('sign-up');
 
@@ -346,7 +394,6 @@ document.addEventListener('DOMContentLoaded', function () {
         submitBtn.setAttribute('type', 'submit');
         submitBtn.setAttribute('value', 'submit');
 
-        var main = document.querySelector('main');
         main.appendChild(makeSignUp);
     }
 
@@ -413,8 +460,8 @@ document.addEventListener('DOMContentLoaded', function () {
             makeContainer.lastChild.appendChild(makeListItm);
         }
 
-        var body = document.body; // TODO: no need
-        body.appendChild(makeFooter);
+        // var body = document.body; // TODO: no need    Corrected
+        document.body.appendChild(makeFooter);
     }
 
     // Adding modale window through JS-builder
@@ -475,8 +522,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     createHeader(['10', '09', '08', '07', '06', '05', '04', '03', '02', '01']);
-    document.body.appendChild(document.createElement('main'));
-    createMainSection();
+    var makeMain = document.body.appendChild(document.createElement('main'));
+    createMainSection(makeMain);
     createMovieSection(
         {
             sectionClass: 'straight-direction-description',
@@ -488,7 +535,8 @@ document.addEventListener('DOMContentLoaded', function () {
             about: `While the Awesome Mix Vol. 1 in Guardians of the Galaxy was resonant with a lot of people, it was the soundtrack in Guardians
             of the Galaxy Vol. 2 that improved on the formula. The first film featured songs that were
             fun and upbeat but didn't have much to do with the film's story.`
-        }
+        },
+        makeMain
     );
     createMovieSection(
         {
@@ -501,7 +549,8 @@ document.addEventListener('DOMContentLoaded', function () {
             about: `John Williams did a lot of music for many popular franchises. After his work on Star Wars, he would later do the score for
             Jurassic Park. This dinosaur film was full of epic shots and tense moments that were further
             brought to life by Williams' music.`
-        }
+        },
+        makeMain
     );
     createMovieSection(
         {
@@ -513,7 +562,8 @@ document.addEventListener('DOMContentLoaded', function () {
             about: `When Star Wars: A New Hope was released, it introduced many iconic themes that people would recognize decades after. That
             was thanks to John Williams, who put together the iconic fanfare, the Imperial March, and
             so many more great tracks.`
-        }
+        },
+        makeMain
     );
     createSlider(
         [
@@ -534,7 +584,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 imgSrc: 'images/little_tree.jpg',
                 imgAlt: 'little tree presses a button'
             }
-        ]
+        ],
+        makeMain
     );
     createMovieSection(
         {
@@ -547,7 +598,8 @@ document.addEventListener('DOMContentLoaded', function () {
             about: `Baby Driver's soundtrack is similar to Guardians of the Galaxy in many ways. It uses a lot of older songs to provide a backdrop
             to the film's many beats. However, what Edgar Wright did with the music was so far beyond
             that.`
-        }
+        },
+        makeMain
     );
     createMovieSection(
         {
@@ -561,7 +613,8 @@ document.addEventListener('DOMContentLoaded', function () {
             in between. It's a crime movie that isn't afraid to deal with the dark side of life. Going
             along with every scene is a great soundtrack full of hand-picked songs that compliment every
             moment they appear in.`
-        }
+        },
+        makeMain
     );
     createMovieSection(
         {
@@ -573,7 +626,8 @@ document.addEventListener('DOMContentLoaded', function () {
             about: `It's astounding that Blade Runner didn't become as popular as other movies released in its time. It arguably has one of the
             best soundtracks in movie history, with every tune being a perfect match with the action
             on-screen.`
-        }
+        },
+        makeMain
     );
     createSlider(
         [
@@ -594,7 +648,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 imgSrc: 'images/Baby-Driver_driver.jpg',
                 imgAlt: 'driver'
             }
-        ]
+        ],
+        makeMain
     );
     createMovieSection(
         {
@@ -607,7 +662,8 @@ document.addEventListener('DOMContentLoaded', function () {
             about: `O Brother, Where Art Thou? is a movie that fires on all cylinders. It takes place in the Great Depression and involves a
             group of convicts who go on a wild journey to find a treasure of sorts. With this film based
             in a stylistic period in history, the soundtrack was designed to match it.`
-        }
+        },
+        makeMain
     );
     createMovieSection(
         {
@@ -620,7 +676,8 @@ document.addEventListener('DOMContentLoaded', function () {
             about: `The movie tries very hard to sell the idea of what space exploration would be like, and its themes of isolation and sophistication
             are further enhanced by its soundtrack. 2001: A Space Odyssey makes use of classical themes
             and motifs to narrow down a tone that makes the movie feel all its own.`
-        }
+        },
+        makeMain
     );
     createMovieSection(
         {
@@ -632,7 +689,8 @@ document.addEventListener('DOMContentLoaded', function () {
             about: `The Godfather is one of cinema's best works. There are so many pieces in that movie that just work, and the soundtrack is
             part of it. Because the movie deals with crime, gangs, and the works, the music is designed
             to reflect that.`
-        }
+        },
+        makeMain
     );
     createSlider(
         [
@@ -653,7 +711,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 imgSrc: 'images/amanda.jpg',
                 imgAlt: 'amanda from a space odyssey'
             }
-        ]
+        ],
+        makeMain
     );
     createMovieSection(
         {
@@ -667,9 +726,10 @@ document.addEventListener('DOMContentLoaded', function () {
             remains one of the most beloved in cinema history. Where Peter Jackson had a frame of reference
             with Tolkien's detailed descriptions, Howard Shore had to match those visuals with music
             all his own.`
-        }
+        },
+        makeMain
     );
-    createSignUp();
+    createSignUp(makeMain);
     createFooter();
     createModaleWindow();
 
@@ -720,16 +780,16 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Hover on Go-To menu
-    var goToNav = document.getElementsByClassName('go-to');
-    var filmNavMenu = document.querySelector('.film-nav');
+    // var goToNav = document.getElementsByClassName('go-to');
+    // var filmNavMenu = document.querySelector('.film-nav');
 
-    addEvent(goToNav, 'mouseenter', function () { // TODO: move to builder
-        filmNavMenu.style.display = 'block';
-    });
+    // addEvent(goToNav, 'mouseenter', function () { // TODO: move to builder   Moved
+    //     filmNavMenu.style.display = 'block';
+    // });
 
-    addEvent(goToNav, 'mouseleave', function () { // TODO: move to builder
-        filmNavMenu.style.display = 'none';
-    });
+    // addEvent(goToNav, 'mouseleave', function () { // TODO: move to builder    Moved
+    //     filmNavMenu.style.display = 'none';
+    // });
 
     function toggleBurger() {
         var boxMenu = document.querySelector('.box-menu');
@@ -1078,31 +1138,31 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    var allVideos = document.querySelectorAll('video');
+    // var allVideos = document.querySelectorAll('video');
 
-    addEvent(allVideos, 'canplay', function () { // TODO: move to builder
-        showTime(this);
-    });
+    // addEvent(allVideos, 'canplay', function () { // TODO: move to builder    Moved
+    //     showTime(this);
+    // });
 
-    addEvent(allVideos, 'playing', function () { // TODO: move to builder
-        progress(this);
-    });
+    // addEvent(allVideos, 'playing', function () { // TODO: move to builder    Moved
+    //     progress(this);
+    // });
 
-    addEvent(allVideos, 'pause', function () { // TODO: move to builder
-        cancelAnimationFrame(timer);
-    });
+    // addEvent(allVideos, 'pause', function () { // TODO: move to builder  Moved
+    //     cancelAnimationFrame(timer);
+    // });
 
-    addEvent(allVideos, 'ended', function () { // TODO: move to builder
-        var thisVideo = this;
-        var currentLength = thisVideo.parentNode.querySelector('.current-length');
+    // addEvent(allVideos, 'ended', function () { // TODO: move to builder   Moved
+    //     var thisVideo = this;
+    //     var currentLength = thisVideo.parentNode.querySelector('.current-length');
 
-        setTimeout(function () {
-            stopVideoPlaying(thisVideo);
-            currentLength.style.width = 0;
-            thisVideo.currentTime = 0;
-            showTime(thisVideo);
-        }, 500);
-    });
+    //     setTimeout(function () {
+    //         stopVideoPlaying(thisVideo);
+    //         currentLength.style.width = 0;
+    //         thisVideo.currentTime = 0;
+    //         showTime(thisVideo);
+    //     }, 500);
+    // });
 
     var volume = document.getElementsByClassName('volume');
 
