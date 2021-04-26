@@ -95,7 +95,6 @@ document.addEventListener('DOMContentLoaded', function () {
         makeH1.appendChild(makeSpan);
         makeH1.appendChild(document.createElement('br'));
         makeH1.appendChild(document.createTextNode('Best Movie Soundtracks of All-Time'));
-        // makeH1.innerHTML += 'Best Movie Soundtracks of All-Time'; // TODO: also you can try to create text node and append it as child instead of adding text to innerHTML    Corrected
 
         var makeMainP = document.createElement('p');
         makeMainP.textContent = 'Awesome movie soundtracks can turn a good movie like Guardians Of The Galaxy or Star Wars into iconic ones.'
@@ -111,7 +110,6 @@ document.addEventListener('DOMContentLoaded', function () {
         );
         makeContainer.appendChild(makeArrowDown);
 
-        // var main = document.querySelector('main'); // TODO: to remove querySelector, you can store main in variable and pass as argument. Redo for all, where main queried.   Corrected
         main.appendChild(makeSection);
     }
 
@@ -124,7 +122,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
 
-        function makeElemem(element, ...classes) { // TODO: no sense to use with new. Rename to camel case and remove new.   Corrected
+        function makeElemem(element, ...classes) {
             var elem = document.createElement(element);
 
             for (var item of classes) {
@@ -180,12 +178,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var makeButton = makeElemem('button', 'listen');
         makeButton.textContent = 'listen';
 
-        var map = new Map([ // in two weeks you won't understand what's going on here :D
-            // Originally I made a function:
-            // funciton insert(element, array) {
-            //  for (var item of array) element.appendChild(item);
-            // }
-            // We can make a set of simplier functions, but there will be code duplication :)
+        var map = new Map([
             [makeSection, [makeContainer]],
             [makeContainer, [makeDescriptionContent]],
             [makeFilmTitleContent, [makeSpan, makeH2]],
@@ -195,20 +188,6 @@ document.addEventListener('DOMContentLoaded', function () {
         ]);
 
         insert(map);
-
-        // if (mainObj.sectionClass === 'straight-direction-description') { // TODO: good point for switch structure     Corrected
-        //     var straightMap = new Map(); // TODO: you duplicate creating map in all cases of if/else     Corrected
-        //     straightMap.set(makeDescriptionContent, [makeFilmImage, makeFilmContent]);
-        //     insert(straightMap); // TODO: and here duplicate insertion   Corrected
-        // } else if (mainObj.sectionClass === 'reverse-direction-description') {
-        //     var reverseMap = new Map();
-        //     reverseMap.set(makeDescriptionContent, [makeFilmContent, makeFilmImage]);
-        //     insert(reverseMap);
-        // } else {
-        //     var centralMap = new Map();
-        //     centralMap.set(makeDescriptionContent, [makeFilmContent]);
-        //     insert(centralMap);
-        // }
 
         var sectionMap = new Map();
 
@@ -220,7 +199,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 sectionMap.set(makeDescriptionContent, [makeFilmContent, makeFilmImage]);
                 break;
             default:
-                sectionMap.set(makeDescriptionContent, [makeFilmContent]);
+                sectionMap.set(makeDescriptionContent, [makeFilmContent]); // TODO: better always to specify break
         }
 
         insert(sectionMap);
@@ -460,7 +439,6 @@ document.addEventListener('DOMContentLoaded', function () {
             makeContainer.lastChild.appendChild(makeListItm);
         }
 
-        // var body = document.body; // TODO: no need    Corrected
         document.body.appendChild(makeFooter);
     }
 
@@ -735,6 +713,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Scroll to the film top
     function scrollToFilm(arg) {
+        // as you can notice, here we also use querySelector
+        // but we can't remove it by moving to js builder
+        // because it is handler for header liks bound to specific sections which located in different builders
+        // later we will cover how we can remove query selector even in such cases
         var page = document.querySelector('html');
         var startingPosition = page.scrollTop;
         var endingPosition = document.querySelector(arg).offsetTop;
@@ -764,7 +746,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Smooth scroll to the film at Go-To menu
     var allTopFilms = document.querySelectorAll('.top-film');
 
-    addEvent(allTopFilms, 'click', function (event) {
+    addEvent(allTopFilms, 'click', function (event) { // TODO: move to builder, remove querySelector
         event.preventDefault();
         var topLink = this.getAttribute('href');
         scrollToFilm(topLink);
@@ -773,25 +755,13 @@ document.addEventListener('DOMContentLoaded', function () {
     // Scroll to Top10 on arrow-down click
     var arrowDown = document.getElementsByClassName('arrow-down');
 
-    addEvent(arrowDown, 'click', function (event) {
+    addEvent(arrowDown, 'click', function (event) { // TODO: move to builder, remove querySelector
         event.preventDefault();
         var firstTopFilm = this.getAttribute('href');
         scrollToFilm(firstTopFilm);
     });
 
-    // Hover on Go-To menu
-    // var goToNav = document.getElementsByClassName('go-to');
-    // var filmNavMenu = document.querySelector('.film-nav');
-
-    // addEvent(goToNav, 'mouseenter', function () { // TODO: move to builder   Moved
-    //     filmNavMenu.style.display = 'block';
-    // });
-
-    // addEvent(goToNav, 'mouseleave', function () { // TODO: move to builder    Moved
-    //     filmNavMenu.style.display = 'none';
-    // });
-
-    function toggleBurger() {
+    function toggleBurger() { // TODO: move to builder, remove querySelector
         var boxMenu = document.querySelector('.box-menu');
         var burgerImg = document.querySelector('#burger-img');
 
@@ -801,18 +771,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
     var navWrapper = document.querySelectorAll('#nav-wrapper');
 
-    addEvent(navWrapper, 'click', function (event) {
+    addEvent(navWrapper, 'click', function (event) { // TODO: move to builder, remove querySelector
         event.stopPropagation();
         toggleBurger();
     });
 
-    addEvent(allTopFilms, 'click', function () {
+    addEvent(allTopFilms, 'click', function () { // TODO: move to builder, remove querySelector
         if (window.innerWidth < 768) {
             toggleBurger();
         }
     });
 
-    document.addEventListener('click', function (event) {
+    document.addEventListener('click', function (event) { // TODO: move to builder, remove querySelector
         if (window.innerWidth < 768 && event.target.closest('.box-menu') == undefined) {
             var boxMenu = document.querySelector('.box-menu');
             var burgerImg = document.querySelector('#burger-img');
@@ -822,7 +792,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    window.addEventListener('resize', function () {
+    window.addEventListener('resize', function () { // TODO: move to builder, remove querySelector
         var boxMenu = document.querySelector('.box-menu');
         var burgerIMG = document.getElementById('burger-img');
 
@@ -1061,7 +1031,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     var allVolumes = document.querySelectorAll('.volume');
 
-    addEvent(allVolumes, 'mousedown', function (mouseDownEvent) {
+    addEvent(allVolumes, 'mousedown', function (mouseDownEvent) { // TODO: move to builder, remove querySelector
         var currentVolume = this;
 
         putVolumeHandle(currentVolume, mouseDownEvent);
@@ -1078,7 +1048,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     })
 
-    function putVolumeHandle(el, event) {
+    function putVolumeHandle(el, event) { // TODO: move to builder, remove querySelector
         var halfLabel = el.querySelector('.label').clientWidth / 2;
         var volumeLeftCoor = el.querySelector('.volume-handle').getBoundingClientRect().left;
         var volHandlPos = event.pageX - volumeLeftCoor;
@@ -1106,7 +1076,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Playing video & video controls
     var allPromoVideos = document.querySelectorAll('.promo-video');
 
-    addEvent(allPromoVideos, 'click', function () {
+    addEvent(allPromoVideos, 'click', function () { // TODO: move to builder. For now you can't remove querySelector here, where you get all videos
         if (this.closest('.slider') != undefined) {
             this.classList.toggle('playing-video');
             this.classList.toggle('play-active');
@@ -1138,35 +1108,9 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // var allVideos = document.querySelectorAll('video');
-
-    // addEvent(allVideos, 'canplay', function () { // TODO: move to builder    Moved
-    //     showTime(this);
-    // });
-
-    // addEvent(allVideos, 'playing', function () { // TODO: move to builder    Moved
-    //     progress(this);
-    // });
-
-    // addEvent(allVideos, 'pause', function () { // TODO: move to builder  Moved
-    //     cancelAnimationFrame(timer);
-    // });
-
-    // addEvent(allVideos, 'ended', function () { // TODO: move to builder   Moved
-    //     var thisVideo = this;
-    //     var currentLength = thisVideo.parentNode.querySelector('.current-length');
-
-    //     setTimeout(function () {
-    //         stopVideoPlaying(thisVideo);
-    //         currentLength.style.width = 0;
-    //         thisVideo.currentTime = 0;
-    //         showTime(thisVideo);
-    //     }, 500);
-    // });
-
     var volume = document.getElementsByClassName('volume');
 
-    for (var item of volume) {
+    for (var item of volume) { // TODO: create function like "afterAppend" and move everything here to that function
         var volumeHandle = item.querySelector('.volume-handle');
         var volumeLable = item.querySelector('.label');
 
