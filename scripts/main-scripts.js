@@ -3,55 +3,87 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Adding header
     function createHeader(array) {
-        var makeHeader = document.createElement('header');
 
-        var makeContainer = document.createElement('div');
-        makeContainer.classList.add('container');
-        makeHeader.appendChild(makeContainer);
+        function setAttribute(element, obj) {
+            for (var key in obj) {
+                element.setAttribute(key, obj[key]);
+            }
+        }
 
-        var makeLogo = document.createElement('a');
-        makeLogo.classList.add('logo');
-        makeLogo.setAttribute('href', '#');
-        makeContainer.appendChild(makeLogo);
+        function makeElemem(element, ...classes) {
+            var elem = document.createElement(element);
 
-        var makeLogoImg = document.createElement('img');
-        makeLogoImg.setAttribute('src', 'images/the-top-logo.svg');
-        makeLogoImg.setAttribute('alt', 'the-top-logo');
-        makeLogo.appendChild(makeLogoImg);
+            for (var item of classes) {
+                elem.classList.add(item);
+            }
 
-        var makeNav = document.createElement('nav');
-        makeContainer.appendChild(makeNav);
+            return elem;
+        }
 
-        var makeNavWrapper = document.createElement('div');
-        makeNavWrapper.setAttribute('id', 'nav-wrapper');
-        makeNav.appendChild(makeNavWrapper);
+        function insert(map) {
+            map.forEach(function (value, key) {
+                for (var item of value) {
+                    key.appendChild(item);
+                }
+            });
+        }
 
-        var makeBurger = document.createElement('span');
-        makeBurger.setAttribute('id', 'burger-img');
-        makeNavWrapper.appendChild(makeBurger);
+        var makeHeader = makeElemem('header');
 
-        var makeUl = document.createElement('ul');
-        makeUl.classList.add('box-menu');
-        makeNav.appendChild(makeUl);
+        var makeContainer = makeElemem('div', 'container');
+
+        var makeLogo = makeElemem('a', 'logo');
+        setAttribute(makeLogo, {'href': '#'})
+
+        var makeLogoImg = makeElemem('img');
+        setAttribute(makeLogoImg, {'src': 'images/the-top-logo.svg', 'alt': 'the-top-logo'});
+
+        var makeNav = makeElemem('nav');
+
+        var makeNavWrapper = makeElemem('div');
+        setAttribute(makeNavWrapper, {'id': 'nav-wrapper'})
+
+        makeNavWrapper.addEventListener('click', function (event) {
+            event.stopPropagation();
+            toggleBurger();
+        });
+
+        var makeBurger = makeElemem('span');
+        setAttribute(makeBurger, {'id': 'burger-img'})
+
+        var makeUl = makeElemem('ul', 'box-menu');
+
+        var mainMap = new Map([
+            [makeHeader, [makeContainer]],
+            [makeLogo, [makeLogoImg]],
+            [makeContainer, [makeLogo, makeNav]],
+            [makeNav, [makeNavWrapper, makeUl]],
+            [makeNavWrapper, [makeBurger]],
+            [document.body, [makeHeader]]
+        ]);
+
+        insert(mainMap);
 
         var navigation = ['Search', 'Add to the Favorites', 'FAQ', 'Go to'];
 
         navigation.forEach(function (item) {
-            var makeListItm = document.createElement('li');
-            makeUl.appendChild(makeListItm);
+            var makeListItm = makeElemem('li');
 
-            var makeLink = document.createElement('a');
-            makeLink.setAttribute('href', '#');
-            makeLink.classList.add('box-menu-item');
+            var makeLink = makeElemem('a', 'box-menu-item');
+            setAttribute(makeLink, {'href': '#'});
             makeLink.textContent = item;
-            makeListItm.appendChild(makeLink);
+
+            var navigationMap = new Map([
+                [makeUl, [makeListItm]],
+                [makeListItm, [makeLink]]
+            ]);
+
+            insert(navigationMap);
 
             if (item === 'Go to') {
                 makeListItm.classList.add('go-to');
 
-                var makeFilmNav = document.createElement('ul');
-                makeFilmNav.classList.add('film-nav');
-                makeListItm.appendChild(makeFilmNav);
+                var makeFilmNav = makeElemem('ul', 'film-nav');
 
                 makeListItm.addEventListener('mouseenter', function () {
                     makeFilmNav.style.display = 'block';
@@ -61,20 +93,53 @@ document.addEventListener('DOMContentLoaded', function () {
                     makeFilmNav.style.display = 'none';
                 });
 
-                for (var element of array) {
-                    var makeListItm = document.createElement('li');
-                    makeFilmNav.appendChild(makeListItm);
+                var goToMap = new Map();
+                goToMap.set(makeListItm, [makeFilmNav]);
+                insert(goToMap);
 
-                    var makeLink = document.createElement('a');
-                    makeLink.setAttribute('href', '#top-' + element);
-                    makeLink.classList.add('top-film');
+                for (var element of array) {
+                    var makeListItm = makeElemem('li');
+
+                    var makeLink = makeElemem('a', 'top-film');
+                    setAttribute(makeLink, {'href': '#top-' + element});
                     makeLink.textContent = '.' + element;
-                    makeListItm.appendChild(makeLink);
+
+                    var topFilmMap = new Map([
+                        [makeFilmNav, [makeListItm]],
+                        [makeListItm, [makeLink]]
+                    ]);
+
+                    insert(topFilmMap);
+
+                    makeLink.addEventListener('click', function (event) {
+                        event.preventDefault();
+                        var topLink = this.getAttribute('href');
+                        scrollToFilm(topLink);
+
+                        if (window.innerWidth < 768) {
+                            toggleBurger();
+                        }
+                    });
                 }
             }
         });
 
-        document.body.appendChild(makeHeader);
+        document.addEventListener('click', function () {
+            if (window.innerWidth < 768 && event.target.closest('.box-menu') == undefined) {
+                makeUl.style.display = 'none';
+                makeBurger.classList.remove('pressed');
+            }
+        });
+
+        window.addEventListener('resize', function () {
+            makeBurger.classList.remove('pressed');
+            makeUl.style.display = (window.innerWidth < 768) ? 'none' : 'block';
+        });
+
+        function toggleBurger() {
+            makeUl.style.display = (makeUl.style.display === 'block') ? 'none' : 'block';
+            makeBurger.classList.toggle('pressed');
+        }
     }
 
     // Adding main Section
@@ -109,6 +174,12 @@ document.addEventListener('DOMContentLoaded', function () {
             </svg>`
         );
         makeContainer.appendChild(makeArrowDown);
+
+        makeArrowDown.addEventListener('click', function (event) {
+            event.preventDefault();
+            var firstTopFilm = this.getAttribute('href');
+            scrollToFilm(firstTopFilm);
+        });
 
         main.appendChild(makeSection);
     }
@@ -199,7 +270,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 sectionMap.set(makeDescriptionContent, [makeFilmContent, makeFilmImage]);
                 break;
             default:
-                sectionMap.set(makeDescriptionContent, [makeFilmContent]); // TODO: better always to specify break
+                sectionMap.set(makeDescriptionContent, [makeFilmContent]); // TODO: better always to specify break   Corrected
+                break;
         }
 
         insert(sectionMap);
@@ -263,7 +335,7 @@ document.addEventListener('DOMContentLoaded', function () {
             var makeVideo = document.createElement('video');
             makeVideoWrapper.appendChild(makeVideo);
 
-            makeVideo.addEventListener('canplay', function() {
+            makeVideo.addEventListener('canplay', function () {
                 showTime(this);
             });
 
@@ -326,6 +398,64 @@ document.addEventListener('DOMContentLoaded', function () {
             var makeButton = document.createElement('button');
             makeButton.classList.add('btn-play', 'promo-video');
             makeFrame.appendChild(makeButton);
+
+            makeVolume.addEventListener('mousedown', function (mouseDownEvent) {
+                putVolumeHandle(mouseDownEvent);
+
+                document.addEventListener('mousemove', moveLable);
+
+                function moveLable(event) {
+                    putVolumeHandle(event);
+                }
+
+                document.addEventListener('mouseup', function oneMouseUp() {
+                    document.removeEventListener('mousemove', moveLable);
+                    document.removeEventListener('mouseup', oneMouseUp);
+                });
+            });
+
+            function putVolumeHandle(event) {
+                var halfLabel = makeLabel.clientWidth / 2;
+                var volumeLeftCoor = makeVolumeHandle.getBoundingClientRect().left;
+                var volHandlPos = event.pageX - volumeLeftCoor;
+                var elMaxWidth = makeVolume.clientWidth - halfLabel;
+
+                if (volHandlPos >= elMaxWidth) {
+                    volHandlPos = elMaxWidth;
+                } else if (volHandlPos <= halfLabel) {
+                    volHandlPos = halfLabel;
+                }
+
+                var calcCenterOfLable = volHandlPos - halfLabel;
+
+                makeVolumeHandle.style.width = calcCenterOfLable + 'px';
+
+                var volumeIndex = (calcCenterOfLable) / (makeVolume.clientWidth - halfLabel * 2);
+
+                makeVideo.volume = volumeIndex;
+            }
+
+            makeButton.addEventListener('click', function () {
+                this.classList.toggle('playing-video');
+                this.classList.toggle('play-active');
+
+                makeImage.style.display = makeButton.classList.contains('playing-video') ? 'none' : 'block';
+
+                var currentVideo = makeVideo;
+                var allVideos = document.querySelectorAll('video');
+
+                for (var video of allVideos) {
+                    if (video !== currentVideo) {
+                        stopVideoPlaying(video);
+                    }
+                }
+
+                if (currentVideo.paused) {
+                    currentVideo.play();
+                } else {
+                    currentVideo.pause();
+                }
+            });
         });
 
         main.appendChild(makeSection);
@@ -458,13 +588,13 @@ document.addEventListener('DOMContentLoaded', function () {
         makeVolume.classList.add('volume');
         soundtrackListener.appendChild(makeVolume);
 
-        var makeVouleHandle = document.createElement('div');
-        makeVouleHandle.classList.add('volume-handle');
-        makeVolume.appendChild(makeVouleHandle);
+        var makeVolumeHandle = document.createElement('div');
+        makeVolumeHandle.classList.add('volume-handle');
+        makeVolume.appendChild(makeVolumeHandle);
 
         var makeLabel = document.createElement('div');
         makeLabel.classList.add('label');
-        makeVouleHandle.appendChild(makeLabel);
+        makeVolumeHandle.appendChild(makeLabel);
 
         var makeH2 = document.createElement('h2');
         makeH2.classList.add('listener-title');
@@ -497,6 +627,53 @@ document.addEventListener('DOMContentLoaded', function () {
 
         var body = document.body;
         body.appendChild(substrate);
+
+        makeVolume.addEventListener('mousedown', function (mouseDownEvent) {
+            putVolumeHandle(mouseDownEvent);
+
+            document.addEventListener('mousemove', moveLable);
+
+            function moveLable(event) {
+                putVolumeHandle(event);
+            }
+
+            document.addEventListener('mouseup', function oneMouseUp() {
+                document.removeEventListener('mousemove', moveLable);
+                document.removeEventListener('mouseup', oneMouseUp);
+            });
+        });
+
+        function putVolumeHandle(event) {
+            var halfLabel = makeLabel.clientWidth / 2;
+            var volumeLeftCoor = makeVolumeHandle.getBoundingClientRect().left;
+            var volHandlPos = event.pageX - volumeLeftCoor;
+            var elMaxWidth = makeVolume.clientWidth - halfLabel;
+
+            if (volHandlPos >= elMaxWidth) {
+                volHandlPos = elMaxWidth;
+            } else if (volHandlPos <= halfLabel) {
+                volHandlPos = halfLabel;
+            }
+
+            var calcCenterOfLable = volHandlPos - halfLabel;
+
+            makeVolumeHandle.style.width = calcCenterOfLable + 'px';
+
+            var volumeIndex = (calcCenterOfLable) / (makeVolume.clientWidth - halfLabel * 2);
+
+            makeAudio.volume = volumeIndex;
+        }
+    }
+
+    function setVolumeAfterAppend() {
+        var volume = document.getElementsByClassName('volume');
+
+        for (var item of volume) {
+            var volumeHandle = item.querySelector('.volume-handle');
+            var volumeLable = item.querySelector('.label');
+
+            volumeHandle.style.width = (item.clientWidth - volumeLable.clientWidth) + 'px';
+        }
     }
 
     createHeader(['10', '09', '08', '07', '06', '05', '04', '03', '02', '01']);
@@ -710,6 +887,7 @@ document.addEventListener('DOMContentLoaded', function () {
     createSignUp(makeMain);
     createFooter();
     createModaleWindow();
+    setVolumeAfterAppend();
 
     // Scroll to the film top
     function scrollToFilm(arg) {
@@ -717,6 +895,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // but we can't remove it by moving to js builder
         // because it is handler for header liks bound to specific sections which located in different builders
         // later we will cover how we can remove query selector even in such cases
+        // Okay :)
         var page = document.querySelector('html');
         var startingPosition = page.scrollTop;
         var endingPosition = document.querySelector(arg).offsetTop;
@@ -744,61 +923,61 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Smooth scroll to the film at Go-To menu
-    var allTopFilms = document.querySelectorAll('.top-film');
+    // var allTopFilms = document.querySelectorAll('.top-film');
 
-    addEvent(allTopFilms, 'click', function (event) { // TODO: move to builder, remove querySelector
-        event.preventDefault();
-        var topLink = this.getAttribute('href');
-        scrollToFilm(topLink);
-    });
+    // addEvent(allTopFilms, 'click', function (event) { // TODO: move to builder, remove querySelector     Moved without querySelector
+    //     event.preventDefault();
+    //     var topLink = this.getAttribute('href');
+    //     scrollToFilm(topLink);
+    // });
 
     // Scroll to Top10 on arrow-down click
-    var arrowDown = document.getElementsByClassName('arrow-down');
+    // var arrowDown = document.getElementsByClassName('arrow-down');
 
-    addEvent(arrowDown, 'click', function (event) { // TODO: move to builder, remove querySelector
-        event.preventDefault();
-        var firstTopFilm = this.getAttribute('href');
-        scrollToFilm(firstTopFilm);
-    });
+    // addEvent(arrowDown, 'click', function (event) { // TODO: move to builder, remove querySelector    Moved without querySelector
+    //     event.preventDefault();
+    //     var firstTopFilm = this.getAttribute('href');
+    //     scrollToFilm(firstTopFilm);
+    // });
 
-    function toggleBurger() { // TODO: move to builder, remove querySelector
-        var boxMenu = document.querySelector('.box-menu');
-        var burgerImg = document.querySelector('#burger-img');
+    // function toggleBurger() { // TODO: move to builder, remove querySelector     Moved without querySelector
+    //     var boxMenu = document.querySelector('.box-menu');
+    //     var burgerImg = document.querySelector('#burger-img');
 
-        boxMenu.style.display = (boxMenu.style.display === 'block') ? 'none' : 'block';
-        burgerImg.classList.toggle('pressed');
-    }
+    //     boxMenu.style.display = (boxMenu.style.display === 'block') ? 'none' : 'block';
+    //     burgerImg.classList.toggle('pressed');
+    // }
 
-    var navWrapper = document.querySelectorAll('#nav-wrapper');
+    // var navWrapper = document.querySelectorAll('#nav-wrapper');
 
-    addEvent(navWrapper, 'click', function (event) { // TODO: move to builder, remove querySelector
-        event.stopPropagation();
-        toggleBurger();
-    });
+    // addEvent(navWrapper, 'click', function (event) { // TODO: move to builder, remove querySelector   Moved without querySelector
+    //     event.stopPropagation();
+    //     toggleBurger();
+    // });
 
-    addEvent(allTopFilms, 'click', function () { // TODO: move to builder, remove querySelector
-        if (window.innerWidth < 768) {
-            toggleBurger();
-        }
-    });
+    // addEvent(allTopFilms, 'click', function () { // TODO: move to builder, remove querySelector   Moved without querySelector
+    //     if (window.innerWidth < 768) {
+    //         toggleBurger();
+    //     }
+    // });
 
-    document.addEventListener('click', function (event) { // TODO: move to builder, remove querySelector
-        if (window.innerWidth < 768 && event.target.closest('.box-menu') == undefined) {
-            var boxMenu = document.querySelector('.box-menu');
-            var burgerImg = document.querySelector('#burger-img');
+    // document.addEventListener('click', function (event) { // TODO: move to builder, remove querySelector     Moved without querySelector
+    //     if (window.innerWidth < 768 && event.target.closest('.box-menu') == undefined) {
+    //         var boxMenu = document.querySelector('.box-menu');
+    //         var burgerImg = document.querySelector('#burger-img');
 
-            boxMenu.style.display = 'none';
-            burgerImg.classList.remove('pressed');
-        }
-    });
+    //         boxMenu.style.display = 'none';
+    //         burgerImg.classList.remove('pressed');
+    //     }
+    // });
 
-    window.addEventListener('resize', function () { // TODO: move to builder, remove querySelector
-        var boxMenu = document.querySelector('.box-menu');
-        var burgerIMG = document.getElementById('burger-img');
+    // window.addEventListener('resize', function () { // TODO: move to builder, remove querySelector    Moved without querySelector
+    //     var boxMenu = document.querySelector('.box-menu');
+    //     var burgerIMG = document.getElementById('burger-img');
 
-        burgerIMG.classList.remove('pressed');
-        boxMenu.style.display = (window.innerWidth < 768) ? 'none' : 'block';
-    });
+    //     burgerIMG.classList.remove('pressed');
+    //     boxMenu.style.display = (window.innerWidth < 768) ? 'none' : 'block';
+    // });
 
     // Substrate window on button 'Listen' click
     var allListenBtns = document.querySelectorAll('.listen');
@@ -1029,78 +1208,78 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     initSlider(1);
 
-    var allVolumes = document.querySelectorAll('.volume');
+    // var allVolumes = document.querySelectorAll('.volume');
 
-    addEvent(allVolumes, 'mousedown', function (mouseDownEvent) { // TODO: move to builder, remove querySelector
-        var currentVolume = this;
+    // addEvent(allVolumes, 'mousedown', function (mouseDownEvent) { // TODO: move to builder, remove querySelector     Moved without querySelector
+    //     var currentVolume = this;
 
-        putVolumeHandle(currentVolume, mouseDownEvent);
+    //     putVolumeHandle(currentVolume, mouseDownEvent);
 
-        document.addEventListener('mousemove', moveLable);
+    //     document.addEventListener('mousemove', moveLable);
 
-        function moveLable(event) {
-            putVolumeHandle(currentVolume, event);
-        }
+    //     function moveLable(event) {
+    //         putVolumeHandle(currentVolume, event);
+    //     }
 
-        document.addEventListener('mouseup', function oneMouseUp() {
-            document.removeEventListener('mousemove', moveLable);
-            document.removeEventListener('mouseup', oneMouseUp);
-        });
-    })
+    //     document.addEventListener('mouseup', function oneMouseUp() {
+    //         document.removeEventListener('mousemove', moveLable);
+    //         document.removeEventListener('mouseup', oneMouseUp);
+    //     });
+    // })
 
-    function putVolumeHandle(el, event) { // TODO: move to builder, remove querySelector
-        var halfLabel = el.querySelector('.label').clientWidth / 2;
-        var volumeLeftCoor = el.querySelector('.volume-handle').getBoundingClientRect().left;
-        var volHandlPos = event.pageX - volumeLeftCoor;
-        var elMaxWidth = el.clientWidth - halfLabel;
+    // function putVolumeHandle(el, event) { // TODO: move to builder, remove querySelector     Moved without querySelector
+    //     var halfLabel = el.querySelector('.label').clientWidth / 2;
+    //     var volumeLeftCoor = el.querySelector('.volume-handle').getBoundingClientRect().left;
+    //     var volHandlPos = event.pageX - volumeLeftCoor;
+    //     var elMaxWidth = el.clientWidth - halfLabel;
 
-        if (volHandlPos >= elMaxWidth) {
-            volHandlPos = elMaxWidth;
-        } else if (volHandlPos <= halfLabel) {
-            volHandlPos = halfLabel;
-        }
+    //     if (volHandlPos >= elMaxWidth) {
+    //         volHandlPos = elMaxWidth;
+    //     } else if (volHandlPos <= halfLabel) {
+    //         volHandlPos = halfLabel;
+    //     }
 
-        var calcCenterOfLable = volHandlPos - halfLabel;
+    //     var calcCenterOfLable = volHandlPos - halfLabel;
 
-        el.querySelector('.volume-handle').style.width = calcCenterOfLable + 'px';
+    //     el.querySelector('.volume-handle').style.width = calcCenterOfLable + 'px';
 
-        var volumeIndex = (calcCenterOfLable) / (el.clientWidth - halfLabel * 2);
+    //     var volumeIndex = (calcCenterOfLable) / (el.clientWidth - halfLabel * 2);
 
-        if (el.closest('.soundtrack-listener') != undefined) {
-            el.parentNode.querySelector('audio').volume = volumeIndex;
-        } else {
-            el.closest('.video-wrapper').querySelector('video').volume = volumeIndex;
-        }
-    }
+    //     if (el.closest('.soundtrack-listener') != undefined) {
+    //         el.parentNode.querySelector('audio').volume = volumeIndex;
+    //     } else {
+    //         el.closest('.video-wrapper').querySelector('video').volume = volumeIndex;
+    //     }
+    // }
 
     // Playing video & video controls
-    var allPromoVideos = document.querySelectorAll('.promo-video');
+    // var allPromoVideos = document.querySelectorAll('.promo-video');
 
-    addEvent(allPromoVideos, 'click', function () { // TODO: move to builder. For now you can't remove querySelector here, where you get all videos
-        if (this.closest('.slider') != undefined) {
-            this.classList.toggle('playing-video');
-            this.classList.toggle('play-active');
+    // addEvent(allPromoVideos, 'click', function () { // TODO: move to builder. For now you can't remove querySelector here, where you get all videos   Moved. Yes, I have to select all videos through querySelector
+    //     if (this.closest('.slider') != undefined) {
+    //         this.classList.toggle('playing-video');
+    //         this.classList.toggle('play-active');
 
-            var image = this.previousElementSibling;
-            image.style.display = this.classList.contains('playing-video') ? 'none' : 'block';
+    //         var image = this.previousElementSibling;
+    //         image.style.display = this.classList.contains('playing-video') ? 'none' : 'block';
 
-            var currentVideo = this.parentNode.querySelector('video');
-            var allVideos = document.querySelectorAll('video');
+    //         var currentVideo = this.parentNode.querySelector('video');
+    //         var allVideos = document.querySelectorAll('video');
 
-            for (var video of allVideos) {
-                if (video !== currentVideo) {
-                    stopVideoPlaying(video);
-                }
-            }
+    //         for (var video of allVideos) {
+    //             if (video !== currentVideo) {
+    //                 stopVideoPlaying(video);
+    //             }
+    //         }
 
-            if (currentVideo.paused) {
-                currentVideo.play();
-            } else {
-                currentVideo.pause();
-            }
-        }
+    //         if (currentVideo.paused) {
+    //             currentVideo.play();
+    //         } else {
+    //             currentVideo.pause();
+    //         }
+    //     }
 
-    });
+    // });
 
     function addEvent(collection, event, handler) {
         for (var item of collection) {
@@ -1108,12 +1287,12 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    var volume = document.getElementsByClassName('volume');
+    // var volume = document.getElementsByClassName('volume');
 
-    for (var item of volume) { // TODO: create function like "afterAppend" and move everything here to that function
-        var volumeHandle = item.querySelector('.volume-handle');
-        var volumeLable = item.querySelector('.label');
+    // for (var item of volume) { // TODO: create function like "afterAppend" and move everything here to that function     Moved to new function setVolumeAfterAppend
+    //     var volumeHandle = item.querySelector('.volume-handle');
+    //     var volumeLable = item.querySelector('.label');
 
-        volumeHandle.style.width = (item.clientWidth - volumeLable.clientWidth) + 'px';
-    }
+    //     volumeHandle.style.width = (item.clientWidth - volumeLable.clientWidth) + 'px';
+    // }
 });

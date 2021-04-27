@@ -1,7 +1,0 @@
-{}// TODO: what's this?
-// This is to store here configurations that should be applied when
-// the project is open. Initially this label was with empty object {}
-// TODO: this is how you want to open the project on your machine, not how others want.
-// this must be in gitignore
-// Corrected
-// it is still tracked by git and is still in repository
