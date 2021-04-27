@@ -4,13 +4,13 @@ document.addEventListener('DOMContentLoaded', function () {
     // Adding header
     function createHeader(array) {
 
-        function setAttribute(element, obj) {
+        function setAttribute(element, obj) { // TODO: code duplication. if you're copying something to another place without changes - you are doing something wrong
             for (var key in obj) {
                 element.setAttribute(key, obj[key]);
             }
         }
 
-        function makeElemem(element, ...classes) {
+        function makeElemem(element, ...classes) { // TODO: code duplication
             var elem = document.createElement(element);
 
             for (var item of classes) {
@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return elem;
         }
 
-        function insert(map) {
+        function insert(map) { // TODO: code duplication
             map.forEach(function (value, key) {
                 for (var item of value) {
                     key.appendChild(item);
@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         document.addEventListener('click', function () {
-            if (window.innerWidth < 768 && event.target.closest('.box-menu') == undefined) {
+            if (window.innerWidth < 768 && event.target.closest('.box-menu') == undefined) { // TODO: where does event come from?
                 makeUl.style.display = 'none';
                 makeBurger.classList.remove('pressed');
             }
@@ -270,7 +270,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 sectionMap.set(makeDescriptionContent, [makeFilmContent, makeFilmImage]);
                 break;
             default:
-                sectionMap.set(makeDescriptionContent, [makeFilmContent]); // TODO: better always to specify break   Corrected
+                sectionMap.set(makeDescriptionContent, [makeFilmContent]);
                 break;
         }
 
@@ -891,12 +891,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Scroll to the film top
     function scrollToFilm(arg) {
-        // as you can notice, here we also use querySelector
-        // but we can't remove it by moving to js builder
-        // because it is handler for header liks bound to specific sections which located in different builders
-        // later we will cover how we can remove query selector even in such cases
-        // Okay :)
-        var page = document.querySelector('html');
+        var page = document.querySelector('html'); // TODO: btw, html can be accessed as documentElement
         var startingPosition = page.scrollTop;
         var endingPosition = document.querySelector(arg).offsetTop;
         var distance = endingPosition - startingPosition;
@@ -922,67 +917,10 @@ document.addEventListener('DOMContentLoaded', function () {
         go(300);
     }
 
-    // Smooth scroll to the film at Go-To menu
-    // var allTopFilms = document.querySelectorAll('.top-film');
-
-    // addEvent(allTopFilms, 'click', function (event) { // TODO: move to builder, remove querySelector     Moved without querySelector
-    //     event.preventDefault();
-    //     var topLink = this.getAttribute('href');
-    //     scrollToFilm(topLink);
-    // });
-
-    // Scroll to Top10 on arrow-down click
-    // var arrowDown = document.getElementsByClassName('arrow-down');
-
-    // addEvent(arrowDown, 'click', function (event) { // TODO: move to builder, remove querySelector    Moved without querySelector
-    //     event.preventDefault();
-    //     var firstTopFilm = this.getAttribute('href');
-    //     scrollToFilm(firstTopFilm);
-    // });
-
-    // function toggleBurger() { // TODO: move to builder, remove querySelector     Moved without querySelector
-    //     var boxMenu = document.querySelector('.box-menu');
-    //     var burgerImg = document.querySelector('#burger-img');
-
-    //     boxMenu.style.display = (boxMenu.style.display === 'block') ? 'none' : 'block';
-    //     burgerImg.classList.toggle('pressed');
-    // }
-
-    // var navWrapper = document.querySelectorAll('#nav-wrapper');
-
-    // addEvent(navWrapper, 'click', function (event) { // TODO: move to builder, remove querySelector   Moved without querySelector
-    //     event.stopPropagation();
-    //     toggleBurger();
-    // });
-
-    // addEvent(allTopFilms, 'click', function () { // TODO: move to builder, remove querySelector   Moved without querySelector
-    //     if (window.innerWidth < 768) {
-    //         toggleBurger();
-    //     }
-    // });
-
-    // document.addEventListener('click', function (event) { // TODO: move to builder, remove querySelector     Moved without querySelector
-    //     if (window.innerWidth < 768 && event.target.closest('.box-menu') == undefined) {
-    //         var boxMenu = document.querySelector('.box-menu');
-    //         var burgerImg = document.querySelector('#burger-img');
-
-    //         boxMenu.style.display = 'none';
-    //         burgerImg.classList.remove('pressed');
-    //     }
-    // });
-
-    // window.addEventListener('resize', function () { // TODO: move to builder, remove querySelector    Moved without querySelector
-    //     var boxMenu = document.querySelector('.box-menu');
-    //     var burgerIMG = document.getElementById('burger-img');
-
-    //     burgerIMG.classList.remove('pressed');
-    //     boxMenu.style.display = (window.innerWidth < 768) ? 'none' : 'block';
-    // });
-
     // Substrate window on button 'Listen' click
     var allListenBtns = document.querySelectorAll('.listen');
 
-    addEvent(allListenBtns, 'click', function () {
+    addEvent(allListenBtns, 'click', function () { // TODO: move to builder, querySelector can't be removed for now
         var modaleWindow = document.querySelector('.substrate');
         var modaleWindowAudio = modaleWindow.querySelector('audio');
         var listenerTitle = modaleWindow.querySelector('.listener-title');
@@ -1018,7 +956,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // For closing substrate window and showing scroll on the page
-    function closeListener() {
+    function closeListener() { // TODO: move to builder, remove querySelector
         var modaleWindow = document.querySelector('.substrate');
         var audio = modaleWindow.querySelector('audio');
         var modWindListener = modaleWindow.querySelector('.listener');
@@ -1050,13 +988,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
     var iconCloseListener = document.getElementsByClassName('close-listener');
 
-    addEvent(iconCloseListener, 'click', function () {
+    addEvent(iconCloseListener, 'click', function () { // TODO: move to builder
         closeListener();
     });
 
     var substrateWindow = document.getElementsByClassName('substrate');
 
-    addEvent(substrateWindow, 'click', function (event) {
+    addEvent(substrateWindow, 'click', function (event) { // TODO: move to builder
         if (event.target.closest('.soundtrack-listener') == undefined) {
             closeListener();
         }
@@ -1064,7 +1002,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     var allListeners = document.querySelectorAll('.listener');
 
-    addEvent(allListeners, 'click', function () {
+    addEvent(allListeners, 'click', function () { // TODO: move to builder, remove querySelector
         var allVideos = document.getElementsByTagName('video');
 
         this.classList.toggle('play-active');
@@ -1090,7 +1028,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     var allAudios = document.querySelectorAll('audio');
 
-    addEvent(allAudios, 'ended', function () {
+    addEvent(allAudios, 'ended', function () { // TODO: move to builder, remove querySelector
         var thisAudio = this;
         var listener = thisAudio.parentNode.querySelector('.listener');
 
@@ -1102,17 +1040,17 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 500);
     });
 
-    addEvent(allAudios, 'playing', function () {
+    addEvent(allAudios, 'playing', function () { // TODO: move to builder
         progress(this);
     });
 
-    addEvent(allAudios, 'pause', function () {
+    addEvent(allAudios, 'pause', function () { // TODO: move to builder
         cancelAnimationFrame(timer);
     });
 
     var timer;
 
-    function progress(element) {
+    function progress(element) { // TODO: move to builder, remove querySelector
         var position = (element.currentTime / element.duration) * 100;
 
         element.parentNode.querySelector('.current-length').style.width = position + '%';
@@ -1128,12 +1066,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     var allMediaLengths = document.querySelectorAll('.media-length');
 
-    addEvent(allMediaLengths, 'click', function (event) {
+    addEvent(allMediaLengths, 'click', function (event) { // TODO: move to builder
         cancelAnimationFrame(timer);
         setMediaVolumeInBarWidth(this, event);
     });
 
-    function setMediaVolumeInBarWidth(element, event) {
+    function setMediaVolumeInBarWidth(element, event) { // TODO: move to builder, remove querySelector
         var barWidth = element.clientWidth;
         var elemCurLength = element.querySelector('.current-length');
         var elemAudio = element.parentNode.querySelector('audio');
@@ -1154,7 +1092,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    function showTime(element) {
+    function showTime(element) { // TODO: move to builder, remove querySelector
         var minSecCurTime = calcTime(element.currentTime);
         var minSecDurat = calcTime(element.duration);
 
@@ -1208,91 +1146,9 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     initSlider(1);
 
-    // var allVolumes = document.querySelectorAll('.volume');
-
-    // addEvent(allVolumes, 'mousedown', function (mouseDownEvent) { // TODO: move to builder, remove querySelector     Moved without querySelector
-    //     var currentVolume = this;
-
-    //     putVolumeHandle(currentVolume, mouseDownEvent);
-
-    //     document.addEventListener('mousemove', moveLable);
-
-    //     function moveLable(event) {
-    //         putVolumeHandle(currentVolume, event);
-    //     }
-
-    //     document.addEventListener('mouseup', function oneMouseUp() {
-    //         document.removeEventListener('mousemove', moveLable);
-    //         document.removeEventListener('mouseup', oneMouseUp);
-    //     });
-    // })
-
-    // function putVolumeHandle(el, event) { // TODO: move to builder, remove querySelector     Moved without querySelector
-    //     var halfLabel = el.querySelector('.label').clientWidth / 2;
-    //     var volumeLeftCoor = el.querySelector('.volume-handle').getBoundingClientRect().left;
-    //     var volHandlPos = event.pageX - volumeLeftCoor;
-    //     var elMaxWidth = el.clientWidth - halfLabel;
-
-    //     if (volHandlPos >= elMaxWidth) {
-    //         volHandlPos = elMaxWidth;
-    //     } else if (volHandlPos <= halfLabel) {
-    //         volHandlPos = halfLabel;
-    //     }
-
-    //     var calcCenterOfLable = volHandlPos - halfLabel;
-
-    //     el.querySelector('.volume-handle').style.width = calcCenterOfLable + 'px';
-
-    //     var volumeIndex = (calcCenterOfLable) / (el.clientWidth - halfLabel * 2);
-
-    //     if (el.closest('.soundtrack-listener') != undefined) {
-    //         el.parentNode.querySelector('audio').volume = volumeIndex;
-    //     } else {
-    //         el.closest('.video-wrapper').querySelector('video').volume = volumeIndex;
-    //     }
-    // }
-
-    // Playing video & video controls
-    // var allPromoVideos = document.querySelectorAll('.promo-video');
-
-    // addEvent(allPromoVideos, 'click', function () { // TODO: move to builder. For now you can't remove querySelector here, where you get all videos   Moved. Yes, I have to select all videos through querySelector
-    //     if (this.closest('.slider') != undefined) {
-    //         this.classList.toggle('playing-video');
-    //         this.classList.toggle('play-active');
-
-    //         var image = this.previousElementSibling;
-    //         image.style.display = this.classList.contains('playing-video') ? 'none' : 'block';
-
-    //         var currentVideo = this.parentNode.querySelector('video');
-    //         var allVideos = document.querySelectorAll('video');
-
-    //         for (var video of allVideos) {
-    //             if (video !== currentVideo) {
-    //                 stopVideoPlaying(video);
-    //             }
-    //         }
-
-    //         if (currentVideo.paused) {
-    //             currentVideo.play();
-    //         } else {
-    //             currentVideo.pause();
-    //         }
-    //     }
-
-    // });
-
     function addEvent(collection, event, handler) {
         for (var item of collection) {
             item.addEventListener(event, handler);
         }
     }
-
-    // var volume = document.getElementsByClassName('volume');
-
-    // for (var item of volume) { // TODO: create function like "afterAppend" and move everything here to that function     Moved to new function setVolumeAfterAppend
-    //     var volumeHandle = item.querySelector('.volume-handle');
-    //     var volumeLable = item.querySelector('.label');
-
-    //     volumeHandle.style.width = (item.clientWidth - volumeLable.clientWidth) + 'px';
-    // }
 });
