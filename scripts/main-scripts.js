@@ -11,16 +11,30 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
 
-        // function setAttribute(element, obj) { // TODO: code duplication. if you're copying something to another place without changes - you are doing something wrong
+        // Ok. Got it. Is it a good practice to avoid code duplication through adding methods to Object.prototype? Or is it better to make common function?
+        // TODO: Extremely bad. Only common functions.
+        // Probably you do not understand prototype.
+        // There are some pratices, not so good, to extend some behavior for specific type
+        // e.g. for string to have additional method somebody can write something like: String.prototype.someNewBehavior = function () {...}
+        // But better to avoid it.
+        // In your case it works because in global scope all variables are window properties, meaning:
+        // "var someVar = 1234" in global scope can be reached both someVar and window.someVar.
+        // Because functions watch not only variables in their scopes but in scopes of parent functions -
+        // function tried to find makeElemem in own scopre, then in parent scope, then in parent score of parent etc.
+        // and finaly it reaches global scope and found your makeElemen in window.makeElemem.
+        // If you remember prototype inheritance - window has a long prototype chain, but in the end of this chain is Object.
+        // So with your approach everything in your programm has methods makeElemem, setAttribute, and insert.
+        // But it works (and actually looks frighteningly) as general functions just because window also now has this method.
+        // Kind of, all your makeElemem for JS look like window.makeElemem
+        // But again now any object has makeElemem method. Try it yorself.
+        // {}.makeElemem('header') - general object works!
+        // [].makeElemem('header') - empty array works!
+        // [1, 2, 3].makeElemem('header') - not empty array works!
+        // 'some string'.makeElemem('header') - string works!
+        // 12..makeElemem('header') - number works!
+        // true.makeElemem('header') - oh no, even boolean works. I've never seen methods calling on boolean...
 
-        // // Ok. Got it. Is it a good practice to avoid code duplication through adding methods to Object.prototype? Or is it better to make common function?
-
-        //     for (var key in obj) {
-        //         element.setAttribute(key, obj[key]);
-        //     }
-        // }
-
-        Object.prototype.makeElemem = function (element, ...classes) {
+        Object.prototype.makeElemem = function (element, ...classes) { // TODO: typo in function name
             var elem = document.createElement(element);
 
             for (var item of classes) {
@@ -30,16 +44,6 @@ document.addEventListener('DOMContentLoaded', function () {
             return elem;
         }
 
-        // function makeElemem(element, ...classes) { // TODO: code duplication     Ok. Got it. Is it a good practice to avoid code duplication through adding methods to Object.prototype? Or is it better to make common function?
-        //     var elem = document.createElement(element);
-
-        //     for (var item of classes) {
-        //         elem.classList.add(item);
-        //     }
-
-        //     return elem;
-        // }
-
         Object.prototype.insert = function (map) {
             map.forEach(function (value, key) {
                 for (var item of value) {
@@ -47,14 +51,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             });
         }
-
-        // function insert(map) { // TODO: code duplication     Ok. Got it. Is it a good practice to avoid code duplication through adding methods to Object.prototype? Or is it better to make common function?
-        //     map.forEach(function (value, key) {
-        //         for (var item of value) {
-        //             key.appendChild(item);
-        //         }
-        //     });
-        // }
 
         var makeHeader = makeElemem('header');
 
@@ -153,7 +149,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         document.addEventListener('click', function (event) {
-            if (window.innerWidth < 768 && event.target.closest('.box-menu') == undefined) { // TODO: where does event come from?   Corrected
+            if (window.innerWidth < 768 && event.target.closest('.box-menu') == undefined) {
                 makeUl.style.display = 'none';
                 makeBurger.classList.remove('pressed');
             }
@@ -210,31 +206,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Adding movie section
     function createMovieSection(mainObj, main) {
-
-        // function setAttribute(element, obj) {
-        //     for (var key in obj) {
-        //         element.setAttribute(key, obj[key]);
-        //     }
-        // }
-
-        // function makeElemem(element, ...classes) {
-        //     var elem = document.createElement(element);
-
-        //     for (var item of classes) {
-        //         elem.classList.add(item);
-        //     }
-
-        //     return elem;
-        // }
-
-        // function insert(map) {
-        //     map.forEach(function (value, key) {
-        //         for (var item of value) {
-        //             key.appendChild(item);
-        //         }
-        //     });
-        // }
-
         var makeSection = makeElemem('section', mainObj.sectionClass, 'direction-description');
         setAttribute(makeSection, { 'id': 'top-' + mainObj.position, 'data-name': mainObj.name, 'data-audio-name': mainObj.audioName });
 
@@ -297,7 +268,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
             modaleWindowAudio.setAttribute('src', 'audios/' + audioAtr + '.ogg');
 
-            modaleWindowAudio.addEventListener('canplay', function () {
+            modaleWindowAudio.addEventListener('canplay', function () { // TODO: why this event handler added here? But not in modal builder? Every time you click .listen button - new event handler added. Console log added to watch.
+                console.log('oh no, mutliple event handlers');
                 showTime(this);
             });
 
@@ -1096,8 +1068,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Scroll to the film top
     function scrollToFilm(arg) {
-        // var page = document.querySelector('html'); // TODO: btw, html can be accessed as documentElement     Corrected
-        var page = document.documentElement
+        var page = document.documentElement;
         var startingPosition = page.scrollTop;
         var endingPosition = document.querySelector(arg).offsetTop;
         var distance = endingPosition - startingPosition;
@@ -1123,108 +1094,7 @@ document.addEventListener('DOMContentLoaded', function () {
         go(300);
     }
 
-    // Substrate window on button 'Listen' click
-    // var allListenBtns = document.querySelectorAll('.listen');
-
-    // addEvent(allListenBtns, 'click', function () { // TODO: move to builder, querySelector can't be removed for now   Moved to builder
-    //     var modaleWindow = document.querySelector('.substrate');
-    //     var modaleWindowAudio = modaleWindow.querySelector('audio');
-    //     var listenerTitle = modaleWindow.querySelector('.listener-title');
-    //     var volume = modaleWindow.querySelector('.volume');
-    //     var volumeHandle = modaleWindow.querySelector('.volume-handle');
-    //     var label = modaleWindow.querySelector('.label');
-
-    //     document.body.classList.add('lock');
-
-    //     modaleWindow.classList.remove('hidden');
-
-    //     setTimeout(function () {
-    //         modaleWindow.classList.remove('visually-hidden');
-    //     }, 20);
-
-    //     // Get name of the film above the clicked button 'Listen'
-    //     var filmTitleListen = this.closest('section');
-
-    //     // Put the film title into the substrate window
-    //     listenerTitle.textContent = filmTitleListen.dataset.name;
-
-    //     // Set the source of audio file
-    //     var audioAtr = filmTitleListen.dataset.audioName;
-
-    //     modaleWindowAudio.setAttribute('src', 'audios/' + audioAtr + '.ogg');
-
-    //     modaleWindowAudio.addEventListener('canplay', function () {
-    //         showTime(this);
-    //     });
-
-    //     // Set the volume lable to max
-    //     volumeHandle.style.width = (volume.clientWidth - label.clientWidth) + 'px';
-    // });
-
-    // For closing substrate window and showing scroll on the page
-    // function closeListener() { // TODO: move to builder, remove querySelector     Moved to builder without querySelector
-    //     var modaleWindow = document.querySelector('.substrate');
-    //     var audio = modaleWindow.querySelector('audio');
-    //     var modWindListener = modaleWindow.querySelector('.listener');
-    //     var currentLength = modaleWindow.querySelector('.current-length');
-
-    //     document.body.classList.remove('lock');
-
-    //     modaleWindow.classList.add('visually-hidden');
-
-    //     modaleWindow.addEventListener('transitionend', function closeMdlWindow(event) {
-    //         var thisModaleWindow = this;
-    //         if (event.propertyName === 'opacity') {
-    //             thisModaleWindow.classList.add('hidden');
-    //             thisModaleWindow.removeEventListener('transitionend', closeMdlWindow);
-    //         }
-    //     });
-
-    //     // Stop playing music on modal window close
-    //     audio.pause();
-    //     audio.currentTime = 0;
-    //     audio.volume = 1;
-
-    //     modWindListener.classList.remove('play-active');
-
-    //     if (currentLength.closest('.soundtrack-listener') != undefined) {
-    //         currentLength.style.width = 0;
-    //     }
-    // }
-
-    // var iconCloseListener = document.getElementsByClassName('close-listener');
-
-    // addEvent(iconCloseListener, 'click', function () { // TODO: move to builder   Moved to builder
-    //     closeListener();
-    // });
-
-    // var substrateWindow = document.getElementsByClassName('substrate');
-
-    // addEvent(substrateWindow, 'click', function (event) { // TODO: move to builder    Moved to builder
-    //     if (event.target.closest('.soundtrack-listener') == undefined) {
-    //         closeListener();
-    //     }
-    // });
-
-    // var allListeners = document.querySelectorAll('.listener');
-
-    // addEvent(allListeners, 'click', function () { // TODO: move to builder, remove querySelector     Moved without querySelector, but getElements has to be in builder
-    //     var allVideos = document.getElementsByTagName('video');
-
-    //     this.classList.toggle('play-active');
-
-    //     for (var j = 0; j < allVideos.length; j++) {
-    //         stopVideoPlaying(allVideos[j]);
-    //     }
-
-    //     if (this.classList.contains('play-active')) {
-    //         this.parentNode.querySelector('audio').play();
-    //     } else {
-    //         this.parentNode.querySelector('audio').pause();
-    //     }
-    // });
-
-    function stopVideoPlaying(element) {
+    function stopVideoPlaying(element) { // TODO: move to builder, remove querySelector if possible
         var elementParent = element.parentNode;
 
         element.pause();
@@ -1232,78 +1102,7 @@ document.addEventListener('DOMContentLoaded', function () {
         elementParent.parentNode.querySelector('img').style.display = 'block';
     }
 
-    // var allAudios = document.querySelectorAll('audio');
-
-    // addEvent(allAudios, 'ended', function () { // TODO: move to builder, remove querySelector    Moved without querySelector
-    //     var thisAudio = this;
-    //     var listener = thisAudio.parentNode.querySelector('.listener');
-
-    //     setTimeout(function () {
-    //         listener.classList.remove('play-active');
-    //         thisAudio.parentNode.querySelector('.media-length').querySelector('.current-length').style.width = 0;
-    //         thisAudio.currentTime = 0;
-    //         showTime(thisAudio);
-    //     }, 500);
-    // });
-
-    // addEvent(allAudios, 'playing', function () { // TODO: move to builder     Moved to builder
-    //     progress(this);
-    // });
-
-    // addEvent(allAudios, 'pause', function () { // TODO: move to builder     Moved to builder
-    //     cancelAnimationFrame(timer);
-    // });
-
     var timer;
-
-    // function progress(element) { // TODO: move to builder, remove querySelector   Moved without querySelector, but with code duplication.
-    //     var position = (element.currentTime / element.duration) * 100;
-
-    //     element.parentNode.querySelector('.current-length').style.width = position + '%';
-
-    //     showTime(element);
-
-    //     if (position < 100) {
-    //         timer = requestAnimationFrame(function () {
-    //             progress(element);
-    //         });
-    //     }
-    // }
-
-    // var allMediaLengths = document.querySelectorAll('.media-length');
-
-    // addEvent(allMediaLengths, 'click', function (event) { // TODO: move to builder    Moved to builder
-    //     cancelAnimationFrame(timer);
-    //     setMediaVolumeInBarWidth(this, event);
-    // });
-
-    // function setMediaVolumeInBarWidth(element, event) { // TODO: move to builder, remove querySelector   Moved without querySelector
-    //     var barWidth = element.clientWidth;
-    //     var elemCurLength = element.querySelector('.current-length');
-    //     var elemAudio = element.parentNode.querySelector('audio');
-    //     var inBarXCoor = elemCurLength.getBoundingClientRect().left;
-    //     var inBarPosition = ((event.pageX - inBarXCoor) / barWidth) * 100;
-    //     elemCurLength.style.width = inBarPosition + '%';
-
-    //     if (element.closest('.soundtrack-listener') != undefined) {
-    //         elemAudio.currentTime = (inBarPosition * elemAudio.duration) / 100;
-
-    //         showTime(elemAudio);
-    //     } else {
-    //         var elemVideo = element.closest('.video-controls').parentNode.querySelector('video');
-
-    //         elemVideo.currentTime = (inBarPosition * elemVideo.duration) / 100;
-
-    //         showTime(element.closest('.video-wrapper').querySelector('video'));
-    //     }
-    // }
-
-    // function showTime(element) { // TODO: move to builder, remove querySelector   Moved, but can't remove querySelector as createMovieSection uses this function and there is no timer element
-    //     var minSecCurTime = calcTime(element.currentTime);
-    //     var minSecDurat = calcTime(element.duration);
-
-    //     element.parentNode.querySelector('.timer').textContent = minSecCurTime + ' / ' + minSecDurat;
-    // }
 
     function calcTime(time) {
         var min = Math.floor(time / 60);
@@ -1314,7 +1113,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return min + ':' + sec;
     }
 
-    function initSlider(index) {
+    function initSlider(index) {// TODO: move to builder, remove querySelector
 
         var slider = document.querySelectorAll('.slider');
 
@@ -1351,10 +1150,4 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
     initSlider(1);
-
-    // function addEvent(collection, event, handler) {
-    //     for (var item of collection) {
-    //         item.addEventListener(event, handler);
-    //     }
-    // }
 });
