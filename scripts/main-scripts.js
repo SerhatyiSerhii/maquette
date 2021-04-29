@@ -4,13 +4,23 @@ document.addEventListener('DOMContentLoaded', function () {
     // Adding header
     function createHeader(array) {
 
-        function setAttribute(element, obj) { // TODO: code duplication. if you're copying something to another place without changes - you are doing something wrong
-            for (var key in obj) {
-                element.setAttribute(key, obj[key]);
-            }
+        Object.prototype.setAttribute = function (element, obj) {
+            var map = new Map(Object.entries(obj));
+            map.forEach(function (value, key) {
+                element.setAttribute(key, value);
+            });
         }
 
-        function makeElemem(element, ...classes) { // TODO: code duplication
+        // function setAttribute(element, obj) { // TODO: code duplication. if you're copying something to another place without changes - you are doing something wrong
+
+        // // Ok. Got it. Is it a good practice to avoid code duplication through adding methods to Object.prototype? Or is it better to make common function?
+
+        //     for (var key in obj) {
+        //         element.setAttribute(key, obj[key]);
+        //     }
+        // }
+
+        Object.prototype.makeElemem = function (element, ...classes) {
             var elem = document.createElement(element);
 
             for (var item of classes) {
@@ -20,7 +30,17 @@ document.addEventListener('DOMContentLoaded', function () {
             return elem;
         }
 
-        function insert(map) { // TODO: code duplication
+        // function makeElemem(element, ...classes) { // TODO: code duplication     Ok. Got it. Is it a good practice to avoid code duplication through adding methods to Object.prototype? Or is it better to make common function?
+        //     var elem = document.createElement(element);
+
+        //     for (var item of classes) {
+        //         elem.classList.add(item);
+        //     }
+
+        //     return elem;
+        // }
+
+        Object.prototype.insert = function (map) {
             map.forEach(function (value, key) {
                 for (var item of value) {
                     key.appendChild(item);
@@ -28,20 +48,28 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
 
+        // function insert(map) { // TODO: code duplication     Ok. Got it. Is it a good practice to avoid code duplication through adding methods to Object.prototype? Or is it better to make common function?
+        //     map.forEach(function (value, key) {
+        //         for (var item of value) {
+        //             key.appendChild(item);
+        //         }
+        //     });
+        // }
+
         var makeHeader = makeElemem('header');
 
         var makeContainer = makeElemem('div', 'container');
 
         var makeLogo = makeElemem('a', 'logo');
-        setAttribute(makeLogo, {'href': '#'})
+        setAttribute(makeLogo, { 'href': '#' })
 
         var makeLogoImg = makeElemem('img');
-        setAttribute(makeLogoImg, {'src': 'images/the-top-logo.svg', 'alt': 'the-top-logo'});
+        setAttribute(makeLogoImg, { 'src': 'images/the-top-logo.svg', 'alt': 'the-top-logo' });
 
         var makeNav = makeElemem('nav');
 
         var makeNavWrapper = makeElemem('div');
-        setAttribute(makeNavWrapper, {'id': 'nav-wrapper'})
+        setAttribute(makeNavWrapper, { 'id': 'nav-wrapper' })
 
         makeNavWrapper.addEventListener('click', function (event) {
             event.stopPropagation();
@@ -49,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         var makeBurger = makeElemem('span');
-        setAttribute(makeBurger, {'id': 'burger-img'})
+        setAttribute(makeBurger, { 'id': 'burger-img' })
 
         var makeUl = makeElemem('ul', 'box-menu');
 
@@ -70,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function () {
             var makeListItm = makeElemem('li');
 
             var makeLink = makeElemem('a', 'box-menu-item');
-            setAttribute(makeLink, {'href': '#'});
+            setAttribute(makeLink, { 'href': '#' });
             makeLink.textContent = item;
 
             var navigationMap = new Map([
@@ -101,7 +129,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     var makeListItm = makeElemem('li');
 
                     var makeLink = makeElemem('a', 'top-film');
-                    setAttribute(makeLink, {'href': '#top-' + element});
+                    setAttribute(makeLink, { 'href': '#top-' + element });
                     makeLink.textContent = '.' + element;
 
                     var topFilmMap = new Map([
@@ -124,8 +152,8 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
-        document.addEventListener('click', function () {
-            if (window.innerWidth < 768 && event.target.closest('.box-menu') == undefined) { // TODO: where does event come from?
+        document.addEventListener('click', function (event) {
+            if (window.innerWidth < 768 && event.target.closest('.box-menu') == undefined) { // TODO: where does event come from?   Corrected
                 makeUl.style.display = 'none';
                 makeBurger.classList.remove('pressed');
             }
@@ -144,36 +172,25 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Adding main Section
     function createMainSection(main) {
-        var makeSection = document.createElement('section');
-        makeSection.classList.add('main-section');
+        var makeSection = makeElemem('section', 'main-section');
 
-        var makeContainer = document.createElement('div');
-        makeContainer.classList.add('container');
-        makeSection.appendChild(makeContainer);
+        var makeContainer = makeElemem('div', 'container');
 
-        var makeH1 = document.createElement('h1');
-        makeContainer.appendChild(makeH1);
+        var makeH1 = makeElemem('h1');
 
-        var makeSpan = document.createElement('span');
-        makeSpan.classList.add('accent-text');
-        makeSpan.textContent = 'The 10'
-        makeH1.appendChild(makeSpan);
-        makeH1.appendChild(document.createElement('br'));
-        makeH1.appendChild(document.createTextNode('Best Movie Soundtracks of All-Time'));
+        var makeSpan = makeElemem('span', 'accent-text');
+        makeSpan.textContent = 'The 10';
 
-        var makeMainP = document.createElement('p');
+        var makeMainP = makeElemem('p');
         makeMainP.textContent = 'Awesome movie soundtracks can turn a good movie like Guardians Of The Galaxy or Star Wars into iconic ones.'
-        makeContainer.appendChild(makeMainP);
 
-        var makeArrowDown = document.createElement('a');
-        makeArrowDown.setAttribute('href', '#top-10');
-        makeArrowDown.classList.add('arrow-down', 'arrow');
+        var makeArrowDown = makeElemem('a', 'arrow-down', 'arrow');
+        setAttribute(makeArrowDown, {'href': '#top-10'});
         makeArrowDown.innerHTML = (
             `<svg width="43" height="60" viewBox="0 0 43 60" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M1 33L21 58M21 58L41.5 32M21 58V0" stroke-width="2" />
             </svg>`
         );
-        makeContainer.appendChild(makeArrowDown);
 
         makeArrowDown.addEventListener('click', function (event) {
             event.preventDefault();
@@ -181,35 +198,42 @@ document.addEventListener('DOMContentLoaded', function () {
             scrollToFilm(firstTopFilm);
         });
 
-        main.appendChild(makeSection);
+        var map = new Map([
+            [makeSection, [makeContainer]],
+            [makeH1, [makeSpan, document.createElement('br'), document.createTextNode('Best Movie Soundtracks of All-Time')]],
+            [makeContainer, [makeH1, makeMainP, makeArrowDown]],
+            [main, [makeSection]]
+        ]);
+
+        insert(map);
     }
 
     // Adding movie section
     function createMovieSection(mainObj, main) {
 
-        function setAttribute(element, obj) {
-            for (var key in obj) {
-                element.setAttribute(key, obj[key]);
-            }
-        }
+        // function setAttribute(element, obj) {
+        //     for (var key in obj) {
+        //         element.setAttribute(key, obj[key]);
+        //     }
+        // }
 
-        function makeElemem(element, ...classes) {
-            var elem = document.createElement(element);
+        // function makeElemem(element, ...classes) {
+        //     var elem = document.createElement(element);
 
-            for (var item of classes) {
-                elem.classList.add(item);
-            }
+        //     for (var item of classes) {
+        //         elem.classList.add(item);
+        //     }
 
-            return elem;
-        }
+        //     return elem;
+        // }
 
-        function insert(map) {
-            map.forEach(function (value, key) {
-                for (var item of value) {
-                    key.appendChild(item);
-                }
-            });
-        }
+        // function insert(map) {
+        //     map.forEach(function (value, key) {
+        //         for (var item of value) {
+        //             key.appendChild(item);
+        //         }
+        //     });
+        // }
 
         var makeSection = makeElemem('section', mainObj.sectionClass, 'direction-description');
         setAttribute(makeSection, { 'id': 'top-' + mainObj.position, 'data-name': mainObj.name, 'data-audio-name': mainObj.audioName });
@@ -248,6 +272,44 @@ document.addEventListener('DOMContentLoaded', function () {
 
         var makeButton = makeElemem('button', 'listen');
         makeButton.textContent = 'listen';
+
+        makeButton.addEventListener('click', function () {
+            var modaleWindow = document.querySelector('.substrate');
+            var modaleWindowAudio = modaleWindow.querySelector('audio');
+            var listenerTitle = modaleWindow.querySelector('.listener-title');
+            var volume = modaleWindow.querySelector('.volume');
+            var volumeHandle = modaleWindow.querySelector('.volume-handle');
+            var label = modaleWindow.querySelector('.label');
+
+            document.body.classList.add('lock');
+
+            modaleWindow.classList.remove('hidden');
+
+            setTimeout(function () {
+                modaleWindow.classList.remove('visually-hidden');
+            }, 20);
+
+            // Put the film title into the substrate window
+            listenerTitle.textContent = makeSection.dataset.name;
+
+            // Set the source of audio file
+            var audioAtr = makeSection.dataset.audioName;
+
+            modaleWindowAudio.setAttribute('src', 'audios/' + audioAtr + '.ogg');
+
+            modaleWindowAudio.addEventListener('canplay', function () {
+                showTime(this);
+            });
+
+            volumeHandle.style.width = (volume.clientWidth - label.clientWidth) + 'px';
+        });
+
+        function showTime(element) {
+            var minSecCurTime = calcTime(element.currentTime);
+            var minSecDurat = calcTime(element.duration);
+
+            element.parentNode.querySelector('.timer').textContent = minSecCurTime + ' / ' + minSecDurat;
+        }
 
         var map = new Map([
             [makeSection, [makeContainer]],
@@ -339,10 +401,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 showTime(this);
             });
 
-            makeVideo.addEventListener('playing', function () {
-                progress(this);
-            });
-
             makeVideo.addEventListener('pause', function () {
                 cancelAnimationFrame(timer);
             });
@@ -379,6 +437,15 @@ document.addEventListener('DOMContentLoaded', function () {
             var makeCurrentLength = document.createElement('div');
             makeCurrentLength.classList.add('current-length');
             makeMediaLength.appendChild(makeCurrentLength);
+
+            makeMediaLength.addEventListener('click', function (event) {
+                cancelAnimationFrame(timer);
+                setMediaVolumeInBarWidth(this, event);
+            });
+
+            makeVideo.addEventListener('playing', function () {
+                progress(this);
+            });
 
             makeVideo.addEventListener('ended', function () {
                 var thisVideo = this;
@@ -456,6 +523,37 @@ document.addEventListener('DOMContentLoaded', function () {
                     currentVideo.pause();
                 }
             });
+
+            function showTime(element) {
+                var minSecCurTime = calcTime(element.currentTime);
+                var minSecDurat = calcTime(element.duration);
+
+                makeTimer.textContent = minSecCurTime + ' / ' + minSecDurat;
+            }
+
+            function progress(element) {
+                var position = (element.currentTime / element.duration) * 100;
+
+                makeCurrentLength.style.width = position + '%';
+
+                showTime(element);
+
+                if (position < 100) {
+                    timer = requestAnimationFrame(function () {
+                        progress(element);
+                    });
+                }
+            }
+
+            function setMediaVolumeInBarWidth(element, event) {
+                var barWidth = element.clientWidth;
+                var inBarXCoor = makeCurrentLength.getBoundingClientRect().left;
+                var inBarPosition = ((event.pageX - inBarXCoor) / barWidth) * 100;
+                makeCurrentLength.style.width = inBarPosition + '%';
+
+                makeVideo.currentTime = (inBarPosition * makeVideo.duration) / 100;
+                showTime(makeVideo);
+            }
         });
 
         main.appendChild(makeSection);
@@ -581,6 +679,12 @@ document.addEventListener('DOMContentLoaded', function () {
         soundtrackListener.classList.add('soundtrack-listener');
         substrate.appendChild(soundtrackListener);
 
+        substrate.addEventListener('click', function (event) {
+            if (event.target.closest('.soundtrack-listener') == undefined) {
+                closeListener();
+            }
+        });
+
         var makeAudio = document.createElement('audio');
         soundtrackListener.appendChild(makeAudio);
 
@@ -604,6 +708,22 @@ document.addEventListener('DOMContentLoaded', function () {
         makeButton.classList.add('btn-play', 'listener');
         soundtrackListener.appendChild(makeButton);
 
+        makeButton.addEventListener('click', function () {
+            var allVideos = document.getElementsByTagName('video');
+
+            this.classList.toggle('play-active');
+
+            for (var j = 0; j < allVideos.length; j++) {
+                stopVideoPlaying(allVideos[j]);
+            }
+
+            if (this.classList.contains('play-active')) {
+                makeAudio.play();
+            } else {
+                makeAudio.pause();
+            }
+        });
+
         var makeMediaLength = document.createElement('div');
         makeMediaLength.classList.add('media-length');
         soundtrackListener.appendChild(makeMediaLength);
@@ -612,14 +732,42 @@ document.addEventListener('DOMContentLoaded', function () {
         makeCurrentLength.classList.add('current-length');
         makeMediaLength.appendChild(makeCurrentLength);
 
+        makeMediaLength.addEventListener('click', function () {
+            cancelAnimationFrame(timer);
+            setMediaVolumeInBarWidth(this, event);
+        });
+
         var makeTimer = document.createElement('div');
         makeTimer.classList.add('timer');
         makeTimer.textContent = '00:00 / 00:00';
         soundtrackListener.appendChild(makeTimer);
 
+        makeAudio.addEventListener('ended', function () {
+            var thisAudio = this;
+
+            setTimeout(function () {
+                makeButton.classList.remove('play-active');
+                makeCurrentLength.style.width = 0;
+                thisAudio.currentTime = 0;
+                showTime(thisAudio);
+            }, 500)
+        });
+
+        makeAudio.addEventListener('playing', function () {
+            progress(this);
+        });
+
+        makeAudio.addEventListener('pause', function () {
+            cancelAnimationFrame(timer);
+        });
+
         var makeCloseListener = document.createElement('a');
         makeCloseListener.classList.add('close-listener');
         soundtrackListener.appendChild(makeCloseListener);
+
+        makeCloseListener.addEventListener('click', function () {
+            closeListener();
+        });
 
         var makeCLCross = document.createElement('span');
         makeCLCross.classList.add('close-listener-cross');
@@ -662,6 +810,63 @@ document.addEventListener('DOMContentLoaded', function () {
             var volumeIndex = (calcCenterOfLable) / (makeVolume.clientWidth - halfLabel * 2);
 
             makeAudio.volume = volumeIndex;
+        }
+
+        // For closing substrate window and showing scroll on the page
+        function closeListener() {
+
+            document.body.classList.remove('lock');
+
+            substrate.classList.add('visually-hidden');
+
+            substrate.addEventListener('transitionend', function closeMdlWindow(event) {
+                var thisModaleWindow = this;
+                if (event.propertyName === 'opacity') {
+                    thisModaleWindow.classList.add('hidden');
+                    thisModaleWindow.removeEventListener('transitionend', closeMdlWindow);
+                }
+            });
+
+            // Stop playing music on modal window close
+            makeAudio.pause();
+            makeAudio.currentTime = 0;
+            makeAudio.volume = 1;
+
+            makeButton.classList.remove('play-active');
+
+            makeCurrentLength.style.width = 0;
+        }
+
+        function progress(element) {
+            var position = (element.currentTime / element.duration) * 100;
+
+            makeCurrentLength.style.width = position + '%';
+
+            showTime(element);
+
+            if (position < 100) {
+                timer = requestAnimationFrame(function () {
+                    progress(element);
+                });
+            }
+        }
+
+        function showTime(element) {
+            var minSecCurTime = calcTime(element.currentTime);
+            var minSecDurat = calcTime(element.duration);
+
+            makeTimer.textContent = minSecCurTime + ' / ' + minSecDurat;
+        }
+
+        function setMediaVolumeInBarWidth(element, event) {
+            var barWidth = element.clientWidth;
+            var inBarXCoor = makeCurrentLength.getBoundingClientRect().left;
+            var inBarPosition = ((event.pageX - inBarXCoor) / barWidth) * 100;
+            makeCurrentLength.style.width = inBarPosition + '%';
+
+            makeAudio.currentTime = (inBarPosition * makeAudio.duration) / 100;
+
+            showTime(makeAudio);
         }
     }
 
@@ -891,7 +1096,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Scroll to the film top
     function scrollToFilm(arg) {
-        var page = document.querySelector('html'); // TODO: btw, html can be accessed as documentElement
+        // var page = document.querySelector('html'); // TODO: btw, html can be accessed as documentElement     Corrected
+        var page = document.documentElement
         var startingPosition = page.scrollTop;
         var endingPosition = document.querySelector(arg).offsetTop;
         var distance = endingPosition - startingPosition;
@@ -918,105 +1124,105 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Substrate window on button 'Listen' click
-    var allListenBtns = document.querySelectorAll('.listen');
+    // var allListenBtns = document.querySelectorAll('.listen');
 
-    addEvent(allListenBtns, 'click', function () { // TODO: move to builder, querySelector can't be removed for now
-        var modaleWindow = document.querySelector('.substrate');
-        var modaleWindowAudio = modaleWindow.querySelector('audio');
-        var listenerTitle = modaleWindow.querySelector('.listener-title');
-        var volume = modaleWindow.querySelector('.volume');
-        var volumeHandle = modaleWindow.querySelector('.volume-handle');
-        var label = modaleWindow.querySelector('.label');
+    // addEvent(allListenBtns, 'click', function () { // TODO: move to builder, querySelector can't be removed for now   Moved to builder
+    //     var modaleWindow = document.querySelector('.substrate');
+    //     var modaleWindowAudio = modaleWindow.querySelector('audio');
+    //     var listenerTitle = modaleWindow.querySelector('.listener-title');
+    //     var volume = modaleWindow.querySelector('.volume');
+    //     var volumeHandle = modaleWindow.querySelector('.volume-handle');
+    //     var label = modaleWindow.querySelector('.label');
 
-        document.body.classList.add('lock');
+    //     document.body.classList.add('lock');
 
-        modaleWindow.classList.remove('hidden');
+    //     modaleWindow.classList.remove('hidden');
 
-        setTimeout(function () {
-            modaleWindow.classList.remove('visually-hidden');
-        }, 20);
+    //     setTimeout(function () {
+    //         modaleWindow.classList.remove('visually-hidden');
+    //     }, 20);
 
-        // Get name of the film above the clicked button 'Listen'
-        var filmTitleListen = this.closest('section');
+    //     // Get name of the film above the clicked button 'Listen'
+    //     var filmTitleListen = this.closest('section');
 
-        // Put the film title into the substrate window
-        listenerTitle.textContent = filmTitleListen.dataset.name;
+    //     // Put the film title into the substrate window
+    //     listenerTitle.textContent = filmTitleListen.dataset.name;
 
-        // Set the source of audio file
-        var audioAtr = filmTitleListen.dataset.audioName;
+    //     // Set the source of audio file
+    //     var audioAtr = filmTitleListen.dataset.audioName;
 
-        modaleWindowAudio.setAttribute('src', 'audios/' + audioAtr + '.ogg');
+    //     modaleWindowAudio.setAttribute('src', 'audios/' + audioAtr + '.ogg');
 
-        modaleWindowAudio.addEventListener('canplay', function () {
-            showTime(this);
-        });
+    //     modaleWindowAudio.addEventListener('canplay', function () {
+    //         showTime(this);
+    //     });
 
-        // Set the volume lable to max
-        volumeHandle.style.width = (volume.clientWidth - label.clientWidth) + 'px';
-    });
+    //     // Set the volume lable to max
+    //     volumeHandle.style.width = (volume.clientWidth - label.clientWidth) + 'px';
+    // });
 
     // For closing substrate window and showing scroll on the page
-    function closeListener() { // TODO: move to builder, remove querySelector
-        var modaleWindow = document.querySelector('.substrate');
-        var audio = modaleWindow.querySelector('audio');
-        var modWindListener = modaleWindow.querySelector('.listener');
-        var currentLength = modaleWindow.querySelector('.current-length');
+    // function closeListener() { // TODO: move to builder, remove querySelector     Moved to builder without querySelector
+    //     var modaleWindow = document.querySelector('.substrate');
+    //     var audio = modaleWindow.querySelector('audio');
+    //     var modWindListener = modaleWindow.querySelector('.listener');
+    //     var currentLength = modaleWindow.querySelector('.current-length');
 
-        document.body.classList.remove('lock');
+    //     document.body.classList.remove('lock');
 
-        modaleWindow.classList.add('visually-hidden');
+    //     modaleWindow.classList.add('visually-hidden');
 
-        modaleWindow.addEventListener('transitionend', function closeMdlWindow(event) {
-            var thisModaleWindow = this;
-            if (event.propertyName === 'opacity') {
-                thisModaleWindow.classList.add('hidden');
-                thisModaleWindow.removeEventListener('transitionend', closeMdlWindow);
-            }
-        });
+    //     modaleWindow.addEventListener('transitionend', function closeMdlWindow(event) {
+    //         var thisModaleWindow = this;
+    //         if (event.propertyName === 'opacity') {
+    //             thisModaleWindow.classList.add('hidden');
+    //             thisModaleWindow.removeEventListener('transitionend', closeMdlWindow);
+    //         }
+    //     });
 
-        // Stop playing music on modal window close
-        audio.pause();
-        audio.currentTime = 0;
-        audio.volume = 1;
+    //     // Stop playing music on modal window close
+    //     audio.pause();
+    //     audio.currentTime = 0;
+    //     audio.volume = 1;
 
-        modWindListener.classList.remove('play-active');
+    //     modWindListener.classList.remove('play-active');
 
-        if (currentLength.closest('.soundtrack-listener') != undefined) {
-            currentLength.style.width = 0;
-        }
-    }
+    //     if (currentLength.closest('.soundtrack-listener') != undefined) {
+    //         currentLength.style.width = 0;
+    //     }
+    // }
 
-    var iconCloseListener = document.getElementsByClassName('close-listener');
+    // var iconCloseListener = document.getElementsByClassName('close-listener');
 
-    addEvent(iconCloseListener, 'click', function () { // TODO: move to builder
-        closeListener();
-    });
+    // addEvent(iconCloseListener, 'click', function () { // TODO: move to builder   Moved to builder
+    //     closeListener();
+    // });
 
-    var substrateWindow = document.getElementsByClassName('substrate');
+    // var substrateWindow = document.getElementsByClassName('substrate');
 
-    addEvent(substrateWindow, 'click', function (event) { // TODO: move to builder
-        if (event.target.closest('.soundtrack-listener') == undefined) {
-            closeListener();
-        }
-    });
+    // addEvent(substrateWindow, 'click', function (event) { // TODO: move to builder    Moved to builder
+    //     if (event.target.closest('.soundtrack-listener') == undefined) {
+    //         closeListener();
+    //     }
+    // });
 
-    var allListeners = document.querySelectorAll('.listener');
+    // var allListeners = document.querySelectorAll('.listener');
 
-    addEvent(allListeners, 'click', function () { // TODO: move to builder, remove querySelector
-        var allVideos = document.getElementsByTagName('video');
+    // addEvent(allListeners, 'click', function () { // TODO: move to builder, remove querySelector     Moved without querySelector, but getElements has to be in builder
+    //     var allVideos = document.getElementsByTagName('video');
 
-        this.classList.toggle('play-active');
+    //     this.classList.toggle('play-active');
 
-        for (var j = 0; j < allVideos.length; j++) {
-            stopVideoPlaying(allVideos[j]);
-        }
+    //     for (var j = 0; j < allVideos.length; j++) {
+    //         stopVideoPlaying(allVideos[j]);
+    //     }
 
-        if (this.classList.contains('play-active')) {
-            this.parentNode.querySelector('audio').play();
-        } else {
-            this.parentNode.querySelector('audio').pause();
-        }
-    });
+    //     if (this.classList.contains('play-active')) {
+    //         this.parentNode.querySelector('audio').play();
+    //     } else {
+    //         this.parentNode.querySelector('audio').pause();
+    //     }
+    // });
 
     function stopVideoPlaying(element) {
         var elementParent = element.parentNode;
@@ -1026,78 +1232,78 @@ document.addEventListener('DOMContentLoaded', function () {
         elementParent.parentNode.querySelector('img').style.display = 'block';
     }
 
-    var allAudios = document.querySelectorAll('audio');
+    // var allAudios = document.querySelectorAll('audio');
 
-    addEvent(allAudios, 'ended', function () { // TODO: move to builder, remove querySelector
-        var thisAudio = this;
-        var listener = thisAudio.parentNode.querySelector('.listener');
+    // addEvent(allAudios, 'ended', function () { // TODO: move to builder, remove querySelector    Moved without querySelector
+    //     var thisAudio = this;
+    //     var listener = thisAudio.parentNode.querySelector('.listener');
 
-        setTimeout(function () {
-            listener.classList.remove('play-active');
-            thisAudio.parentNode.querySelector('.media-length').querySelector('.current-length').style.width = 0;
-            thisAudio.currentTime = 0;
-            showTime(thisAudio);
-        }, 500);
-    });
+    //     setTimeout(function () {
+    //         listener.classList.remove('play-active');
+    //         thisAudio.parentNode.querySelector('.media-length').querySelector('.current-length').style.width = 0;
+    //         thisAudio.currentTime = 0;
+    //         showTime(thisAudio);
+    //     }, 500);
+    // });
 
-    addEvent(allAudios, 'playing', function () { // TODO: move to builder
-        progress(this);
-    });
+    // addEvent(allAudios, 'playing', function () { // TODO: move to builder     Moved to builder
+    //     progress(this);
+    // });
 
-    addEvent(allAudios, 'pause', function () { // TODO: move to builder
-        cancelAnimationFrame(timer);
-    });
+    // addEvent(allAudios, 'pause', function () { // TODO: move to builder     Moved to builder
+    //     cancelAnimationFrame(timer);
+    // });
 
     var timer;
 
-    function progress(element) { // TODO: move to builder, remove querySelector
-        var position = (element.currentTime / element.duration) * 100;
+    // function progress(element) { // TODO: move to builder, remove querySelector   Moved without querySelector, but with code duplication.
+    //     var position = (element.currentTime / element.duration) * 100;
 
-        element.parentNode.querySelector('.current-length').style.width = position + '%';
+    //     element.parentNode.querySelector('.current-length').style.width = position + '%';
 
-        showTime(element);
+    //     showTime(element);
 
-        if (position < 100) {
-            timer = requestAnimationFrame(function () {
-                progress(element);
-            });
-        }
-    }
+    //     if (position < 100) {
+    //         timer = requestAnimationFrame(function () {
+    //             progress(element);
+    //         });
+    //     }
+    // }
 
-    var allMediaLengths = document.querySelectorAll('.media-length');
+    // var allMediaLengths = document.querySelectorAll('.media-length');
 
-    addEvent(allMediaLengths, 'click', function (event) { // TODO: move to builder
-        cancelAnimationFrame(timer);
-        setMediaVolumeInBarWidth(this, event);
-    });
+    // addEvent(allMediaLengths, 'click', function (event) { // TODO: move to builder    Moved to builder
+    //     cancelAnimationFrame(timer);
+    //     setMediaVolumeInBarWidth(this, event);
+    // });
 
-    function setMediaVolumeInBarWidth(element, event) { // TODO: move to builder, remove querySelector
-        var barWidth = element.clientWidth;
-        var elemCurLength = element.querySelector('.current-length');
-        var elemAudio = element.parentNode.querySelector('audio');
-        var inBarXCoor = elemCurLength.getBoundingClientRect().left;
-        var inBarPosition = ((event.pageX - inBarXCoor) / barWidth) * 100;
-        elemCurLength.style.width = inBarPosition + '%';
+    // function setMediaVolumeInBarWidth(element, event) { // TODO: move to builder, remove querySelector   Moved without querySelector
+    //     var barWidth = element.clientWidth;
+    //     var elemCurLength = element.querySelector('.current-length');
+    //     var elemAudio = element.parentNode.querySelector('audio');
+    //     var inBarXCoor = elemCurLength.getBoundingClientRect().left;
+    //     var inBarPosition = ((event.pageX - inBarXCoor) / barWidth) * 100;
+    //     elemCurLength.style.width = inBarPosition + '%';
 
-        if (element.closest('.soundtrack-listener') != undefined) {
-            elemAudio.currentTime = (inBarPosition * elemAudio.duration) / 100;
+    //     if (element.closest('.soundtrack-listener') != undefined) {
+    //         elemAudio.currentTime = (inBarPosition * elemAudio.duration) / 100;
 
-            showTime(elemAudio);
-        } else {
-            var elemVideo = element.closest('.video-controls').parentNode.querySelector('video');
+    //         showTime(elemAudio);
+    //     } else {
+    //         var elemVideo = element.closest('.video-controls').parentNode.querySelector('video');
 
-            elemVideo.currentTime = (inBarPosition * elemVideo.duration) / 100;
+    //         elemVideo.currentTime = (inBarPosition * elemVideo.duration) / 100;
 
-            showTime(element.closest('.video-wrapper').querySelector('video'));
-        }
-    }
+    //         showTime(element.closest('.video-wrapper').querySelector('video'));
+    //     }
+    // }
 
-    function showTime(element) { // TODO: move to builder, remove querySelector
-        var minSecCurTime = calcTime(element.currentTime);
-        var minSecDurat = calcTime(element.duration);
+    // function showTime(element) { // TODO: move to builder, remove querySelector   Moved, but can't remove querySelector as createMovieSection uses this function and there is no timer element
+    //     var minSecCurTime = calcTime(element.currentTime);
+    //     var minSecDurat = calcTime(element.duration);
 
-        element.parentNode.querySelector('.timer').textContent = minSecCurTime + ' / ' + minSecDurat;
-    }
+    //     element.parentNode.querySelector('.timer').textContent = minSecCurTime + ' / ' + minSecDurat;
+    // }
 
     function calcTime(time) {
         var min = Math.floor(time / 60);
@@ -1146,9 +1352,9 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     initSlider(1);
 
-    function addEvent(collection, event, handler) {
-        for (var item of collection) {
-            item.addEventListener(event, handler);
-        }
-    }
+    // function addEvent(collection, event, handler) {
+    //     for (var item of collection) {
+    //         item.addEventListener(event, handler);
+    //     }
+    // }
 });
