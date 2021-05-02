@@ -1,15 +1,40 @@
 'use strict';
 
 document.addEventListener('DOMContentLoaded', function () {
+
+    function setAttribute(element, obj) {
+        for (var key in obj) {
+            element.setAttribute(key, obj[key]);
+        }
+    }
+
+    function makeElem(element, ...classes) {
+        var elem = document.createElement(element);
+
+        for (var item of classes) {
+            elem.classList.add(item);
+        }
+
+        return elem;
+    }
+
+    function insert(map) {
+        map.forEach(function (value, key) {
+            for (var item of value) {
+                key.appendChild(item);
+            }
+        });
+    }
+
     // Adding header
     function createHeader(array) {
 
-        Object.prototype.setAttribute = function (element, obj) {
-            var map = new Map(Object.entries(obj));
-            map.forEach(function (value, key) {
-                element.setAttribute(key, value);
-            });
-        }
+        // Object.prototype.setAttribute = function (element, obj) {
+        //     var map = new Map(Object.entries(obj));
+        //     map.forEach(function (value, key) {
+        //         element.setAttribute(key, value);
+        //     });
+        // }
 
         // Ok. Got it. Is it a good practice to avoid code duplication through adding methods to Object.prototype? Or is it better to make common function?
         // TODO: Extremely bad. Only common functions.
@@ -20,51 +45,55 @@ document.addEventListener('DOMContentLoaded', function () {
         // In your case it works because in global scope all variables are window properties, meaning:
         // "var someVar = 1234" in global scope can be reached both someVar and window.someVar.
         // Because functions watch not only variables in their scopes but in scopes of parent functions -
-        // function tried to find makeElemem in own scopre, then in parent scope, then in parent score of parent etc.
-        // and finaly it reaches global scope and found your makeElemen in window.makeElemem.
+        // function tried to find makeElem in own scopre, then in parent scope, then in parent score of parent etc.
+        // and finaly it reaches global scope and found your makeElemen in window.makeElem.
         // If you remember prototype inheritance - window has a long prototype chain, but in the end of this chain is Object.
-        // So with your approach everything in your programm has methods makeElemem, setAttribute, and insert.
+        // So with your approach everything in your programm has methods makeElem, setAttribute, and insert.
         // But it works (and actually looks frighteningly) as general functions just because window also now has this method.
-        // Kind of, all your makeElemem for JS look like window.makeElemem
-        // But again now any object has makeElemem method. Try it yorself.
-        // {}.makeElemem('header') - general object works!
-        // [].makeElemem('header') - empty array works!
-        // [1, 2, 3].makeElemem('header') - not empty array works!
-        // 'some string'.makeElemem('header') - string works!
-        // 12..makeElemem('header') - number works!
-        // true.makeElemem('header') - oh no, even boolean works. I've never seen methods calling on boolean...
+        // Kind of, all your makeElem for JS look like window.makeElem
+        // But again now any object has makeElem method. Try it yorself.
+        // {}.makeElem('header') - general object works!
+        // [].makeElem('header') - empty array works!
+        // [1, 2, 3].makeElem('header') - not empty array works!
+        // 'some string'.makeElem('header') - string works!
+        // 12..makeElem('header') - number works!
+        // true.makeElem('header') - oh no, even boolean works. I've never seen methods calling on boolean...
 
-        Object.prototype.makeElemem = function (element, ...classes) { // TODO: typo in function name
-            var elem = document.createElement(element);
+        // :) I have read that everything inherits from Object.prototype. So, a common function can provide the expected behavior, but
+        // a common function is not a part of builder. Also Object.prototype is not convenient with objects in functions as method (for..in)
+        // selects not only own keys of object, but also inherited.
 
-            for (var item of classes) {
-                elem.classList.add(item);
-            }
+        // Object.prototype.makeElem = function (element, ...classes) { // TODO: typo in function name   Corrected
+        //     var elem = document.createElement(element);
 
-            return elem;
-        }
+        //     for (var item of classes) {
+        //         elem.classList.add(item);
+        //     }
 
-        Object.prototype.insert = function (map) {
-            map.forEach(function (value, key) {
-                for (var item of value) {
-                    key.appendChild(item);
-                }
-            });
-        }
+        //     return elem;
+        // }
 
-        var makeHeader = makeElemem('header');
+        // Object.prototype.insert = function (map) {
+        //     map.forEach(function (value, key) {
+        //         for (var item of value) {
+        //             key.appendChild(item);
+        //         }
+        //     });
+        // }
 
-        var makeContainer = makeElemem('div', 'container');
+        var makeHeader = makeElem('header');
 
-        var makeLogo = makeElemem('a', 'logo');
+        var makeContainer = makeElem('div', 'container');
+
+        var makeLogo = makeElem('a', 'logo');
         setAttribute(makeLogo, { 'href': '#' })
 
-        var makeLogoImg = makeElemem('img');
+        var makeLogoImg = makeElem('img');
         setAttribute(makeLogoImg, { 'src': 'images/the-top-logo.svg', 'alt': 'the-top-logo' });
 
-        var makeNav = makeElemem('nav');
+        var makeNav = makeElem('nav');
 
-        var makeNavWrapper = makeElemem('div');
+        var makeNavWrapper = makeElem('div');
         setAttribute(makeNavWrapper, { 'id': 'nav-wrapper' })
 
         makeNavWrapper.addEventListener('click', function (event) {
@@ -72,10 +101,10 @@ document.addEventListener('DOMContentLoaded', function () {
             toggleBurger();
         });
 
-        var makeBurger = makeElemem('span');
+        var makeBurger = makeElem('span');
         setAttribute(makeBurger, { 'id': 'burger-img' })
 
-        var makeUl = makeElemem('ul', 'box-menu');
+        var makeUl = makeElem('ul', 'box-menu');
 
         var mainMap = new Map([
             [makeHeader, [makeContainer]],
@@ -91,9 +120,9 @@ document.addEventListener('DOMContentLoaded', function () {
         var navigation = ['Search', 'Add to the Favorites', 'FAQ', 'Go to'];
 
         navigation.forEach(function (item) {
-            var makeListItm = makeElemem('li');
+            var makeListItm = makeElem('li');
 
-            var makeLink = makeElemem('a', 'box-menu-item');
+            var makeLink = makeElem('a', 'box-menu-item');
             setAttribute(makeLink, { 'href': '#' });
             makeLink.textContent = item;
 
@@ -107,7 +136,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (item === 'Go to') {
                 makeListItm.classList.add('go-to');
 
-                var makeFilmNav = makeElemem('ul', 'film-nav');
+                var makeFilmNav = makeElem('ul', 'film-nav');
 
                 makeListItm.addEventListener('mouseenter', function () {
                     makeFilmNav.style.display = 'block';
@@ -122,9 +151,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 insert(goToMap);
 
                 for (var element of array) {
-                    var makeListItm = makeElemem('li');
+                    var makeListItm = makeElem('li');
 
-                    var makeLink = makeElemem('a', 'top-film');
+                    var makeLink = makeElem('a', 'top-film');
                     setAttribute(makeLink, { 'href': '#top-' + element });
                     makeLink.textContent = '.' + element;
 
@@ -168,20 +197,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Adding main Section
     function createMainSection(main) {
-        var makeSection = makeElemem('section', 'main-section');
 
-        var makeContainer = makeElemem('div', 'container');
+        var makeSection = makeElem('section', 'main-section');
 
-        var makeH1 = makeElemem('h1');
+        var makeContainer = makeElem('div', 'container');
 
-        var makeSpan = makeElemem('span', 'accent-text');
+        var makeH1 = makeElem('h1');
+
+        var makeSpan = makeElem('span', 'accent-text');
         makeSpan.textContent = 'The 10';
 
-        var makeMainP = makeElemem('p');
+        var makeMainP = makeElem('p');
         makeMainP.textContent = 'Awesome movie soundtracks can turn a good movie like Guardians Of The Galaxy or Star Wars into iconic ones.'
 
-        var makeArrowDown = makeElemem('a', 'arrow-down', 'arrow');
-        setAttribute(makeArrowDown, {'href': '#top-10'});
+        var makeArrowDown = makeElem('a', 'arrow-down', 'arrow');
+        setAttribute(makeArrowDown, { 'href': '#top-10' });
         makeArrowDown.innerHTML = (
             `<svg width="43" height="60" viewBox="0 0 43 60" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M1 33L21 58M21 58L41.5 32M21 58V0" stroke-width="2" />
@@ -206,19 +236,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Adding movie section
     function createMovieSection(mainObj, main) {
-        var makeSection = makeElemem('section', mainObj.sectionClass, 'direction-description');
+
+        var makeSection = makeElem('section', mainObj.sectionClass, 'direction-description');
         setAttribute(makeSection, { 'id': 'top-' + mainObj.position, 'data-name': mainObj.name, 'data-audio-name': mainObj.audioName });
 
-        var makeContainer = makeElemem('div', 'container');
+        var makeContainer = makeElem('div', 'container');
 
-        var makeDescriptionContent = makeElemem('div', 'description-content');
+        var makeDescriptionContent = makeElem('div', 'description-content');
 
         if (mainObj.sectionClass === 'central-direction-description') {
             makeSection.classList.add(mainObj.imgClass);
         } else {
-            var makeFilmImage = makeElemem('div', 'film-image');
+            var makeFilmImage = makeElem('div', 'film-image');
 
-            var makeImage = makeElemem('img');
+            var makeImage = makeElem('img');
             setAttribute(makeImage, { 'src': mainObj.imgSrc, 'alt': mainObj.imgAlt });
 
             var imgMap = new Map();
@@ -226,22 +257,22 @@ document.addEventListener('DOMContentLoaded', function () {
             insert(imgMap);
         }
 
-        var makeFilmContent = makeElemem('div', 'film-content');
+        var makeFilmContent = makeElem('div', 'film-content');
 
-        var makeFilmTitleContent = makeElemem('div', 'film-title-content');
+        var makeFilmTitleContent = makeElem('div', 'film-title-content');
 
-        var makeSpan = makeElemem('span');
+        var makeSpan = makeElem('span');
         makeSpan.textContent = '.' + mainObj.position;
 
-        var makeH2 = makeElemem('h2');
+        var makeH2 = makeElem('h2');
         makeH2.textContent = mainObj.name;
 
-        var makeFilmDescripContent = makeElemem('div', 'film-description-content');
+        var makeFilmDescripContent = makeElem('div', 'film-description-content');
 
-        var makeAboutFilm = makeElemem('p');
+        var makeAboutFilm = makeElem('p');
         makeAboutFilm.textContent = mainObj.about;
 
-        var makeButton = makeElemem('button', 'listen');
+        var makeButton = makeElem('button', 'listen');
         makeButton.textContent = 'listen';
 
         makeButton.addEventListener('click', function () {
@@ -268,20 +299,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
             modaleWindowAudio.setAttribute('src', 'audios/' + audioAtr + '.ogg');
 
-            modaleWindowAudio.addEventListener('canplay', function () { // TODO: why this event handler added here? But not in modal builder? Every time you click .listen button - new event handler added. Console log added to watch.
-                console.log('oh no, mutliple event handlers');
-                showTime(this);
-            });
+            // modaleWindowAudio.addEventListener('canplay', function () { // TODO: why this event handler added here? But not in modal builder? Every time you click .listen button - new event handler added. Console log added to watch.     Corrected. Looks like I picked the wrong builder while transferring to builder.
+            //     console.log('oh no, mutliple event handlers');
+            //     showTime(this);
+            // });
 
             volumeHandle.style.width = (volume.clientWidth - label.clientWidth) + 'px';
         });
-
-        function showTime(element) {
-            var minSecCurTime = calcTime(element.currentTime);
-            var minSecDurat = calcTime(element.duration);
-
-            element.parentNode.querySelector('.timer').textContent = minSecCurTime + ' / ' + minSecDurat;
-        }
 
         var map = new Map([
             [makeSection, [makeContainer]],
@@ -313,16 +337,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Adding slider
     function createSlider(array, main) {
-        var makeSection = document.createElement('section');
-        makeSection.classList.add('slider');
+        var makeSection = makeElem('section', 'slider');
 
-        var makeContainer = document.createElement('div');
-        makeContainer.classList.add('container');
-        makeSection.appendChild(makeContainer);
+        var makeContainer = makeElem('div', 'container');
 
-        var makeSlidesWrapper = document.createElement('div');
-        makeSlidesWrapper.classList.add('slides-wrapper');
-        makeContainer.appendChild(makeSlidesWrapper);
+        var makeSlidesWrapper = makeElem('div', 'slides-wrapper');
 
         var arrows = [
             {
@@ -343,31 +362,31 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         ];
 
+        var arrowElements = [];
+
         arrows.forEach(function (element) {
-            var makeArrow = document.createElement('a');
-            makeArrow.setAttribute('href', '#');
-            makeArrow.classList.add(element.classDirection, 'arrow');
+            var makeArrow = makeElem('a', element.classDirection, 'arrow');
+            setAttribute(makeArrow, { 'href': '#' });
             makeArrow.innerHTML = element.svg;
-            makeSlidesWrapper.appendChild(makeArrow);
+            arrowElements.push(makeArrow);
+
+            var arrowsMap = new Map([
+                [makeSlidesWrapper, [makeArrow]]
+            ]);
+
+            insert(arrowsMap);
         });
 
-        var makeUL = document.createElement('ul');
-        makeSlidesWrapper.appendChild(makeUL);
+        var makeUL = makeElem('ul');
 
         array.forEach(function (element) {
-            var makeListItm = document.createElement('li');
-            makeUL.appendChild(makeListItm);
+            var makeListItm = makeElem('li');
 
-            var makeFrame = document.createElement('div');
-            makeFrame.classList.add('frame');
-            makeListItm.appendChild(makeFrame);
+            var makeFrame = makeElem('div', 'frame');
 
-            var makeVideoWrapper = document.createElement('div');
-            makeVideoWrapper.classList.add('video-wrapper');
-            makeFrame.appendChild(makeVideoWrapper);
+            var makeVideoWrapper = makeElem('div', 'video-wrapper');
 
-            var makeVideo = document.createElement('video');
-            makeVideoWrapper.appendChild(makeVideo);
+            var makeVideo = makeElem('video');
 
             makeVideo.addEventListener('canplay', function () {
                 showTime(this);
@@ -377,38 +396,23 @@ document.addEventListener('DOMContentLoaded', function () {
                 cancelAnimationFrame(timer);
             });
 
-            var makeSource = document.createElement('source');
-            makeSource.setAttribute('src', element.src);
-            makeVideo.appendChild(makeSource);
+            var makeSource = makeElem('source');
+            setAttribute(makeSource, { 'src': element.src });
 
-            var makeTimer = document.createElement('div');
-            makeTimer.classList.add('timer', 'video-timer');
+            var makeTimer = makeElem('div', 'timer', 'video-timer');
             makeTimer.textContent = '00:00 / 00:00';
-            makeVideoWrapper.appendChild(makeTimer);
 
-            var makeVideoControls = document.createElement('div');
-            makeVideoControls.classList.add('video-controls');
-            makeVideoWrapper.appendChild(makeVideoControls);
+            var makeVideoControls = makeElem('div', 'video-controls');
 
-            var makeVolume = document.createElement('div');
-            makeVolume.classList.add('volume', 'video-volume');
-            makeVideoControls.appendChild(makeVolume);
+            var makeVolume = makeElem('div', 'volume', 'video-volume');
 
-            var makeVolumeHandle = document.createElement('div');
-            makeVolumeHandle.classList.add('volume-handle', 'video-volume-handle');
-            makeVolume.appendChild(makeVolumeHandle);
+            var makeVolumeHandle = makeElem('div', 'volume-handle', 'video-volume-handle');
 
-            var makeLabel = document.createElement('div');
-            makeLabel.classList.add('label');
-            makeVolumeHandle.appendChild(makeLabel);
+            var makeLabel = makeElem('div', 'label');
 
-            var makeMediaLength = document.createElement('div');
-            makeMediaLength.classList.add('media-length', 'video-length');
-            makeVideoControls.appendChild(makeMediaLength);
+            var makeMediaLength = makeElem('div', 'media-length', 'video-length');
 
-            var makeCurrentLength = document.createElement('div');
-            makeCurrentLength.classList.add('current-length');
-            makeMediaLength.appendChild(makeCurrentLength);
+            var makeCurrentLength = makeElem('div', 'current-length');
 
             makeMediaLength.addEventListener('click', function (event) {
                 cancelAnimationFrame(timer);
@@ -429,14 +433,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 }, 500);
             });
 
-            var makeImage = document.createElement('img');
-            makeImage.setAttribute('src', element.imgSrc);
-            makeImage.setAttribute('alt', element.imgAlt);
-            makeFrame.appendChild(makeImage);
+            var makeImage = makeElem('img');
+            setAttribute(makeImage, { 'src': element.imgSrc, 'alt': element.imgAlt });
 
-            var makeButton = document.createElement('button');
-            makeButton.classList.add('btn-play', 'promo-video');
-            makeFrame.appendChild(makeButton);
+            var makeButton = makeElem('button', 'btn-play', 'promo-video');
 
             makeVolume.addEventListener('mousedown', function (mouseDownEvent) {
                 putVolumeHandle(mouseDownEvent);
@@ -526,9 +526,80 @@ document.addEventListener('DOMContentLoaded', function () {
                 makeVideo.currentTime = (inBarPosition * makeVideo.duration) / 100;
                 showTime(makeVideo);
             }
+
+            function stopVideoPlaying(element) {
+                var elementParent = element.parentNode;
+
+                element.pause();
+
+                var children = elementParent.parentNode.children;
+
+                for (var child of children) {
+                    if (child.hasAttribute('src')) {
+                        child.style.display = 'block';
+                    } else if (child.classList.contains('btn-play', 'promo-video')) {
+                        child.classList.remove('playing-video', 'play-active');
+                    };
+                }
+            }
+
+            function initSlider(index) {
+                var currIndex = index;
+                var maxIndex = array.length - 1;
+                settingTranslateX();
+
+                var arrowLeft = arrowElements[0];
+                var arrowRight = arrowElements[1];
+
+                arrowLeft.addEventListener('click', function (event) {
+                    event.preventDefault();
+
+                    currIndex--;
+                    settingTranslateX();
+                });
+
+                arrowRight.addEventListener('click', function (event) {
+                    event.preventDefault();
+
+                    currIndex++;
+                    settingTranslateX();
+                });
+
+                function settingTranslateX() {
+                    if (currIndex <= 0) {
+                        currIndex = 0;
+                    } else if (currIndex >= maxIndex) {
+                        currIndex = maxIndex;
+                    }
+                    makeUL.style.transform = 'translateX(' + -currIndex * 100 + '%)';
+                }
+            }
+
+            initSlider(1);
+
+            var arrayMap = new Map([
+                [makeUL, [makeListItm]],
+                [makeListItm, [makeFrame]],
+                [makeFrame, [makeVideoWrapper, makeImage, makeButton]],
+                [makeVideoWrapper, [makeVideo, makeTimer, makeVideoControls]],
+                [makeVideo, [makeSource]],
+                [makeVideoControls, [makeVolume, makeMediaLength]],
+                [makeVolume, [makeVolumeHandle]],
+                [makeVolumeHandle, [makeLabel]],
+                [makeMediaLength, [makeCurrentLength]]
+            ]);
+
+            insert(arrayMap);
         });
 
-        main.appendChild(makeSection);
+        var map = new Map([
+            [makeSection, [makeContainer]],
+            [makeContainer, [makeSlidesWrapper]],
+            [makeSlidesWrapper, [makeUL]],
+            [main, [makeSection]]
+        ]);
+
+        insert(map);
     }
 
     // Adding Sign Up section
@@ -714,6 +785,10 @@ document.addEventListener('DOMContentLoaded', function () {
         makeTimer.textContent = '00:00 / 00:00';
         soundtrackListener.appendChild(makeTimer);
 
+        makeAudio.addEventListener('canplay', function () {
+            showTime(this);
+        });
+
         makeAudio.addEventListener('ended', function () {
             var thisAudio = this;
 
@@ -839,6 +914,22 @@ document.addEventListener('DOMContentLoaded', function () {
             makeAudio.currentTime = (inBarPosition * makeAudio.duration) / 100;
 
             showTime(makeAudio);
+        }
+
+        function stopVideoPlaying(element) {
+            var elementParent = element.parentNode;
+
+            element.pause();
+
+            var children = elementParent.parentNode.children;
+
+            for (var child of children) {
+                if (child.hasAttribute('src')) {
+                    child.style.display = 'block';
+                } else if (child.classList.contains('btn-play', 'promo-video')) {
+                    child.classList.remove('playing-video', 'play-active');
+                };
+            }
         }
     }
 
@@ -1094,13 +1185,13 @@ document.addEventListener('DOMContentLoaded', function () {
         go(300);
     }
 
-    function stopVideoPlaying(element) { // TODO: move to builder, remove querySelector if possible
-        var elementParent = element.parentNode;
+    // function stopVideoPlaying(element) { // TODO: move to builder, remove querySelector if possible   It is possible :) We have to bubble up to video's grandancestor and select all its children. After that we have to check for their attributes or classes))
+    //     var elementParent = element.parentNode;
 
-        element.pause();
-        elementParent.parentNode.querySelector('.btn-play').classList.remove('playing-video', 'play-active');
-        elementParent.parentNode.querySelector('img').style.display = 'block';
-    }
+    //     element.pause();
+    //     elementParent.parentNode.querySelector('.btn-play').classList.remove('playing-video', 'play-active');
+    //     elementParent.parentNode.querySelector('img').style.display = 'block';
+    // }
 
     var timer;
 
@@ -1113,41 +1204,41 @@ document.addEventListener('DOMContentLoaded', function () {
         return min + ':' + sec;
     }
 
-    function initSlider(index) {// TODO: move to builder, remove querySelector
+    // function initSlider(index) {// TODO: move to builder, remove querySelector   Moved to builder
 
-        var slider = document.querySelectorAll('.slider');
+    //     var slider = document.querySelectorAll('.slider');
 
-        slider.forEach(function (item) {
-            var currIndex = index;
-            var maxIndex = item.querySelectorAll('li').length - 1;
-            settingTranslateX();
+    //     slider.forEach(function (item) {
+    //         var currIndex = index;
+    //         var maxIndex = item.querySelectorAll('li').length - 1;
+    //         settingTranslateX();
 
-            var arrowLeft = item.querySelector('.arrow-left');
-            var arrowRight = item.querySelector('.arrow-right');
+    //         var arrowLeft = item.querySelector('.arrow-left');
+    //         var arrowRight = item.querySelector('.arrow-right');
 
-            arrowLeft.addEventListener('click', function (event) {
-                event.preventDefault();
+    //         arrowLeft.addEventListener('click', function (event) {
+    //             event.preventDefault();
 
-                currIndex--;
-                settingTranslateX();
-            });
+    //             currIndex--;
+    //             settingTranslateX();
+    //         });
 
-            arrowRight.addEventListener('click', function (event) {
-                event.preventDefault();
+    //         arrowRight.addEventListener('click', function (event) {
+    //             event.preventDefault();
 
-                currIndex++;
-                settingTranslateX();
-            });
+    //             currIndex++;
+    //             settingTranslateX();
+    //         });
 
-            function settingTranslateX() {
-                if (currIndex <= 0) {
-                    currIndex = 0;
-                } else if (currIndex >= maxIndex) {
-                    currIndex = maxIndex;
-                }
-                item.querySelector('ul').style.transform = 'translateX(' + -currIndex * 100 + '%)';
-            }
-        });
-    }
-    initSlider(1);
+    //         function settingTranslateX() {
+    //             if (currIndex <= 0) {
+    //                 currIndex = 0;
+    //             } else if (currIndex >= maxIndex) {
+    //                 currIndex = maxIndex;
+    //             }
+    //             item.querySelector('ul').style.transform = 'translateX(' + -currIndex * 100 + '%)';
+    //         }
+    //     });
+    // }
+    // initSlider(1);
 });
