@@ -4,7 +4,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function setAttribute(element, obj) {
         for (var key in obj) {
-            element.setAttribute(key, obj[key]);
+            if (obj.hasOwnProperty(key)) {
+                element.setAttribute(key, obj[key]);
+            }
         }
     }
 
@@ -28,14 +30,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Adding header
     function createHeader(array) {
-        // :) I have read that everything inherits from Object.prototype. So, a common function can provide the expected behavior, but
-        // a common function is not a part of builder. Also Object.prototype is not convenient with objects in functions as method (for..in)
-        // selects not only own keys of object, but also inherited.
-
-        // There is a method hasOwnProperty, which uses to determine if a property is an own object property or inherited.
-        // Usualy in for..in loop you intend to iterate through the own properties of object rather then through own + inherited.
-        // So using for..in along side hasOwnProperty is strict recommendation.
-
 
         var makeHeader = makeElem('header');
 
@@ -555,77 +549,75 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Adding Sign Up section
     function createSignUp(main) {
-        var makeSignUp = document.createElement('section');
-        makeSignUp.classList.add('sign-up');
+        var makeSignUp = makeElem('section', 'sign-up');
 
-        var makeContainer = document.createElement('div');
-        makeContainer.classList.add('container');
-        makeSignUp.appendChild(makeContainer);
+        var makeContainer = makeElem('div', 'container');
 
-        var makeAppeal = document.createElement('div');
-        makeAppeal.classList.add('appeal');
-        makeContainer.appendChild(makeAppeal);
+        var makeAppeal = makeElem('div', 'appeal');
 
-        var makeH2 = document.createElement('h2');
+        var makeH2 = makeElem('h2');
         makeH2.textContent = 'Sign up to receive the latest updates and news';
-        makeAppeal.appendChild(makeH2);
 
-        var makeForm = document.createElement('form');
-        makeAppeal.appendChild(makeForm);
+        var makeForm = makeElem('form');
 
-        var makeEmailSpace = document.createElement('div');
-        makeEmailSpace.classList.add('email-space');
-        makeForm.appendChild(makeEmailSpace);
+        var makeEmailSpace = makeElem('div', 'email-space');
 
-        var emailSpace = makeAppeal.querySelector('.email-space'); // TODO: remove querySelector
+        var map = new Map([
+            [makeSignUp, [makeContainer]],
+            [makeContainer, [makeAppeal]],
+            [makeAppeal, [makeH2, makeForm]],
+            [makeForm, [makeEmailSpace]],
+            [makeEmailSpace, [document.createElement('input'), document.createElement('input')]],
+            [main, [makeSignUp]]
+        ]);
 
-        emailSpace.appendChild(document.createElement('input'));
-        emailSpace.appendChild(document.createElement('input'));
+        insert(map);
 
-        var submitBtn = emailSpace.children;
+        var submitBtn = makeEmailSpace.children;
 
         var enterEmail = submitBtn[0];
         var submitBtn = submitBtn[1];
 
-        enterEmail.setAttribute('type', 'text');
-        enterEmail.setAttribute('name', 'email');
-        enterEmail.setAttribute('placeholder', 'enter your email');
-        enterEmail.setAttribute('autocomplete', 'off');
+        setAttribute(enterEmail, {'type': 'text', 'name': 'email', 'placeholder': 'enter your email', 'autocomplete': 'off'});
 
-        submitBtn.setAttribute('type', 'submit');
-        submitBtn.setAttribute('value', 'submit');
-
-        main.appendChild(makeSignUp);
+        setAttribute(submitBtn, {'type': 'submit', 'value': 'submit'});
     }
 
 
     // Adding footer element to page
     function createFooter() {
-        var makeFooter = document.createElement('footer');
+        var makeFooter = makeElem('footer');
 
-        var makeContainer = document.createElement('div');
-        makeContainer.classList.add('container');
-        makeFooter.appendChild(makeContainer);
+        var makeContainer = makeElem('div', 'container');
 
         // Adding branches into footer
         var containerBranches = ['policy', 'social-media'];
 
         containerBranches.forEach(function (element) {
-            var makeUL = document.createElement('ul');
-            makeUL.classList.add(element);
-            makeContainer.appendChild(makeUL);
+            var makeUL = makeElem('ul', element);
+
+            var branchesMap = new Map([
+                [makeContainer, [makeUL]]
+            ]);
+
+            insert(branchesMap);
         });
 
         // Adding policies
         var policies = ['privacy policy', 'cookie policy'];
 
         policies.forEach(function (element) {
-            var makeListItm = document.createElement('li');
-            var makeLink = document.createElement('a');
-            makeLink.setAttribute('href', '#');
+            var makeListItm = makeElem('li');
+            var makeLink = makeElem('a');
+            setAttribute(makeLink, {'href': '#'});
             makeLink.textContent = element;
-            makeListItm.appendChild(makeLink);
-            makeContainer.firstChild.appendChild(makeListItm);
+
+            var policiesMap = new Map([
+                [makeListItm, [makeLink]],
+                [makeContainer.firstChild, [makeListItm]]
+            ]);
+
+            insert(policiesMap);
         });
 
         // Adding social media buttons
@@ -652,26 +644,32 @@ document.addEventListener('DOMContentLoaded', function () {
         ];
 
         for (var i = 0; i < sMChildren.length; i++) {
-            var makeListItm = document.createElement('li');
-            var makeLink = document.createElement('a');
-            makeLink.setAttribute('href', '#');
-            makeLink.classList.add('circle');
+            var makeListItm = makeElem('li');
+            var makeLink = makeElem('a', 'circle');
+            setAttribute(makeLink, {'href': '#'});
             makeLink.innerHTML = sMChildren[i];
-            makeListItm.appendChild(makeLink);
-            makeContainer.lastChild.appendChild(makeListItm);
+
+            var socMedMap = new Map([
+                [makeListItm, [makeLink]],
+                [makeContainer.lastChild, [makeListItm]]
+            ]);
+
+            insert(socMedMap);
         }
 
-        document.body.appendChild(makeFooter);
+        var map = new Map([
+            [makeFooter, [makeContainer]],
+            [document.body, [makeFooter]]
+        ]);
+
+        insert(map);
     }
 
     // Adding modale window through JS-builder
     function createModaleWindow() {
-        var substrate = document.createElement('div');
-        substrate.classList.add('substrate', 'visually-hidden', 'hidden');
+        var substrate = makeElem('div', 'substrate', 'visually-hidden', 'hidden');
 
-        var soundtrackListener = document.createElement('div');
-        soundtrackListener.classList.add('soundtrack-listener');
-        substrate.appendChild(soundtrackListener);
+        var soundtrackListener = makeElem('div', 'soundtrack-listener');
 
         substrate.addEventListener('click', function (event) {
             if (event.target.closest('.soundtrack-listener') == undefined) {
@@ -679,28 +677,17 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
-        var makeAudio = document.createElement('audio');
-        soundtrackListener.appendChild(makeAudio);
+        var makeAudio = makeElem('audio');
 
-        var makeVolume = document.createElement('div');
-        makeVolume.classList.add('volume');
-        soundtrackListener.appendChild(makeVolume);
+        var makeVolume = makeElem('div', 'volume');
 
-        var makeVolumeHandle = document.createElement('div');
-        makeVolumeHandle.classList.add('volume-handle');
-        makeVolume.appendChild(makeVolumeHandle);
+        var makeVolumeHandle = makeElem('div', 'volume-handle');
 
-        var makeLabel = document.createElement('div');
-        makeLabel.classList.add('label');
-        makeVolumeHandle.appendChild(makeLabel);
+        var makeLabel = makeElem('div', 'label');
 
-        var makeH2 = document.createElement('h2');
-        makeH2.classList.add('listener-title');
-        soundtrackListener.appendChild(makeH2);
+        var makeH2 = makeElem('h2', 'listener-title');
 
-        var makeButton = document.createElement('button');
-        makeButton.classList.add('btn-play', 'listener');
-        soundtrackListener.appendChild(makeButton);
+        var makeButton = makeElem('button', 'btn-play', 'listener');
 
         makeButton.addEventListener('click', function () {
             var allVideos = document.getElementsByTagName('video');
@@ -718,23 +705,17 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
-        var makeMediaLength = document.createElement('div');
-        makeMediaLength.classList.add('media-length');
-        soundtrackListener.appendChild(makeMediaLength);
+        var makeMediaLength = makeElem('div', 'media-length');
 
-        var makeCurrentLength = document.createElement('div');
-        makeCurrentLength.classList.add('current-length');
-        makeMediaLength.appendChild(makeCurrentLength);
+        var makeCurrentLength = makeElem('div', 'current-length');
 
         makeMediaLength.addEventListener('click', function () {
             cancelAnimationFrame(timer);
             setMediaVolumeInBarWidth(this, event);
         });
 
-        var makeTimer = document.createElement('div');
-        makeTimer.classList.add('timer');
+        var makeTimer = makeElem('div', 'timer');
         makeTimer.textContent = '00:00 / 00:00';
-        soundtrackListener.appendChild(makeTimer);
 
         makeAudio.addEventListener('canplay', function () {
             showTime(this);
@@ -759,20 +740,25 @@ document.addEventListener('DOMContentLoaded', function () {
             cancelAnimationFrame(timer);
         });
 
-        var makeCloseListener = document.createElement('a');
-        makeCloseListener.classList.add('close-listener');
-        soundtrackListener.appendChild(makeCloseListener);
+        var makeCloseListener = makeElem('a', 'close-listener');
 
         makeCloseListener.addEventListener('click', function () {
             closeListener();
         });
 
-        var makeCLCross = document.createElement('span');
-        makeCLCross.classList.add('close-listener-cross');
-        makeCloseListener.appendChild(makeCLCross);
+        var makeCLCross = makeElem('span', 'close-listener-cross');
 
-        var body = document.body;
-        body.appendChild(substrate);
+        var map = new Map([
+            [substrate, [soundtrackListener]],
+            [soundtrackListener, [makeAudio, makeVolume, makeH2, makeButton, makeMediaLength, makeTimer, makeCloseListener]],
+            [makeVolume, [makeVolumeHandle]],
+            [makeVolumeHandle, [makeLabel]],
+            [makeMediaLength, [makeCurrentLength]],
+            [makeCloseListener, [makeCLCross]],
+            [document.body, [substrate]]
+        ]);
+
+        insert(map);
 
         makeVolume.addEventListener('mousedown', function (mouseDownEvent) {
             putVolumeHandle(mouseDownEvent);
