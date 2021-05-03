@@ -28,58 +28,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Adding header
     function createHeader(array) {
-
-        // Object.prototype.setAttribute = function (element, obj) {
-        //     var map = new Map(Object.entries(obj));
-        //     map.forEach(function (value, key) {
-        //         element.setAttribute(key, value);
-        //     });
-        // }
-
-        // Ok. Got it. Is it a good practice to avoid code duplication through adding methods to Object.prototype? Or is it better to make common function?
-        // TODO: Extremely bad. Only common functions.
-        // Probably you do not understand prototype.
-        // There are some pratices, not so good, to extend some behavior for specific type
-        // e.g. for string to have additional method somebody can write something like: String.prototype.someNewBehavior = function () {...}
-        // But better to avoid it.
-        // In your case it works because in global scope all variables are window properties, meaning:
-        // "var someVar = 1234" in global scope can be reached both someVar and window.someVar.
-        // Because functions watch not only variables in their scopes but in scopes of parent functions -
-        // function tried to find makeElem in own scopre, then in parent scope, then in parent score of parent etc.
-        // and finaly it reaches global scope and found your makeElemen in window.makeElem.
-        // If you remember prototype inheritance - window has a long prototype chain, but in the end of this chain is Object.
-        // So with your approach everything in your programm has methods makeElem, setAttribute, and insert.
-        // But it works (and actually looks frighteningly) as general functions just because window also now has this method.
-        // Kind of, all your makeElem for JS look like window.makeElem
-        // But again now any object has makeElem method. Try it yorself.
-        // {}.makeElem('header') - general object works!
-        // [].makeElem('header') - empty array works!
-        // [1, 2, 3].makeElem('header') - not empty array works!
-        // 'some string'.makeElem('header') - string works!
-        // 12..makeElem('header') - number works!
-        // true.makeElem('header') - oh no, even boolean works. I've never seen methods calling on boolean...
-
         // :) I have read that everything inherits from Object.prototype. So, a common function can provide the expected behavior, but
         // a common function is not a part of builder. Also Object.prototype is not convenient with objects in functions as method (for..in)
         // selects not only own keys of object, but also inherited.
 
-        // Object.prototype.makeElem = function (element, ...classes) { // TODO: typo in function name   Corrected
-        //     var elem = document.createElement(element);
+        // There is a method hasOwnProperty, which uses to determine if a property is an own object property or inherited.
+        // Usualy in for..in loop you intend to iterate through the own properties of object rather then through own + inherited.
+        // So using for..in along side hasOwnProperty is strict recommendation.
 
-        //     for (var item of classes) {
-        //         elem.classList.add(item);
-        //     }
-
-        //     return elem;
-        // }
-
-        // Object.prototype.insert = function (map) {
-        //     map.forEach(function (value, key) {
-        //         for (var item of value) {
-        //             key.appendChild(item);
-        //         }
-        //     });
-        // }
 
         var makeHeader = makeElem('header');
 
@@ -298,11 +254,6 @@ document.addEventListener('DOMContentLoaded', function () {
             var audioAtr = makeSection.dataset.audioName;
 
             modaleWindowAudio.setAttribute('src', 'audios/' + audioAtr + '.ogg');
-
-            // modaleWindowAudio.addEventListener('canplay', function () { // TODO: why this event handler added here? But not in modal builder? Every time you click .listen button - new event handler added. Console log added to watch.     Corrected. Looks like I picked the wrong builder while transferring to builder.
-            //     console.log('oh no, mutliple event handlers');
-            //     showTime(this);
-            // });
 
             volumeHandle.style.width = (volume.clientWidth - label.clientWidth) + 'px';
         });
@@ -626,7 +577,7 @@ document.addEventListener('DOMContentLoaded', function () {
         makeEmailSpace.classList.add('email-space');
         makeForm.appendChild(makeEmailSpace);
 
-        var emailSpace = makeAppeal.querySelector('.email-space');
+        var emailSpace = makeAppeal.querySelector('.email-space'); // TODO: remove querySelector
 
         emailSpace.appendChild(document.createElement('input'));
         emailSpace.appendChild(document.createElement('input'));
@@ -1185,14 +1136,6 @@ document.addEventListener('DOMContentLoaded', function () {
         go(300);
     }
 
-    // function stopVideoPlaying(element) { // TODO: move to builder, remove querySelector if possible   It is possible :) We have to bubble up to video's grandancestor and select all its children. After that we have to check for their attributes or classes))
-    //     var elementParent = element.parentNode;
-
-    //     element.pause();
-    //     elementParent.parentNode.querySelector('.btn-play').classList.remove('playing-video', 'play-active');
-    //     elementParent.parentNode.querySelector('img').style.display = 'block';
-    // }
-
     var timer;
 
     function calcTime(time) {
@@ -1203,42 +1146,4 @@ document.addEventListener('DOMContentLoaded', function () {
         sec = (sec < 10) ? '0' + sec : sec;
         return min + ':' + sec;
     }
-
-    // function initSlider(index) {// TODO: move to builder, remove querySelector   Moved to builder
-
-    //     var slider = document.querySelectorAll('.slider');
-
-    //     slider.forEach(function (item) {
-    //         var currIndex = index;
-    //         var maxIndex = item.querySelectorAll('li').length - 1;
-    //         settingTranslateX();
-
-    //         var arrowLeft = item.querySelector('.arrow-left');
-    //         var arrowRight = item.querySelector('.arrow-right');
-
-    //         arrowLeft.addEventListener('click', function (event) {
-    //             event.preventDefault();
-
-    //             currIndex--;
-    //             settingTranslateX();
-    //         });
-
-    //         arrowRight.addEventListener('click', function (event) {
-    //             event.preventDefault();
-
-    //             currIndex++;
-    //             settingTranslateX();
-    //         });
-
-    //         function settingTranslateX() {
-    //             if (currIndex <= 0) {
-    //                 currIndex = 0;
-    //             } else if (currIndex >= maxIndex) {
-    //                 currIndex = maxIndex;
-    //             }
-    //             item.querySelector('ul').style.transform = 'translateX(' + -currIndex * 100 + '%)';
-    //         }
-    //     });
-    // }
-    // initSlider(1);
 });
