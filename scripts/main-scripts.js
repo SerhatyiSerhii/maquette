@@ -1,5 +1,96 @@
 'use strict';
 
+// interface ITimer {
+//     _container: HTMLElement;
+
+//     _calcTime(time:number): string;
+//     showTime(): void;
+//     render(): HTMLElement;
+// }
+
+// timer implementation
+function Timer(HTMLElement) {
+    this._container = HTMLElement;
+}
+
+Timer.prototype._calcTime = function (time) {
+    var min = Math.floor(time / 60);
+    var sec = Math.floor(time % 60);
+
+    min = (min < 10) ? '0' + min : min;
+    sec = (sec < 10) ? '0' + sec : sec;
+    return min + ':' + sec;
+}
+
+Timer.prototype.showTime = function () {
+    minSecCurTime = _calcTime(this._container.currentTime);
+    minSecDurat = _calcTime(this._container.duration);
+}
+
+Timer.prototype.render = function () {
+    var createdElement = document.createElement('div');
+
+    createdElement.textContent = showTime.minSecCurTime + ' / ' + showTime.minSecDurat;
+
+    return createdElement;
+}
+
+// interface IElementBuilder {
+//     _tagName: string;
+//     _classes: string[];
+//     _attributes: object;
+//     _children: HTMLElement[];
+
+//     setClasses(classes: string[]): this;
+//     setAttributes(attributes: object): this;
+//     setChildren(children: HTMLElement[]): this;
+//     build(): HTMLElement;
+// }
+
+function ElementBuilder(tagName, classes, attributes, children) {
+    this._tagName = tagName;
+    this._classes = classes;
+    this._attributes = attributes;
+    this._children = children;
+
+}
+
+ElementBuilder.prototype.setClasses = function (classes) {
+
+    for (var item of classes) {
+        this.classList.add(item);
+    }
+
+    return this;
+}
+
+ElementBuilder.prototype.setAttributes = function (attributes) {
+    for (var key in attributes) {
+        if (attributes.hasOwnProperty(key)) {
+            this.setAttribute(key, attributes[key]);
+        }
+    }
+
+    return this;
+}
+
+ElementBuilder.prototype.setChildren = function (children) {
+    var arr = [];
+
+    for (var item of children) {
+        arr.push(item);
+    }
+
+    return this;
+}
+
+ElementBuilder.prototype.builder = function() {
+    var element = document.createElement(this._tagName);
+
+    return element;
+}
+
+
 document.addEventListener('DOMContentLoaded', function () {
 
     function setAttribute(element, obj) {
