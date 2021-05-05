@@ -4,13 +4,13 @@
 //     _container: HTMLElement;
 
 //     _calcTime(time:number): string;
-//     showTime(): void;
+//     showTime(mediaElement: HTMLElement): void;
 //     render(): HTMLElement;
 // }
 
 // timer implementation
-function Timer(HTMLElement) {
-    this._container = HTMLElement;
+function Timer() {
+    this._container = document.createElement('div');
 }
 
 Timer.prototype._calcTime = function (time) {
@@ -22,17 +22,15 @@ Timer.prototype._calcTime = function (time) {
     return min + ':' + sec;
 }
 
-Timer.prototype.showTime = function () {
-    minSecCurTime = _calcTime(this._container.currentTime);
-    minSecDurat = _calcTime(this._container.duration);
+Timer.prototype.showTime = function (mediaElement) {
+    var minSecCurTime = this._calcTime(this._container.currentTime);
+    var minSecDurat = this._calcTime(this._container.duration);
+
+    this._container.textContent = minSecCurTime + ' / ' + minSecDurat;
 }
 
 Timer.prototype.render = function () {
-    var createdElement = document.createElement('div');
-
-    createdElement.textContent = showTime.minSecCurTime + ' / ' + showTime.minSecDurat;
-
-    return createdElement;
+    return this._container;
 }
 
 // interface IElementBuilder {
@@ -47,27 +45,25 @@ Timer.prototype.render = function () {
 //     build(): HTMLElement;
 // }
 
-function ElementBuilder(tagName, classes, attributes, children) {
-    this._tagName = tagName;
-    this._classes = classes;
-    this._attributes = attributes;
-    this._children = children;
-
+function ElementBuilder(elementName) {
+    this._tagName = elementName;
+    this._classes = [];
+    this._attributes = {};
+    this._children = [];
 }
 
 ElementBuilder.prototype.setClasses = function (classes) {
-
     for (var item of classes) {
-        this.classList.add(item);
+        this._classes.push(item);
     }
 
     return this;
 }
 
-ElementBuilder.prototype.setAttributes = function (attributes) {
-    for (var key in attributes) {
-        if (attributes.hasOwnProperty(key)) {
-            this.setAttribute(key, attributes[key]);
+ElementBuilder.prototype.setAttributes = function (obj) {
+    for (var key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            this._attributes[key] = obj[key];
         }
     }
 
@@ -75,17 +71,29 @@ ElementBuilder.prototype.setAttributes = function (attributes) {
 }
 
 ElementBuilder.prototype.setChildren = function (children) {
-    var arr = [];
-
-    for (var item of children) {
-        arr.push(item);
+    for (var child of children) {
+        this._children.push(child);
     }
 
     return this;
 }
 
-ElementBuilder.prototype.builder = function() {
+ElementBuilder.prototype.build = function () {
     var element = document.createElement(this._tagName);
+
+    for (var item of this._classes) {
+        element.classList.add(item);
+    }
+
+    for (var key in this._attributes) {
+        if (this._attributes.hasOwnProperty(key)) {
+            element.setAttribute(key, this._attributes[key]);
+        }
+    }
+
+    for (var child of this._children) {
+        element.appendChild(child);
+    }
 
     return element;
 }

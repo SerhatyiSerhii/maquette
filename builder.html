@@ -34,6 +34,59 @@
         //     build(): HTMLElement;
         // }
 
+        function ElementBuilder(elementName) {
+            this._tagName = elementName;
+            this._classes = [];
+            this._attributes = {};
+            this._children = [];
+        }
+
+        ElementBuilder.prototype.setClasses = function (classes) {
+            for (var item of classes) {
+                this._classes.push(item);
+            }
+
+            return this;
+        }
+
+        ElementBuilder.prototype.setAttributes = function (obj) {
+            for (var key in obj) {
+                if (obj.hasOwnProperty(key)) {
+                    this._attributes[key] = obj[key];
+                }
+            }
+
+            return this;
+        }
+
+        ElementBuilder.prototype.setChildren = function (children) {
+            for (var child of children) {
+                this._children.push(child);
+            }
+
+            return this;
+        }
+
+        ElementBuilder.prototype.build = function () {
+            var element = document.createElement(this._tagName);
+
+            for (var item of this._classes) {
+                element.classList.add(item);
+            }
+
+            for (var key in this._attributes) {
+                if (this._attributes.hasOwnProperty(key)) {
+                    element.setAttribute(key, this._attributes[key]);
+                }
+            }
+
+            for (var child of this._children) {
+                element.appendChild(child);
+            }
+
+            return element;
+        }
+
 
         // now body contains only script element
 
