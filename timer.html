@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <audio id="audio" src="audios/star-wars-a-new-hope.ogg"></audio>
+    <script>
+        // constructor does not accept any arguments
+        // interface ITimer {
+        //     _container: HTMLElement;
+
+        //     _calcTime(time: number): string;
+        //     showTime(mediaElement: HTMLElement): void;
+        //     render(): HTMLElement;
+        // }
+
+        var timer = new Timer();
+        var timerElement = timer.render();
+
+        document.body.appendChild(timerElement); // page shown 00:00 / 00:00
+
+        var audio = document.getElementById('audio');
+
+        setTimeout(() => {
+            console.log('2 sec');
+            audio.currentTime = 55;
+            timer.showTime(audio); // page shown 00:55 / 02:15
+        }, 2000);
+
+        setTimeout(() => {
+            console.log('4 sec');
+            audio.currentTime = 90;
+            timer.showTime(audio); // page shown 01:30 / 02:15
+        }, 4000);
+
+        setTimeout(() => {
+            console.log('6 sec');
+            audio.currentTime = 135;
+            timer.showTime(audio); // page shown 02:15 / 02:15
+        }, 6000);
+    </script>
+</body>
+</html>

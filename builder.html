@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .black-bg {
+            background-color: black;
+        }
+
+        .blue-bg {
+            background-color: blue;
+        }
+
+        .white-color {
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        // constructor accepts one argument
+        // interface IElementBuilder {
+        //     _tagName: string;
+        //     _classes: string[];
+        //     _attributes: object;
+        //     _children: HTMLElement[];
+
+        //     setClasses(classes: string[]): this;
+        //     setAttributes(attributes: object): this;
+        //     setChildren(children: HTMLElement[]): this;
+        //     build(): HTMLElement;
+        // }
+
+
+        // now body contains only script element
+
+        var h1Hello = new ElementBuilder('h1')
+            .setClasses(['black-bg', 'white-color'])
+            .setAttributes({ title: 'hello' })
+            .build();
+
+        h1Hello.textContent = 'Hello';
+
+        var pWorld = new ElementBuilder('p')
+            .setClasses(['blue-bg', 'white-color'])
+            .setAttributes({ title: 'world' })
+            .build();
+        pWorld.textContent = 'World';
+
+        var wrapper = new ElementBuilder('div').setChildren([h1Hello, pWorld]).build();
+
+        document.body.appendChild(wrapper);
+
+        // now body contains
+        // <div>
+        //     <h1 class="black-bg white-color" title="hello">Hello</h1>
+        //     <p class="blue-bg white-color" title="world">World</p>
+        // </div>
+    </script>
+</body>
+</html>
