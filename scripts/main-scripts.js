@@ -10,7 +10,7 @@
 
 // timer implementation
 function Timer() {
-    this._container = document.createElement('div');
+    this._container;
 }
 
 Timer.prototype._calcTime = function (time) {
@@ -30,7 +30,9 @@ Timer.prototype.showTime = function (mediaElement) {
 }
 
 Timer.prototype.render = function () {
-    return this._container;
+    this._container = document.createElement('div');
+
+    return this._container
 }
 
 // interface IElementBuilder {

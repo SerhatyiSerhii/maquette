@@ -21,7 +21,7 @@
         // }
 
         function Timer() {
-            this._container = document.createElement('div');
+            this._container;
         }
 
         Timer.prototype._calcTime = function (time) {
@@ -41,6 +41,8 @@
         }
 
         Timer.prototype.render = function () {
+            this._container = document.createElement('div');
+
             return this._container;
         }
 
