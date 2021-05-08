@@ -1,15 +1,5 @@
 'use strict';
 
-// interface IMediaLength {
-//      _container: HTMLElement;
-//      _currentLength: HTMLElement;
-//      _mediaElement: HTMLElement;
-//
-//      _blockCreator(): this;
-//      setMediaVolumeInBarWidth(): void;
-//      render(): HTMLElement;
-// }
-
 function MediaLength(mediaElement) {
     this._container = null;
     this._currentLength = null;
@@ -38,17 +28,6 @@ MediaLength.prototype.render = function () {
 
     return this._container;
 }
-
-// interface IVolumeBuilder {
-//     _container: HTMLElement;
-//     _label: HTMLElement;
-//     _volumeHandle: HTMLElement;
-//     _mediaElement: HTMLElement;
-//
-//      _createHandle(): this;
-//      putVolumeHandle(event): void;
-//      render(): HTMLElement;
-// }
 
 function VolumeBuilder(mediaElement) {
     this._container = null;
@@ -94,15 +73,6 @@ VolumeBuilder.prototype.render = function () {
     return this._container;
 }
 
-// interface ITimer {
-//     _container: HTMLElement;
-
-//     _calcTime(time:number): string;
-//     showTime(mediaElement: HTMLElement): void;
-//     render(): HTMLElement;
-// }
-
-// timer implementation
 function TimerComp(mediaElement) {
     this._container = null;
     this._mediaElement = mediaElement;
@@ -132,18 +102,6 @@ TimerComp.prototype.render = function () {
 
     return this._container;
 }
-
-// interface IElementBuilder {
-//     _tagName: string;
-//     _classes: string[];
-//     _attributes: object;
-//     _children: HTMLElement[];
-
-//     setClasses(classes: string[]): this;
-//     setAttributes(attributes: object): this;
-//     setChildren(children: HTMLElement[]): this;
-//     build(): HTMLElement;
-// }
 
 function ElementBuilder(elementName) {
     this._tagName = elementName;
@@ -546,17 +504,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
             var makeVideoControls = makeElem('div', 'video-controls');
 
-            // var makeVolume = makeElem('div', 'volume', 'video-volume');
-
-            // var makeVolumeHandle = makeElem('div', 'volume-handle', 'video-volume-handle');
-
             var volume = new VolumeBuilder(makeVideo);
 
             var makeVolume = volume.render();
-
-            // var makeMediaLength = makeElem('div', 'media-length', 'video-length');
-
-            // var makeCurrentLength = makeElem('div', 'current-length');
 
             var mediaLength = new MediaLength(makeVideo);
 
@@ -564,7 +514,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
             makeMediaLength.addEventListener('click', function (event) {
                 cancelAnimationFrame(requestAnimationFrameId);
-                // setMediaVolumeInBarWidth(this, event);
                 mediaLength.setMediaVolumeInBarWidth(this, event);
             });
 
@@ -602,27 +551,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
             });
 
-            // function putVolumeHandle(event) {
-            //     var halfLabel = makeLabel.clientWidth / 2;
-            //     var volumeLeftCoor = makeVolumeHandle.getBoundingClientRect().left;
-            //     var volHandlPos = event.pageX - volumeLeftCoor;
-            //     var elMaxWidth = makeVolume.clientWidth - halfLabel;
-
-            //     if (volHandlPos >= elMaxWidth) {
-            //         volHandlPos = elMaxWidth;
-            //     } else if (volHandlPos <= halfLabel) {
-            //         volHandlPos = halfLabel;
-            //     }
-
-            //     var calcCenterOfLable = volHandlPos - halfLabel;
-
-            //     makeVolumeHandle.style.width = calcCenterOfLable + 'px';
-
-            //     var volumeIndex = (calcCenterOfLable) / (makeVolume.clientWidth - halfLabel * 2);
-
-            //     makeVideo.volume = volumeIndex;
-            // }
-
             makeButton.addEventListener('click', function () {
                 this.classList.toggle('playing-video');
                 this.classList.toggle('play-active');
@@ -658,16 +586,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     });
                 }
             }
-
-            // function setMediaVolumeInBarWidth(element, event) {
-            //     var barWidth = element.clientWidth;
-            //     var inBarXCoor = makeCurrentLength.getBoundingClientRect().left;
-            //     var inBarPosition = ((event.pageX - inBarXCoor) / barWidth) * 100;
-            //     makeCurrentLength.style.width = inBarPosition + '%';
-
-            //     makeVideo.currentTime = (inBarPosition * makeVideo.duration) / 100;
-            //     timer.showTime();
-            // }
 
             function stopVideoPlaying(element) {
                 var elementParent = element.parentNode;
@@ -726,9 +644,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 [makeVideoWrapper, [makeVideo, timer.render(), makeVideoControls]],
                 [makeVideo, [makeSource]],
                 [makeVideoControls, [makeVolume, makeMediaLength]]
-                // [makeVolume, [makeVolumeHandle]],
-                // [makeVolumeHandle, [makeLabel]],
-                // [makeMediaLength, [makeCurrentLength]]
             ]);
 
             insert(arrayMap);
@@ -876,15 +791,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
         var makeAudio = makeElem('audio');
 
-        // var makeVolume = makeElem('div', 'volume');
-
         var volume = new VolumeBuilder(makeAudio);
 
         var makeVolume = volume.render();
-
-        // var makeVolumeHandle = makeElem('div', 'volume-handle');
-
-        // var makeLabel = makeElem('div', 'label');
 
         var makeH2 = makeElem('h2', 'listener-title');
 
@@ -906,17 +815,12 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
-        // var makeMediaLength = makeElem('div', 'media-length');
-
-        // var makeCurrentLength = makeElem('div', 'current-length');
-
         var mediaLength = new MediaLength(makeAudio);
 
         var makeMediaLength = mediaLength.render();
 
         makeMediaLength.addEventListener('click', function () {
             cancelAnimationFrame(requestAnimationFrameId);
-            // setMediaVolumeInBarWidth(this, event);
             mediaLength.setMediaVolumeInBarWidth(this, event);
         });
 
@@ -931,7 +835,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
             setTimeout(function () {
                 makeButton.classList.remove('play-active');
-                // makeCurrentLength.style.width = 0;
                 mediaLength._currentLength.style.width = 0;
                 thisAudio.currentTime = 0;
                 timer.showTime();
@@ -957,9 +860,6 @@ document.addEventListener('DOMContentLoaded', function () {
         var map = new Map([
             [substrate, [soundtrackListener]],
             [soundtrackListener, [makeAudio, makeVolume, makeH2, makeButton, makeMediaLength, timer.render(), makeCloseListener]],
-            // [makeVolume, [makeVolumeHandle]],
-            // [makeVolumeHandle, [makeLabel]],
-            // [makeMediaLength, [makeCurrentLength]],
             [makeCloseListener, [makeCLCross]],
             [document.body, [substrate]]
         ]);
@@ -980,27 +880,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 document.removeEventListener('mouseup', oneMouseUp);
             });
         });
-
-        // function putVolumeHandle(event) {
-        //     var halfLabel = makeLabel.clientWidth / 2;
-        //     var volumeLeftCoor = makeVolumeHandle.getBoundingClientRect().left;
-        //     var volHandlPos = event.pageX - volumeLeftCoor;
-        //     var elMaxWidth = makeVolume.clientWidth - halfLabel;
-
-        //     if (volHandlPos >= elMaxWidth) {
-        //         volHandlPos = elMaxWidth;
-        //     } else if (volHandlPos <= halfLabel) {
-        //         volHandlPos = halfLabel;
-        //     }
-
-        //     var calcCenterOfLable = volHandlPos - halfLabel;
-
-        //     makeVolumeHandle.style.width = calcCenterOfLable + 'px';
-
-        //     var volumeIndex = (calcCenterOfLable) / (makeVolume.clientWidth - halfLabel * 2);
-
-        //     makeAudio.volume = volumeIndex;
-        // }
 
         // For closing substrate window and showing scroll on the page
         function closeListener() {
@@ -1024,14 +903,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
             makeButton.classList.remove('play-active');
 
-            // makeCurrentLength.style.width = 0;
             mediaLength._currentLength.style.width = 0;
         }
 
         function progress(element) {
             var position = (element.currentTime / element.duration) * 100;
-
-            // makeCurrentLength.style.width = position + '%';
 
             mediaLength._currentLength.style.width = position + '%';
 
@@ -1043,17 +919,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
             }
         }
-
-        // function setMediaVolumeInBarWidth(element, event) {
-        //     var barWidth = element.clientWidth;
-        //     var inBarXCoor = makeCurrentLength.getBoundingClientRect().left;
-        //     var inBarPosition = ((event.pageX - inBarXCoor) / barWidth) * 100;
-        //     makeCurrentLength.style.width = inBarPosition + '%';
-
-        //     makeAudio.currentTime = (inBarPosition * makeAudio.duration) / 100;
-
-        //     timer.showTime();
-        // }
 
         function stopVideoPlaying(element) {
             var elementParent = element.parentNode;
