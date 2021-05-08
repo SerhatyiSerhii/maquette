@@ -1,5 +1,99 @@
 'use strict';
 
+// interface IMediaLength {
+//      _container: HTMLElement;
+//      _currentLength: HTMLElement;
+//      _mediaElement: HTMLElement;
+//
+//      _blockCreator(): this;
+//      setMediaVolumeInBarWidth(): void;
+//      render(): HTMLElement;
+// }
+
+function MediaLength(mediaElement) {
+    this._container = null;
+    this._currentLength = null;
+    this._mediaElement = mediaElement;
+}
+
+MediaLength.prototype._blockCreator = function () {
+    this._currentLength = new ElementBuilder('div').setClasses(['current-length']).build();
+
+    return this;
+}
+
+MediaLength.prototype.setMediaVolumeInBarWidth = function (element, event) {
+    var barWidth = element.clientWidth;
+    var inBarXCoor = this._currentLength.getBoundingClientRect().left;
+    var inBarPosition = ((event.pageX - inBarXCoor) / barWidth) * 100;
+    this._currentLength.style.width = inBarPosition + '%';
+
+    this._mediaElement.currentTime = (inBarPosition * this._mediaElement.duration) / 100;
+}
+
+MediaLength.prototype.render = function () {
+    this._blockCreator();
+
+    this._container = new ElementBuilder('div').setClasses(['media-length']).setChildren([this._currentLength]).build();
+
+    return this._container;
+}
+
+// interface IVolumeBuilder {
+//     _container: HTMLElement;
+//     _label: HTMLElement;
+//     _volumeHandle: HTMLElement;
+//     _mediaElement: HTMLElement;
+//
+//      _createHandle(): this;
+//      putVolumeHandle(event): void;
+//      render(): HTMLElement;
+// }
+
+function VolumeBuilder(mediaElement) {
+    this._container = null;
+    this._label = null;
+    this._volumeHandle = null;
+    this._mediaElement = mediaElement;
+}
+
+VolumeBuilder.prototype._createHandle = function () {
+    this._label = new ElementBuilder('div').setClasses(['label']).build();
+
+    this._volumeHandle = new ElementBuilder('div').setClasses(['volume-handle']).setChildren([this._label]).build();
+
+    this._container = new ElementBuilder('div').setClasses(['volume']).setChildren([this._volumeHandle]).build();
+
+    return this;
+}
+
+VolumeBuilder.prototype.putVolumeHandle = function (event) {
+    var halfLabel = this._label.clientWidth / 2;
+    var volumeLeftCoor = this._volumeHandle.getBoundingClientRect().left;
+    var volHandlPos = event.pageX - volumeLeftCoor;
+    var elMaxWidth = this._container.clientWidth - halfLabel;
+
+    if (volHandlPos >= elMaxWidth) {
+        volHandlPos = elMaxWidth;
+    } else if (volHandlPos <= halfLabel) {
+        volHandlPos = halfLabel;
+    }
+
+    var calcCenterOfLable = volHandlPos - halfLabel;
+
+    this._volumeHandle.style.width = calcCenterOfLable + 'px';
+
+    var volumeIndex = (calcCenterOfLable) / (this._container.clientWidth - halfLabel * 2);
+
+    this._mediaElement.volume = volumeIndex;
+}
+
+VolumeBuilder.prototype.render = function () {
+    this._createHandle();
+
+    return this._container;
+}
+
 // interface ITimer {
 //     _container: HTMLElement;
 
@@ -9,11 +103,12 @@
 // }
 
 // timer implementation
-function Timer() {
-    this._container;
+function TimerComp(mediaElement) {
+    this._container = null;
+    this._mediaElement = mediaElement;
 }
 
-Timer.prototype._calcTime = function (time) {
+TimerComp.prototype._calcTime = function (time) {
     var min = Math.floor(time / 60);
     var sec = Math.floor(time % 60);
 
@@ -22,17 +117,20 @@ Timer.prototype._calcTime = function (time) {
     return min + ':' + sec;
 }
 
-Timer.prototype.showTime = function (mediaElement) {
-    var minSecCurTime = this._calcTime(this._container.currentTime);
-    var minSecDurat = this._calcTime(this._container.duration);
+TimerComp.prototype.showTime = function () {
+    var minSecCurTime = this._calcTime(this._mediaElement.currentTime);
+    var minSecDurat = this._calcTime(this._mediaElement.duration);
 
     this._container.textContent = minSecCurTime + ' / ' + minSecDurat;
 }
 
-Timer.prototype.render = function () {
-    this._container = document.createElement('div');
+TimerComp.prototype.render = function () {
 
-    return this._container
+    this._container = new ElementBuilder('div').setClasses(['timer']).build();
+
+    this._container.textContent = '00:00 / 00:00';
+
+    return this._container;
 }
 
 // interface IElementBuilder {
@@ -49,33 +147,28 @@ Timer.prototype.render = function () {
 
 function ElementBuilder(elementName) {
     this._tagName = elementName;
-    this._classes = [];
-    this._attributes = {};
-    this._children = [];
+    this._classes = null;
+    this._attributes = null;
+    this._children = null;
 }
 
 ElementBuilder.prototype.setClasses = function (classes) {
-    for (var item of classes) {
-        this._classes.push(item);
-    }
+
+    this._classes = classes;
 
     return this;
 }
 
 ElementBuilder.prototype.setAttributes = function (obj) {
-    for (var key in obj) {
-        if (obj.hasOwnProperty(key)) {
-            this._attributes[key] = obj[key];
-        }
-    }
+
+    this._attributes = obj;
 
     return this;
 }
 
 ElementBuilder.prototype.setChildren = function (children) {
-    for (var child of children) {
-        this._children.push(child);
-    }
+
+    this._children = children;
 
     return this;
 }
@@ -83,8 +176,10 @@ ElementBuilder.prototype.setChildren = function (children) {
 ElementBuilder.prototype.build = function () {
     var element = document.createElement(this._tagName);
 
-    for (var item of this._classes) {
-        element.classList.add(item);
+    if (this._classes != null) {
+        for (var item of this._classes) {
+            element.classList.add(item);
+        }
     }
 
     for (var key in this._attributes) {
@@ -93,8 +188,10 @@ ElementBuilder.prototype.build = function () {
         }
     }
 
-    for (var child of this._children) {
-        element.appendChild(child);
+    if (this._children != null) {
+        for (var child of this._children) {
+            element.appendChild(child);
+        }
     }
 
     return element;
@@ -435,34 +532,40 @@ document.addEventListener('DOMContentLoaded', function () {
             var makeVideo = makeElem('video');
 
             makeVideo.addEventListener('canplay', function () {
-                showTime(this);
+                timer.showTime();
             });
 
             makeVideo.addEventListener('pause', function () {
-                cancelAnimationFrame(timer);
+                cancelAnimationFrame(requestAnimationFrameId);
             });
 
             var makeSource = makeElem('source');
             setAttribute(makeSource, { 'src': element.src });
 
-            var makeTimer = makeElem('div', 'timer', 'video-timer');
-            makeTimer.textContent = '00:00 / 00:00';
+            var timer = new TimerComp(makeVideo);
 
             var makeVideoControls = makeElem('div', 'video-controls');
 
-            var makeVolume = makeElem('div', 'volume', 'video-volume');
+            // var makeVolume = makeElem('div', 'volume', 'video-volume');
 
-            var makeVolumeHandle = makeElem('div', 'volume-handle', 'video-volume-handle');
+            // var makeVolumeHandle = makeElem('div', 'volume-handle', 'video-volume-handle');
 
-            var makeLabel = makeElem('div', 'label');
+            var volume = new VolumeBuilder(makeVideo);
 
-            var makeMediaLength = makeElem('div', 'media-length', 'video-length');
+            var makeVolume = volume.render();
 
-            var makeCurrentLength = makeElem('div', 'current-length');
+            // var makeMediaLength = makeElem('div', 'media-length', 'video-length');
+
+            // var makeCurrentLength = makeElem('div', 'current-length');
+
+            var mediaLength = new MediaLength(makeVideo);
+
+            var makeMediaLength = mediaLength.render();
 
             makeMediaLength.addEventListener('click', function (event) {
-                cancelAnimationFrame(timer);
-                setMediaVolumeInBarWidth(this, event);
+                cancelAnimationFrame(requestAnimationFrameId);
+                // setMediaVolumeInBarWidth(this, event);
+                mediaLength.setMediaVolumeInBarWidth(this, event);
             });
 
             makeVideo.addEventListener('playing', function () {
@@ -474,7 +577,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 setTimeout(function () {
                     stopVideoPlaying(thisVideo);
-                    makeCurrentLength.style.width = 0;
+                    mediaLength._currentLength.style.width = 0;
                     thisVideo.currentTime = 0;
                 }, 500);
             });
@@ -485,12 +588,12 @@ document.addEventListener('DOMContentLoaded', function () {
             var makeButton = makeElem('button', 'btn-play', 'promo-video');
 
             makeVolume.addEventListener('mousedown', function (mouseDownEvent) {
-                putVolumeHandle(mouseDownEvent);
+                volume.putVolumeHandle(mouseDownEvent);
 
                 document.addEventListener('mousemove', moveLable);
 
                 function moveLable(event) {
-                    putVolumeHandle(event);
+                    volume.putVolumeHandle(event);
                 }
 
                 document.addEventListener('mouseup', function oneMouseUp() {
@@ -499,26 +602,26 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
             });
 
-            function putVolumeHandle(event) {
-                var halfLabel = makeLabel.clientWidth / 2;
-                var volumeLeftCoor = makeVolumeHandle.getBoundingClientRect().left;
-                var volHandlPos = event.pageX - volumeLeftCoor;
-                var elMaxWidth = makeVolume.clientWidth - halfLabel;
+            // function putVolumeHandle(event) {
+            //     var halfLabel = makeLabel.clientWidth / 2;
+            //     var volumeLeftCoor = makeVolumeHandle.getBoundingClientRect().left;
+            //     var volHandlPos = event.pageX - volumeLeftCoor;
+            //     var elMaxWidth = makeVolume.clientWidth - halfLabel;
 
-                if (volHandlPos >= elMaxWidth) {
-                    volHandlPos = elMaxWidth;
-                } else if (volHandlPos <= halfLabel) {
-                    volHandlPos = halfLabel;
-                }
+            //     if (volHandlPos >= elMaxWidth) {
+            //         volHandlPos = elMaxWidth;
+            //     } else if (volHandlPos <= halfLabel) {
+            //         volHandlPos = halfLabel;
+            //     }
 
-                var calcCenterOfLable = volHandlPos - halfLabel;
+            //     var calcCenterOfLable = volHandlPos - halfLabel;
 
-                makeVolumeHandle.style.width = calcCenterOfLable + 'px';
+            //     makeVolumeHandle.style.width = calcCenterOfLable + 'px';
 
-                var volumeIndex = (calcCenterOfLable) / (makeVolume.clientWidth - halfLabel * 2);
+            //     var volumeIndex = (calcCenterOfLable) / (makeVolume.clientWidth - halfLabel * 2);
 
-                makeVideo.volume = volumeIndex;
-            }
+            //     makeVideo.volume = volumeIndex;
+            // }
 
             makeButton.addEventListener('click', function () {
                 this.classList.toggle('playing-video');
@@ -542,36 +645,29 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             });
 
-            function showTime(element) {
-                var minSecCurTime = calcTime(element.currentTime);
-                var minSecDurat = calcTime(element.duration);
-
-                makeTimer.textContent = minSecCurTime + ' / ' + minSecDurat;
-            }
-
             function progress(element) {
                 var position = (element.currentTime / element.duration) * 100;
 
-                makeCurrentLength.style.width = position + '%';
+                mediaLength._currentLength.style.width = position + '%';
 
-                showTime(element);
+                timer.showTime();
 
                 if (position < 100) {
-                    timer = requestAnimationFrame(function () {
+                    requestAnimationFrameId = requestAnimationFrame(function () {
                         progress(element);
                     });
                 }
             }
 
-            function setMediaVolumeInBarWidth(element, event) {
-                var barWidth = element.clientWidth;
-                var inBarXCoor = makeCurrentLength.getBoundingClientRect().left;
-                var inBarPosition = ((event.pageX - inBarXCoor) / barWidth) * 100;
-                makeCurrentLength.style.width = inBarPosition + '%';
+            // function setMediaVolumeInBarWidth(element, event) {
+            //     var barWidth = element.clientWidth;
+            //     var inBarXCoor = makeCurrentLength.getBoundingClientRect().left;
+            //     var inBarPosition = ((event.pageX - inBarXCoor) / barWidth) * 100;
+            //     makeCurrentLength.style.width = inBarPosition + '%';
 
-                makeVideo.currentTime = (inBarPosition * makeVideo.duration) / 100;
-                showTime(makeVideo);
-            }
+            //     makeVideo.currentTime = (inBarPosition * makeVideo.duration) / 100;
+            //     timer.showTime();
+            // }
 
             function stopVideoPlaying(element) {
                 var elementParent = element.parentNode;
@@ -627,12 +723,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 [makeUL, [makeListItm]],
                 [makeListItm, [makeFrame]],
                 [makeFrame, [makeVideoWrapper, makeImage, makeButton]],
-                [makeVideoWrapper, [makeVideo, makeTimer, makeVideoControls]],
+                [makeVideoWrapper, [makeVideo, timer.render(), makeVideoControls]],
                 [makeVideo, [makeSource]],
-                [makeVideoControls, [makeVolume, makeMediaLength]],
-                [makeVolume, [makeVolumeHandle]],
-                [makeVolumeHandle, [makeLabel]],
-                [makeMediaLength, [makeCurrentLength]]
+                [makeVideoControls, [makeVolume, makeMediaLength]]
+                // [makeVolume, [makeVolumeHandle]],
+                // [makeVolumeHandle, [makeLabel]],
+                // [makeMediaLength, [makeCurrentLength]]
             ]);
 
             insert(arrayMap);
@@ -679,9 +775,9 @@ document.addEventListener('DOMContentLoaded', function () {
         var enterEmail = submitBtn[0];
         var submitBtn = submitBtn[1];
 
-        setAttribute(enterEmail, {'type': 'text', 'name': 'email', 'placeholder': 'enter your email', 'autocomplete': 'off'});
+        setAttribute(enterEmail, { 'type': 'text', 'name': 'email', 'placeholder': 'enter your email', 'autocomplete': 'off' });
 
-        setAttribute(submitBtn, {'type': 'submit', 'value': 'submit'});
+        setAttribute(submitBtn, { 'type': 'submit', 'value': 'submit' });
     }
 
 
@@ -710,7 +806,7 @@ document.addEventListener('DOMContentLoaded', function () {
         policies.forEach(function (element) {
             var makeListItm = makeElem('li');
             var makeLink = makeElem('a');
-            setAttribute(makeLink, {'href': '#'});
+            setAttribute(makeLink, { 'href': '#' });
             makeLink.textContent = element;
 
             var policiesMap = new Map([
@@ -747,7 +843,7 @@ document.addEventListener('DOMContentLoaded', function () {
         for (var i = 0; i < sMChildren.length; i++) {
             var makeListItm = makeElem('li');
             var makeLink = makeElem('a', 'circle');
-            setAttribute(makeLink, {'href': '#'});
+            setAttribute(makeLink, { 'href': '#' });
             makeLink.innerHTML = sMChildren[i];
 
             var socMedMap = new Map([
@@ -780,11 +876,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
         var makeAudio = makeElem('audio');
 
-        var makeVolume = makeElem('div', 'volume');
+        // var makeVolume = makeElem('div', 'volume');
 
-        var makeVolumeHandle = makeElem('div', 'volume-handle');
+        var volume = new VolumeBuilder(makeAudio);
 
-        var makeLabel = makeElem('div', 'label');
+        var makeVolume = volume.render();
+
+        // var makeVolumeHandle = makeElem('div', 'volume-handle');
+
+        // var makeLabel = makeElem('div', 'label');
 
         var makeH2 = makeElem('h2', 'listener-title');
 
@@ -806,20 +906,24 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
-        var makeMediaLength = makeElem('div', 'media-length');
+        // var makeMediaLength = makeElem('div', 'media-length');
 
-        var makeCurrentLength = makeElem('div', 'current-length');
+        // var makeCurrentLength = makeElem('div', 'current-length');
+
+        var mediaLength = new MediaLength(makeAudio);
+
+        var makeMediaLength = mediaLength.render();
 
         makeMediaLength.addEventListener('click', function () {
-            cancelAnimationFrame(timer);
-            setMediaVolumeInBarWidth(this, event);
+            cancelAnimationFrame(requestAnimationFrameId);
+            // setMediaVolumeInBarWidth(this, event);
+            mediaLength.setMediaVolumeInBarWidth(this, event);
         });
 
-        var makeTimer = makeElem('div', 'timer');
-        makeTimer.textContent = '00:00 / 00:00';
+        var timer = new TimerComp(makeAudio);
 
         makeAudio.addEventListener('canplay', function () {
-            showTime(this);
+            timer.showTime();
         });
 
         makeAudio.addEventListener('ended', function () {
@@ -827,9 +931,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
             setTimeout(function () {
                 makeButton.classList.remove('play-active');
-                makeCurrentLength.style.width = 0;
+                // makeCurrentLength.style.width = 0;
+                mediaLength._currentLength.style.width = 0;
                 thisAudio.currentTime = 0;
-                showTime(thisAudio);
+                timer.showTime();
             }, 500)
         });
 
@@ -838,7 +943,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         makeAudio.addEventListener('pause', function () {
-            cancelAnimationFrame(timer);
+            cancelAnimationFrame(requestAnimationFrameId);
         });
 
         var makeCloseListener = makeElem('a', 'close-listener');
@@ -851,10 +956,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
         var map = new Map([
             [substrate, [soundtrackListener]],
-            [soundtrackListener, [makeAudio, makeVolume, makeH2, makeButton, makeMediaLength, makeTimer, makeCloseListener]],
-            [makeVolume, [makeVolumeHandle]],
-            [makeVolumeHandle, [makeLabel]],
-            [makeMediaLength, [makeCurrentLength]],
+            [soundtrackListener, [makeAudio, makeVolume, makeH2, makeButton, makeMediaLength, timer.render(), makeCloseListener]],
+            // [makeVolume, [makeVolumeHandle]],
+            // [makeVolumeHandle, [makeLabel]],
+            // [makeMediaLength, [makeCurrentLength]],
             [makeCloseListener, [makeCLCross]],
             [document.body, [substrate]]
         ]);
@@ -862,12 +967,12 @@ document.addEventListener('DOMContentLoaded', function () {
         insert(map);
 
         makeVolume.addEventListener('mousedown', function (mouseDownEvent) {
-            putVolumeHandle(mouseDownEvent);
+            volume.putVolumeHandle(mouseDownEvent);
 
             document.addEventListener('mousemove', moveLable);
 
             function moveLable(event) {
-                putVolumeHandle(event);
+                volume.putVolumeHandle(event);
             }
 
             document.addEventListener('mouseup', function oneMouseUp() {
@@ -876,26 +981,26 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
 
-        function putVolumeHandle(event) {
-            var halfLabel = makeLabel.clientWidth / 2;
-            var volumeLeftCoor = makeVolumeHandle.getBoundingClientRect().left;
-            var volHandlPos = event.pageX - volumeLeftCoor;
-            var elMaxWidth = makeVolume.clientWidth - halfLabel;
+        // function putVolumeHandle(event) {
+        //     var halfLabel = makeLabel.clientWidth / 2;
+        //     var volumeLeftCoor = makeVolumeHandle.getBoundingClientRect().left;
+        //     var volHandlPos = event.pageX - volumeLeftCoor;
+        //     var elMaxWidth = makeVolume.clientWidth - halfLabel;
 
-            if (volHandlPos >= elMaxWidth) {
-                volHandlPos = elMaxWidth;
-            } else if (volHandlPos <= halfLabel) {
-                volHandlPos = halfLabel;
-            }
+        //     if (volHandlPos >= elMaxWidth) {
+        //         volHandlPos = elMaxWidth;
+        //     } else if (volHandlPos <= halfLabel) {
+        //         volHandlPos = halfLabel;
+        //     }
 
-            var calcCenterOfLable = volHandlPos - halfLabel;
+        //     var calcCenterOfLable = volHandlPos - halfLabel;
 
-            makeVolumeHandle.style.width = calcCenterOfLable + 'px';
+        //     makeVolumeHandle.style.width = calcCenterOfLable + 'px';
 
-            var volumeIndex = (calcCenterOfLable) / (makeVolume.clientWidth - halfLabel * 2);
+        //     var volumeIndex = (calcCenterOfLable) / (makeVolume.clientWidth - halfLabel * 2);
 
-            makeAudio.volume = volumeIndex;
-        }
+        //     makeAudio.volume = volumeIndex;
+        // }
 
         // For closing substrate window and showing scroll on the page
         function closeListener() {
@@ -919,40 +1024,36 @@ document.addEventListener('DOMContentLoaded', function () {
 
             makeButton.classList.remove('play-active');
 
-            makeCurrentLength.style.width = 0;
+            // makeCurrentLength.style.width = 0;
+            mediaLength._currentLength.style.width = 0;
         }
 
         function progress(element) {
             var position = (element.currentTime / element.duration) * 100;
 
-            makeCurrentLength.style.width = position + '%';
+            // makeCurrentLength.style.width = position + '%';
 
-            showTime(element);
+            mediaLength._currentLength.style.width = position + '%';
+
+            timer.showTime();
 
             if (position < 100) {
-                timer = requestAnimationFrame(function () {
+                requestAnimationFrameId = requestAnimationFrame(function () {
                     progress(element);
                 });
             }
         }
 
-        function showTime(element) {
-            var minSecCurTime = calcTime(element.currentTime);
-            var minSecDurat = calcTime(element.duration);
+        // function setMediaVolumeInBarWidth(element, event) {
+        //     var barWidth = element.clientWidth;
+        //     var inBarXCoor = makeCurrentLength.getBoundingClientRect().left;
+        //     var inBarPosition = ((event.pageX - inBarXCoor) / barWidth) * 100;
+        //     makeCurrentLength.style.width = inBarPosition + '%';
 
-            makeTimer.textContent = minSecCurTime + ' / ' + minSecDurat;
-        }
+        //     makeAudio.currentTime = (inBarPosition * makeAudio.duration) / 100;
 
-        function setMediaVolumeInBarWidth(element, event) {
-            var barWidth = element.clientWidth;
-            var inBarXCoor = makeCurrentLength.getBoundingClientRect().left;
-            var inBarPosition = ((event.pageX - inBarXCoor) / barWidth) * 100;
-            makeCurrentLength.style.width = inBarPosition + '%';
-
-            makeAudio.currentTime = (inBarPosition * makeAudio.duration) / 100;
-
-            showTime(makeAudio);
-        }
+        //     timer.showTime();
+        // }
 
         function stopVideoPlaying(element) {
             var elementParent = element.parentNode;
@@ -1223,14 +1324,5 @@ document.addEventListener('DOMContentLoaded', function () {
         go(300);
     }
 
-    var timer;
-
-    function calcTime(time) {
-        var min = Math.floor(time / 60);
-        var sec = Math.floor(time % 60);
-
-        min = (min < 10) ? '0' + min : min;
-        sec = (sec < 10) ? '0' + sec : sec;
-        return min + ':' + sec;
-    }
+    var requestAnimationFrameId;
 });
