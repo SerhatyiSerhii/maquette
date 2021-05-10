@@ -1,5 +1,21 @@
 'use strict';
 
+function stopVideoPlaying(element) {
+    var elementParent = element.parentNode;
+
+    element.pause();
+
+    var children = elementParent.parentNode.children;
+
+    for (var child of children) {
+        if (child.hasAttribute('src')) {
+            child.style.display = 'block';
+        } else if (child.classList.contains('btn-play', 'promo-video')) {
+            child.classList.remove('play-active');
+        };
+    }
+}
+
 function AnimationService() { }
 
 AnimationService._requestAnimationFrameId = null;
@@ -13,35 +29,15 @@ AnimationService.getAnimationId = function () {
 }
 
 // Modale window component
-function ModWinComp(audioEl, title) {
+function ModalWindowComp() {
     this._container = null;
-    this._modWind = null;
-    this._audio = audioEl;
-    this._volume = null;
-    this._title = title;
+    this._audio = null;
     this._button = null;
     this._mediaLength = null;
     this._timer = null;
-    this._closeModWin = null;
 }
 
-ModWinComp.prototype._stopVideoPlaying = function (element) {
-    var elementParent = element.parentNode;
-
-    element.pause();
-
-    var children = elementParent.parentNode.children;
-
-    for (var child of children) {
-        if (child.hasAttribute('src')) {
-            child.style.display = 'block';
-        } else if (child.classList.contains('btn-play', 'promo-video')) {
-            child.classList.remove('playing-video', 'play-active');
-        };
-    }
-}
-
-ModWinComp.prototype._closeListener = function () {
+ModalWindowComp.prototype._closeListener = function () {
     var self = this;
 
     document.body.classList.remove('lock');
@@ -59,35 +55,19 @@ ModWinComp.prototype._closeListener = function () {
     this._audio.currentTime = 0;
     this._audio.volume = 1;
 
-    this._button.classList.remove('play-active');
+    this._button.removePlayState();
 
-    this._mediaLength._currentLength.style.width = 0;
+    this._mediaLength.reset();
 }
 
-ModWinComp.prototype.progress = function (element) {
+ModalWindowComp.prototype.render = function () {
     var self = this;
+    this._audio = new ElementBuilder('audio').build();
 
-    var position = (element.currentTime / element.duration) * 100;
+    var volume = new VolumeComp(this._audio).render();
 
-    this._mediaLength._currentLength.style.width = position + '%';
-
-    this._timer.showTime();
-
-    if (position < 100) {
-        var id = requestAnimationFrame(function () {
-            self.progress(element);
-        });
-
-        AnimationService.setAnimationId(id);
-    }
-}
-
-ModWinComp.prototype.render = function () {
-    var self = this;
-
-    this._volume = new VolumeComp(this._audio).render();
-
-    this._button = new PlayBtnComp(btnHandler).render();
+    this._button = new PlayBtnComp(btnHandler);
+    var buttonEl = this._button.render();
 
     this._mediaLength = new MediaLengthComp(this._audio);
     var mediaLength = this._mediaLength.render();
@@ -95,21 +75,29 @@ ModWinComp.prototype.render = function () {
     this._timer = new TimerComp(this._audio);
     var timer = this._timer.render();
 
+    var title = new ElementBuilder('h2').setClasses('listener-title').build();
+
     var cross = new ElementBuilder('span').setClasses('close-listener-cross').build();
 
-    this._closeModWin = new ElementBuilder('a').setClasses('close-listener').setChildren([cross]).build();
+    var closeModWin = new ElementBuilder('a').setClasses('close-listener').setChildren([cross]).build();
 
-    this._modWind = new ElementBuilder('div').setClasses('soundtrack-listener').setChildren([this._audio, this._volume, this._title, this._button, mediaLength, timer, this._closeModWin]).build();
+    var modWind = new ElementBuilder('div').setClasses('soundtrack-listener').setChildren([this._audio, volume, title, buttonEl, mediaLength, timer, closeModWin]).build();
 
-    this._container = new ElementBuilder('div').setClasses('substrate', 'visually-hidden', 'hidden').setChildren([this._modWind]).build();
+    this._container = new ElementBuilder('div').setClasses('substrate', 'visually-hidden', 'hidden').setChildren([modWind]).build();
 
     this._container.addEventListener('click', function (event) {
-        if (event.target.closest('.soundtrack-listener') == undefined) {
+        var element = event.target;
+
+        while(element != null && element !== modWind) {
+            element = element.parentNode;
+        }
+
+        if (element == null) {
             self._closeListener();
         }
     });
 
-    this._closeModWin.addEventListener('click', function () {
+    closeModWin.addEventListener('click', function () {
         self._closeListener();
     });
 
@@ -119,15 +107,17 @@ ModWinComp.prototype.render = function () {
 
     this._audio.addEventListener('ended', function () {
         setTimeout(function () {
-            self._button.classList.remove('play-active');
-            self._mediaLength._currentLength.style.width = 0;
+            self._button.removePlayState();
+            self._mediaLength.reset();
             self._audio.currentTime = 0;
             self._timer.showTime();
         }, 500)
     });
 
     this._audio.addEventListener('playing', function () {
-        self.progress(self._audio);
+        self._mediaLength.progress(function () {
+            self._timer.showTime();
+        });
     });
 
     this._audio.addEventListener('pause', function () {
@@ -140,7 +130,7 @@ ModWinComp.prototype.render = function () {
         var allVideos = document.getElementsByTagName('video');
 
         for (var j = 0; j < allVideos.length; j++) {
-            self._stopVideoPlaying(allVideos[j]);
+            stopVideoPlaying(allVideos[j]);
         }
 
         if (isActive) {
@@ -154,24 +144,28 @@ ModWinComp.prototype.render = function () {
 }
 
 function PlayBtnComp(handler) {
-    this._container = null;
+    this._buttonEl = null;
     this._handler = handler;
 }
 
+PlayBtnComp.prototype.removePlayState = function () {
+    this._buttonEl.classList.remove('play-active');
+}
+
 PlayBtnComp.prototype.render = function () {
-    this._container = new ElementBuilder('button').setClasses('btn-play').build();
+    this._buttonEl = new ElementBuilder('button').setClasses('btn-play').build();
 
     var self = this;
 
-    this._container.addEventListener('click', function () {
-        self._container.classList.toggle('play-active');
+    this._buttonEl.addEventListener('click', function () {
+        self._buttonEl.classList.toggle('play-active');
 
-        var isActive = self._container.classList.contains('play-active');
+        var isActive = self._buttonEl.classList.contains('play-active');
 
         self._handler(isActive);
     });
 
-    return this._container;
+    return this._buttonEl;
 }
 
 function MediaLengthComp(mediaElement) {
@@ -187,6 +181,28 @@ MediaLengthComp.prototype._setMediaVolumeInBarWidth = function (event) {
     this._currentLength.style.width = inBarPosition + '%';
 
     this._mediaElement.currentTime = (inBarPosition * this._mediaElement.duration) / 100;
+}
+
+MediaLengthComp.prototype.progress = function (onProgress) {
+    var self = this;
+
+    var position = (this._mediaElement.currentTime / this._mediaElement.duration) * 100;
+
+    this._currentLength.style.width = position + '%';
+
+    onProgress();
+
+    if (position < 100) {
+        var id = requestAnimationFrame(function () {
+            self.progress(onProgress);
+        });
+
+        AnimationService.setAnimationId(id);
+    }
+}
+
+MediaLengthComp.prototype.reset = function () {
+    this._currentLength.style.width = 0;
 }
 
 MediaLengthComp.prototype.render = function () {
@@ -699,7 +715,9 @@ document.addEventListener('DOMContentLoaded', function () {
             var mediaLength = new MediaLengthComp(makeVideo);
 
             makeVideo.addEventListener('playing', function () {
-                progress(this);
+                mediaLength.progress(function () {
+                    timer.showTime();
+                });
             });
 
             makeVideo.addEventListener('ended', function () {
@@ -707,7 +725,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 setTimeout(function () {
                     stopVideoPlaying(thisVideo);
-                    mediaLength._currentLength.style.width = 0;
+                    mediaLength.reset();
                     thisVideo.currentTime = 0;
                 }, 500);
             });
@@ -737,37 +755,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }
 
-            function progress(element) {
-                var position = (element.currentTime / element.duration) * 100;
 
-                mediaLength._currentLength.style.width = position + '%';
-
-                timer.showTime();
-
-                if (position < 100) {
-                    var id = requestAnimationFrame(function () {
-                        progress(element);
-                    });
-
-                    AnimationService.setAnimationId(id);
-                }
-            }
-
-            function stopVideoPlaying(element) {
-                var elementParent = element.parentNode;
-
-                element.pause();
-
-                var children = elementParent.parentNode.children;
-
-                for (var child of children) {
-                    if (child.hasAttribute('src')) {
-                        child.style.display = 'block';
-                    } else if (child.classList.contains('btn-play', 'promo-video')) {
-                        child.classList.remove('playing-video', 'play-active');
-                    };
-                }
-            }
 
             function initSlider(index) {
                 var currIndex = index;
@@ -946,17 +934,9 @@ document.addEventListener('DOMContentLoaded', function () {
     // Adding modale window through JS-builder
     function createModaleWindow() {
 
-        var makeAudio = makeElem('audio');
+        var modaleWindow = new ModalWindowComp();
 
-        var makeH2 = makeElem('h2', 'listener-title');
-
-        var modaleWindow = new ModWinComp(makeAudio, makeH2);
-
-        var map = new Map([
-            [document.body, [modaleWindow.render()]]
-        ]);
-
-        insert(map);
+        document.body.appendChild(modaleWindow.render());
     }
 
     function setVolumeAfterAppend() {
