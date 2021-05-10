@@ -60,12 +60,16 @@
     height: 540px;
     display: flex;
 
+    .btn-play.play-active {
+        opacity: 0;
+    }
+
     &:hover {
         .video-controls {
             opacity: 1;
         }
 
-        .playing-video.play-active {
+        .btn-play.play-active {
             opacity: 1;
         }
 
@@ -73,10 +77,6 @@
             opacity: 1;
         }
     }
-}
-
-.playing-video.play-active {
-    opacity: 0;
 }
 
 .video-controls {

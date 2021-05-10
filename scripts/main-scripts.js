@@ -1,15 +1,15 @@
 'use strict';
 
-function AnimationService() {
-    this._requestAnimationFrameId = null;
+function AnimationService() {}
+
+AnimationService._requestAnimationFrameId = null;
+
+AnimationService.setAnimationId = function (id) {
+    AnimationService._requestAnimationFrameId = id;
 }
 
-AnimationService.prototype.setAnimationId = function (id) {
-    this._requestAnimationFrameId = id;
-}
-
-AnimationService.prototype.getAnimationId = function () {
-    return this._requestAnimationFrameId;
+AnimationService.getAnimationId = function () {
+    return AnimationService._requestAnimationFrameId;
 }
 
 function MediaLengthComp(mediaElement) {
@@ -18,15 +18,23 @@ function MediaLengthComp(mediaElement) {
     this._mediaElement = mediaElement;
 }
 
-function BtnComp(handler) {
+function PlayBtnComp(handler) {
     this._container = null;
     this._handler = handler;
 }
 
-BtnComp.prototype.render = function () {
-    this._container = new ElementBuilder('button').setClasses(['btn-play']).build();
+PlayBtnComp.prototype.render = function () {
+    this._container = new ElementBuilder('button').setClasses('btn-play').build();
 
-    this._handler();
+    var self = this;
+
+    this._container.addEventListener('click', function () {
+        self._container.classList.toggle('play-active');
+
+        var isActive = self._container.classList.contains('play-active');
+
+        self._handler(isActive);
+    });
 
     return this._container;
 }
@@ -41,14 +49,14 @@ MediaLengthComp.prototype._setMediaVolumeInBarWidth = function (event) {
 }
 
 MediaLengthComp.prototype.render = function () {
-    this._currentLength = new ElementBuilder('div').setClasses(['current-length']).build();
+    this._currentLength = new ElementBuilder('div').setClasses('current-length').build();
 
-    this._container = new ElementBuilder('div').setClasses(['media-length']).setChildren([this._currentLength]).build();
+    this._container = new ElementBuilder('div').setClasses('media-length').setChildren([this._currentLength]).build();
 
     var self = this;
 
     this._container.addEventListener('click', function () {
-        var id = animationService.getAnimationId();
+        var id = AnimationService.getAnimationId();
 
         cancelAnimationFrame(id);
         self._setMediaVolumeInBarWidth(event);
@@ -86,9 +94,9 @@ VolumeComp.prototype._putVolumeHandle = function (event) {
 }
 
 VolumeComp.prototype.render = function () {
-    this._label = new ElementBuilder('div').setClasses(['label']).build();
-    this._volumeHandle = new ElementBuilder('div').setClasses(['volume-handle']).setChildren([this._label]).build();
-    this._container = new ElementBuilder('div').setClasses(['volume']).setChildren([this._volumeHandle]).build();
+    this._label = new ElementBuilder('div').setClasses('label').build();
+    this._volumeHandle = new ElementBuilder('div').setClasses('volume-handle').setChildren([this._label]).build();
+    this._container = new ElementBuilder('div').setClasses('volume').setChildren([this._volumeHandle]).build();
 
     var self = this;
 
@@ -134,7 +142,7 @@ TimerComp.prototype.showTime = function () {
 
 TimerComp.prototype.render = function () {
 
-    this._container = new ElementBuilder('div').setClasses(['timer']).build();
+    this._container = new ElementBuilder('div').setClasses('timer').build();
 
     this._container.textContent = '00:00 / 00:00';
 
@@ -148,7 +156,7 @@ function ElementBuilder(elementName) {
     this._children = null;
 }
 
-ElementBuilder.prototype.setClasses = function (classes) {
+ElementBuilder.prototype.setClasses = function (...classes) {
 
     this._classes = classes;
 
@@ -192,8 +200,6 @@ ElementBuilder.prototype.build = function () {
 
     return element;
 }
-
-var animationService = new AnimationService();
 
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -533,7 +539,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
             makeVideo.addEventListener('pause', function () {
-                var id = animationService.getAnimationId();
+                var id = AnimationService.getAnimationId();
 
                 cancelAnimationFrame(id);
             });
@@ -568,30 +574,26 @@ document.addEventListener('DOMContentLoaded', function () {
             var makeImage = makeElem('img');
             setAttribute(makeImage, { 'src': element.imgSrc, 'alt': element.imgAlt });
 
-            var button = new BtnComp(handler);
+            var button = new PlayBtnComp(handler);
 
-            function handler() {
-                button._container.addEventListener('click', function () {
-                    button._container.classList.toggle('playing-video');
-                    button._container.classList.toggle('play-active');
+            function handler(isActive) {
 
-                    makeImage.style.display = button._container.classList.contains('playing-video') ? 'none' : 'block';
+                makeImage.style.display = isActive ? 'none' : 'block';
 
-                    var currentVideo = makeVideo;
-                    var allVideos = document.querySelectorAll('video');
+                var currentVideo = makeVideo;
+                var allVideos = document.querySelectorAll('video');
 
-                    for (var video of allVideos) {
-                        if (video !== currentVideo) {
-                            stopVideoPlaying(video);
-                        }
+                for (var video of allVideos) {
+                    if (video !== currentVideo) {
+                        stopVideoPlaying(video);
                     }
+                }
 
-                    if (currentVideo.paused) {
-                        currentVideo.play();
-                    } else {
-                        currentVideo.pause();
-                    }
-                });
+                if (isActive) {
+                    currentVideo.play();
+                } else {
+                    currentVideo.pause();
+                }
             }
 
             function progress(element) {
@@ -606,7 +608,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         progress(element);
                     });
 
-                    animationService.setAnimationId(id);
+                    AnimationService.setAnimationId(id);
                 }
             }
 
@@ -820,24 +822,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
         var makeH2 = makeElem('h2', 'listener-title');
 
-        var button = new BtnComp(handler);
+        var button = new PlayBtnComp(handler);
 
-        function handler() {
-            button._container.addEventListener('click', function () {
-                var allVideos = document.getElementsByTagName('video');
+        function handler(isActive) {
 
-                button._container.classList.toggle('play-active');
+            var allVideos = document.getElementsByTagName('video');
 
-                for (var j = 0; j < allVideos.length; j++) {
-                    stopVideoPlaying(allVideos[j]);
-                }
+            for (var j = 0; j < allVideos.length; j++) {
+                stopVideoPlaying(allVideos[j]);
+            }
 
-                if (button._container.classList.contains('play-active')) {
-                    makeAudio.play();
-                } else {
-                    makeAudio.pause();
-                }
-            });
+            if (isActive) {
+                makeAudio.play();
+            } else {
+                makeAudio.pause();
+            }
         }
 
         var mediaLength = new MediaLengthComp(makeAudio);
@@ -864,7 +863,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         makeAudio.addEventListener('pause', function () {
-            var id = animationService.getAnimationId();
+            var id = AnimationService.getAnimationId();
 
             cancelAnimationFrame(id);
         });
@@ -923,7 +922,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     progress(element);
                 });
 
-                animationService.setAnimationId(id);
+                AnimationService.setAnimationId(id);
             }
         }
 
