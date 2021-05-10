@@ -1,6 +1,6 @@
 'use strict';
 
-function AnimationService() {}
+function AnimationService() { }
 
 AnimationService._requestAnimationFrameId = null;
 
@@ -12,10 +12,145 @@ AnimationService.getAnimationId = function () {
     return AnimationService._requestAnimationFrameId;
 }
 
-function MediaLengthComp(mediaElement) {
+// Modale window component
+function ModWinComp(audioEl, title) {
     this._container = null;
-    this._currentLength = null;
-    this._mediaElement = mediaElement;
+    this._modWind = null;
+    this._audio = audioEl;
+    this._volume = null;
+    this._title = title;
+    this._button = null;
+    this._mediaLength = null;
+    this._timer = null;
+    this._closeModWin = null;
+}
+
+ModWinComp.prototype._stopVideoPlaying = function (element) {
+    var elementParent = element.parentNode;
+
+    element.pause();
+
+    var children = elementParent.parentNode.children;
+
+    for (var child of children) {
+        if (child.hasAttribute('src')) {
+            child.style.display = 'block';
+        } else if (child.classList.contains('btn-play', 'promo-video')) {
+            child.classList.remove('playing-video', 'play-active');
+        };
+    }
+}
+
+ModWinComp.prototype._closeListener = function () {
+    var self = this;
+
+    document.body.classList.remove('lock');
+
+    this._container.classList.add('visually-hidden');
+
+    this._container.addEventListener('transitionend', function closeMdlWindow(event) {
+        if (event.propertyName === 'opacity') {
+            self._container.classList.add('hidden');
+            self._container.removeEventListener('transitionend', closeMdlWindow);
+        }
+    });
+
+    this._audio.pause();
+    this._audio.currentTime = 0;
+    this._audio.volume = 1;
+
+    this._button.classList.remove('play-active');
+
+    this._mediaLength._currentLength.style.width = 0;
+}
+
+ModWinComp.prototype.progress = function (element) {
+    var self = this;
+
+    var position = (element.currentTime / element.duration) * 100;
+
+    this._mediaLength._currentLength.style.width = position + '%';
+
+    this._timer.showTime();
+
+    if (position < 100) {
+        var id = requestAnimationFrame(function () {
+            self.progress(element);
+        });
+
+        AnimationService.setAnimationId(id);
+    }
+}
+
+ModWinComp.prototype.render = function () {
+    var self = this;
+
+    this._volume = new VolumeComp(this._audio).render();
+
+    this._button = new PlayBtnComp(btnHandler).render();
+
+    this._mediaLength = new MediaLengthComp(this._audio);
+    var mediaLength = this._mediaLength.render();
+
+    this._timer = new TimerComp(this._audio);
+    var timer = this._timer.render();
+
+    var cross = new ElementBuilder('span').setClasses('close-listener-cross').build();
+
+    this._closeModWin = new ElementBuilder('a').setClasses('close-listener').setChildren([cross]).build();
+
+    this._modWind = new ElementBuilder('div').setClasses('soundtrack-listener').setChildren([this._audio, this._volume, this._title, this._button, mediaLength, timer, this._closeModWin]).build();
+
+    this._container = new ElementBuilder('div').setClasses('substrate', 'visually-hidden', 'hidden').setChildren([this._modWind]).build();
+
+    this._container.addEventListener('click', function (event) {
+        if (event.target.closest('.soundtrack-listener') == undefined) {
+            self._closeListener();
+        }
+    });
+
+    this._closeModWin.addEventListener('click', function () {
+        self._closeListener();
+    });
+
+    this._audio.addEventListener('canplay', function () {
+        self._timer.showTime();
+    });
+
+    this._audio.addEventListener('ended', function () {
+        setTimeout(function () {
+            self._button.classList.remove('play-active');
+            self._mediaLength._currentLength.style.width = 0;
+            self._audio.currentTime = 0;
+            self._timer.showTime();
+        }, 500)
+    });
+
+    this._audio.addEventListener('playing', function () {
+        self.progress(self._audio);
+    });
+
+    this._audio.addEventListener('pause', function () {
+        var id = AnimationService.getAnimationId();
+
+        cancelAnimationFrame(id);
+    });
+
+    function btnHandler(isActive) {
+        var allVideos = document.getElementsByTagName('video');
+
+        for (var j = 0; j < allVideos.length; j++) {
+            self._stopVideoPlaying(allVideos[j]);
+        }
+
+        if (isActive) {
+            self._audio.play();
+        } else {
+            self._audio.pause();
+        }
+    }
+
+    return this._container;
 }
 
 function PlayBtnComp(handler) {
@@ -37,6 +172,12 @@ PlayBtnComp.prototype.render = function () {
     });
 
     return this._container;
+}
+
+function MediaLengthComp(mediaElement) {
+    this._container = null;
+    this._currentLength = null;
+    this._mediaElement = mediaElement;
 }
 
 MediaLengthComp.prototype._setMediaVolumeInBarWidth = function (event) {
@@ -804,143 +945,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Adding modale window through JS-builder
     function createModaleWindow() {
-        var substrate = makeElem('div', 'substrate', 'visually-hidden', 'hidden');
-
-        var soundtrackListener = makeElem('div', 'soundtrack-listener');
-
-        substrate.addEventListener('click', function (event) {
-            if (event.target.closest('.soundtrack-listener') == undefined) {
-                closeListener();
-            }
-        });
 
         var makeAudio = makeElem('audio');
 
-        var volume = new VolumeComp(makeAudio);
-
-        var makeVolume = volume.render();
-
         var makeH2 = makeElem('h2', 'listener-title');
 
-        var button = new PlayBtnComp(handler);
-
-        function handler(isActive) {
-
-            var allVideos = document.getElementsByTagName('video');
-
-            for (var j = 0; j < allVideos.length; j++) {
-                stopVideoPlaying(allVideos[j]);
-            }
-
-            if (isActive) {
-                makeAudio.play();
-            } else {
-                makeAudio.pause();
-            }
-        }
-
-        var mediaLength = new MediaLengthComp(makeAudio);
-
-        var timer = new TimerComp(makeAudio);
-
-        makeAudio.addEventListener('canplay', function () {
-            timer.showTime();
-        });
-
-        makeAudio.addEventListener('ended', function () {
-            var thisAudio = this;
-
-            setTimeout(function () {
-                button._container.classList.remove('play-active');
-                mediaLength._currentLength.style.width = 0;
-                thisAudio.currentTime = 0;
-                timer.showTime();
-            }, 500)
-        });
-
-        makeAudio.addEventListener('playing', function () {
-            progress(this);
-        });
-
-        makeAudio.addEventListener('pause', function () {
-            var id = AnimationService.getAnimationId();
-
-            cancelAnimationFrame(id);
-        });
-
-        var makeCloseListener = makeElem('a', 'close-listener');
-
-        makeCloseListener.addEventListener('click', function () {
-            closeListener();
-        });
-
-        var makeCLCross = makeElem('span', 'close-listener-cross');
+        var modaleWindow = new ModWinComp(makeAudio, makeH2);
 
         var map = new Map([
-            [substrate, [soundtrackListener]],
-            [soundtrackListener, [makeAudio, makeVolume, makeH2, button.render(), mediaLength.render(), timer.render(), makeCloseListener]],
-            [makeCloseListener, [makeCLCross]],
-            [document.body, [substrate]]
+            [document.body, [modaleWindow.render()]]
         ]);
 
         insert(map);
-
-        // For closing substrate window and showing scroll on the page
-        function closeListener() {
-
-            document.body.classList.remove('lock');
-
-            substrate.classList.add('visually-hidden');
-
-            substrate.addEventListener('transitionend', function closeMdlWindow(event) {
-                var thisModaleWindow = this;
-                if (event.propertyName === 'opacity') {
-                    thisModaleWindow.classList.add('hidden');
-                    thisModaleWindow.removeEventListener('transitionend', closeMdlWindow);
-                }
-            });
-
-            // Stop playing music on modal window close
-            makeAudio.pause();
-            makeAudio.currentTime = 0;
-            makeAudio.volume = 1;
-
-            button._container.classList.remove('play-active');
-
-            mediaLength._currentLength.style.width = 0;
-        }
-
-        function progress(element) {
-            var position = (element.currentTime / element.duration) * 100;
-
-            mediaLength._currentLength.style.width = position + '%';
-
-            timer.showTime();
-
-            if (position < 100) {
-                var id = requestAnimationFrame(function () {
-                    progress(element);
-                });
-
-                AnimationService.setAnimationId(id);
-            }
-        }
-
-        function stopVideoPlaying(element) {
-            var elementParent = element.parentNode;
-
-            element.pause();
-
-            var children = elementParent.parentNode.children;
-
-            for (var child of children) {
-                if (child.hasAttribute('src')) {
-                    child.style.display = 'block';
-                } else if (child.classList.contains('btn-play', 'promo-video')) {
-                    child.classList.remove('playing-video', 'play-active');
-                };
-            }
-        }
     }
 
     function setVolumeAfterAppend() {
