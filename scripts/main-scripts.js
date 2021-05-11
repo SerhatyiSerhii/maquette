@@ -35,6 +35,8 @@ function ModalWindowComp() {
     this._button = null;
     this._mediaLength = null;
     this._timer = null;
+    this._title = null;
+    this._volume = null;
 }
 
 ModalWindowComp.prototype._closeListener = function () {
@@ -46,7 +48,7 @@ ModalWindowComp.prototype._closeListener = function () {
 
     this._container.addEventListener('transitionend', function closeMdlWindow(event) {
         if (event.propertyName === 'opacity') {
-            self._container.classList.add('hidden');
+            document.body.removeChild(document.body.lastChild);
             self._container.removeEventListener('transitionend', closeMdlWindow);
         }
     });
@@ -60,11 +62,34 @@ ModalWindowComp.prototype._closeListener = function () {
     this._mediaLength.reset();
 }
 
+ModalWindowComp.prototype.removeHiddenClass = function () {
+    this._container.classList.remove('hidden');
+}
+
+ModalWindowComp.prototype.showModaleWindow = function () {
+    this._container.classList.remove('visually-hidden');
+}
+
+ModalWindowComp.prototype.setAudioSrc = function (audioAtr) {
+    this._audio.setAttribute('src', 'audios/' + audioAtr + '.ogg');
+}
+
+ModalWindowComp.prototype.setTitle = function (titleAtr) {
+    this._title.textContent = titleAtr;
+}
+
+ModalWindowComp.prototype.setVolumeWidth = function () {
+    var obj = this._volume.getVolumeComp();
+
+    return obj.handle.style.width = (obj.volume.clientWidth - obj.label.clientWidth) + 'px';
+}
+
 ModalWindowComp.prototype.render = function () {
     var self = this;
     this._audio = new ElementBuilder('audio').build();
 
-    var volume = new VolumeComp(this._audio).render();
+    this._volume = new VolumeComp(this._audio);
+    var volume = this._volume.render();
 
     this._button = new PlayBtnComp(btnHandler);
     var buttonEl = this._button.render();
@@ -75,20 +100,20 @@ ModalWindowComp.prototype.render = function () {
     this._timer = new TimerComp(this._audio);
     var timer = this._timer.render();
 
-    var title = new ElementBuilder('h2').setClasses('listener-title').build();
+    this._title = new ElementBuilder('h2').setClasses('listener-title').build();
 
     var cross = new ElementBuilder('span').setClasses('close-listener-cross').build();
 
     var closeModWin = new ElementBuilder('a').setClasses('close-listener').setChildren([cross]).build();
 
-    var modWind = new ElementBuilder('div').setClasses('soundtrack-listener').setChildren([this._audio, volume, title, buttonEl, mediaLength, timer, closeModWin]).build();
+    var modWind = new ElementBuilder('div').setClasses('soundtrack-listener').setChildren([this._audio, volume, this._title, buttonEl, mediaLength, timer, closeModWin]).build();
 
     this._container = new ElementBuilder('div').setClasses('substrate', 'visually-hidden', 'hidden').setChildren([modWind]).build();
 
     this._container.addEventListener('click', function (event) {
         var element = event.target;
 
-        while(element != null && element !== modWind) {
+        while (element != null && element !== modWind) {
             element = element.parentNode;
         }
 
@@ -139,6 +164,51 @@ ModalWindowComp.prototype.render = function () {
             self._audio.pause();
         }
     }
+
+    document.body.classList.add('lock');
+
+    return this._container;
+}
+
+function ListenBtnComp(section) {
+    this._container = null;
+    this._section = section;
+}
+
+ListenBtnComp.prototype.getAudioSrc = function () {
+    return this._section.getAttribute('data-audio-name');
+}
+
+ListenBtnComp.prototype.getTitle = function () {
+    return this._section.getAttribute('data-name');
+}
+
+ListenBtnComp.prototype.render = function () {
+    var self = this;
+
+    this._container = new ElementBuilder('button').setClasses('listen').build();
+
+    this._container.textContent = 'listen';
+
+    this._container.addEventListener('click', function () {
+
+        var audioSrc = self.getAudioSrc();
+        var movieTitle = self.getTitle();
+
+        var modaleWindow = new ModalWindowComp();
+
+        document.body.appendChild(modaleWindow.render());
+
+        setTimeout(function () {
+            modaleWindow.setAudioSrc(audioSrc);
+            modaleWindow.setTitle(movieTitle);
+            modaleWindow.removeHiddenClass();
+            modaleWindow.setVolumeWidth();
+            setTimeout(function () {
+                modaleWindow.showModaleWindow();
+            }, 20);
+        }, 20);
+    });
 
     return this._container;
 }
@@ -227,6 +297,16 @@ function VolumeComp(mediaElement) {
     this._label = null;
     this._volumeHandle = null;
     this._mediaElement = mediaElement;
+}
+
+VolumeComp.prototype.getVolumeComp = function () {
+    var obj = {
+        label: this._label,
+        volume: this._container,
+        handle: this._volumeHandle
+    }
+
+    return obj;
 }
 
 VolumeComp.prototype._putVolumeHandle = function (event) {
@@ -580,42 +660,14 @@ document.addEventListener('DOMContentLoaded', function () {
         var makeAboutFilm = makeElem('p');
         makeAboutFilm.textContent = mainObj.about;
 
-        var makeButton = makeElem('button', 'listen');
-        makeButton.textContent = 'listen';
-
-        makeButton.addEventListener('click', function () {
-            var modaleWindow = document.querySelector('.substrate');
-            var modaleWindowAudio = modaleWindow.querySelector('audio');
-            var listenerTitle = modaleWindow.querySelector('.listener-title');
-            var volume = modaleWindow.querySelector('.volume');
-            var volumeHandle = modaleWindow.querySelector('.volume-handle');
-            var label = modaleWindow.querySelector('.label');
-
-            document.body.classList.add('lock');
-
-            modaleWindow.classList.remove('hidden');
-
-            setTimeout(function () {
-                modaleWindow.classList.remove('visually-hidden');
-            }, 20);
-
-            // Put the film title into the substrate window
-            listenerTitle.textContent = makeSection.dataset.name;
-
-            // Set the source of audio file
-            var audioAtr = makeSection.dataset.audioName;
-
-            modaleWindowAudio.setAttribute('src', 'audios/' + audioAtr + '.ogg');
-
-            volumeHandle.style.width = (volume.clientWidth - label.clientWidth) + 'px';
-        });
+        var button = new ListenBtnComp(makeSection);
 
         var map = new Map([
             [makeSection, [makeContainer]],
             [makeContainer, [makeDescriptionContent]],
             [makeFilmTitleContent, [makeSpan, makeH2]],
             [makeFilmContent, [makeFilmTitleContent, makeFilmDescripContent]],
-            [makeFilmDescripContent, [makeAboutFilm, makeButton]],
+            [makeFilmDescripContent, [makeAboutFilm, button.render()]],
             [main, [makeSection]]
         ]);
 
@@ -1160,7 +1212,7 @@ document.addEventListener('DOMContentLoaded', function () {
     );
     createSignUp(makeMain);
     createFooter();
-    createModaleWindow();
+    // createModaleWindow();
     setVolumeAfterAppend();
 
     // Scroll to the film top
