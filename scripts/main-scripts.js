@@ -48,7 +48,7 @@ ModalWindowComp.prototype._closeListener = function () {
 
     this._container.addEventListener('transitionend', function closeMdlWindow(event) {
         if (event.propertyName === 'opacity') {
-            document.body.removeChild(document.body.lastChild);
+            document.body.removeChild(document.body.lastChild); // TODO: what if last child changed? you have modal window in container property
             self._container.removeEventListener('transitionend', closeMdlWindow);
         }
     });
@@ -63,14 +63,14 @@ ModalWindowComp.prototype._closeListener = function () {
 }
 
 ModalWindowComp.prototype.removeHiddenClass = function () {
-    this._container.classList.remove('hidden');
+    this._container.classList.remove('hidden'); // TODO: what is the sense of this class?
 }
 
 ModalWindowComp.prototype.showModaleWindow = function () {
     this._container.classList.remove('visually-hidden');
 }
 
-ModalWindowComp.prototype.setAudioSrc = function (audioAtr) {
+ModalWindowComp.prototype.setAudioSrc = function (audioAtr) { // TODO: title and src must be sent through constructor
     this._audio.setAttribute('src', 'audios/' + audioAtr + '.ogg');
 }
 
@@ -78,9 +78,12 @@ ModalWindowComp.prototype.setTitle = function (titleAtr) {
     this._title.textContent = titleAtr;
 }
 
-ModalWindowComp.prototype.setVolumeWidth = function () {
+// TODO: good idea and bad implementation
+ModalWindowComp.prototype.setVolumeWidth = function () { // TODO: rename method to init
     var obj = this._volume.getVolumeComp();
 
+    // TODO: same mistake again. don't touch some component view inside another component
+    // in volumeComp create method init, move this logic there and call this method here.
     return obj.handle.style.width = (obj.volume.clientWidth - obj.label.clientWidth) + 'px';
 }
 
@@ -172,9 +175,14 @@ ModalWindowComp.prototype.render = function () {
 
 function ListenBtnComp(section) {
     this._container = null;
-    this._section = section;
+    this._section = section; // TODO: instead of send only name and audio name, you shoved the whole section in a small component
 }
 
+// TODO:
+// firstly, these methods look like private.
+// secondly, you don't need these attributes at all anymore
+// we used data attributes as 'data sources' just to show, that html elements can store some data inside.
+// but now you can get data from closure, so you don't need to store in data attributes
 ListenBtnComp.prototype.getAudioSrc = function () {
     return this._section.getAttribute('data-audio-name');
 }
@@ -195,7 +203,7 @@ ListenBtnComp.prototype.render = function () {
         var audioSrc = self.getAudioSrc();
         var movieTitle = self.getTitle();
 
-        var modaleWindow = new ModalWindowComp();
+        var modaleWindow = new ModalWindowComp(); // TODO: you should decide are you using modal with 'e' or withoud it
 
         document.body.appendChild(modaleWindow.render());
 
@@ -300,7 +308,7 @@ function VolumeComp(mediaElement) {
 }
 
 VolumeComp.prototype.getVolumeComp = function () {
-    var obj = {
+    var obj = { // TODO: great implementation of anti-pattern 'public morozov'
         label: this._label,
         volume: this._container,
         handle: this._volumeHandle
@@ -983,14 +991,6 @@ document.addEventListener('DOMContentLoaded', function () {
         insert(map);
     }
 
-    // Adding modale window through JS-builder
-    function createModaleWindow() {
-
-        var modaleWindow = new ModalWindowComp();
-
-        document.body.appendChild(modaleWindow.render());
-    }
-
     function setVolumeAfterAppend() {
         var volume = document.getElementsByClassName('volume');
 
@@ -1212,7 +1212,6 @@ document.addEventListener('DOMContentLoaded', function () {
     );
     createSignUp(makeMain);
     createFooter();
-    // createModaleWindow();
     setVolumeAfterAppend();
 
     // Scroll to the film top
