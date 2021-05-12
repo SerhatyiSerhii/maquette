@@ -34,8 +34,8 @@ function ModalWindowComp(audioSrc, movieName) {
     this._audio = null;
     this._button = null;
     this._mediaLength = null;
-    this._timer = null;
-    this._title = null;
+    this._timer = null; // TODO: what for?
+    this._title = null; // TODO: what for?
     this._volume = null;
     this._audioSrc = audioSrc;
     this._movieName = movieName;
@@ -50,7 +50,7 @@ ModalWindowComp.prototype._closeListener = function () {
 
     this._container.addEventListener('transitionend', function closeMdlWindow(event) {
         if (event.propertyName === 'opacity') {
-            document.body.removeChild(self._container); // TODO: what if last child changed? you have modal window in container property     Corrected
+            document.body.removeChild(self._container);
             self._container.removeEventListener('transitionend', closeMdlWindow);
         }
     });
@@ -65,25 +65,14 @@ ModalWindowComp.prototype._closeListener = function () {
 }
 
 ModalWindowComp.prototype.removeHiddenClass = function () {
-    // this._container.classList.remove('hidden'); // TODO: what is the sense of this class?     Only set style display:none. Removed such class.
-    this._container.style.display = 'flex';
+    this._container.style.display = 'flex'; // TODO: what for? it looks like doing nothing
 }
 
 ModalWindowComp.prototype.showModalWindow = function () {
     this._container.classList.remove('visually-hidden');
 }
 
-// ModalWindowComp.prototype.setAudioSrc = function (audioAtr) { // TODO: title and src must be sent through constructor    Corrected
-//     this._audio.setAttribute('src', 'audios/' + audioAtr + '.ogg');
-// }
-
-// ModalWindowComp.prototype.setTitle = function (titleAtr) {
-//     this._title.textContent = titleAtr;
-// }
-
-// TODO: good idea and bad implementation
-ModalWindowComp.prototype.init = function () {
-
+ModalWindowComp.prototype.init = function () { // TODO: where do you use what it returns?
     return this._volume.init();
 }
 
@@ -180,13 +169,6 @@ function ListenBtnComp(movieName, audioName) {
     this._movieName = movieName;
     this._audioName = audioName;
 }
-
-// TODO:
-// firstly, these methods look like private.
-// secondly, you don't need these attributes at all anymore
-// we used data attributes as 'data sources' just to show, that html elements can store some data inside.
-// but now you can get data from closure, so you don't need to store in data attributes
-// Corrected
 
 ListenBtnComp.prototype.render = function () {
     var self = this;
@@ -299,7 +281,7 @@ function VolumeComp(mediaElement) {
     this._mediaElement = mediaElement;
 }
 
-VolumeComp.prototype.init = function () {
+VolumeComp.prototype.init = function () { // TODO: where do you use what it returns?
     return this._volumeHandle.style.width = (this._container.clientWidth - this._label.clientWidth) + 'px';
 }
 
