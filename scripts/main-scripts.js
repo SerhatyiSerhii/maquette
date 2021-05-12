@@ -29,7 +29,7 @@ AnimationService.getAnimationId = function () {
 }
 
 // Modale window component
-function ModalWindowComp() {
+function ModalWindowComp(audioSrc, movieName) {
     this._container = null;
     this._audio = null;
     this._button = null;
@@ -37,6 +37,8 @@ function ModalWindowComp() {
     this._timer = null;
     this._title = null;
     this._volume = null;
+    this._audioSrc = audioSrc;
+    this._movieName = movieName;
 }
 
 ModalWindowComp.prototype._closeListener = function () {
@@ -48,7 +50,7 @@ ModalWindowComp.prototype._closeListener = function () {
 
     this._container.addEventListener('transitionend', function closeMdlWindow(event) {
         if (event.propertyName === 'opacity') {
-            document.body.removeChild(document.body.lastChild); // TODO: what if last child changed? you have modal window in container property
+            document.body.removeChild(self._container); // TODO: what if last child changed? you have modal window in container property     Corrected
             self._container.removeEventListener('transitionend', closeMdlWindow);
         }
     });
@@ -63,33 +65,32 @@ ModalWindowComp.prototype._closeListener = function () {
 }
 
 ModalWindowComp.prototype.removeHiddenClass = function () {
-    this._container.classList.remove('hidden'); // TODO: what is the sense of this class?
+    // this._container.classList.remove('hidden'); // TODO: what is the sense of this class?     Only set style display:none. Removed such class.
+    this._container.style.display = 'flex';
 }
 
-ModalWindowComp.prototype.showModaleWindow = function () {
+ModalWindowComp.prototype.showModalWindow = function () {
     this._container.classList.remove('visually-hidden');
 }
 
-ModalWindowComp.prototype.setAudioSrc = function (audioAtr) { // TODO: title and src must be sent through constructor
-    this._audio.setAttribute('src', 'audios/' + audioAtr + '.ogg');
-}
+// ModalWindowComp.prototype.setAudioSrc = function (audioAtr) { // TODO: title and src must be sent through constructor    Corrected
+//     this._audio.setAttribute('src', 'audios/' + audioAtr + '.ogg');
+// }
 
-ModalWindowComp.prototype.setTitle = function (titleAtr) {
-    this._title.textContent = titleAtr;
-}
+// ModalWindowComp.prototype.setTitle = function (titleAtr) {
+//     this._title.textContent = titleAtr;
+// }
 
 // TODO: good idea and bad implementation
-ModalWindowComp.prototype.setVolumeWidth = function () { // TODO: rename method to init
-    var obj = this._volume.getVolumeComp();
+ModalWindowComp.prototype.init = function () {
 
-    // TODO: same mistake again. don't touch some component view inside another component
-    // in volumeComp create method init, move this logic there and call this method here.
-    return obj.handle.style.width = (obj.volume.clientWidth - obj.label.clientWidth) + 'px';
+    return this._volume.init();
 }
 
 ModalWindowComp.prototype.render = function () {
     var self = this;
     this._audio = new ElementBuilder('audio').build();
+    this._audio.setAttribute('src', 'audios/' + this._audioSrc + '.ogg');
 
     this._volume = new VolumeComp(this._audio);
     var volume = this._volume.render();
@@ -104,6 +105,7 @@ ModalWindowComp.prototype.render = function () {
     var timer = this._timer.render();
 
     this._title = new ElementBuilder('h2').setClasses('listener-title').build();
+    this._title.textContent = this._movieName;
 
     var cross = new ElementBuilder('span').setClasses('close-listener-cross').build();
 
@@ -111,7 +113,7 @@ ModalWindowComp.prototype.render = function () {
 
     var modWind = new ElementBuilder('div').setClasses('soundtrack-listener').setChildren([this._audio, volume, this._title, buttonEl, mediaLength, timer, closeModWin]).build();
 
-    this._container = new ElementBuilder('div').setClasses('substrate', 'visually-hidden', 'hidden').setChildren([modWind]).build();
+    this._container = new ElementBuilder('div').setClasses('substrate', 'visually-hidden').setChildren([modWind]).build();
 
     this._container.addEventListener('click', function (event) {
         var element = event.target;
@@ -173,9 +175,10 @@ ModalWindowComp.prototype.render = function () {
     return this._container;
 }
 
-function ListenBtnComp(section) {
+function ListenBtnComp(movieName, audioName) {
     this._container = null;
-    this._section = section; // TODO: instead of send only name and audio name, you shoved the whole section in a small component
+    this._movieName = movieName;
+    this._audioName = audioName;
 }
 
 // TODO:
@@ -183,13 +186,7 @@ function ListenBtnComp(section) {
 // secondly, you don't need these attributes at all anymore
 // we used data attributes as 'data sources' just to show, that html elements can store some data inside.
 // but now you can get data from closure, so you don't need to store in data attributes
-ListenBtnComp.prototype.getAudioSrc = function () {
-    return this._section.getAttribute('data-audio-name');
-}
-
-ListenBtnComp.prototype.getTitle = function () {
-    return this._section.getAttribute('data-name');
-}
+// Corrected
 
 ListenBtnComp.prototype.render = function () {
     var self = this;
@@ -200,20 +197,15 @@ ListenBtnComp.prototype.render = function () {
 
     this._container.addEventListener('click', function () {
 
-        var audioSrc = self.getAudioSrc();
-        var movieTitle = self.getTitle();
+        var modalWindow = new ModalWindowComp(self._audioName, self._movieName);
 
-        var modaleWindow = new ModalWindowComp(); // TODO: you should decide are you using modal with 'e' or withoud it
-
-        document.body.appendChild(modaleWindow.render());
+        document.body.appendChild(modalWindow.render());
 
         setTimeout(function () {
-            modaleWindow.setAudioSrc(audioSrc);
-            modaleWindow.setTitle(movieTitle);
-            modaleWindow.removeHiddenClass();
-            modaleWindow.setVolumeWidth();
+            modalWindow.removeHiddenClass();
+            modalWindow.init();
             setTimeout(function () {
-                modaleWindow.showModaleWindow();
+                modalWindow.showModalWindow();
             }, 20);
         }, 20);
     });
@@ -307,14 +299,8 @@ function VolumeComp(mediaElement) {
     this._mediaElement = mediaElement;
 }
 
-VolumeComp.prototype.getVolumeComp = function () {
-    var obj = { // TODO: great implementation of anti-pattern 'public morozov'
-        label: this._label,
-        volume: this._container,
-        handle: this._volumeHandle
-    }
-
-    return obj;
+VolumeComp.prototype.init = function () {
+    return this._volumeHandle.style.width = (this._container.clientWidth - this._label.clientWidth) + 'px';
 }
 
 VolumeComp.prototype._putVolumeHandle = function (event) {
@@ -668,7 +654,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var makeAboutFilm = makeElem('p');
         makeAboutFilm.textContent = mainObj.about;
 
-        var button = new ListenBtnComp(makeSection);
+        var button = new ListenBtnComp(mainObj.name, mainObj.audioName);
 
         var map = new Map([
             [makeSection, [makeContainer]],

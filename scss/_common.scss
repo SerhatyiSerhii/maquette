@@ -89,7 +89,7 @@ h2 {
     top: 0;
     z-index: 5;
     transition: 0.3s;
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: center;
 
@@ -153,9 +153,9 @@ h2 {
     margin-top: 35px;
 }
 
-.hidden {
-    display: none;
-}
+// .hidden {
+//     display: none;
+// }
 
 .visually-hidden {
     opacity: 0;
