@@ -1,13 +1,13 @@
 'use strict';
 
-function stopVideoPlaying(element) { // TODO: convert to es2015, including arrow function
-    var elementParent = element.parentNode;
+const stopVideoPlaying = (element) => { // TODO: convert to es2015, including arrow function     Corrected
+    const elementParent = element.parentNode;
 
     element.pause();
 
-    var children = elementParent.parentNode.children;
+    const children = elementParent.parentNode.children;
 
-    for (var child of children) {
+    for (let child of children) {
         if (child.hasAttribute('src')) {
             child.style.display = 'block';
         } else if (child.classList.contains('btn-play', 'promo-video')) {
@@ -18,16 +18,15 @@ function stopVideoPlaying(element) { // TODO: convert to es2015, including arrow
 
 // TODO: in the previous version you used static properties/methods
 // animation service currently working because you set id in non declared propety.
+//Corrected
 class AnimationService {
-    #requestAnimationFrameId = null;
+    static #requestAnimationFrameId = null;
 
-    get AnimationId() {
-        console.log('I am not called');
+    static getAnimationId() {
         return this.#requestAnimationFrameId;
     }
 
-    set AnimationId(id) {
-        console.log('I am not called either');
+    static setAnimationId(id) {
         this.#requestAnimationFrameId = id;
     }
 }
@@ -42,28 +41,23 @@ class ModalWindowComp {
     #movieName;
 
     constructor(audioSrc, movieName) {
-        this.#container = null; // TODO: since you declare fields in the class, you don't need to set fields to null
-        this.#audio = null;
-        this.#button = null;
-        this.#mediaLength = null;
-        this.#volume = null;
         this.#audioSrc = audioSrc;
         this.#movieName = movieName;
     }
 
     #closeListener() {
-        const self = this;
-
         document.body.classList.remove('lock');
 
         this.#container.classList.add('visually-hidden');
 
-        this.#container.addEventListener('transitionend', function closeMdlWindow(event) { // TODO: where is arrow function?
+        const closeMdlWindow = (event) => {
             if (event.propertyName === 'opacity') {
-                document.body.removeChild(self.#container);
-                self.#container.removeEventListener('transitionend', closeMdlWindow);
+                document.body.removeChild(this.#container);
+                this.#container.removeEventListener('transitionend', closeMdlWindow);
             }
-        });
+        }
+
+        this.#container.addEventListener('transitionend', closeMdlWindow); // TODO: where is arrow function?    Corrected
 
         this.#audio.pause();
         this.#audio.currentTime = 0;
@@ -91,15 +85,14 @@ class ModalWindowComp {
             }
 
             if (isActive) {
-                self.#audio.play(); // TODO: read about arrow functions. since they don't have own this, you don't need self anymore
+                this.#audio.play(); // TODO: read about arrow functions. since they don't have own this, you don't need self anymore    Corrected
             } else {
-                self.#audio.pause();
+                this.#audio.pause();
             }
         }
 
-        const self = this;
         this.#audio = new ElementBuilder('audio').build();
-        this.#audio.setAttribute('src', 'audios/' + this.#audioSrc + '.ogg'); // TODO: template literal
+        this.#audio.setAttribute('src', `audios/${this.#audioSrc}.ogg`); // TODO: template literal   Corrected
 
         this.#volume = new VolumeComp(this.#audio);
         const volume = this.#volume.render();
@@ -132,12 +125,12 @@ class ModalWindowComp {
             }
 
             if (element == null) {
-                self.#closeListener();
+                this.#closeListener();
             }
         });
 
         closeModWin.addEventListener('click', () => {
-            self.#closeListener()
+            this.#closeListener()
         });
 
         this.#audio.addEventListener('canplay', () => {
@@ -146,21 +139,21 @@ class ModalWindowComp {
 
         this.#audio.addEventListener('ended', () => {
             setTimeout(() => {
-                self.#button.removePlayState();
-                self.#mediaLength.reset();
-                self.#audio.currentTime = 0;
+                this.#button.removePlayState();
+                this.#mediaLength.reset();
+                this.#audio.currentTime = 0;
                 timer.showTime();
             }, 500)
         });
 
         this.#audio.addEventListener('playing', () => {
-            self.#mediaLength.progress(() => {
+            this.#mediaLength.progress(() => {
                 timer.showTime();
             });
         });
 
         this.#audio.addEventListener('pause', () => {
-            const id = AnimationService.AnimationId;
+            const id = AnimationService.getAnimationId();
 
             cancelAnimationFrame(id);
         });
@@ -177,30 +170,31 @@ class ListenBtnComp {
     #audioName;
 
     constructor(movieName, audioName) {
-        this.#container = null;
         this.#movieName = movieName;
         this.#audioName = audioName;
     }
 
     render() {
-        const self = this;
-
         this.#container = new ElementBuilder('button').setClasses('listen').build();
 
         this.#container.textContent = 'listen';
 
         this.#container.addEventListener('click', () => {
 
-            const modalWindow = new ModalWindowComp(self.#audioName, self.#movieName);
+            const modalWindow = new ModalWindowComp(this.#audioName, this.#movieName);
 
             document.body.appendChild(modalWindow.render());
 
-            setTimeout(() => { // TODO: what for this setTimeout?
-                modalWindow.init();
-                setTimeout(() => { // and this?
-                    modalWindow.showModalWindow();
-                }, 20);
-            }, 20);
+            modalWindow.init();
+
+            modalWindow.showModalWindow();
+
+            // setTimeout(() => { // TODO: what for this setTimeout?     Corrected
+            //     modalWindow.init();
+            //     setTimeout(() => { // and this?
+            //         modalWindow.showModalWindow();
+            //     }, 20);
+            // }, 20);
         });
 
         return this.#container;
@@ -212,7 +206,6 @@ class PlayBtnComp {
     #handler;
 
     constructor(handler) {
-        this.#buttonEl = null;
         this.#handler = handler;
     }
 
@@ -223,14 +216,12 @@ class PlayBtnComp {
     render() {
         this.#buttonEl = new ElementBuilder('button').setClasses('btn-play').build();
 
-        const self = this;
-
         this.#buttonEl.addEventListener('click', () => {
-            self.#buttonEl.classList.toggle('play-active');
+            this.#buttonEl.classList.toggle('play-active');
 
-            var isActive = self.#buttonEl.classList.contains('play-active'); // TODO: var
+            const isActive = this.#buttonEl.classList.contains('play-active'); // TODO: var     Corrected
 
-            self.#handler(isActive);
+            this.#handler(isActive);
         });
 
         return this.#buttonEl;
@@ -243,8 +234,6 @@ class MediaLengthComp {
     #mediaElement;
 
     constructor(mediaElement) {
-        this.#container = null;
-        this.#currentLength = null;
         this.#mediaElement = mediaElement;
     }
 
@@ -252,26 +241,24 @@ class MediaLengthComp {
         const barWidth = this.#container.clientWidth;
         const inBarXCoor = this.#currentLength.getBoundingClientRect().left;
         const inBarPosition = ((event.pageX - inBarXCoor) / barWidth) * 100;
-        this.#currentLength.style.width = inBarPosition + '%'; // TODO: template literal
+        this.#currentLength.style.width = `${inBarPosition}%`; // TODO: template literal    Corrected
 
         this.#mediaElement.currentTime = (inBarPosition * this.#mediaElement.duration) / 100;
     }
 
     progress(onProgress) {
-        const self = this;
-
         const position = (this.#mediaElement.currentTime / this.#mediaElement.duration) * 100;
 
-        this.#currentLength.style.width = position + '%'; // TODO: template literal
+        this.#currentLength.style.width = `${position}%`; // TODO: template literal     Corrected
 
         onProgress();
 
         if (position < 100) {
-            var id = requestAnimationFrame(() => { // TODO: var
-                self.progress(onProgress);
+            const id = requestAnimationFrame(() => { // TODO: var    Corrected
+                this.progress(onProgress);
             });
 
-            AnimationService.AnimationId = id;
+            AnimationService.setAnimationId(id);
         }
     }
 
@@ -284,13 +271,11 @@ class MediaLengthComp {
 
         this.#container = new ElementBuilder('div').setClasses('media-length').setChildren([this.#currentLength]).build();
 
-        const self = this;
-
         this.#container.addEventListener('click', () => {
-            const id = AnimationService.AnimationId;
+            const id = AnimationService.getAnimationId();
 
             cancelAnimationFrame(id);
-            self.#setMediaVolumeInBarWidth(event);
+            this.#setMediaVolumeInBarWidth(event);
         });
 
         return this.#container;
@@ -304,14 +289,11 @@ class VolumeComp {
     #mediaElement;
 
     constructor(mediaElement) {
-        this.#container = null;
-        this.#label = null;
-        this.#volumeHandle = null;
         this.#mediaElement = mediaElement;
     }
 
     init() {
-        this.#volumeHandle.style.width = (this.#container.clientWidth - this.#label.clientWidth) + 'px'; // TODO: template literal
+        this.#volumeHandle.style.width = `${(this.#container.clientWidth - this.#label.clientWidth)}px`; // TODO: template literal   Corrected
     }
 
     #putVolumeHandle(event) {
@@ -328,7 +310,7 @@ class VolumeComp {
 
         const calcCenterOfLable = volHandlPos - halfLabel;
 
-        this.#volumeHandle.style.width = calcCenterOfLable + 'px'; // TODO: template literal
+        this.#volumeHandle.style.width = `${calcCenterOfLable}px`; // TODO: template literal     Corrected
 
         const volumeIndex = (calcCenterOfLable) / (this.#container.clientWidth - halfLabel * 2);
 
@@ -340,22 +322,22 @@ class VolumeComp {
         this.#volumeHandle = new ElementBuilder('div').setClasses('volume-handle').setChildren([this.#label]).build();
         this.#container = new ElementBuilder('div').setClasses('volume').setChildren([this.#volumeHandle]).build();
 
-        const self = this;
-
         this.#container.addEventListener('mousedown', (mouseDownEvent) => {
 
-            self.#putVolumeHandle(mouseDownEvent);
+            this.#putVolumeHandle(mouseDownEvent);
 
             const moveLable = (event) => {
-                self.#putVolumeHandle(event);
+                this.#putVolumeHandle(event);
             }
 
             document.addEventListener('mousemove', moveLable);
 
-            document.addEventListener('mouseup', function oneMouseUp() { // TODO: arrow function
+            const oneMouseUp = () => {
                 document.removeEventListener('mousemove', moveLable);
                 document.removeEventListener('mouseup', oneMouseUp);
-            });
+            }
+
+            document.addEventListener('mouseup', oneMouseUp); // TODO: arrow function Corrected
         });
 
         return this.#container;
@@ -367,7 +349,6 @@ class TimerComp {
     #mediaElement;
 
     constructor(mediaElement) {
-        this.#container = null;
         this.#mediaElement = mediaElement;
     }
 
@@ -375,16 +356,16 @@ class TimerComp {
         let min = Math.floor(time / 60);
         let sec = Math.floor(time % 60);
 
-        min = (min < 10) ? '0' + min : min; // TODO: template literal
-        sec = (sec < 10) ? '0' + sec : sec; // TODO: template literal
-        return min + ':' + sec; // TODO: template literal
+        min = (min < 10) ? `0${min}` : min; // TODO: template literal    Corrected
+        sec = (sec < 10) ? `0${sec}` : sec; // TODO: template literal    Corrected
+        return `${min}:${sec}`; // TODO: template literal
     }
 
     showTime() {
         const minSecCurTime = this.#calcTime(this.#mediaElement.currentTime);
         const minSecDurat = this.#calcTime(this.#mediaElement.duration);
 
-        this.#container.textContent = minSecCurTime + ' / ' + minSecDurat; // TODO: template literal
+        this.#container.textContent = `${minSecCurTime} / ${minSecDurat}`; // TODO: template literal    Corrected
     }
 
     render() {
@@ -405,9 +386,6 @@ class ElementBuilder {
 
     constructor(elementName) {
         this.#tagName = elementName;
-        this.#classes = null;
-        this.#attributes = null;
-        this.#children = null;
     }
 
     setClasses(...classes) {
@@ -641,7 +619,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function createMovieSection(mainObj, main) {
 
         var makeSection = makeElem('section', mainObj.sectionClass, 'direction-description');
-        setAttribute(makeSection, { 'id': 'top-' + mainObj.position, 'data-name': mainObj.name, 'data-audio-name': mainObj.audioName }); // TODO: you don't need these attribute
+        setAttribute(makeSection, { 'id': 'top-' + mainObj.position}); // TODO: you don't need these attribute   Corrected
 
         var makeContainer = makeElem('div', 'container');
 
@@ -763,7 +741,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
             makeVideo.addEventListener('pause', function () {
-                var id = AnimationService.AnimationId;
+                var id = AnimationService.getAnimationId();
 
                 cancelAnimationFrame(id);
             });
