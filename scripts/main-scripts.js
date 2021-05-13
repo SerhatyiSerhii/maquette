@@ -1,6 +1,6 @@
 'use strict';
 
-function stopVideoPlaying(element) {
+function stopVideoPlaying(element) { // TODO: convert to es2015, including arrow function
     var elementParent = element.parentNode;
 
     element.pause();
@@ -16,14 +16,18 @@ function stopVideoPlaying(element) {
     }
 }
 
+// TODO: in the previous version you used static properties/methods
+// animation service currently working because you set id in non declared propety.
 class AnimationService {
     #requestAnimationFrameId = null;
 
     get AnimationId() {
+        console.log('I am not called');
         return this.#requestAnimationFrameId;
     }
 
     set AnimationId(id) {
+        console.log('I am not called either');
         this.#requestAnimationFrameId = id;
     }
 }
@@ -38,7 +42,7 @@ class ModalWindowComp {
     #movieName;
 
     constructor(audioSrc, movieName) {
-        this.#container = null;
+        this.#container = null; // TODO: since you declare fields in the class, you don't need to set fields to null
         this.#audio = null;
         this.#button = null;
         this.#mediaLength = null;
@@ -54,7 +58,7 @@ class ModalWindowComp {
 
         this.#container.classList.add('visually-hidden');
 
-        this.#container.addEventListener('transitionend', function closeMdlWindow(event) {
+        this.#container.addEventListener('transitionend', function closeMdlWindow(event) { // TODO: where is arrow function?
             if (event.propertyName === 'opacity') {
                 document.body.removeChild(self.#container);
                 self.#container.removeEventListener('transitionend', closeMdlWindow);
@@ -87,7 +91,7 @@ class ModalWindowComp {
             }
 
             if (isActive) {
-                self.#audio.play();
+                self.#audio.play(); // TODO: read about arrow functions. since they don't have own this, you don't need self anymore
             } else {
                 self.#audio.pause();
             }
@@ -95,7 +99,7 @@ class ModalWindowComp {
 
         const self = this;
         this.#audio = new ElementBuilder('audio').build();
-        this.#audio.setAttribute('src', 'audios/' + this.#audioSrc + '.ogg');
+        this.#audio.setAttribute('src', 'audios/' + this.#audioSrc + '.ogg'); // TODO: template literal
 
         this.#volume = new VolumeComp(this.#audio);
         const volume = this.#volume.render();
@@ -191,9 +195,9 @@ class ListenBtnComp {
 
             document.body.appendChild(modalWindow.render());
 
-            setTimeout(() => {
+            setTimeout(() => { // TODO: what for this setTimeout?
                 modalWindow.init();
-                setTimeout(() => {
+                setTimeout(() => { // and this?
                     modalWindow.showModalWindow();
                 }, 20);
             }, 20);
@@ -224,7 +228,7 @@ class PlayBtnComp {
         this.#buttonEl.addEventListener('click', () => {
             self.#buttonEl.classList.toggle('play-active');
 
-            var isActive = self.#buttonEl.classList.contains('play-active');
+            var isActive = self.#buttonEl.classList.contains('play-active'); // TODO: var
 
             self.#handler(isActive);
         });
@@ -248,7 +252,7 @@ class MediaLengthComp {
         const barWidth = this.#container.clientWidth;
         const inBarXCoor = this.#currentLength.getBoundingClientRect().left;
         const inBarPosition = ((event.pageX - inBarXCoor) / barWidth) * 100;
-        this.#currentLength.style.width = inBarPosition + '%';
+        this.#currentLength.style.width = inBarPosition + '%'; // TODO: template literal
 
         this.#mediaElement.currentTime = (inBarPosition * this.#mediaElement.duration) / 100;
     }
@@ -258,12 +262,12 @@ class MediaLengthComp {
 
         const position = (this.#mediaElement.currentTime / this.#mediaElement.duration) * 100;
 
-        this.#currentLength.style.width = position + '%';
+        this.#currentLength.style.width = position + '%'; // TODO: template literal
 
         onProgress();
 
         if (position < 100) {
-            var id = requestAnimationFrame(() => {
+            var id = requestAnimationFrame(() => { // TODO: var
                 self.progress(onProgress);
             });
 
@@ -307,7 +311,7 @@ class VolumeComp {
     }
 
     init() {
-        this.#volumeHandle.style.width = (this.#container.clientWidth - this.#label.clientWidth) + 'px';
+        this.#volumeHandle.style.width = (this.#container.clientWidth - this.#label.clientWidth) + 'px'; // TODO: template literal
     }
 
     #putVolumeHandle(event) {
@@ -324,7 +328,7 @@ class VolumeComp {
 
         const calcCenterOfLable = volHandlPos - halfLabel;
 
-        this.#volumeHandle.style.width = calcCenterOfLable + 'px';
+        this.#volumeHandle.style.width = calcCenterOfLable + 'px'; // TODO: template literal
 
         const volumeIndex = (calcCenterOfLable) / (this.#container.clientWidth - halfLabel * 2);
 
@@ -348,7 +352,7 @@ class VolumeComp {
 
             document.addEventListener('mousemove', moveLable);
 
-            document.addEventListener('mouseup', function oneMouseUp() {
+            document.addEventListener('mouseup', function oneMouseUp() { // TODO: arrow function
                 document.removeEventListener('mousemove', moveLable);
                 document.removeEventListener('mouseup', oneMouseUp);
             });
@@ -371,16 +375,16 @@ class TimerComp {
         let min = Math.floor(time / 60);
         let sec = Math.floor(time % 60);
 
-        min = (min < 10) ? '0' + min : min;
-        sec = (sec < 10) ? '0' + sec : sec;
-        return min + ':' + sec;
+        min = (min < 10) ? '0' + min : min; // TODO: template literal
+        sec = (sec < 10) ? '0' + sec : sec; // TODO: template literal
+        return min + ':' + sec; // TODO: template literal
     }
 
     showTime() {
         const minSecCurTime = this.#calcTime(this.#mediaElement.currentTime);
         const minSecDurat = this.#calcTime(this.#mediaElement.duration);
 
-        this.#container.textContent = minSecCurTime + ' / ' + minSecDurat;
+        this.#container.textContent = minSecCurTime + ' / ' + minSecDurat; // TODO: template literal
     }
 
     render() {
@@ -637,7 +641,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function createMovieSection(mainObj, main) {
 
         var makeSection = makeElem('section', mainObj.sectionClass, 'direction-description');
-        setAttribute(makeSection, { 'id': 'top-' + mainObj.position, 'data-name': mainObj.name, 'data-audio-name': mainObj.audioName });
+        setAttribute(makeSection, { 'id': 'top-' + mainObj.position, 'data-name': mainObj.name, 'data-audio-name': mainObj.audioName }); // TODO: you don't need these attribute
 
         var makeContainer = makeElem('div', 'container');
 
