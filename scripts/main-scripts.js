@@ -43,7 +43,6 @@ class FilmContentComp {
         movieAbout.textContent = this.#aboutMovie;
 
         const listenButton = new ListenBtnComp(this.#titleMovie, this.#audioName);
-
         const compDescription = new ElementBuilder('div').setClasses('film-description-content').setChildren([movieAbout, listenButton.render()]).build();
 
         this.#container = new ElementBuilder('div').setClasses('film-content').setChildren([compTitle, compDescription]).build();
@@ -97,7 +96,6 @@ class ModalWindowComp {
         this.#audio.volume = 1;
 
         this.#button.removePlayState();
-
         this.#mediaLength.reset();
     }
 
@@ -125,7 +123,7 @@ class ModalWindowComp {
         }
 
         this.#audio = new ElementBuilder('audio').build();
-        this.#audio.setAttribute('src', `audios/${this.#audioSrc}.ogg`);
+        this.#audio.setAttribute('src', `audios/${this.#audioSrc}.ogg`); // TODO: builder has this functionality
 
         this.#volume = new VolumeComp(this.#audio);
         const volume = this.#volume.render();
@@ -143,9 +141,7 @@ class ModalWindowComp {
         title.textContent = this.#movieName;
 
         const cross = new ElementBuilder('span').setClasses('close-listener-cross').build();
-
         const closeModWin = new ElementBuilder('a').setClasses('close-listener').setChildren([cross]).build();
-
         const modWind = new ElementBuilder('div').setClasses('soundtrack-listener').setChildren([this.#audio, volume, title, buttonElement, mediaLength, timerElement, closeModWin]).build();
 
         this.#container = new ElementBuilder('div').setClasses('substrate', 'visually-hidden').setChildren([modWind]).build();
@@ -209,17 +205,14 @@ class ListenBtnComp {
 
     render() {
         this.#container = new ElementBuilder('button').setClasses('listen').build();
-
         this.#container.textContent = 'listen';
 
         this.#container.addEventListener('click', () => {
-
             const modalWindow = new ModalWindowComp(this.#audioName, this.#movieName);
 
             document.body.appendChild(modalWindow.render());
 
             modalWindow.init();
-
             modalWindow.showModalWindow();
         });
 
@@ -267,8 +260,8 @@ class MediaLengthComp {
         const barWidth = this.#container.clientWidth;
         const inBarXCoor = this.#currentLength.getBoundingClientRect().left;
         const inBarPosition = ((event.pageX - inBarXCoor) / barWidth) * 100;
-        this.#currentLength.style.width = `${inBarPosition}%`;
 
+        this.#currentLength.style.width = `${inBarPosition}%`;
         this.#mediaElement.currentTime = (inBarPosition * this.#mediaElement.duration) / 100;
     }
 
@@ -294,7 +287,6 @@ class MediaLengthComp {
 
     render() {
         this.#currentLength = new ElementBuilder('div').setClasses('current-length').build();
-
         this.#container = new ElementBuilder('div').setClasses('media-length').setChildren([this.#currentLength]).build();
 
         this.#container.addEventListener('click', () => {
@@ -335,11 +327,9 @@ class VolumeComp {
         }
 
         const calcCenterOfLable = volHandlPos - halfLabel;
-
-        this.#volumeHandle.style.width = `${calcCenterOfLable}px`;
-
         const volumeIndex = (calcCenterOfLable) / (this.#container.clientWidth - halfLabel * 2);
 
+        this.#volumeHandle.style.width = `${calcCenterOfLable}px`;
         this.#mediaElement.volume = volumeIndex;
     }
 
@@ -349,7 +339,6 @@ class VolumeComp {
         this.#container = new ElementBuilder('div').setClasses('volume').setChildren([this.#volumeHandle]).build();
 
         this.#container.addEventListener('mousedown', (mouseDownEvent) => {
-
             this.#putVolumeHandle(mouseDownEvent);
 
             const moveLable = (event) => {
@@ -384,6 +373,7 @@ class TimerComp {
 
         min = (min < 10) ? `0${min}` : min;
         sec = (sec < 10) ? `0${sec}` : sec;
+
         return `${min}:${sec}`;
     }
 
@@ -395,9 +385,7 @@ class TimerComp {
     }
 
     render() {
-
         this.#container = new ElementBuilder('div').setClasses('timer').build();
-
         this.#container.textContent = '00:00 / 00:00';
 
         return this.#container;
