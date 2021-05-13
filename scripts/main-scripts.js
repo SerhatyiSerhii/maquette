@@ -1,6 +1,6 @@
 'use strict';
 
-const stopVideoPlaying = (element) => { // TODO: convert to es2015, including arrow function     Corrected
+const stopVideoPlaying = (element) => {
     const elementParent = element.parentNode;
 
     element.pause();
@@ -16,11 +16,8 @@ const stopVideoPlaying = (element) => { // TODO: convert to es2015, including ar
     }
 }
 
-// TODO: in the previous version you used static properties/methods
-// animation service currently working because you set id in non declared propety.
-//Corrected
 class AnimationService {
-    static #requestAnimationFrameId = null;
+    static #requestAnimationFrameId;
 
     static getAnimationId() {
         return this.#requestAnimationFrameId;
@@ -57,7 +54,7 @@ class ModalWindowComp {
             }
         }
 
-        this.#container.addEventListener('transitionend', closeMdlWindow); // TODO: where is arrow function?    Corrected
+        this.#container.addEventListener('transitionend', closeMdlWindow);
 
         this.#audio.pause();
         this.#audio.currentTime = 0;
@@ -85,14 +82,14 @@ class ModalWindowComp {
             }
 
             if (isActive) {
-                this.#audio.play(); // TODO: read about arrow functions. since they don't have own this, you don't need self anymore    Corrected
+                this.#audio.play();
             } else {
                 this.#audio.pause();
             }
         }
 
         this.#audio = new ElementBuilder('audio').build();
-        this.#audio.setAttribute('src', `audios/${this.#audioSrc}.ogg`); // TODO: template literal   Corrected
+        this.#audio.setAttribute('src', `audios/${this.#audioSrc}.ogg`);
 
         this.#volume = new VolumeComp(this.#audio);
         const volume = this.#volume.render();
@@ -188,13 +185,6 @@ class ListenBtnComp {
             modalWindow.init();
 
             modalWindow.showModalWindow();
-
-            // setTimeout(() => { // TODO: what for this setTimeout?     Corrected
-            //     modalWindow.init();
-            //     setTimeout(() => { // and this?
-            //         modalWindow.showModalWindow();
-            //     }, 20);
-            // }, 20);
         });
 
         return this.#container;
@@ -219,7 +209,7 @@ class PlayBtnComp {
         this.#buttonEl.addEventListener('click', () => {
             this.#buttonEl.classList.toggle('play-active');
 
-            const isActive = this.#buttonEl.classList.contains('play-active'); // TODO: var     Corrected
+            const isActive = this.#buttonEl.classList.contains('play-active');
 
             this.#handler(isActive);
         });
@@ -241,7 +231,7 @@ class MediaLengthComp {
         const barWidth = this.#container.clientWidth;
         const inBarXCoor = this.#currentLength.getBoundingClientRect().left;
         const inBarPosition = ((event.pageX - inBarXCoor) / barWidth) * 100;
-        this.#currentLength.style.width = `${inBarPosition}%`; // TODO: template literal    Corrected
+        this.#currentLength.style.width = `${inBarPosition}%`;
 
         this.#mediaElement.currentTime = (inBarPosition * this.#mediaElement.duration) / 100;
     }
@@ -249,12 +239,12 @@ class MediaLengthComp {
     progress(onProgress) {
         const position = (this.#mediaElement.currentTime / this.#mediaElement.duration) * 100;
 
-        this.#currentLength.style.width = `${position}%`; // TODO: template literal     Corrected
+        this.#currentLength.style.width = `${position}%`;
 
         onProgress();
 
         if (position < 100) {
-            const id = requestAnimationFrame(() => { // TODO: var    Corrected
+            const id = requestAnimationFrame(() => {
                 this.progress(onProgress);
             });
 
@@ -293,7 +283,7 @@ class VolumeComp {
     }
 
     init() {
-        this.#volumeHandle.style.width = `${(this.#container.clientWidth - this.#label.clientWidth)}px`; // TODO: template literal   Corrected
+        this.#volumeHandle.style.width = `${this.#container.clientWidth - this.#label.clientWidth}px`;
     }
 
     #putVolumeHandle(event) {
@@ -310,7 +300,7 @@ class VolumeComp {
 
         const calcCenterOfLable = volHandlPos - halfLabel;
 
-        this.#volumeHandle.style.width = `${calcCenterOfLable}px`; // TODO: template literal     Corrected
+        this.#volumeHandle.style.width = `${calcCenterOfLable}px`;
 
         const volumeIndex = (calcCenterOfLable) / (this.#container.clientWidth - halfLabel * 2);
 
@@ -337,7 +327,7 @@ class VolumeComp {
                 document.removeEventListener('mouseup', oneMouseUp);
             }
 
-            document.addEventListener('mouseup', oneMouseUp); // TODO: arrow function Corrected
+            document.addEventListener('mouseup', oneMouseUp);
         });
 
         return this.#container;
@@ -356,16 +346,16 @@ class TimerComp {
         let min = Math.floor(time / 60);
         let sec = Math.floor(time % 60);
 
-        min = (min < 10) ? `0${min}` : min; // TODO: template literal    Corrected
-        sec = (sec < 10) ? `0${sec}` : sec; // TODO: template literal    Corrected
-        return `${min}:${sec}`; // TODO: template literal
+        min = (min < 10) ? `0${min}` : min;
+        sec = (sec < 10) ? `0${sec}` : sec;
+        return `${min}:${sec}`;
     }
 
     showTime() {
         const minSecCurTime = this.#calcTime(this.#mediaElement.currentTime);
         const minSecDurat = this.#calcTime(this.#mediaElement.duration);
 
-        this.#container.textContent = `${minSecCurTime} / ${minSecDurat}`; // TODO: template literal    Corrected
+        this.#container.textContent = `${minSecCurTime} / ${minSecDurat}`;
     }
 
     render() {
@@ -619,7 +609,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function createMovieSection(mainObj, main) {
 
         var makeSection = makeElem('section', mainObj.sectionClass, 'direction-description');
-        setAttribute(makeSection, { 'id': 'top-' + mainObj.position}); // TODO: you don't need these attribute   Corrected
+        setAttribute(makeSection, { 'id': 'top-' + mainObj.position});
 
         var makeContainer = makeElem('div', 'container');
 
