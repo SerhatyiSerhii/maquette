@@ -16,6 +16,42 @@ const stopVideoPlaying = (element) => {
     }
 }
 
+class FilmContentComp {
+    #container;
+    #positionMovie;
+    #titleMovie;
+    #aboutMovie;
+    #audioName;
+
+    constructor(position, title, aboutMovie, audioName) {
+        this.#positionMovie = position;
+        this.#titleMovie = title;
+        this.#aboutMovie = aboutMovie;
+        this.#audioName = audioName;
+    }
+
+    render() {
+        const movieNumber = new ElementBuilder('span').build();
+        movieNumber.textContent = `.${this.#positionMovie}`;
+
+        const movieTitle = new ElementBuilder('h2').build();
+        movieTitle.textContent = this.#titleMovie;
+
+        const compTitle = new ElementBuilder('div').setClasses('film-title-content').setChildren([movieNumber, movieTitle]).build();
+
+        const movieAbout = new ElementBuilder('p').build();
+        movieAbout.textContent = this.#aboutMovie;
+
+        const listenButton = new ListenBtnComp(this.#titleMovie, this.#audioName);
+
+        const compDescription = new ElementBuilder('div').setClasses('film-description-content').setChildren([movieAbout, listenButton.render()]).build();
+
+        this.#container = new ElementBuilder('div').setClasses('film-content').setChildren([compTitle, compDescription]).build();
+
+        return this.#container;
+    }
+}
+
 class AnimationService {
     static #requestAnimationFrameId;
 
@@ -628,29 +664,11 @@ document.addEventListener('DOMContentLoaded', function () {
             insert(imgMap);
         }
 
-        var makeFilmContent = makeElem('div', 'film-content');
-
-        var makeFilmTitleContent = makeElem('div', 'film-title-content');
-
-        var makeSpan = makeElem('span');
-        makeSpan.textContent = '.' + mainObj.position;
-
-        var makeH2 = makeElem('h2');
-        makeH2.textContent = mainObj.name;
-
-        var makeFilmDescripContent = makeElem('div', 'film-description-content');
-
-        var makeAboutFilm = makeElem('p');
-        makeAboutFilm.textContent = mainObj.about;
-
-        var button = new ListenBtnComp(mainObj.name, mainObj.audioName);
+        var filmContent = new FilmContentComp(mainObj.position, mainObj.name, mainObj.about, mainObj.audioName);
 
         var map = new Map([
             [makeSection, [makeContainer]],
             [makeContainer, [makeDescriptionContent]],
-            [makeFilmTitleContent, [makeSpan, makeH2]],
-            [makeFilmContent, [makeFilmTitleContent, makeFilmDescripContent]],
-            [makeFilmDescripContent, [makeAboutFilm, button.render()]],
             [main, [makeSection]]
         ]);
 
@@ -660,13 +678,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
         switch (mainObj.sectionClass) {
             case 'straight-direction-description':
-                sectionMap.set(makeDescriptionContent, [makeFilmImage, makeFilmContent]);
+                sectionMap.set(makeDescriptionContent, [makeFilmImage, filmContent.render()]);
                 break;
             case 'reverse-direction-description':
-                sectionMap.set(makeDescriptionContent, [makeFilmContent, makeFilmImage]);
+                sectionMap.set(makeDescriptionContent, [filmContent.render(), makeFilmImage]);
                 break;
             default:
-                sectionMap.set(makeDescriptionContent, [makeFilmContent]);
+                sectionMap.set(makeDescriptionContent, [filmContent.render()]);
                 break;
         }
 
