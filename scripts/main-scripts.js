@@ -16,402 +16,437 @@ function stopVideoPlaying(element) {
     }
 }
 
-function AnimationService() { }
+class AnimationService {
+    #requestAnimationFrameId = null;
 
-AnimationService._requestAnimationFrameId = null;
-
-AnimationService.setAnimationId = function (id) {
-    AnimationService._requestAnimationFrameId = id;
-}
-
-AnimationService.getAnimationId = function () {
-    return AnimationService._requestAnimationFrameId;
-}
-
-// Modale window component
-function ModalWindowComp(audioSrc, movieName) {
-    this._container = null;
-    this._audio = null;
-    this._button = null;
-    this._mediaLength = null;
-    this._timer = null; // TODO: what for?
-    this._title = null; // TODO: what for?
-    this._volume = null;
-    this._audioSrc = audioSrc;
-    this._movieName = movieName;
-}
-
-ModalWindowComp.prototype._closeListener = function () {
-    var self = this;
-
-    document.body.classList.remove('lock');
-
-    this._container.classList.add('visually-hidden');
-
-    this._container.addEventListener('transitionend', function closeMdlWindow(event) {
-        if (event.propertyName === 'opacity') {
-            document.body.removeChild(self._container);
-            self._container.removeEventListener('transitionend', closeMdlWindow);
-        }
-    });
-
-    this._audio.pause();
-    this._audio.currentTime = 0;
-    this._audio.volume = 1;
-
-    this._button.removePlayState();
-
-    this._mediaLength.reset();
-}
-
-ModalWindowComp.prototype.removeHiddenClass = function () {
-    this._container.style.display = 'flex'; // TODO: what for? it looks like doing nothing
-}
-
-ModalWindowComp.prototype.showModalWindow = function () {
-    this._container.classList.remove('visually-hidden');
-}
-
-ModalWindowComp.prototype.init = function () { // TODO: where do you use what it returns?
-    return this._volume.init();
-}
-
-ModalWindowComp.prototype.render = function () {
-    var self = this;
-    this._audio = new ElementBuilder('audio').build();
-    this._audio.setAttribute('src', 'audios/' + this._audioSrc + '.ogg');
-
-    this._volume = new VolumeComp(this._audio);
-    var volume = this._volume.render();
-
-    this._button = new PlayBtnComp(btnHandler);
-    var buttonEl = this._button.render();
-
-    this._mediaLength = new MediaLengthComp(this._audio);
-    var mediaLength = this._mediaLength.render();
-
-    this._timer = new TimerComp(this._audio);
-    var timer = this._timer.render();
-
-    this._title = new ElementBuilder('h2').setClasses('listener-title').build();
-    this._title.textContent = this._movieName;
-
-    var cross = new ElementBuilder('span').setClasses('close-listener-cross').build();
-
-    var closeModWin = new ElementBuilder('a').setClasses('close-listener').setChildren([cross]).build();
-
-    var modWind = new ElementBuilder('div').setClasses('soundtrack-listener').setChildren([this._audio, volume, this._title, buttonEl, mediaLength, timer, closeModWin]).build();
-
-    this._container = new ElementBuilder('div').setClasses('substrate', 'visually-hidden').setChildren([modWind]).build();
-
-    this._container.addEventListener('click', function (event) {
-        var element = event.target;
-
-        while (element != null && element !== modWind) {
-            element = element.parentNode;
-        }
-
-        if (element == null) {
-            self._closeListener();
-        }
-    });
-
-    closeModWin.addEventListener('click', function () {
-        self._closeListener();
-    });
-
-    this._audio.addEventListener('canplay', function () {
-        self._timer.showTime();
-    });
-
-    this._audio.addEventListener('ended', function () {
-        setTimeout(function () {
-            self._button.removePlayState();
-            self._mediaLength.reset();
-            self._audio.currentTime = 0;
-            self._timer.showTime();
-        }, 500)
-    });
-
-    this._audio.addEventListener('playing', function () {
-        self._mediaLength.progress(function () {
-            self._timer.showTime();
-        });
-    });
-
-    this._audio.addEventListener('pause', function () {
-        var id = AnimationService.getAnimationId();
-
-        cancelAnimationFrame(id);
-    });
-
-    function btnHandler(isActive) {
-        var allVideos = document.getElementsByTagName('video');
-
-        for (var j = 0; j < allVideos.length; j++) {
-            stopVideoPlaying(allVideos[j]);
-        }
-
-        if (isActive) {
-            self._audio.play();
-        } else {
-            self._audio.pause();
-        }
+    get AnimationId() {
+        return this.#requestAnimationFrameId;
     }
 
-    document.body.classList.add('lock');
-
-    return this._container;
+    set AnimationId(id) {
+        this.#requestAnimationFrameId = id;
+    }
 }
 
-function ListenBtnComp(movieName, audioName) {
-    this._container = null;
-    this._movieName = movieName;
-    this._audioName = audioName;
+class ModalWindowComp {
+    #container;
+    #audio;
+    #button;
+    #mediaLength;
+    #volume;
+    #audioSrc;
+    #movieName;
+
+    constructor(audioSrc, movieName) {
+        this.#container = null;
+        this.#audio = null;
+        this.#button = null;
+        this.#mediaLength = null;
+        this.#volume = null;
+        this.#audioSrc = audioSrc;
+        this.#movieName = movieName;
+    }
+
+    #closeListener() {
+        const self = this;
+
+        document.body.classList.remove('lock');
+
+        this.#container.classList.add('visually-hidden');
+
+        this.#container.addEventListener('transitionend', function closeMdlWindow(event) {
+            if (event.propertyName === 'opacity') {
+                document.body.removeChild(self.#container);
+                self.#container.removeEventListener('transitionend', closeMdlWindow);
+            }
+        });
+
+        this.#audio.pause();
+        this.#audio.currentTime = 0;
+        this.#audio.volume = 1;
+
+        this.#button.removePlayState();
+
+        this.#mediaLength.reset();
+    }
+
+    showModalWindow() {
+        this.#container.classList.remove('visually-hidden');
+    }
+
+    init() {
+        this.#volume.init();
+    }
+
+    render() {
+        const btnHandler = (isActive) => {
+            const allVideos = document.getElementsByTagName('video');
+
+            for (let j = 0; j < allVideos.length; j++) {
+                stopVideoPlaying(allVideos[j]);
+            }
+
+            if (isActive) {
+                self.#audio.play();
+            } else {
+                self.#audio.pause();
+            }
+        }
+
+        const self = this;
+        this.#audio = new ElementBuilder('audio').build();
+        this.#audio.setAttribute('src', 'audios/' + this.#audioSrc + '.ogg');
+
+        this.#volume = new VolumeComp(this.#audio);
+        const volume = this.#volume.render();
+
+        this.#button = new PlayBtnComp(btnHandler);
+        const buttonElement = this.#button.render();
+
+        this.#mediaLength = new MediaLengthComp(this.#audio);
+        const mediaLength = this.#mediaLength.render();
+
+        const timer = new TimerComp(this.#audio);
+        const timerElement = timer.render();
+
+        const title = new ElementBuilder('h2').setClasses('listener-title').build();
+        title.textContent = this.#movieName;
+
+        const cross = new ElementBuilder('span').setClasses('close-listener-cross').build();
+
+        const closeModWin = new ElementBuilder('a').setClasses('close-listener').setChildren([cross]).build();
+
+        const modWind = new ElementBuilder('div').setClasses('soundtrack-listener').setChildren([this.#audio, volume, title, buttonElement, mediaLength, timerElement, closeModWin]).build();
+
+        this.#container = new ElementBuilder('div').setClasses('substrate', 'visually-hidden').setChildren([modWind]).build();
+
+        this.#container.addEventListener('click', (event) => {
+            let element = event.target;
+
+            while (element != null && element !== modWind) {
+                element = element.parentNode;
+            }
+
+            if (element == null) {
+                self.#closeListener();
+            }
+        });
+
+        closeModWin.addEventListener('click', () => {
+            self.#closeListener()
+        });
+
+        this.#audio.addEventListener('canplay', () => {
+            timer.showTime();
+        });
+
+        this.#audio.addEventListener('ended', () => {
+            setTimeout(() => {
+                self.#button.removePlayState();
+                self.#mediaLength.reset();
+                self.#audio.currentTime = 0;
+                timer.showTime();
+            }, 500)
+        });
+
+        this.#audio.addEventListener('playing', () => {
+            self.#mediaLength.progress(() => {
+                timer.showTime();
+            });
+        });
+
+        this.#audio.addEventListener('pause', () => {
+            const id = AnimationService.AnimationId;
+
+            cancelAnimationFrame(id);
+        });
+
+        document.body.classList.add('lock');
+
+        return this.#container;
+    }
 }
 
-ListenBtnComp.prototype.render = function () {
-    var self = this;
+class ListenBtnComp {
+    #container;
+    #movieName;
+    #audioName;
 
-    this._container = new ElementBuilder('button').setClasses('listen').build();
+    constructor(movieName, audioName) {
+        this.#container = null;
+        this.#movieName = movieName;
+        this.#audioName = audioName;
+    }
 
-    this._container.textContent = 'listen';
+    render() {
+        const self = this;
 
-    this._container.addEventListener('click', function () {
+        this.#container = new ElementBuilder('button').setClasses('listen').build();
 
-        var modalWindow = new ModalWindowComp(self._audioName, self._movieName);
+        this.#container.textContent = 'listen';
 
-        document.body.appendChild(modalWindow.render());
+        this.#container.addEventListener('click', () => {
 
-        setTimeout(function () {
-            modalWindow.removeHiddenClass();
-            modalWindow.init();
-            setTimeout(function () {
-                modalWindow.showModalWindow();
+            const modalWindow = new ModalWindowComp(self.#audioName, self.#movieName);
+
+            document.body.appendChild(modalWindow.render());
+
+            setTimeout(() => {
+                modalWindow.init();
+                setTimeout(() => {
+                    modalWindow.showModalWindow();
+                }, 20);
             }, 20);
-        }, 20);
-    });
-
-    return this._container;
-}
-
-function PlayBtnComp(handler) {
-    this._buttonEl = null;
-    this._handler = handler;
-}
-
-PlayBtnComp.prototype.removePlayState = function () {
-    this._buttonEl.classList.remove('play-active');
-}
-
-PlayBtnComp.prototype.render = function () {
-    this._buttonEl = new ElementBuilder('button').setClasses('btn-play').build();
-
-    var self = this;
-
-    this._buttonEl.addEventListener('click', function () {
-        self._buttonEl.classList.toggle('play-active');
-
-        var isActive = self._buttonEl.classList.contains('play-active');
-
-        self._handler(isActive);
-    });
-
-    return this._buttonEl;
-}
-
-function MediaLengthComp(mediaElement) {
-    this._container = null;
-    this._currentLength = null;
-    this._mediaElement = mediaElement;
-}
-
-MediaLengthComp.prototype._setMediaVolumeInBarWidth = function (event) {
-    var barWidth = this._container.clientWidth;
-    var inBarXCoor = this._currentLength.getBoundingClientRect().left;
-    var inBarPosition = ((event.pageX - inBarXCoor) / barWidth) * 100;
-    this._currentLength.style.width = inBarPosition + '%';
-
-    this._mediaElement.currentTime = (inBarPosition * this._mediaElement.duration) / 100;
-}
-
-MediaLengthComp.prototype.progress = function (onProgress) {
-    var self = this;
-
-    var position = (this._mediaElement.currentTime / this._mediaElement.duration) * 100;
-
-    this._currentLength.style.width = position + '%';
-
-    onProgress();
-
-    if (position < 100) {
-        var id = requestAnimationFrame(function () {
-            self.progress(onProgress);
         });
 
-        AnimationService.setAnimationId(id);
+        return this.#container;
     }
 }
 
-MediaLengthComp.prototype.reset = function () {
-    this._currentLength.style.width = 0;
-}
+class PlayBtnComp {
+    #buttonEl;
+    #handler;
 
-MediaLengthComp.prototype.render = function () {
-    this._currentLength = new ElementBuilder('div').setClasses('current-length').build();
-
-    this._container = new ElementBuilder('div').setClasses('media-length').setChildren([this._currentLength]).build();
-
-    var self = this;
-
-    this._container.addEventListener('click', function () {
-        var id = AnimationService.getAnimationId();
-
-        cancelAnimationFrame(id);
-        self._setMediaVolumeInBarWidth(event);
-    });
-
-    return this._container;
-}
-
-function VolumeComp(mediaElement) {
-    this._container = null;
-    this._label = null;
-    this._volumeHandle = null;
-    this._mediaElement = mediaElement;
-}
-
-VolumeComp.prototype.init = function () { // TODO: where do you use what it returns?
-    return this._volumeHandle.style.width = (this._container.clientWidth - this._label.clientWidth) + 'px';
-}
-
-VolumeComp.prototype._putVolumeHandle = function (event) {
-    var halfLabel = this._label.clientWidth / 2;
-    var volumeLeftCoor = this._volumeHandle.getBoundingClientRect().left;
-    var volHandlPos = event.pageX - volumeLeftCoor;
-    var elMaxWidth = this._container.clientWidth - halfLabel;
-
-    if (volHandlPos >= elMaxWidth) {
-        volHandlPos = elMaxWidth;
-    } else if (volHandlPos <= halfLabel) {
-        volHandlPos = halfLabel;
+    constructor(handler) {
+        this.#buttonEl = null;
+        this.#handler = handler;
     }
 
-    var calcCenterOfLable = volHandlPos - halfLabel;
+    removePlayState() {
+        this.#buttonEl.classList.remove('play-active');
+    }
 
-    this._volumeHandle.style.width = calcCenterOfLable + 'px';
+    render() {
+        this.#buttonEl = new ElementBuilder('button').setClasses('btn-play').build();
 
-    var volumeIndex = (calcCenterOfLable) / (this._container.clientWidth - halfLabel * 2);
+        const self = this;
 
-    this._mediaElement.volume = volumeIndex;
-}
+        this.#buttonEl.addEventListener('click', () => {
+            self.#buttonEl.classList.toggle('play-active');
 
-VolumeComp.prototype.render = function () {
-    this._label = new ElementBuilder('div').setClasses('label').build();
-    this._volumeHandle = new ElementBuilder('div').setClasses('volume-handle').setChildren([this._label]).build();
-    this._container = new ElementBuilder('div').setClasses('volume').setChildren([this._volumeHandle]).build();
+            var isActive = self.#buttonEl.classList.contains('play-active');
 
-    var self = this;
-
-    this._container.addEventListener('mousedown', function (mouseDownEvent) {
-
-        self._putVolumeHandle(mouseDownEvent);
-
-        document.addEventListener('mousemove', moveLable);
-
-        function moveLable(event) {
-            self._putVolumeHandle(event);
-        }
-
-        document.addEventListener('mouseup', function oneMouseUp() {
-            document.removeEventListener('mousemove', moveLable);
-            document.removeEventListener('mouseup', oneMouseUp);
+            self.#handler(isActive);
         });
-    });
 
-    return this._container;
+        return this.#buttonEl;
+    }
 }
 
-function TimerComp(mediaElement) {
-    this._container = null;
-    this._mediaElement = mediaElement;
-}
+class MediaLengthComp {
+    #container;
+    #currentLength;
+    #mediaElement;
 
-TimerComp.prototype._calcTime = function (time) {
-    var min = Math.floor(time / 60);
-    var sec = Math.floor(time % 60);
+    constructor(mediaElement) {
+        this.#container = null;
+        this.#currentLength = null;
+        this.#mediaElement = mediaElement;
+    }
 
-    min = (min < 10) ? '0' + min : min;
-    sec = (sec < 10) ? '0' + sec : sec;
-    return min + ':' + sec;
-}
+    #setMediaVolumeInBarWidth(event) {
+        const barWidth = this.#container.clientWidth;
+        const inBarXCoor = this.#currentLength.getBoundingClientRect().left;
+        const inBarPosition = ((event.pageX - inBarXCoor) / barWidth) * 100;
+        this.#currentLength.style.width = inBarPosition + '%';
 
-TimerComp.prototype.showTime = function () {
-    var minSecCurTime = this._calcTime(this._mediaElement.currentTime);
-    var minSecDurat = this._calcTime(this._mediaElement.duration);
+        this.#mediaElement.currentTime = (inBarPosition * this.#mediaElement.duration) / 100;
+    }
 
-    this._container.textContent = minSecCurTime + ' / ' + minSecDurat;
-}
+    progress(onProgress) {
+        const self = this;
 
-TimerComp.prototype.render = function () {
+        const position = (this.#mediaElement.currentTime / this.#mediaElement.duration) * 100;
 
-    this._container = new ElementBuilder('div').setClasses('timer').build();
+        this.#currentLength.style.width = position + '%';
 
-    this._container.textContent = '00:00 / 00:00';
+        onProgress();
 
-    return this._container;
-}
+        if (position < 100) {
+            var id = requestAnimationFrame(() => {
+                self.progress(onProgress);
+            });
 
-function ElementBuilder(elementName) {
-    this._tagName = elementName;
-    this._classes = null;
-    this._attributes = null;
-    this._children = null;
-}
-
-ElementBuilder.prototype.setClasses = function (...classes) {
-
-    this._classes = classes;
-
-    return this;
-}
-
-ElementBuilder.prototype.setAttributes = function (obj) {
-
-    this._attributes = obj;
-
-    return this;
-}
-
-ElementBuilder.prototype.setChildren = function (children) {
-
-    this._children = children;
-
-    return this;
-}
-
-ElementBuilder.prototype.build = function () {
-    var element = document.createElement(this._tagName);
-
-    if (this._classes != null) {
-        for (var item of this._classes) {
-            element.classList.add(item);
+            AnimationService.AnimationId = id;
         }
     }
 
-    for (var key in this._attributes) {
-        if (this._attributes.hasOwnProperty(key)) {
-            element.setAttribute(key, this._attributes[key]);
-        }
+    reset() {
+        this.#currentLength.style.width = 0;
     }
 
-    if (this._children != null) {
-        for (var child of this._children) {
-            element.appendChild(child);
-        }
+    render() {
+        this.#currentLength = new ElementBuilder('div').setClasses('current-length').build();
+
+        this.#container = new ElementBuilder('div').setClasses('media-length').setChildren([this.#currentLength]).build();
+
+        const self = this;
+
+        this.#container.addEventListener('click', () => {
+            const id = AnimationService.AnimationId;
+
+            cancelAnimationFrame(id);
+            self.#setMediaVolumeInBarWidth(event);
+        });
+
+        return this.#container;
+    }
+}
+
+class VolumeComp {
+    #container;
+    #label;
+    #volumeHandle;
+    #mediaElement;
+
+    constructor(mediaElement) {
+        this.#container = null;
+        this.#label = null;
+        this.#volumeHandle = null;
+        this.#mediaElement = mediaElement;
     }
 
-    return element;
+    init() {
+        this.#volumeHandle.style.width = (this.#container.clientWidth - this.#label.clientWidth) + 'px';
+    }
+
+    #putVolumeHandle(event) {
+        const halfLabel = this.#label.clientWidth / 2;
+        const volumeLeftCoor = this.#volumeHandle.getBoundingClientRect().left;
+        let volHandlPos = event.pageX - volumeLeftCoor;
+        const elMaxWidth = this.#container.clientWidth - halfLabel;
+
+        if (volHandlPos >= elMaxWidth) {
+            volHandlPos = elMaxWidth;
+        } else if (volHandlPos <= halfLabel) {
+            volHandlPos = halfLabel;
+        }
+
+        const calcCenterOfLable = volHandlPos - halfLabel;
+
+        this.#volumeHandle.style.width = calcCenterOfLable + 'px';
+
+        const volumeIndex = (calcCenterOfLable) / (this.#container.clientWidth - halfLabel * 2);
+
+        this.#mediaElement.volume = volumeIndex;
+    }
+
+    render() {
+        this.#label = new ElementBuilder('div').setClasses('label').build();
+        this.#volumeHandle = new ElementBuilder('div').setClasses('volume-handle').setChildren([this.#label]).build();
+        this.#container = new ElementBuilder('div').setClasses('volume').setChildren([this.#volumeHandle]).build();
+
+        const self = this;
+
+        this.#container.addEventListener('mousedown', (mouseDownEvent) => {
+
+            self.#putVolumeHandle(mouseDownEvent);
+
+            const moveLable = (event) => {
+                self.#putVolumeHandle(event);
+            }
+
+            document.addEventListener('mousemove', moveLable);
+
+            document.addEventListener('mouseup', function oneMouseUp() {
+                document.removeEventListener('mousemove', moveLable);
+                document.removeEventListener('mouseup', oneMouseUp);
+            });
+        });
+
+        return this.#container;
+    }
+}
+
+class TimerComp {
+    #container;
+    #mediaElement;
+
+    constructor(mediaElement) {
+        this.#container = null;
+        this.#mediaElement = mediaElement;
+    }
+
+    #calcTime(time) {
+        let min = Math.floor(time / 60);
+        let sec = Math.floor(time % 60);
+
+        min = (min < 10) ? '0' + min : min;
+        sec = (sec < 10) ? '0' + sec : sec;
+        return min + ':' + sec;
+    }
+
+    showTime() {
+        const minSecCurTime = this.#calcTime(this.#mediaElement.currentTime);
+        const minSecDurat = this.#calcTime(this.#mediaElement.duration);
+
+        this.#container.textContent = minSecCurTime + ' / ' + minSecDurat;
+    }
+
+    render() {
+
+        this.#container = new ElementBuilder('div').setClasses('timer').build();
+
+        this.#container.textContent = '00:00 / 00:00';
+
+        return this.#container;
+    }
+}
+
+class ElementBuilder {
+    #tagName;
+    #classes;
+    #attributes;
+    #children;
+
+    constructor(elementName) {
+        this.#tagName = elementName;
+        this.#classes = null;
+        this.#attributes = null;
+        this.#children = null;
+    }
+
+    setClasses(...classes) {
+        this.#classes = classes;
+
+        return this;
+    }
+
+    setAttributes(obj) {
+        this.#attributes = obj;
+
+        return this;
+    }
+
+    setChildren(children) {
+        this.#children = children;
+
+        return this;
+    }
+
+   build() {
+        const element = document.createElement(this.#tagName);
+
+        if (this.#classes != null) {
+            for (let item of this.#classes) {
+                element.classList.add(item);
+            }
+        }
+
+        for (let key in this.#attributes) {
+            if (this.#attributes.hasOwnProperty(key)) {
+                element.setAttribute(key, this.#attributes[key]);
+            }
+        }
+
+        if (this.#children != null) {
+            for (let child of this.#children) {
+                element.appendChild(child);
+            }
+        }
+
+        return element;
+    }
 }
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -724,7 +759,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
             makeVideo.addEventListener('pause', function () {
-                var id = AnimationService.getAnimationId();
+                var id = AnimationService.AnimationId;
 
                 cancelAnimationFrame(id);
             });

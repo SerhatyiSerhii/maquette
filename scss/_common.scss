@@ -89,7 +89,7 @@ h2 {
     top: 0;
     z-index: 5;
     transition: 0.3s;
-    display: none; // TODO: what for? it looks like doing nothing
+    display: flex;
     justify-content: center;
     align-items: center;
 
