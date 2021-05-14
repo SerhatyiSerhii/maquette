@@ -16,6 +16,84 @@ const stopVideoPlaying = (element) => {
     }
 }
 
+class SliderFrameComp {
+    #container;
+    #element;
+
+    constructor(element) {
+        this.#element = element;
+    }
+
+    render() {
+        const source = new ElementBuilder('source').setAttributes({'src': this.#element.src}).build();
+
+        const video = new ElementBuilder('video').setChildren(source).build();
+
+        const timer = new TimerComp(video);
+
+        video.addEventListener('canplay', () => {
+            timer.showTime();
+        });
+
+        video.addEventListener('pause', () => {
+            const id = AnimationService.getAnimationId();
+
+            cancelAnimationFrame(id);
+        });
+
+        const volume = new VolumeComp(video);
+
+        const mediaLength = new MediaLengthComp(video);
+
+        video.addEventListener('playing', () => {
+            mediaLength.progress(() => {
+                timer.showTime();
+            });
+        });
+
+        video.addEventListener('ended', () => {
+            setTimeout(() => {
+                stopVideoPlaying(video);
+                mediaLength.reset();
+                video.currentTime = 0;
+            }, 500);
+        });
+
+        const videoControls = new ElementBuilder('div').setClasses('video-controls').setChildren(volume.render(), mediaLength.render()).build();
+
+        const videoWrapper = new ElementBuilder('div').setClasses('video-wrapper').setChildren(video, timer.render(), videoControls).build();
+
+        const image = new ElementBuilder('img').setAttributes({'src': this.#element.imgSrc, 'alt': this.#element.imgAlt}).build();
+
+        const handler = (isActive) => {
+            image.style.display = isActive ? 'none' : 'block';
+
+            const currentVideo = video;
+            const allVideos = document.querySelectorAll('video');
+
+            for (let video of allVideos) {
+                if (video !== currentVideo) {
+                    stopVideoPlaying(video);
+                }
+            }
+
+            if (isActive) {
+                currentVideo.play();
+            } else {
+                currentVideo.pause();
+            }
+        }
+
+        const button = new PlayBtnComp(handler);
+
+        const frame = new ElementBuilder('div').setClasses('frame').setChildren(videoWrapper, image, button.render()).build();
+
+        this.#container = new ElementBuilder('li').setChildren(frame).build();
+
+        return this.#container;
+    }
+}
+
 class MovieSectionComp {
     #container;
     #options;
@@ -35,25 +113,25 @@ class MovieSectionComp {
             picture.setAttributes({'src': this.#options.imgSrc, 'alt': this.#options.imgAlt});
         }
 
-        const filmImage = new ElementBuilder('div').setClasses('film-image').setChildren([picture.build()]).build();
+        const filmImage = new ElementBuilder('div').setClasses('film-image').setChildren(picture.build()).build();
         const filmContent = new FilmContentComp(this.#options.position, this.#options.name, this.#options.about, this.#options.audioName).render();
         const descriptionContent = new ElementBuilder('div').setClasses('description-content');
 
         switch (this.#options.sectionClass) {
             case 'straight-direction-description':
-                descriptionContent.setChildren([filmImage, filmContent]);
+                descriptionContent.setChildren(filmImage, filmContent);
                 break;
             case 'reverse-direction-description':
-                descriptionContent.setChildren([filmContent, filmImage]);
+                descriptionContent.setChildren(filmContent, filmImage);
                 break;
             default:
-                descriptionContent.setChildren([filmContent]);
+                descriptionContent.setChildren(filmContent);
                 break;
         }
 
-        const container = new ElementBuilder('div').setClasses('container').setChildren([descriptionContent.build()]).build();
+        const container = new ElementBuilder('div').setClasses('container').setChildren(descriptionContent.build()).build();
 
-        return this.#container.setChildren([container]).build();
+        return this.#container.setChildren(container).build();
     }
 }
 
@@ -78,15 +156,15 @@ class FilmContentComp {
         const movieTitle = new ElementBuilder('h2').build();
         movieTitle.textContent = this.#titleMovie;
 
-        const compTitle = new ElementBuilder('div').setClasses('film-title-content').setChildren([movieNumber, movieTitle]).build();
+        const compTitle = new ElementBuilder('div').setClasses('film-title-content').setChildren(movieNumber, movieTitle).build();
 
         const movieAbout = new ElementBuilder('p').build();
         movieAbout.textContent = this.#aboutMovie;
 
         const listenButton = new ListenBtnComp(this.#titleMovie, this.#audioName);
-        const compDescription = new ElementBuilder('div').setClasses('film-description-content').setChildren([movieAbout, listenButton.render()]).build();
+        const compDescription = new ElementBuilder('div').setClasses('film-description-content').setChildren(movieAbout, listenButton.render()).build();
 
-        this.#container = new ElementBuilder('div').setClasses('film-content').setChildren([compTitle, compDescription]).build();
+        this.#container = new ElementBuilder('div').setClasses('film-content').setChildren(compTitle, compDescription).build();
 
         return this.#container;
     }
@@ -181,10 +259,10 @@ class ModalWindowComp {
         title.textContent = this.#movieName;
 
         const cross = new ElementBuilder('span').setClasses('close-listener-cross').build();
-        const closeModWin = new ElementBuilder('a').setClasses('close-listener').setChildren([cross]).build();
-        const modWind = new ElementBuilder('div').setClasses('soundtrack-listener').setChildren([this.#audio, volume, title, buttonElement, mediaLength, timerElement, closeModWin]).build();
+        const closeModWin = new ElementBuilder('a').setClasses('close-listener').setChildren(cross).build();
+        const modWind = new ElementBuilder('div').setClasses('soundtrack-listener').setChildren(this.#audio, volume, title, buttonElement, mediaLength, timerElement, closeModWin).build();
 
-        this.#container = new ElementBuilder('div').setClasses('substrate', 'visually-hidden').setChildren([modWind]).build();
+        this.#container = new ElementBuilder('div').setClasses('substrate', 'visually-hidden').setChildren(modWind).build();
 
         this.#container.addEventListener('click', (event) => {
             let element = event.target;
@@ -327,7 +405,7 @@ class MediaLengthComp {
 
     render() {
         this.#currentLength = new ElementBuilder('div').setClasses('current-length').build();
-        this.#container = new ElementBuilder('div').setClasses('media-length').setChildren([this.#currentLength]).build();
+        this.#container = new ElementBuilder('div').setClasses('media-length').setChildren(this.#currentLength).build();
 
         this.#container.addEventListener('click', () => {
             const id = AnimationService.getAnimationId();
@@ -375,8 +453,8 @@ class VolumeComp {
 
     render() {
         this.#label = new ElementBuilder('div').setClasses('label').build();
-        this.#volumeHandle = new ElementBuilder('div').setClasses('volume-handle').setChildren([this.#label]).build();
-        this.#container = new ElementBuilder('div').setClasses('volume').setChildren([this.#volumeHandle]).build();
+        this.#volumeHandle = new ElementBuilder('div').setClasses('volume-handle').setChildren(this.#label).build();
+        this.#container = new ElementBuilder('div').setClasses('volume').setChildren(this.#volumeHandle).build();
 
         this.#container.addEventListener('mousedown', (mouseDownEvent) => {
             this.#putVolumeHandle(mouseDownEvent);
@@ -454,7 +532,7 @@ class ElementBuilder {
         return this;
     }
 
-    setChildren(children) { // TODO: looks like it's also better to redo as classes with rest operator
+    setChildren(...children) { // TODO: looks like it's also better to redo as classes with rest operator    Corrected
         this.#children = children;
 
         return this;
@@ -670,15 +748,15 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Adding movie section
-    function createMovieSection(mainObj, main) { // TODO: remove this function
-        var filmContent = new MovieSectionComp(mainObj);
+    // function createMovieSection(mainObj, main) { // TODO: remove this function    Removed
+    //     var filmContent = new MovieSectionComp(mainObj);
 
-        var map = new Map([
-            [main, [filmContent.render()]]
-        ]);
+    //     var map = new Map([
+    //         [main, [filmContent.render()]]
+    //     ]);
 
-        insert(map);
-    }
+    //     insert(map);
+    // }
 
     // Adding slider
     function createSlider(array, main) {
@@ -725,128 +803,129 @@ document.addEventListener('DOMContentLoaded', function () {
         var makeUL = makeElem('ul');
 
         array.forEach(function (element) {
-            // TODO: fix the errors in TODOs below and then move this to SliderFrameComp
-            var makeListItm = makeElem('li');
 
-            var makeFrame = makeElem('div', 'frame');
+            makeUL.appendChild(new SliderFrameComp(element).render());
 
-            var makeVideoWrapper = makeElem('div', 'video-wrapper');
+            // TODO: fix the errors in TODOs below and then move this to SliderFrameComp     Moved
+            // var makeListItm = makeElem('li');
 
-            var makeVideo = makeElem('video');
+            // var makeFrame = makeElem('div', 'frame');
 
-            makeVideo.addEventListener('canplay', function () {
-                timer.showTime();
-            });
+            // var makeVideoWrapper = makeElem('div', 'video-wrapper');
 
-            makeVideo.addEventListener('pause', function () {
-                var id = AnimationService.getAnimationId();
+            // var makeVideo = makeElem('video');
 
-                cancelAnimationFrame(id);
-            });
+            // makeVideo.addEventListener('canplay', function () {
+            //     timer.showTime();
+            // });
 
-            var makeSource = makeElem('source');
-            setAttribute(makeSource, { 'src': element.src });
+            // makeVideo.addEventListener('pause', function () {
+            //     var id = AnimationService.getAnimationId();
 
-            var timer = new TimerComp(makeVideo);
+            //     cancelAnimationFrame(id);
+            // });
 
-            var makeVideoControls = makeElem('div', 'video-controls');
+            // var makeSource = makeElem('source');
+            // setAttribute(makeSource, { 'src': element.src });
 
-            var volume = new VolumeComp(makeVideo);
+            // var timer = new TimerComp(makeVideo);
 
-            var makeVolume = volume.render();
+            // var makeVideoControls = makeElem('div', 'video-controls');
 
-            var mediaLength = new MediaLengthComp(makeVideo);
+            // var volume = new VolumeComp(makeVideo);
 
-            makeVideo.addEventListener('playing', function () {
-                mediaLength.progress(function () {
-                    timer.showTime();
-                });
-            });
+            // var makeVolume = volume.render();
 
-            makeVideo.addEventListener('ended', function () {
-                var thisVideo = this;
+            // var mediaLength = new MediaLengthComp(makeVideo);
 
-                setTimeout(function () {
-                    stopVideoPlaying(thisVideo);
-                    mediaLength.reset();
-                    thisVideo.currentTime = 0;
-                }, 500);
-            });
+            // makeVideo.addEventListener('playing', function () {
+            //     mediaLength.progress(function () {
+            //         timer.showTime();
+            //     });
+            // });
 
-            var makeImage = makeElem('img');
-            setAttribute(makeImage, { 'src': element.imgSrc, 'alt': element.imgAlt });
+            // makeVideo.addEventListener('ended', function () {
+            //     var thisVideo = this;
 
-            var button = new PlayBtnComp(handler);
+            //     setTimeout(function () {
+            //         stopVideoPlaying(thisVideo);
+            //         mediaLength.reset();
+            //         thisVideo.currentTime = 0;
+            //     }, 500);
+            // });
 
-            function handler(isActive) {
+            // var makeImage = makeElem('img');
+            // setAttribute(makeImage, { 'src': element.imgSrc, 'alt': element.imgAlt });
 
-                makeImage.style.display = isActive ? 'none' : 'block';
+            // var button = new PlayBtnComp(handler);
 
-                var currentVideo = makeVideo;
-                var allVideos = document.querySelectorAll('video');
+            // function handler(isActive) {
 
-                for (var video of allVideos) {
-                    if (video !== currentVideo) {
-                        stopVideoPlaying(video);
-                    }
-                }
+            //     makeImage.style.display = isActive ? 'none' : 'block';
 
-                if (isActive) {
-                    currentVideo.play();
-                } else {
-                    currentVideo.pause();
-                }
-            }
+            //     var currentVideo = makeVideo;
+            //     var allVideos = document.querySelectorAll('video');
 
+            //     for (var video of allVideos) {
+            //         if (video !== currentVideo) {
+            //             stopVideoPlaying(video);
+            //         }
+            //     }
 
+            //     if (isActive) {
+            //         currentVideo.play();
+            //     } else {
+            //         currentVideo.pause();
+            //     }
+            // }
 
-            function initSlider(index) {
-                var currIndex = index;
-                var maxIndex = array.length - 1;
-                settingTranslateX();
+            // var arrayMap = new Map([
+            //     [makeUL, [makeListItm]],
+            //     [makeListItm, [makeFrame]],
+            //     [makeFrame, [makeVideoWrapper, makeImage, button.render()]],
+            //     [makeVideoWrapper, [makeVideo, timer.render(), makeVideoControls]],
+            //     [makeVideo, [makeSource]],
+            //     [makeVideoControls, [makeVolume, mediaLength.render()]]
+            // ]);
 
-                var arrowLeft = arrowElements[0];
-                var arrowRight = arrowElements[1];
-
-                arrowLeft.addEventListener('click', function (event) {
-                    console.log('arrow left'); // TODO: this must be log once per arrow click
-                    event.preventDefault();
-
-                    currIndex--;
-                    settingTranslateX();
-                });
-
-                arrowRight.addEventListener('click', function (event) {
-                    console.log('arrow right'); // TODO: this must be log once per arrow click
-                    event.preventDefault();
-
-                    currIndex++;
-                    settingTranslateX();
-                });
-
-                function settingTranslateX() {
-                    if (currIndex <= 0) {
-                        currIndex = 0;
-                    } else if (currIndex >= maxIndex) {
-                        currIndex = maxIndex;
-                    }
-                    makeUL.style.transform = 'translateX(' + -currIndex * 100 + '%)';
-                }
-            }
-
-            initSlider(1);
-
-            var arrayMap = new Map([
-                [makeUL, [makeListItm]],
-                [makeListItm, [makeFrame]],
-                [makeFrame, [makeVideoWrapper, makeImage, button.render()]],
-                [makeVideoWrapper, [makeVideo, timer.render(), makeVideoControls]],
-                [makeVideo, [makeSource]],
-                [makeVideoControls, [makeVolume, mediaLength.render()]]
-            ]);
-
-            insert(arrayMap);
+            // insert(arrayMap);
         });
+
+        function initSlider(index) {
+            var currIndex = index;
+            var maxIndex = array.length - 1;
+            settingTranslateX();
+
+            var arrowLeft = arrowElements[0];
+            var arrowRight = arrowElements[1];
+
+            arrowLeft.addEventListener('click', function (event) {
+                console.log('arrow left'); // TODO: this must be log once per arrow click   Corrected
+                event.preventDefault();
+
+                currIndex--;
+                settingTranslateX();
+            });
+
+            arrowRight.addEventListener('click', function (event) {
+                console.log('arrow right'); // TODO: this must be log once per arrow click   Corrected
+                event.preventDefault();
+
+                currIndex++;
+                settingTranslateX();
+            });
+
+            function settingTranslateX() {
+                if (currIndex <= 0) {
+                    currIndex = 0;
+                } else if (currIndex >= maxIndex) {
+                    currIndex = maxIndex;
+                }
+                makeUL.style.transform = 'translateX(' + -currIndex * 100 + '%)';
+            }
+        }
+
+        initSlider(1);
 
         var map = new Map([
             [makeSection, [makeContainer]],
@@ -990,7 +1069,7 @@ document.addEventListener('DOMContentLoaded', function () {
     createHeader(['10', '09', '08', '07', '06', '05', '04', '03', '02', '01']);
     var makeMain = document.body.appendChild(document.createElement('main'));
     createMainSection(makeMain);
-    createMovieSection(
+    makeMain.appendChild(new MovieSectionComp(
         {
             sectionClass: 'straight-direction-description',
             position: '10',
@@ -1001,10 +1080,10 @@ document.addEventListener('DOMContentLoaded', function () {
             about: `While the Awesome Mix Vol. 1 in Guardians of the Galaxy was resonant with a lot of people, it was the soundtrack in Guardians
             of the Galaxy Vol. 2 that improved on the formula. The first film featured songs that were
             fun and upbeat but didn't have much to do with the film's story.`
-        },
-        makeMain
-    );
-    createMovieSection(
+        }
+    ).render());
+
+    makeMain.appendChild(new MovieSectionComp(
         {
             sectionClass: 'reverse-direction-description',
             position: '09',
@@ -1015,10 +1094,10 @@ document.addEventListener('DOMContentLoaded', function () {
             about: `John Williams did a lot of music for many popular franchises. After his work on Star Wars, he would later do the score for
             Jurassic Park. This dinosaur film was full of epic shots and tense moments that were further
             brought to life by Williams' music.`
-        },
-        makeMain
-    );
-    createMovieSection(
+        }
+    ).render());
+
+    makeMain.appendChild(new MovieSectionComp(
         {
             sectionClass: 'central-direction-description',
             imgClass: 'star-wars',
@@ -1028,9 +1107,9 @@ document.addEventListener('DOMContentLoaded', function () {
             about: `When Star Wars: A New Hope was released, it introduced many iconic themes that people would recognize decades after. That
             was thanks to John Williams, who put together the iconic fanfare, the Imperial March, and
             so many more great tracks.`
-        },
-        makeMain
-    );
+        }
+    ).render());
+
     createSlider(
         [
             {
@@ -1053,7 +1132,8 @@ document.addEventListener('DOMContentLoaded', function () {
         ],
         makeMain
     );
-    createMovieSection(
+
+    makeMain.appendChild(new MovieSectionComp(
         {
             sectionClass: 'straight-direction-description',
             position: '07',
@@ -1064,10 +1144,10 @@ document.addEventListener('DOMContentLoaded', function () {
             about: `Baby Driver's soundtrack is similar to Guardians of the Galaxy in many ways. It uses a lot of older songs to provide a backdrop
             to the film's many beats. However, what Edgar Wright did with the music was so far beyond
             that.`
-        },
-        makeMain
-    );
-    createMovieSection(
+        }
+    ).render());
+
+    makeMain.appendChild(new MovieSectionComp(
         {
             sectionClass: 'reverse-direction-description',
             position: '06',
@@ -1079,10 +1159,10 @@ document.addEventListener('DOMContentLoaded', function () {
             in between. It's a crime movie that isn't afraid to deal with the dark side of life. Going
             along with every scene is a great soundtrack full of hand-picked songs that compliment every
             moment they appear in.`
-        },
-        makeMain
-    );
-    createMovieSection(
+        }
+    ).render());
+
+    makeMain.appendChild(new MovieSectionComp(
         {
             sectionClass: 'central-direction-description',
             imgClass: 'runner',
@@ -1092,9 +1172,9 @@ document.addEventListener('DOMContentLoaded', function () {
             about: `It's astounding that Blade Runner didn't become as popular as other movies released in its time. It arguably has one of the
             best soundtracks in movie history, with every tune being a perfect match with the action
             on-screen.`
-        },
-        makeMain
-    );
+        }
+    ).render());
+
     createSlider(
         [
             {
@@ -1117,7 +1197,8 @@ document.addEventListener('DOMContentLoaded', function () {
         ],
         makeMain
     );
-    createMovieSection(
+
+    makeMain.appendChild(new MovieSectionComp(
         {
             sectionClass: 'straight-direction-description',
             position: '04',
@@ -1128,10 +1209,10 @@ document.addEventListener('DOMContentLoaded', function () {
             about: `O Brother, Where Art Thou? is a movie that fires on all cylinders. It takes place in the Great Depression and involves a
             group of convicts who go on a wild journey to find a treasure of sorts. With this film based
             in a stylistic period in history, the soundtrack was designed to match it.`
-        },
-        makeMain
-    );
-    createMovieSection(
+        }
+    ).render());
+
+    makeMain.appendChild(new MovieSectionComp(
         {
             sectionClass: 'reverse-direction-description',
             position: '03',
@@ -1142,10 +1223,10 @@ document.addEventListener('DOMContentLoaded', function () {
             about: `The movie tries very hard to sell the idea of what space exploration would be like, and its themes of isolation and sophistication
             are further enhanced by its soundtrack. 2001: A Space Odyssey makes use of classical themes
             and motifs to narrow down a tone that makes the movie feel all its own.`
-        },
-        makeMain
-    );
-    createMovieSection(
+        }
+    ).render());
+
+    makeMain.appendChild(new MovieSectionComp(
         {
             sectionClass: 'central-direction-description',
             imgClass: 'godfuther',
@@ -1155,9 +1236,9 @@ document.addEventListener('DOMContentLoaded', function () {
             about: `The Godfather is one of cinema's best works. There are so many pieces in that movie that just work, and the soundtrack is
             part of it. Because the movie deals with crime, gangs, and the works, the music is designed
             to reflect that.`
-        },
-        makeMain
-    );
+        }
+    ).render());
+
     createSlider(
         [
             {
@@ -1180,7 +1261,8 @@ document.addEventListener('DOMContentLoaded', function () {
         ],
         makeMain
     );
-    createMovieSection(
+
+    makeMain.appendChild(new MovieSectionComp(
         {
             sectionClass: 'reverse-direction-description',
             position: '01',
@@ -1192,9 +1274,9 @@ document.addEventListener('DOMContentLoaded', function () {
             remains one of the most beloved in cinema history. Where Peter Jackson had a frame of reference
             with Tolkien's detailed descriptions, Howard Shore had to match those visuals with music
             all his own.`
-        },
-        makeMain
-    );
+        }
+    ).render());
+
     createSignUp(makeMain);
     createFooter();
     setVolumeAfterAppend();
