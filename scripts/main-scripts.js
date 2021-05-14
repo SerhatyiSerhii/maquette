@@ -16,38 +16,60 @@ const stopVideoPlaying = (element) => {
     }
 }
 
-class FilmContentComp {
+class MovieSectionComp {
     #container;
-    #positionMovie;
-    #titleMovie;
-    #aboutMovie;
-    #audioName;
+    #obj;
 
-    constructor(position, title, aboutMovie, audioName) {
-        this.#positionMovie = position;
-        this.#titleMovie = title;
-        this.#aboutMovie = aboutMovie;
-        this.#audioName = audioName;
+    constructor(obj) {
+        this.#obj = obj;
     }
 
     render() {
+        this.#container = new ElementBuilder('section').setClasses(this.#obj.sectionClass, 'direction-description').setAttributes({'id': `top-${this.#obj.position}`});
+
+        const picture = new ElementBuilder('img');
+
+        if (this.#obj.sectionClass === 'central-direction-description') {
+            this.#container.setClasses(this.#obj.sectionClass, this.#obj.imgClass);
+        } else {
+            picture.setAttributes({'src': this.#obj.imgSrc, 'alt': this.#obj.imgAlt});
+        }
+
+        const filmImage = new ElementBuilder('div').setClasses('film-image').setChildren([picture.build()]).build();
+
         const movieNumber = new ElementBuilder('span').build();
-        movieNumber.textContent = `.${this.#positionMovie}`;
+        movieNumber.textContent = `.${this.#obj.position}`;
 
         const movieTitle = new ElementBuilder('h2').build();
-        movieTitle.textContent = this.#titleMovie;
+        movieTitle.textContent = this.#obj.name;
 
         const compTitle = new ElementBuilder('div').setClasses('film-title-content').setChildren([movieNumber, movieTitle]).build();
 
         const movieAbout = new ElementBuilder('p').build();
-        movieAbout.textContent = this.#aboutMovie;
+        movieAbout.textContent = this.#obj.about;
 
-        const listenButton = new ListenBtnComp(this.#titleMovie, this.#audioName);
+        const listenButton = new ListenBtnComp(this.#obj.name, this.#obj.audioName);
         const compDescription = new ElementBuilder('div').setClasses('film-description-content').setChildren([movieAbout, listenButton.render()]).build();
 
-        this.#container = new ElementBuilder('div').setClasses('film-content').setChildren([compTitle, compDescription]).build();
+        const filmContent = new ElementBuilder('div').setClasses('film-content').setChildren([compTitle, compDescription]).build();
 
-        return this.#container;
+        const descriptionContent = new ElementBuilder('div').setClasses('description-content');
+
+        switch (this.#obj.sectionClass) {
+            case 'straight-direction-description':
+                descriptionContent.setChildren([filmImage, filmContent]);
+                break;
+            case 'reverse-direction-description':
+                descriptionContent.setChildren([filmContent, filmImage]);
+                break;
+            default:
+                descriptionContent.setChildren([filmContent]);
+                break;
+        }
+
+        const container = new ElementBuilder('div').setClasses('container').setChildren([descriptionContent.build()]).build();
+
+        return this.#container.setChildren([container]).build();
     }
 }
 
@@ -122,8 +144,8 @@ class ModalWindowComp {
             }
         }
 
-        this.#audio = new ElementBuilder('audio').build();
-        this.#audio.setAttribute('src', `audios/${this.#audioSrc}.ogg`); // TODO: builder has this functionality
+        this.#audio = new ElementBuilder('audio').setAttributes({'src': `audios/${this.#audioSrc}.ogg`}).build();
+        // this.#audio.setAttribute('src', `audios / ${ this.#audioSrc }.ogg`); // TODO: builder has this functionality     Corrected
 
         this.#volume = new VolumeComp(this.#audio);
         const volume = this.#volume.render();
@@ -384,12 +406,12 @@ class TimerComp {
         this.#container.textContent = `${minSecCurTime} / ${minSecDurat}`;
     }
 
-    render() {
-        this.#container = new ElementBuilder('div').setClasses('timer').build();
-        this.#container.textContent = '00:00 / 00:00';
+render() {
+    this.#container = new ElementBuilder('div').setClasses('timer').build();
+    this.#container.textContent = '00:00 / 00:00';
 
-        return this.#container;
-    }
+    return this.#container;
+}
 }
 
 class ElementBuilder {
@@ -420,7 +442,7 @@ class ElementBuilder {
         return this;
     }
 
-   build() {
+    build() {
         const element = document.createElement(this.#tagName);
 
         if (this.#classes != null) {
@@ -631,52 +653,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Adding movie section
     function createMovieSection(mainObj, main) {
-
-        var makeSection = makeElem('section', mainObj.sectionClass, 'direction-description');
-        setAttribute(makeSection, { 'id': 'top-' + mainObj.position});
-
-        var makeContainer = makeElem('div', 'container');
-
-        var makeDescriptionContent = makeElem('div', 'description-content');
-
-        if (mainObj.sectionClass === 'central-direction-description') {
-            makeSection.classList.add(mainObj.imgClass);
-        } else {
-            var makeFilmImage = makeElem('div', 'film-image');
-
-            var makeImage = makeElem('img');
-            setAttribute(makeImage, { 'src': mainObj.imgSrc, 'alt': mainObj.imgAlt });
-
-            var imgMap = new Map();
-            imgMap.set(makeFilmImage, [makeImage]);
-            insert(imgMap);
-        }
-
-        var filmContent = new FilmContentComp(mainObj.position, mainObj.name, mainObj.about, mainObj.audioName);
+        var filmContent = new MovieSectionComp(mainObj);
 
         var map = new Map([
-            [makeSection, [makeContainer]],
-            [makeContainer, [makeDescriptionContent]],
-            [main, [makeSection]]
+            [main, [filmContent.render()]]
         ]);
 
         insert(map);
-
-        var sectionMap = new Map();
-
-        switch (mainObj.sectionClass) {
-            case 'straight-direction-description':
-                sectionMap.set(makeDescriptionContent, [makeFilmImage, filmContent.render()]);
-                break;
-            case 'reverse-direction-description':
-                sectionMap.set(makeDescriptionContent, [filmContent.render(), makeFilmImage]);
-                break;
-            default:
-                sectionMap.set(makeDescriptionContent, [filmContent.render()]);
-                break;
-        }
-
-        insert(sectionMap);
     }
 
     // Adding slider
