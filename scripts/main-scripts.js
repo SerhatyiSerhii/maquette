@@ -36,9 +36,7 @@ class MovieSectionComp {
         }
 
         const filmImage = new ElementBuilder('div').setClasses('film-image').setChildren([picture.build()]).build();
-
         const filmContent = new FilmContentComp(this.#options.position, this.#options.name, this.#options.about, this.#options.audioName).render();
-
         const descriptionContent = new ElementBuilder('div').setClasses('description-content');
 
         switch (this.#options.sectionClass) {
@@ -166,7 +164,6 @@ class ModalWindowComp {
         }
 
         this.#audio = new ElementBuilder('audio').setAttributes({'src': `audios/${this.#audioSrc}.ogg`}).build();
-        // this.#audio.setAttribute('src', `audios / ${ this.#audioSrc }.ogg`); // TODO: builder has this functionality     Corrected
 
         this.#volume = new VolumeComp(this.#audio);
         const volume = this.#volume.render();
@@ -457,7 +454,7 @@ class ElementBuilder {
         return this;
     }
 
-    setChildren(children) {
+    setChildren(children) { // TODO: looks like it's also better to redo as classes with rest operator
         this.#children = children;
 
         return this;
@@ -673,7 +670,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Adding movie section
-    function createMovieSection(mainObj, main) {
+    function createMovieSection(mainObj, main) { // TODO: remove this function
         var filmContent = new MovieSectionComp(mainObj);
 
         var map = new Map([
@@ -728,6 +725,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var makeUL = makeElem('ul');
 
         array.forEach(function (element) {
+            // TODO: fix the errors in TODOs below and then move this to SliderFrameComp
             var makeListItm = makeElem('li');
 
             var makeFrame = makeElem('div', 'frame');
@@ -811,6 +809,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 var arrowRight = arrowElements[1];
 
                 arrowLeft.addEventListener('click', function (event) {
+                    console.log('arrow left'); // TODO: this must be log once per arrow click
                     event.preventDefault();
 
                     currIndex--;
@@ -818,6 +817,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
 
                 arrowRight.addEventListener('click', function (event) {
+                    console.log('arrow right'); // TODO: this must be log once per arrow click
                     event.preventDefault();
 
                     currIndex++;
