@@ -17,8 +17,8 @@ const stopVideoPlaying = (element) => {
 }
 
 class SliderFrameComp {
-    #container;
-    #element;
+    #container; // TODO: if container is used only in render - I think we can remove it. In all components
+    #element; // TODO: why element?
 
     constructor(element) {
         this.#element = element;
@@ -26,9 +26,7 @@ class SliderFrameComp {
 
     render() {
         const source = new ElementBuilder('source').setAttributes({'src': this.#element.src}).build();
-
         const video = new ElementBuilder('video').setChildren(source).build();
-
         const timer = new TimerComp(video);
 
         video.addEventListener('canplay', () => {
@@ -42,7 +40,6 @@ class SliderFrameComp {
         });
 
         const volume = new VolumeComp(video);
-
         const mediaLength = new MediaLengthComp(video);
 
         video.addEventListener('playing', () => {
@@ -60,18 +57,16 @@ class SliderFrameComp {
         });
 
         const videoControls = new ElementBuilder('div').setClasses('video-controls').setChildren(volume.render(), mediaLength.render()).build();
-
         const videoWrapper = new ElementBuilder('div').setClasses('video-wrapper').setChildren(video, timer.render(), videoControls).build();
-
         const image = new ElementBuilder('img').setAttributes({'src': this.#element.imgSrc, 'alt': this.#element.imgAlt}).build();
 
         const handler = (isActive) => {
             image.style.display = isActive ? 'none' : 'block';
 
-            const currentVideo = video;
+            const currentVideo = video; // TODO: no sense
             const allVideos = document.querySelectorAll('video');
 
-            for (let video of allVideos) {
+            for (let video of allVideos) { // TODO: shadowed variable
                 if (video !== currentVideo) {
                     stopVideoPlaying(video);
                 }
@@ -85,7 +80,6 @@ class SliderFrameComp {
         }
 
         const button = new PlayBtnComp(handler);
-
         const frame = new ElementBuilder('div').setClasses('frame').setChildren(videoWrapper, image, button.render()).build();
 
         this.#container = new ElementBuilder('li').setChildren(frame).build();
@@ -532,7 +526,7 @@ class ElementBuilder {
         return this;
     }
 
-    setChildren(...children) { // TODO: looks like it's also better to redo as classes with rest operator    Corrected
+    setChildren(...children) {
         this.#children = children;
 
         return this;
@@ -747,19 +741,8 @@ document.addEventListener('DOMContentLoaded', function () {
         insert(map);
     }
 
-    // Adding movie section
-    // function createMovieSection(mainObj, main) { // TODO: remove this function    Removed
-    //     var filmContent = new MovieSectionComp(mainObj);
-
-    //     var map = new Map([
-    //         [main, [filmContent.render()]]
-    //     ]);
-
-    //     insert(map);
-    // }
-
     // Adding slider
-    function createSlider(array, main) {
+    function createSlider(array, main) { // TODO: move to component
         var makeSection = makeElem('section', 'slider');
 
         var makeContainer = makeElem('div', 'container');
@@ -803,92 +786,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var makeUL = makeElem('ul');
 
         array.forEach(function (element) {
-
             makeUL.appendChild(new SliderFrameComp(element).render());
-
-            // TODO: fix the errors in TODOs below and then move this to SliderFrameComp     Moved
-            // var makeListItm = makeElem('li');
-
-            // var makeFrame = makeElem('div', 'frame');
-
-            // var makeVideoWrapper = makeElem('div', 'video-wrapper');
-
-            // var makeVideo = makeElem('video');
-
-            // makeVideo.addEventListener('canplay', function () {
-            //     timer.showTime();
-            // });
-
-            // makeVideo.addEventListener('pause', function () {
-            //     var id = AnimationService.getAnimationId();
-
-            //     cancelAnimationFrame(id);
-            // });
-
-            // var makeSource = makeElem('source');
-            // setAttribute(makeSource, { 'src': element.src });
-
-            // var timer = new TimerComp(makeVideo);
-
-            // var makeVideoControls = makeElem('div', 'video-controls');
-
-            // var volume = new VolumeComp(makeVideo);
-
-            // var makeVolume = volume.render();
-
-            // var mediaLength = new MediaLengthComp(makeVideo);
-
-            // makeVideo.addEventListener('playing', function () {
-            //     mediaLength.progress(function () {
-            //         timer.showTime();
-            //     });
-            // });
-
-            // makeVideo.addEventListener('ended', function () {
-            //     var thisVideo = this;
-
-            //     setTimeout(function () {
-            //         stopVideoPlaying(thisVideo);
-            //         mediaLength.reset();
-            //         thisVideo.currentTime = 0;
-            //     }, 500);
-            // });
-
-            // var makeImage = makeElem('img');
-            // setAttribute(makeImage, { 'src': element.imgSrc, 'alt': element.imgAlt });
-
-            // var button = new PlayBtnComp(handler);
-
-            // function handler(isActive) {
-
-            //     makeImage.style.display = isActive ? 'none' : 'block';
-
-            //     var currentVideo = makeVideo;
-            //     var allVideos = document.querySelectorAll('video');
-
-            //     for (var video of allVideos) {
-            //         if (video !== currentVideo) {
-            //             stopVideoPlaying(video);
-            //         }
-            //     }
-
-            //     if (isActive) {
-            //         currentVideo.play();
-            //     } else {
-            //         currentVideo.pause();
-            //     }
-            // }
-
-            // var arrayMap = new Map([
-            //     [makeUL, [makeListItm]],
-            //     [makeListItm, [makeFrame]],
-            //     [makeFrame, [makeVideoWrapper, makeImage, button.render()]],
-            //     [makeVideoWrapper, [makeVideo, timer.render(), makeVideoControls]],
-            //     [makeVideo, [makeSource]],
-            //     [makeVideoControls, [makeVolume, mediaLength.render()]]
-            // ]);
-
-            // insert(arrayMap);
         });
 
         function initSlider(index) {
@@ -900,7 +798,6 @@ document.addEventListener('DOMContentLoaded', function () {
             var arrowRight = arrowElements[1];
 
             arrowLeft.addEventListener('click', function (event) {
-                console.log('arrow left'); // TODO: this must be log once per arrow click   Corrected
                 event.preventDefault();
 
                 currIndex--;
@@ -908,7 +805,6 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
             arrowRight.addEventListener('click', function (event) {
-                console.log('arrow right'); // TODO: this must be log once per arrow click   Corrected
                 event.preventDefault();
 
                 currIndex++;
