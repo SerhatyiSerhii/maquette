@@ -18,44 +18,30 @@ const stopVideoPlaying = (element) => {
 
 class MovieSectionComp {
     #container;
-    #obj;
+    #options;
 
-    constructor(obj) {
-        this.#obj = obj;
+    constructor(options) {
+        this.#options = options;
     }
 
     render() {
-        this.#container = new ElementBuilder('section').setClasses(this.#obj.sectionClass, 'direction-description').setAttributes({'id': `top-${this.#obj.position}`});
+        this.#container = new ElementBuilder('section').setClasses(this.#options.sectionClass, 'direction-description').setAttributes({'id': `top-${this.#options.position}`});
 
         const picture = new ElementBuilder('img');
 
-        if (this.#obj.sectionClass === 'central-direction-description') {
-            this.#container.setClasses(this.#obj.sectionClass, this.#obj.imgClass);
+        if (this.#options.sectionClass === 'central-direction-description') {
+            this.#container.setClasses(this.#options.sectionClass, this.#options.imgClass);
         } else {
-            picture.setAttributes({'src': this.#obj.imgSrc, 'alt': this.#obj.imgAlt});
+            picture.setAttributes({'src': this.#options.imgSrc, 'alt': this.#options.imgAlt});
         }
 
         const filmImage = new ElementBuilder('div').setClasses('film-image').setChildren([picture.build()]).build();
 
-        const movieNumber = new ElementBuilder('span').build();
-        movieNumber.textContent = `.${this.#obj.position}`;
-
-        const movieTitle = new ElementBuilder('h2').build();
-        movieTitle.textContent = this.#obj.name;
-
-        const compTitle = new ElementBuilder('div').setClasses('film-title-content').setChildren([movieNumber, movieTitle]).build();
-
-        const movieAbout = new ElementBuilder('p').build();
-        movieAbout.textContent = this.#obj.about;
-
-        const listenButton = new ListenBtnComp(this.#obj.name, this.#obj.audioName);
-        const compDescription = new ElementBuilder('div').setClasses('film-description-content').setChildren([movieAbout, listenButton.render()]).build();
-
-        const filmContent = new ElementBuilder('div').setClasses('film-content').setChildren([compTitle, compDescription]).build();
+        const filmContent = new FilmContentComp(this.#options.position, this.#options.name, this.#options.about, this.#options.audioName).render();
 
         const descriptionContent = new ElementBuilder('div').setClasses('description-content');
 
-        switch (this.#obj.sectionClass) {
+        switch (this.#options.sectionClass) {
             case 'straight-direction-description':
                 descriptionContent.setChildren([filmImage, filmContent]);
                 break;
@@ -70,6 +56,41 @@ class MovieSectionComp {
         const container = new ElementBuilder('div').setClasses('container').setChildren([descriptionContent.build()]).build();
 
         return this.#container.setChildren([container]).build();
+    }
+}
+
+class FilmContentComp {
+    #container;
+    #positionMovie;
+    #titleMovie;
+    #aboutMovie;
+    #audioName;
+
+    constructor(position, title, aboutMovie, audioName) {
+        this.#positionMovie = position;
+        this.#titleMovie = title;
+        this.#aboutMovie = aboutMovie;
+        this.#audioName = audioName;
+    }
+
+    render() {
+        const movieNumber = new ElementBuilder('span').build();
+        movieNumber.textContent = `.${this.#positionMovie}`;
+
+        const movieTitle = new ElementBuilder('h2').build();
+        movieTitle.textContent = this.#titleMovie;
+
+        const compTitle = new ElementBuilder('div').setClasses('film-title-content').setChildren([movieNumber, movieTitle]).build();
+
+        const movieAbout = new ElementBuilder('p').build();
+        movieAbout.textContent = this.#aboutMovie;
+
+        const listenButton = new ListenBtnComp(this.#titleMovie, this.#audioName);
+        const compDescription = new ElementBuilder('div').setClasses('film-description-content').setChildren([movieAbout, listenButton.render()]).build();
+
+        this.#container = new ElementBuilder('div').setClasses('film-content').setChildren([compTitle, compDescription]).build();
+
+        return this.#container;
     }
 }
 
