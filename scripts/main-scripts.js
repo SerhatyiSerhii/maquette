@@ -16,16 +16,102 @@ const stopVideoPlaying = (element) => {
     }
 }
 
-class SliderFrameComp {
-    #container; // TODO: if container is used only in render - I think we can remove it. In all components
-    #element; // TODO: why element?
+class SliderComp {
+    #options;
 
-    constructor(element) {
-        this.#element = element;
+    constructor(options) {
+        this.#options = options;
     }
 
     render() {
-        const source = new ElementBuilder('source').setAttributes({'src': this.#element.src}).build();
+        const arrows = [
+            {
+                classDirection: 'arrow-left',
+                svg: (
+                    `<svg width="60" height="43" viewBox="0 0 60 43" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M27 41.5L2 21.5M2 21.5L28 1M2 21.5L60 21.5" stroke-width="2" />
+                    </svg>`
+                )
+            },
+            {
+                classDirection: 'arrow-right',
+                svg: (
+                    `<svg width="60" height="43" viewBox="0 0 60 43" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M33 41.5L58 21.5M58 21.5L32 1M58 21.5L0 21.5" stroke-width="2" />
+                    </svg>`
+                )
+            }
+        ];
+
+        const arrowElements = [];
+
+        arrows.forEach((element) => {
+            const arrow = new ElementBuilder('a').setClasses(element.classDirection, 'arrow').setAttributes({'href': '#'}).build();
+            arrow.innerHTML = element.svg;
+            arrowElements.push(arrow);
+        });
+
+        const unorderedList = new ElementBuilder('ul').build();
+
+        this.#options.forEach((element) => {
+            unorderedList.appendChild(new SliderFrameComp(element).render());
+        });
+
+        const initSlider = (index) => {
+            let currIndex = index;
+            const maxIndex = this.#options.length - 1;
+
+            const settingTranslateX = () => {
+                if (currIndex <= 0) {
+                    currIndex = 0;
+                } else if (currIndex >= maxIndex) {
+                    currIndex = maxIndex;
+                }
+                unorderedList.style.transform = `translateX(${-currIndex * 100}%)`;
+            }
+
+            settingTranslateX();
+
+            const arrowLeft = arrowElements[0];
+            const arrowRight = arrowElements[1];
+
+            arrowLeft.addEventListener('click', (event) => {
+                event.preventDefault();
+
+                currIndex--;
+                settingTranslateX();
+            });
+
+            arrowRight.addEventListener('click', (event) => {
+                event.preventDefault();
+
+                currIndex++;
+                settingTranslateX();
+            });
+        }
+
+        initSlider(1);
+
+        const slidesWrapper = new ElementBuilder('div').setClasses('slides-wrapper').setChildren(arrowElements[0], arrowElements[1], unorderedList).build();
+
+        const container = new ElementBuilder('div').setClasses('container').setChildren(slidesWrapper).build();
+
+        const section = new ElementBuilder('section').setClasses('section', 'slider').setChildren(container).build();
+
+        return section;
+    }
+}
+
+class SliderFrameComp {
+    // #container; // TODO: if container is used only in render - I think we can remove it. In all components    Corrected
+    #options; // TODO: why element?     Changed to options
+
+    constructor(options) {
+        this.#options = options;
+    }
+
+    render() {
+        const source = new ElementBuilder('source').setAttributes({'src': this.#options.src}).build();
         const video = new ElementBuilder('video').setChildren(source).build();
         const timer = new TimerComp(video);
 
@@ -58,38 +144,37 @@ class SliderFrameComp {
 
         const videoControls = new ElementBuilder('div').setClasses('video-controls').setChildren(volume.render(), mediaLength.render()).build();
         const videoWrapper = new ElementBuilder('div').setClasses('video-wrapper').setChildren(video, timer.render(), videoControls).build();
-        const image = new ElementBuilder('img').setAttributes({'src': this.#element.imgSrc, 'alt': this.#element.imgAlt}).build();
+        const image = new ElementBuilder('img').setAttributes({'src': this.#options.imgSrc, 'alt': this.#options.imgAlt}).build();
 
         const handler = (isActive) => {
             image.style.display = isActive ? 'none' : 'block';
 
-            const currentVideo = video; // TODO: no sense
+            // const currentVideo = video; // TODO: no sense    Corrected
             const allVideos = document.querySelectorAll('video');
 
-            for (let video of allVideos) { // TODO: shadowed variable
-                if (video !== currentVideo) {
-                    stopVideoPlaying(video);
+            for (let videoElement of allVideos) { // TODO: shadowed variable     Corrected
+                if (videoElement !== video) {
+                    stopVideoPlaying(videoElement);
                 }
             }
 
             if (isActive) {
-                currentVideo.play();
+                video.play();
             } else {
-                currentVideo.pause();
+                video.pause();
             }
         }
 
         const button = new PlayBtnComp(handler);
         const frame = new ElementBuilder('div').setClasses('frame').setChildren(videoWrapper, image, button.render()).build();
 
-        this.#container = new ElementBuilder('li').setChildren(frame).build();
+        const listItem = new ElementBuilder('li').setChildren(frame).build();
 
-        return this.#container;
+        return listItem;
     }
 }
 
 class MovieSectionComp {
-    #container;
     #options;
 
     constructor(options) {
@@ -97,12 +182,12 @@ class MovieSectionComp {
     }
 
     render() {
-        this.#container = new ElementBuilder('section').setClasses(this.#options.sectionClass, 'direction-description').setAttributes({'id': `top-${this.#options.position}`});
+        const section = new ElementBuilder('section').setClasses(this.#options.sectionClass, 'direction-description').setAttributes({'id': `top-${this.#options.position}`});
 
         const picture = new ElementBuilder('img');
 
         if (this.#options.sectionClass === 'central-direction-description') {
-            this.#container.setClasses(this.#options.sectionClass, this.#options.imgClass);
+            section.setClasses(this.#options.sectionClass, this.#options.imgClass);
         } else {
             picture.setAttributes({'src': this.#options.imgSrc, 'alt': this.#options.imgAlt});
         }
@@ -125,12 +210,11 @@ class MovieSectionComp {
 
         const container = new ElementBuilder('div').setClasses('container').setChildren(descriptionContent.build()).build();
 
-        return this.#container.setChildren(container).build();
+        return section.setChildren(container).build();
     }
 }
 
 class FilmContentComp {
-    #container;
     #positionMovie;
     #titleMovie;
     #aboutMovie;
@@ -158,9 +242,9 @@ class FilmContentComp {
         const listenButton = new ListenBtnComp(this.#titleMovie, this.#audioName);
         const compDescription = new ElementBuilder('div').setClasses('film-description-content').setChildren(movieAbout, listenButton.render()).build();
 
-        this.#container = new ElementBuilder('div').setClasses('film-content').setChildren(compTitle, compDescription).build();
+        const filmContent = new ElementBuilder('div').setClasses('film-content').setChildren(compTitle, compDescription).build();
 
-        return this.#container;
+        return filmContent;
     }
 }
 
@@ -306,7 +390,6 @@ class ModalWindowComp {
 }
 
 class ListenBtnComp {
-    #container;
     #movieName;
     #audioName;
 
@@ -316,10 +399,10 @@ class ListenBtnComp {
     }
 
     render() {
-        this.#container = new ElementBuilder('button').setClasses('listen').build();
-        this.#container.textContent = 'listen';
+        const listenBtn = new ElementBuilder('button').setClasses('listen').build();
+        listenBtn.textContent = 'listen';
 
-        this.#container.addEventListener('click', () => {
+        listenBtn.addEventListener('click', () => {
             const modalWindow = new ModalWindowComp(this.#audioName, this.#movieName);
 
             document.body.appendChild(modalWindow.render());
@@ -328,7 +411,7 @@ class ListenBtnComp {
             modalWindow.showModalWindow();
         });
 
-        return this.#container;
+        return listenBtn;
     }
 }
 
@@ -742,96 +825,96 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Adding slider
-    function createSlider(array, main) { // TODO: move to component
-        var makeSection = makeElem('section', 'slider');
+    // function createSlider(array, main) { // TODO: move to component   Moved to SliderComp
+    //     var makeSection = makeElem('section', 'slider');
 
-        var makeContainer = makeElem('div', 'container');
+    //     var makeContainer = makeElem('div', 'container');
 
-        var makeSlidesWrapper = makeElem('div', 'slides-wrapper');
+    //     var makeSlidesWrapper = makeElem('div', 'slides-wrapper');
 
-        var arrows = [
-            {
-                classDirection: 'arrow-left',
-                svg: (
-                    `<svg width="60" height="43" viewBox="0 0 60 43" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M27 41.5L2 21.5M2 21.5L28 1M2 21.5L60 21.5" stroke-width="2" />
-                    </svg>`
-                )
-            },
-            {
-                classDirection: 'arrow-right',
-                svg: (
-                    `<svg width="60" height="43" viewBox="0 0 60 43" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M33 41.5L58 21.5M58 21.5L32 1M58 21.5L0 21.5" stroke-width="2" />
-                    </svg>`
-                )
-            }
-        ];
+    //     var arrows = [
+    //         {
+    //             classDirection: 'arrow-left',
+    //             svg: (
+    //                 `<svg width="60" height="43" viewBox="0 0 60 43" fill="none" xmlns="http://www.w3.org/2000/svg">
+    //                     <path d="M27 41.5L2 21.5M2 21.5L28 1M2 21.5L60 21.5" stroke-width="2" />
+    //                 </svg>`
+    //             )
+    //         },
+    //         {
+    //             classDirection: 'arrow-right',
+    //             svg: (
+    //                 `<svg width="60" height="43" viewBox="0 0 60 43" fill="none" xmlns="http://www.w3.org/2000/svg">
+    //                     <path d="M33 41.5L58 21.5M58 21.5L32 1M58 21.5L0 21.5" stroke-width="2" />
+    //                 </svg>`
+    //             )
+    //         }
+    //     ];
 
-        var arrowElements = [];
+    //     var arrowElements = [];
 
-        arrows.forEach(function (element) {
-            var makeArrow = makeElem('a', element.classDirection, 'arrow');
-            setAttribute(makeArrow, { 'href': '#' });
-            makeArrow.innerHTML = element.svg;
-            arrowElements.push(makeArrow);
+    //     arrows.forEach(function (element) {
+    //         var makeArrow = makeElem('a', element.classDirection, 'arrow');
+    //         setAttribute(makeArrow, { 'href': '#' });
+    //         makeArrow.innerHTML = element.svg;
+    //         arrowElements.push(makeArrow);
 
-            var arrowsMap = new Map([
-                [makeSlidesWrapper, [makeArrow]]
-            ]);
+    //         var arrowsMap = new Map([
+    //             [makeSlidesWrapper, [makeArrow]]
+    //         ]);
 
-            insert(arrowsMap);
-        });
+    //         insert(arrowsMap);
+    //     });
 
-        var makeUL = makeElem('ul');
+    //     var makeUL = makeElem('ul');
 
-        array.forEach(function (element) {
-            makeUL.appendChild(new SliderFrameComp(element).render());
-        });
+    //     array.forEach(function (element) {
+    //         makeUL.appendChild(new SliderFrameComp(element).render());
+    //     });
 
-        function initSlider(index) {
-            var currIndex = index;
-            var maxIndex = array.length - 1;
-            settingTranslateX();
+    //     function initSlider(index) {
+    //         var currIndex = index;
+    //         var maxIndex = array.length - 1;
+    //         settingTranslateX();
 
-            var arrowLeft = arrowElements[0];
-            var arrowRight = arrowElements[1];
+    //         var arrowLeft = arrowElements[0];
+    //         var arrowRight = arrowElements[1];
 
-            arrowLeft.addEventListener('click', function (event) {
-                event.preventDefault();
+    //         arrowLeft.addEventListener('click', function (event) {
+    //             event.preventDefault();
 
-                currIndex--;
-                settingTranslateX();
-            });
+    //             currIndex--;
+    //             settingTranslateX();
+    //         });
 
-            arrowRight.addEventListener('click', function (event) {
-                event.preventDefault();
+    //         arrowRight.addEventListener('click', function (event) {
+    //             event.preventDefault();
 
-                currIndex++;
-                settingTranslateX();
-            });
+    //             currIndex++;
+    //             settingTranslateX();
+    //         });
 
-            function settingTranslateX() {
-                if (currIndex <= 0) {
-                    currIndex = 0;
-                } else if (currIndex >= maxIndex) {
-                    currIndex = maxIndex;
-                }
-                makeUL.style.transform = 'translateX(' + -currIndex * 100 + '%)';
-            }
-        }
+    //         function settingTranslateX() {
+    //             if (currIndex <= 0) {
+    //                 currIndex = 0;
+    //             } else if (currIndex >= maxIndex) {
+    //                 currIndex = maxIndex;
+    //             }
+    //             makeUL.style.transform = 'translateX(' + -currIndex * 100 + '%)';
+    //         }
+    //     }
 
-        initSlider(1);
+    //     initSlider(1);
 
-        var map = new Map([
-            [makeSection, [makeContainer]],
-            [makeContainer, [makeSlidesWrapper]],
-            [makeSlidesWrapper, [makeUL]],
-            [main, [makeSection]]
-        ]);
+    //     var map = new Map([
+    //         [makeSection, [makeContainer]],
+    //         [makeContainer, [makeSlidesWrapper]],
+    //         [makeSlidesWrapper, [makeUL]],
+    //         [main, [makeSection]]
+    //     ]);
 
-        insert(map);
-    }
+    //     insert(map);
+    // }
 
     // Adding Sign Up section
     function createSignUp(main) {
@@ -1006,28 +1089,25 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     ).render());
 
-    createSlider(
-        [
-            {
-                src: 'videos/star-wars-a-new-hope.mp4',
-                imgSrc: 'images/conference_room.jpg',
-                imgAlt: 'Dart Waider at the conference room'
-            },
+    makeMain.appendChild(new SliderComp([
+        {
+            src: 'videos/star-wars-a-new-hope.mp4',
+            imgSrc: 'images/conference_room.jpg',
+            imgAlt: 'Dart Waider at the conference room'
+        },
 
-            {
-                src: 'videos/jurassic-park.mp4',
-                imgSrc: 'images/dino_pet.jpg',
-                imgAlt: 'petting the dino'
-            },
+        {
+            src: 'videos/jurassic-park.mp4',
+            imgSrc: 'images/dino_pet.jpg',
+            imgAlt: 'petting the dino'
+        },
 
-            {
-                src: 'videos/guardinas-of-the-galaxy-vol-2.mp4',
-                imgSrc: 'images/little_tree.jpg',
-                imgAlt: 'little tree presses a button'
-            }
-        ],
-        makeMain
-    );
+        {
+            src: 'videos/guardinas-of-the-galaxy-vol-2.mp4',
+            imgSrc: 'images/little_tree.jpg',
+            imgAlt: 'little tree presses a button'
+        }
+    ]).render());
 
     makeMain.appendChild(new MovieSectionComp(
         {
@@ -1071,7 +1151,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     ).render());
 
-    createSlider(
+    makeMain.appendChild(new SliderComp(
         [
             {
                 src: 'videos/blade-runner.mp4',
@@ -1090,9 +1170,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 imgSrc: 'images/Baby-Driver_driver.jpg',
                 imgAlt: 'driver'
             }
-        ],
-        makeMain
-    );
+        ]
+    ).render());
 
     makeMain.appendChild(new MovieSectionComp(
         {
@@ -1135,7 +1214,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     ).render());
 
-    createSlider(
+    makeMain.appendChild(new SliderComp(
         [
             {
                 src: 'videos/o-brother-where-art-thou.mp4',
@@ -1154,9 +1233,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 imgSrc: 'images/amanda.jpg',
                 imgAlt: 'amanda from a space odyssey'
             }
-        ],
-        makeMain
-    );
+        ]
+    ).render());
 
     makeMain.appendChild(new MovieSectionComp(
         {
