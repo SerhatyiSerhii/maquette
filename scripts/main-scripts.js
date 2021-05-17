@@ -17,82 +17,74 @@ const stopVideoPlaying = (element) => {
 }
 
 class SliderComp {
-    #options; // TODO: there is a difference between options and content
+    #content; // TODO: there is a difference between options and content     Corrected
+    #svgLeft = `<svg width="60" height="43" viewBox="0 0 60 43" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M27 41.5L2 21.5M2 21.5L28 1M2 21.5L60 21.5" stroke-width="2" />
+                </svg>`;
+    #svgRight = `<svg width="60" height="43" viewBox="0 0 60 43" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M33 41.5L58 21.5M58 21.5L32 1M58 21.5L0 21.5" stroke-width="2" />
+                </svg>`;
+    #currentIndex = 1;
+    #maxIndex;
 
-    constructor(options) {
-        this.#options = options;
+    constructor(content) {
+        this.#content = content;
+        this.#maxIndex = this.#content.length - 1;
+    }
+
+    #createArrow(arrowDirection, svg) {
+        const arrow = new ElementBuilder('a').setClasses(arrowDirection, 'arrow').setAttributes({'href': '#'}).build();
+
+        arrow.innerHTML = svg;
+
+        return arrow;
+    }
+
+    settingTranslateX(element) {
+        if (this.#currentIndex <= 0) {
+            this.#currentIndex = 0;
+        } else if (this.#currentIndex >= this.#maxIndex) {
+            this.#currentIndex = this.#maxIndex;
+        }
+        element.style.transform = `translateX(${-this.#currentIndex * 100}%)`;
+    }
+
+    initSlider(element) {
+        this.settingTranslateX(element);
     }
 
     render() {
-        const arrows = [ // TODO: store svgs in class properties
-            {
-                classDirection: 'arrow-left',
-                svg: (
-                    `<svg width="60" height="43" viewBox="0 0 60 43" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M27 41.5L2 21.5M2 21.5L28 1M2 21.5L60 21.5" stroke-width="2" />
-                    </svg>`
-                )
-            },
-            {
-                classDirection: 'arrow-right',
-                svg: (
-                    `<svg width="60" height="43" viewBox="0 0 60 43" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M33 41.5L58 21.5M58 21.5L32 1M58 21.5L0 21.5" stroke-width="2" />
-                    </svg>`
-                )
-            }
-        ];
 
-        const arrowElements = []; // TODO: no sense
+        const unorderedListInstance = new ElementBuilder('ul');
 
-        arrows.forEach((element) => { // TODO: if you want kind of to reduce duplication - create private method which will accept required params and create html arrows
-            const arrow = new ElementBuilder('a').setClasses(element.classDirection, 'arrow').setAttributes({'href': '#'}).build();
-            arrow.innerHTML = element.svg;
-            arrowElements.push(arrow);
+        this.#content.forEach((element) => {
+            // this.#unorderedList.appendChild(new SliderFrameComp(element).render()); // TODO: we have setChildren     Updated setChildren method to be able to apply it here
+
+            unorderedListInstance.setChildren(new SliderFrameComp(element).render());
         });
 
-        const unorderedList = new ElementBuilder('ul').build();
+        const unorderedList = unorderedListInstance.build();
 
-        this.#options.forEach((element) => {
-            unorderedList.appendChild(new SliderFrameComp(element).render()); // TODO: we have setChildren
+        const arrowLeft = this.#createArrow('arrow-left', this.#svgLeft);
+        const arrowRight = this.#createArrow('arrow-right', this.#svgRight);
+
+        arrowLeft.addEventListener('click', (event) => {
+            event.preventDefault();
+
+            this.#currentIndex--;
+            this.settingTranslateX(unorderedList);
         });
 
-        const initSlider = (index) => { // TODO: we have methods, but you use bare function
-            let currIndex = index; // TODO: looks like class property
-            const maxIndex = this.#options.length - 1; // TODO: looks like class property
+        arrowRight.addEventListener('click', (event) => {
+            event.preventDefault();
 
-            const settingTranslateX = () => { // TODO: we have methods, but you use bare function
-                if (currIndex <= 0) {
-                    currIndex = 0;
-                } else if (currIndex >= maxIndex) {
-                    currIndex = maxIndex;
-                }
-                unorderedList.style.transform = `translateX(${-currIndex * 100}%)`;
-            }
+            this.#currentIndex++;
+            this.settingTranslateX(unorderedList);
+        });
 
-            settingTranslateX();
+        this.initSlider(unorderedList); // TODO: this parameter is a class option    Corrected
 
-            const arrowLeft = arrowElements[0];
-            const arrowRight = arrowElements[1];
-
-            arrowLeft.addEventListener('click', (event) => {
-                event.preventDefault();
-
-                currIndex--;
-                settingTranslateX();
-            });
-
-            arrowRight.addEventListener('click', (event) => {
-                event.preventDefault();
-
-                currIndex++;
-                settingTranslateX();
-            });
-        }
-
-        initSlider(1); // TODO: this parameter is a class option
-
-        const slidesWrapper = new ElementBuilder('div').setClasses('slides-wrapper').setChildren(arrowElements[0], arrowElements[1], unorderedList).build();
+        const slidesWrapper = new ElementBuilder('div').setClasses('slides-wrapper').setChildren(arrowLeft, arrowRight, unorderedList).build();
         const container = new ElementBuilder('div').setClasses('container').setChildren(slidesWrapper).build();
         const section = new ElementBuilder('section').setClasses('section', 'slider').setChildren(container).build();
 
@@ -586,7 +578,7 @@ class ElementBuilder {
     #tagName;
     #classes;
     #attributes;
-    #children;
+    #children = [];
 
     constructor(elementName) {
         this.#tagName = elementName;
@@ -605,7 +597,9 @@ class ElementBuilder {
     }
 
     setChildren(...children) {
-        this.#children = children;
+        for (let element of children) {
+            this.#children.push(element);
+        }
 
         return this;
     }
