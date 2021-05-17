@@ -17,14 +17,11 @@ const stopVideoPlaying = (element) => {
 }
 
 class SliderComp {
-    #content; // TODO: there is a difference between options and content     Corrected
-    #svgLeft = `<svg width="60" height="43" viewBox="0 0 60 43" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M27 41.5L2 21.5M2 21.5L28 1M2 21.5L60 21.5" stroke-width="2" />
-                </svg>`;
-    #svgRight = `<svg width="60" height="43" viewBox="0 0 60 43" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M33 41.5L58 21.5M58 21.5L32 1M58 21.5L0 21.5" stroke-width="2" />
-                </svg>`;
-    #currentIndex = 1;
+    #content;
+    // TODO: bad arrow property names
+    #svgLeft = `<svg width="60" height="43" viewBox="0 0 60 43" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M27 41.5L2 21.5M2 21.5L28 1M2 21.5L60 21.5" stroke-width="2" /></svg>`;
+    #svgRight = `<svg width="60" height="43" viewBox="0 0 60 43" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M33 41.5L58 21.5M58 21.5L32 1M58 21.5L0 21.5" stroke-width="2" /></svg>`;
+    #currentIndex = 1; // TODO: so there is no possibility to set another initial index from outside of component
     #maxIndex;
 
     constructor(content) {
@@ -40,7 +37,8 @@ class SliderComp {
         return arrow;
     }
 
-    settingTranslateX(element) {
+    // TODO: this method is definetely private
+    settingTranslateX(element) { // TODO: you must think of good variable names
         if (this.#currentIndex <= 0) {
             this.#currentIndex = 0;
         } else if (this.#currentIndex >= this.#maxIndex) {
@@ -49,17 +47,19 @@ class SliderComp {
         element.style.transform = `translateX(${-this.#currentIndex * 100}%)`;
     }
 
+    // TODO: you don't need this method anymore
     initSlider(element) {
         this.settingTranslateX(element);
     }
 
     render() {
-
         const unorderedListInstance = new ElementBuilder('ul');
 
-        this.#content.forEach((element) => {
-            // this.#unorderedList.appendChild(new SliderFrameComp(element).render()); // TODO: we have setChildren     Updated setChildren method to be able to apply it here
-
+        // TODO: now setChildren name does not reflect what method does, because it is not set children, but add child to existing childs.
+        // return setChildren as it was
+        // check Array.prototype.map method and use it to generate array of rendered sliderFrameComp instances
+        // then use rest operator to set children for ul
+        this.#content.forEach((element) => { // TODO: you must think of good variable names
             unorderedListInstance.setChildren(new SliderFrameComp(element).render());
         });
 
@@ -82,11 +82,11 @@ class SliderComp {
             this.settingTranslateX(unorderedList);
         });
 
-        this.initSlider(unorderedList); // TODO: this parameter is a class option    Corrected
+        this.initSlider(unorderedList); // TODO: this method is not going to use another ul, parameter is redundant. store it in property with better name
 
         const slidesWrapper = new ElementBuilder('div').setClasses('slides-wrapper').setChildren(arrowLeft, arrowRight, unorderedList).build();
         const container = new ElementBuilder('div').setClasses('container').setChildren(slidesWrapper).build();
-        const section = new ElementBuilder('section').setClasses('section', 'slider').setChildren(container).build();
+        const section = new ElementBuilder('section').setClasses('section', 'slider').setChildren(container).build(); // TODO: what does section class do?
 
         return section;
     }
