@@ -17,14 +17,14 @@ const stopVideoPlaying = (element) => {
 }
 
 class SliderComp {
-    #options;
+    #options; // TODO: there is a difference between options and content
 
     constructor(options) {
         this.#options = options;
     }
 
     render() {
-        const arrows = [
+        const arrows = [ // TODO: store svgs in class properties
             {
                 classDirection: 'arrow-left',
                 svg: (
@@ -43,9 +43,9 @@ class SliderComp {
             }
         ];
 
-        const arrowElements = [];
+        const arrowElements = []; // TODO: no sense
 
-        arrows.forEach((element) => {
+        arrows.forEach((element) => { // TODO: if you want kind of to reduce duplication - create private method which will accept required params and create html arrows
             const arrow = new ElementBuilder('a').setClasses(element.classDirection, 'arrow').setAttributes({'href': '#'}).build();
             arrow.innerHTML = element.svg;
             arrowElements.push(arrow);
@@ -54,14 +54,14 @@ class SliderComp {
         const unorderedList = new ElementBuilder('ul').build();
 
         this.#options.forEach((element) => {
-            unorderedList.appendChild(new SliderFrameComp(element).render());
+            unorderedList.appendChild(new SliderFrameComp(element).render()); // TODO: we have setChildren
         });
 
-        const initSlider = (index) => {
-            let currIndex = index;
-            const maxIndex = this.#options.length - 1;
+        const initSlider = (index) => { // TODO: we have methods, but you use bare function
+            let currIndex = index; // TODO: looks like class property
+            const maxIndex = this.#options.length - 1; // TODO: looks like class property
 
-            const settingTranslateX = () => {
+            const settingTranslateX = () => { // TODO: we have methods, but you use bare function
                 if (currIndex <= 0) {
                     currIndex = 0;
                 } else if (currIndex >= maxIndex) {
@@ -90,12 +90,10 @@ class SliderComp {
             });
         }
 
-        initSlider(1);
+        initSlider(1); // TODO: this parameter is a class option
 
         const slidesWrapper = new ElementBuilder('div').setClasses('slides-wrapper').setChildren(arrowElements[0], arrowElements[1], unorderedList).build();
-
         const container = new ElementBuilder('div').setClasses('container').setChildren(slidesWrapper).build();
-
         const section = new ElementBuilder('section').setClasses('section', 'slider').setChildren(container).build();
 
         return section;
@@ -103,8 +101,7 @@ class SliderComp {
 }
 
 class SliderFrameComp {
-    // #container; // TODO: if container is used only in render - I think we can remove it. In all components    Corrected
-    #options; // TODO: why element?     Changed to options
+    #options;
 
     constructor(options) {
         this.#options = options;
@@ -149,10 +146,9 @@ class SliderFrameComp {
         const handler = (isActive) => {
             image.style.display = isActive ? 'none' : 'block';
 
-            // const currentVideo = video; // TODO: no sense    Corrected
             const allVideos = document.querySelectorAll('video');
 
-            for (let videoElement of allVideos) { // TODO: shadowed variable     Corrected
+            for (let videoElement of allVideos) {
                 if (videoElement !== video) {
                     stopVideoPlaying(videoElement);
                 }
@@ -167,7 +163,6 @@ class SliderFrameComp {
 
         const button = new PlayBtnComp(handler);
         const frame = new ElementBuilder('div').setClasses('frame').setChildren(videoWrapper, image, button.render()).build();
-
         const listItem = new ElementBuilder('li').setChildren(frame).build();
 
         return listItem;
@@ -823,98 +818,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         insert(map);
     }
-
-    // Adding slider
-    // function createSlider(array, main) { // TODO: move to component   Moved to SliderComp
-    //     var makeSection = makeElem('section', 'slider');
-
-    //     var makeContainer = makeElem('div', 'container');
-
-    //     var makeSlidesWrapper = makeElem('div', 'slides-wrapper');
-
-    //     var arrows = [
-    //         {
-    //             classDirection: 'arrow-left',
-    //             svg: (
-    //                 `<svg width="60" height="43" viewBox="0 0 60 43" fill="none" xmlns="http://www.w3.org/2000/svg">
-    //                     <path d="M27 41.5L2 21.5M2 21.5L28 1M2 21.5L60 21.5" stroke-width="2" />
-    //                 </svg>`
-    //             )
-    //         },
-    //         {
-    //             classDirection: 'arrow-right',
-    //             svg: (
-    //                 `<svg width="60" height="43" viewBox="0 0 60 43" fill="none" xmlns="http://www.w3.org/2000/svg">
-    //                     <path d="M33 41.5L58 21.5M58 21.5L32 1M58 21.5L0 21.5" stroke-width="2" />
-    //                 </svg>`
-    //             )
-    //         }
-    //     ];
-
-    //     var arrowElements = [];
-
-    //     arrows.forEach(function (element) {
-    //         var makeArrow = makeElem('a', element.classDirection, 'arrow');
-    //         setAttribute(makeArrow, { 'href': '#' });
-    //         makeArrow.innerHTML = element.svg;
-    //         arrowElements.push(makeArrow);
-
-    //         var arrowsMap = new Map([
-    //             [makeSlidesWrapper, [makeArrow]]
-    //         ]);
-
-    //         insert(arrowsMap);
-    //     });
-
-    //     var makeUL = makeElem('ul');
-
-    //     array.forEach(function (element) {
-    //         makeUL.appendChild(new SliderFrameComp(element).render());
-    //     });
-
-    //     function initSlider(index) {
-    //         var currIndex = index;
-    //         var maxIndex = array.length - 1;
-    //         settingTranslateX();
-
-    //         var arrowLeft = arrowElements[0];
-    //         var arrowRight = arrowElements[1];
-
-    //         arrowLeft.addEventListener('click', function (event) {
-    //             event.preventDefault();
-
-    //             currIndex--;
-    //             settingTranslateX();
-    //         });
-
-    //         arrowRight.addEventListener('click', function (event) {
-    //             event.preventDefault();
-
-    //             currIndex++;
-    //             settingTranslateX();
-    //         });
-
-    //         function settingTranslateX() {
-    //             if (currIndex <= 0) {
-    //                 currIndex = 0;
-    //             } else if (currIndex >= maxIndex) {
-    //                 currIndex = maxIndex;
-    //             }
-    //             makeUL.style.transform = 'translateX(' + -currIndex * 100 + '%)';
-    //         }
-    //     }
-
-    //     initSlider(1);
-
-    //     var map = new Map([
-    //         [makeSection, [makeContainer]],
-    //         [makeContainer, [makeSlidesWrapper]],
-    //         [makeSlidesWrapper, [makeUL]],
-    //         [main, [makeSection]]
-    //     ]);
-
-    //     insert(map);
-    // }
 
     // Adding Sign Up section
     function createSignUp(main) {
