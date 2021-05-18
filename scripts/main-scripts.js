@@ -1,31 +1,106 @@
 'use strict';
 
-const stopVideoPlaying = (element) => {
-    const elementParent = element.parentNode;
+class MainSectionComp {
+    #arrowDown = `<svg width="43" height="60" viewBox="0 0 43 60" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 33L21 58M21 58L41.5 32M21 58V0" stroke-width="2" /></svg>`;
+    #page;
+    #startingPosition;
+    #endingPosition;
+    #distance;
+    #start;
+    #duration;
 
-    element.pause();
+    constructor() {
 
-    const children = elementParent.parentNode.children;
+    }
 
-    for (let child of children) {
-        if (child.hasAttribute('src')) {
-            child.style.display = 'block';
-        } else if (child.classList.contains('btn-play', 'promo-video')) {
-            child.classList.remove('play-active');
-        };
+    #go(duration) {
+        this.#start = performance.now();
+        this.#duration = duration;
+
+        const step = (newTimestamp) => {
+            let toScroll = this.#startingPosition + (this.#distance * (newTimestamp - this.#start)) / this.#duration;
+            if (toScroll >= this.#endingPosition) {
+                toScroll = this.#endingPosition;
+            }
+            this.#page.scrollTop = toScroll;
+
+            if (toScroll < this.#endingPosition) {
+                requestAnimationFrame(step);
+            }
+        }
+
+        requestAnimationFrame(step);
+    }
+
+
+    #scrollToFilm(arg) {
+        this.#page = document.documentElement;
+        this.#startingPosition = this.#page.scrollTop;
+        this.#endingPosition = document.querySelector(arg).offsetTop;
+        this.#distance = this.#endingPosition - this.#startingPosition;
+
+        this.#go(300);
+    }
+
+    render() {
+        const accentText = new ElementBuilder('span').setClasses('accent-text').build();
+        accentText.textContent = 'The 10';
+
+        const breakLine = new ElementBuilder('br').build();
+
+        const textNode = document.createTextNode('Best Movie Soundtracks of All-Time');
+
+        const mainTitle = new ElementBuilder('h1').setChildren(accentText, breakLine, textNode).build();
+
+        const mainSentence = new ElementBuilder('p').build();
+        mainSentence.textContent = 'Awesome movie soundtracks can turn a good movie like Guardians Of The Galaxy or Star Wars into iconic ones.'
+
+        const arrowDown = new ElementBuilder('a').setClasses('arrow-down', 'arrow').setAttributes({'href': '#top-10'}).build();
+        arrowDown.innerHTML = this.#arrowDown;
+
+        arrowDown.addEventListener('click', (event) => {
+            event.preventDefault();
+            const firstTopFilm = arrowDown.getAttribute('href');
+
+            this.#scrollToFilm(firstTopFilm);
+        });
+
+        const container = new ElementBuilder('div').setClasses('container').setChildren(mainTitle, mainSentence, arrowDown).build();
+
+        const section = new ElementBuilder('section').setClasses('main-section').setChildren(container).build();
+
+        return section;
     }
 }
 
+class MediaService {
+    #listeners = [];
+
+    registerMediaPlaying(listener) {
+        this.#listeners.push(listener);
+    }
+
+    notifyMediaPlaying(eventComp) {
+        for (let listener of this.#listeners) {
+            listener(eventComp);
+        }
+    }
+}
+
+const mediaService = new MediaService();
+
 class SliderComp {
     #content;
-    // TODO: bad arrow property names
-    #svgLeft = `<svg width="60" height="43" viewBox="0 0 60 43" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M27 41.5L2 21.5M2 21.5L28 1M2 21.5L60 21.5" stroke-width="2" /></svg>`;
-    #svgRight = `<svg width="60" height="43" viewBox="0 0 60 43" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M33 41.5L58 21.5M58 21.5L32 1M58 21.5L0 21.5" stroke-width="2" /></svg>`;
-    #currentIndex = 1; // TODO: so there is no possibility to set another initial index from outside of component
+    // TODO: bad arrow property names    Corrected
+    #arrowLeft = `<svg width="60" height="43" viewBox="0 0 60 43" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M27 41.5L2 21.5M2 21.5L28 1M2 21.5L60 21.5" stroke-width="2" /></svg>`;
+    #arrowRight = `<svg width="60" height="43" viewBox="0 0 60 43" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M33 41.5L58 21.5M58 21.5L32 1M58 21.5L0 21.5" stroke-width="2" /></svg>`;
+    #currentIndex; // TODO: so there is no possibility to set another initial index from outside of component    Corrected
     #maxIndex;
+    #framesLine;
 
-    constructor(content) {
+    constructor(content, index) {
         this.#content = content;
+        this.#currentIndex = index;
         this.#maxIndex = this.#content.length - 1;
     }
 
@@ -37,56 +112,61 @@ class SliderComp {
         return arrow;
     }
 
-    // TODO: this method is definetely private
-    settingTranslateX(element) { // TODO: you must think of good variable names
+    // TODO: this method is definetely private   Corrected
+    #settingTranslateX() { // TODO: you must think of good variable names     Corrected
         if (this.#currentIndex <= 0) {
             this.#currentIndex = 0;
         } else if (this.#currentIndex >= this.#maxIndex) {
             this.#currentIndex = this.#maxIndex;
         }
-        element.style.transform = `translateX(${-this.#currentIndex * 100}%)`;
+        this.#framesLine.style.transform = `translateX(${-this.#currentIndex * 100}%)`;
     }
 
-    // TODO: you don't need this method anymore
-    initSlider(element) {
-        this.settingTranslateX(element);
-    }
+    // TODO: you don't need this method anymore     Corrected
+    // initSlider(element) {
+    //     this.#settingTranslateX(element);
+    // }
 
     render() {
-        const unorderedListInstance = new ElementBuilder('ul');
-
         // TODO: now setChildren name does not reflect what method does, because it is not set children, but add child to existing childs.
         // return setChildren as it was
         // check Array.prototype.map method and use it to generate array of rendered sliderFrameComp instances
         // then use rest operator to set children for ul
-        this.#content.forEach((element) => { // TODO: you must think of good variable names
-            unorderedListInstance.setChildren(new SliderFrameComp(element).render());
-        });
+        // Corrected. It can be made even shorter. Is shorter version better or worse?
 
-        const unorderedList = unorderedListInstance.build();
+        // const sliderFrames = this.#content.map((frameOptions) => {
+        //     return new SliderFrameComp(frameOptions).render();
+        // });
 
-        const arrowLeft = this.#createArrow('arrow-left', this.#svgLeft);
-        const arrowRight = this.#createArrow('arrow-right', this.#svgRight);
+        // this.#framesLine = new ElementBuilder('ul').setChildren(...sliderFrames).build();
+
+        this.#framesLine = new ElementBuilder('ul').setChildren(...[].map.call(this.#content, (frameOptions) => {
+            return new SliderFrameComp(frameOptions).render();
+        })).build();
+
+        const arrowLeft = this.#createArrow('arrow-left', this.#arrowLeft);
+        const arrowRight = this.#createArrow('arrow-right', this.#arrowRight);
 
         arrowLeft.addEventListener('click', (event) => {
             event.preventDefault();
 
             this.#currentIndex--;
-            this.settingTranslateX(unorderedList);
+            this.#settingTranslateX();
         });
 
         arrowRight.addEventListener('click', (event) => {
             event.preventDefault();
 
             this.#currentIndex++;
-            this.settingTranslateX(unorderedList);
+            this.#settingTranslateX();
         });
 
-        this.initSlider(unorderedList); // TODO: this method is not going to use another ul, parameter is redundant. store it in property with better name
+        this.#settingTranslateX();
+        // this.initSlider(unorderedList); // TODO: this method is not going to use another ul, parameter is redundant. store it in property with better name    Corrected
 
-        const slidesWrapper = new ElementBuilder('div').setClasses('slides-wrapper').setChildren(arrowLeft, arrowRight, unorderedList).build();
+        const slidesWrapper = new ElementBuilder('div').setClasses('slides-wrapper').setChildren(arrowLeft, arrowRight, this.#framesLine).build();
         const container = new ElementBuilder('div').setClasses('container').setChildren(slidesWrapper).build();
-        const section = new ElementBuilder('section').setClasses('section', 'slider').setChildren(container).build(); // TODO: what does section class do?
+        const section = new ElementBuilder('section').setClasses('slider').setChildren(container).build(); // TODO: what does section class do?     Looks like nothing. Deleted this class :)
 
         return section;
     }
@@ -109,7 +189,7 @@ class SliderFrameComp {
         });
 
         video.addEventListener('pause', () => {
-            const id = AnimationService.getAnimationId();
+            const id = animationService.getAnimationId();
 
             cancelAnimationFrame(id);
         });
@@ -125,7 +205,7 @@ class SliderFrameComp {
 
         video.addEventListener('ended', () => {
             setTimeout(() => {
-                stopVideoPlaying(video);
+                mediaService.notifyMediaPlaying();
                 mediaLength.reset();
                 video.currentTime = 0;
             }, 500);
@@ -136,17 +216,12 @@ class SliderFrameComp {
         const image = new ElementBuilder('img').setAttributes({'src': this.#options.imgSrc, 'alt': this.#options.imgAlt}).build();
 
         const handler = (isActive) => {
+
             image.style.display = isActive ? 'none' : 'block';
 
-            const allVideos = document.querySelectorAll('video');
-
-            for (let videoElement of allVideos) {
-                if (videoElement !== video) {
-                    stopVideoPlaying(videoElement);
-                }
-            }
-
             if (isActive) {
+                mediaService.notifyMediaPlaying(this);
+
                 video.play();
             } else {
                 video.pause();
@@ -154,6 +229,15 @@ class SliderFrameComp {
         }
 
         const button = new PlayBtnComp(handler);
+
+        mediaService.registerMediaPlaying((eventComp) => {
+            if (eventComp !== this) {
+                image.style.display = 'block';
+                video.pause();
+                button.removePlayState();
+            }
+        });
+
         const frame = new ElementBuilder('div').setClasses('frame').setChildren(videoWrapper, image, button.render()).build();
         const listItem = new ElementBuilder('li').setChildren(frame).build();
 
@@ -235,14 +319,30 @@ class FilmContentComp {
     }
 }
 
-class AnimationService {
-    static #requestAnimationFrameId;
+// class AnimationService {     // TODO to make instance     Done
+//     // static #requestAnimationFrameId;
 
-    static getAnimationId() {
+//     // static getAnimationId() {
+//     //     return this.#requestAnimationFrameId;
+//     // }
+
+//     // static setAnimationId(id) {
+//     //     this.#requestAnimationFrameId = id;
+//     // }
+// }
+
+class AnimationService {
+    #requestAnimationFrameId;
+
+    constructor() {
+        this.#requestAnimationFrameId = null;
+    }
+
+    getAnimationId() {
         return this.#requestAnimationFrameId;
     }
 
-    static setAnimationId(id) {
+    setAnimationId(id) {
         this.#requestAnimationFrameId = id;
     }
 }
@@ -293,13 +393,10 @@ class ModalWindowComp {
 
     render() {
         const btnHandler = (isActive) => {
-            const allVideos = document.getElementsByTagName('video');
-
-            for (let j = 0; j < allVideos.length; j++) {
-                stopVideoPlaying(allVideos[j]);
-            }
 
             if (isActive) {
+                mediaService.notifyMediaPlaying(this);
+
                 this.#audio.play();
             } else {
                 this.#audio.pause();
@@ -365,7 +462,7 @@ class ModalWindowComp {
         });
 
         this.#audio.addEventListener('pause', () => {
-            const id = AnimationService.getAnimationId();
+            const id = animationService.getAnimationId();
 
             cancelAnimationFrame(id);
         });
@@ -459,7 +556,7 @@ class MediaLengthComp {
                 this.progress(onProgress);
             });
 
-            AnimationService.setAnimationId(id);
+            animationService.setAnimationId(id);
         }
     }
 
@@ -472,7 +569,7 @@ class MediaLengthComp {
         this.#container = new ElementBuilder('div').setClasses('media-length').setChildren(this.#currentLength).build();
 
         this.#container.addEventListener('click', () => {
-            const id = AnimationService.getAnimationId();
+            const id = animationService.getAnimationId();
 
             cancelAnimationFrame(id);
             this.#setMediaVolumeInBarWidth(event);
@@ -597,9 +694,7 @@ class ElementBuilder {
     }
 
     setChildren(...children) {
-        for (let element of children) {
-            this.#children.push(element);
-        }
+        this.#children = children;
 
         return this;
     }
@@ -628,6 +723,8 @@ class ElementBuilder {
         return element;
     }
 }
+
+const animationService = new AnimationService();
 
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -775,43 +872,43 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Adding main Section
-    function createMainSection(main) {
+    // function createMainSection(main) { // TODO make component     Done
+    //     console.log(new MainSectionComp().render());
+    //     var makeSection = makeElem('section', 'main-section');
 
-        var makeSection = makeElem('section', 'main-section');
+    //     var makeContainer = makeElem('div', 'container');
 
-        var makeContainer = makeElem('div', 'container');
+    //     var makeH1 = makeElem('h1');
 
-        var makeH1 = makeElem('h1');
+    //     var makeSpan = makeElem('span', 'accent-text');
+    //     makeSpan.textContent = 'The 10';
 
-        var makeSpan = makeElem('span', 'accent-text');
-        makeSpan.textContent = 'The 10';
+    //     var makeMainP = makeElem('p');
+    //     makeMainP.textContent = 'Awesome movie soundtracks can turn a good movie like Guardians Of The Galaxy or Star Wars into iconic ones.'
 
-        var makeMainP = makeElem('p');
-        makeMainP.textContent = 'Awesome movie soundtracks can turn a good movie like Guardians Of The Galaxy or Star Wars into iconic ones.'
+    //     var makeArrowDown = makeElem('a', 'arrow-down', 'arrow');
+    //     setAttribute(makeArrowDown, { 'href': '#top-10' });
+    //     makeArrowDown.innerHTML = (
+    //         `<svg width="43" height="60" viewBox="0 0 43 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+    //             <path d="M1 33L21 58M21 58L41.5 32M21 58V0" stroke-width="2" />
+    //         </svg>`
+    //     );
 
-        var makeArrowDown = makeElem('a', 'arrow-down', 'arrow');
-        setAttribute(makeArrowDown, { 'href': '#top-10' });
-        makeArrowDown.innerHTML = (
-            `<svg width="43" height="60" viewBox="0 0 43 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M1 33L21 58M21 58L41.5 32M21 58V0" stroke-width="2" />
-            </svg>`
-        );
+    //     makeArrowDown.addEventListener('click', function (event) {
+    //         event.preventDefault();
+    //         var firstTopFilm = this.getAttribute('href');
+    //         scrollToFilm(firstTopFilm);
+    //     });
 
-        makeArrowDown.addEventListener('click', function (event) {
-            event.preventDefault();
-            var firstTopFilm = this.getAttribute('href');
-            scrollToFilm(firstTopFilm);
-        });
+    //     var map = new Map([
+    //         [makeSection, [makeContainer]],
+    //         [makeH1, [makeSpan, document.createElement('br'), document.createTextNode('Best Movie Soundtracks of All-Time')]],
+    //         [makeContainer, [makeH1, makeMainP, makeArrowDown]],
+    //         [main, [makeSection]]
+    //     ]);
 
-        var map = new Map([
-            [makeSection, [makeContainer]],
-            [makeH1, [makeSpan, document.createElement('br'), document.createTextNode('Best Movie Soundtracks of All-Time')]],
-            [makeContainer, [makeH1, makeMainP, makeArrowDown]],
-            [main, [makeSection]]
-        ]);
-
-        insert(map);
-    }
+    //     insert(map);
+    // }
 
     // Adding Sign Up section
     function createSignUp(main) {
@@ -944,7 +1041,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     createHeader(['10', '09', '08', '07', '06', '05', '04', '03', '02', '01']);
     var makeMain = document.body.appendChild(document.createElement('main'));
-    createMainSection(makeMain);
+    makeMain.appendChild(new MainSectionComp().render());
     makeMain.appendChild(new MovieSectionComp(
         {
             sectionClass: 'straight-direction-description',
@@ -1004,7 +1101,7 @@ document.addEventListener('DOMContentLoaded', function () {
             imgSrc: 'images/little_tree.jpg',
             imgAlt: 'little tree presses a button'
         }
-    ]).render());
+    ], 1).render());
 
     makeMain.appendChild(new MovieSectionComp(
         {
@@ -1048,27 +1145,25 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     ).render());
 
-    makeMain.appendChild(new SliderComp(
-        [
-            {
-                src: 'videos/blade-runner.mp4',
-                imgSrc: 'images/bladerunner.jpg',
-                imgAlt: 'bladerunner heroes'
-            },
+    makeMain.appendChild(new SliderComp([
+        {
+            src: 'videos/blade-runner.mp4',
+            imgSrc: 'images/bladerunner.jpg',
+            imgAlt: 'bladerunner heroes'
+        },
 
-            {
-                src: 'videos/goodfellas.mp4',
-                imgSrc: 'images/culture.jpg',
-                imgAlt: 'high buildings'
-            },
+        {
+            src: 'videos/goodfellas.mp4',
+            imgSrc: 'images/culture.jpg',
+            imgAlt: 'high buildings'
+        },
 
-            {
-                src: 'videos/baby-driver.mp4',
-                imgSrc: 'images/Baby-Driver_driver.jpg',
-                imgAlt: 'driver'
-            }
-        ]
-    ).render());
+        {
+            src: 'videos/baby-driver.mp4',
+            imgSrc: 'images/Baby-Driver_driver.jpg',
+            imgAlt: 'driver'
+        }
+    ],1).render());
 
     makeMain.appendChild(new MovieSectionComp(
         {
@@ -1111,27 +1206,25 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     ).render());
 
-    makeMain.appendChild(new SliderComp(
-        [
-            {
-                src: 'videos/o-brother-where-art-thou.mp4',
-                imgSrc: 'images/o-brother-image.jpg',
-                imgAlt: 'confess before the end'
-            },
+    makeMain.appendChild(new SliderComp([
+        {
+            src: 'videos/o-brother-where-art-thou.mp4',
+            imgSrc: 'images/o-brother-image.jpg',
+            imgAlt: 'confess before the end'
+        },
 
-            {
-                src: 'videos/the-godfather.mp4',
-                imgSrc: 'images/group33.jpg',
-                imgAlt: 'gungsters discussing a deal'
-            },
+        {
+            src: 'videos/the-godfather.mp4',
+            imgSrc: 'images/group33.jpg',
+            imgAlt: 'gungsters discussing a deal'
+        },
 
-            {
-                src: 'videos/2001-a-space-odyssey.mp4',
-                imgSrc: 'images/amanda.jpg',
-                imgAlt: 'amanda from a space odyssey'
-            }
-        ]
-    ).render());
+        {
+            src: 'videos/2001-a-space-odyssey.mp4',
+            imgSrc: 'images/amanda.jpg',
+            imgAlt: 'amanda from a space odyssey'
+        }
+    ], 1).render());
 
     makeMain.appendChild(new MovieSectionComp(
         {
