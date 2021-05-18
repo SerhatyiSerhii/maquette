@@ -9,7 +9,7 @@ class MainSectionComp {
     #start;
     #duration;
 
-    constructor() {
+    constructor() { // TODO: what for?
 
     }
 
@@ -17,7 +17,7 @@ class MainSectionComp {
         this.#start = performance.now();
         this.#duration = duration;
 
-        const step = (newTimestamp) => {
+        const step = (newTimestamp) => { // TODO: method?
             let toScroll = this.#startingPosition + (this.#distance * (newTimestamp - this.#start)) / this.#duration;
             if (toScroll >= this.#endingPosition) {
                 toScroll = this.#endingPosition;
@@ -39,7 +39,7 @@ class MainSectionComp {
         this.#endingPosition = document.querySelector(arg).offsetTop;
         this.#distance = this.#endingPosition - this.#startingPosition;
 
-        this.#go(300);
+        this.#go(300); // TODO: how can I set up animation duration?
     }
 
     render() {
@@ -47,9 +47,7 @@ class MainSectionComp {
         accentText.textContent = 'The 10';
 
         const breakLine = new ElementBuilder('br').build();
-
         const textNode = document.createTextNode('Best Movie Soundtracks of All-Time');
-
         const mainTitle = new ElementBuilder('h1').setChildren(accentText, breakLine, textNode).build();
 
         const mainSentence = new ElementBuilder('p').build();
@@ -66,7 +64,6 @@ class MainSectionComp {
         });
 
         const container = new ElementBuilder('div').setClasses('container').setChildren(mainTitle, mainSentence, arrowDown).build();
-
         const section = new ElementBuilder('section').setClasses('main-section').setChildren(container).build();
 
         return section;
@@ -91,14 +88,13 @@ const mediaService = new MediaService();
 
 class SliderComp {
     #content;
-    // TODO: bad arrow property names    Corrected
     #arrowLeft = `<svg width="60" height="43" viewBox="0 0 60 43" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M27 41.5L2 21.5M2 21.5L28 1M2 21.5L60 21.5" stroke-width="2" /></svg>`;
     #arrowRight = `<svg width="60" height="43" viewBox="0 0 60 43" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M33 41.5L58 21.5M58 21.5L32 1M58 21.5L0 21.5" stroke-width="2" /></svg>`;
-    #currentIndex; // TODO: so there is no possibility to set another initial index from outside of component    Corrected
+    #currentIndex;
     #maxIndex;
     #framesLine;
 
-    constructor(content, index) {
+    constructor(content, index) { // TODO: doesn't initialIndex reflect sense of parameter better?
         this.#content = content;
         this.#currentIndex = index;
         this.#maxIndex = this.#content.length - 1;
@@ -112,8 +108,7 @@ class SliderComp {
         return arrow;
     }
 
-    // TODO: this method is definetely private   Corrected
-    #settingTranslateX() { // TODO: you must think of good variable names     Corrected
+    #settingTranslateX() {
         if (this.#currentIndex <= 0) {
             this.#currentIndex = 0;
         } else if (this.#currentIndex >= this.#maxIndex) {
@@ -122,24 +117,17 @@ class SliderComp {
         this.#framesLine.style.transform = `translateX(${-this.#currentIndex * 100}%)`;
     }
 
-    // TODO: you don't need this method anymore     Corrected
-    // initSlider(element) {
-    //     this.#settingTranslateX(element);
-    // }
-
     render() {
-        // TODO: now setChildren name does not reflect what method does, because it is not set children, but add child to existing childs.
-        // return setChildren as it was
-        // check Array.prototype.map method and use it to generate array of rendered sliderFrameComp instances
-        // then use rest operator to set children for ul
         // Corrected. It can be made even shorter. Is shorter version better or worse?
+        // TODO: is shorter more readable?
 
-        // const sliderFrames = this.#content.map((frameOptions) => {
+        // const sliderFrames = this.#content.map((frameOptions) => { // TODO: short arrow function (without curly braces) will look laconic
         //     return new SliderFrameComp(frameOptions).render();
         // });
 
         // this.#framesLine = new ElementBuilder('ul').setChildren(...sliderFrames).build();
 
+        // what is the purpose to use method borrowing here?
         this.#framesLine = new ElementBuilder('ul').setChildren(...[].map.call(this.#content, (frameOptions) => {
             return new SliderFrameComp(frameOptions).render();
         })).build();
@@ -162,11 +150,10 @@ class SliderComp {
         });
 
         this.#settingTranslateX();
-        // this.initSlider(unorderedList); // TODO: this method is not going to use another ul, parameter is redundant. store it in property with better name    Corrected
 
         const slidesWrapper = new ElementBuilder('div').setClasses('slides-wrapper').setChildren(arrowLeft, arrowRight, this.#framesLine).build();
         const container = new ElementBuilder('div').setClasses('container').setChildren(slidesWrapper).build();
-        const section = new ElementBuilder('section').setClasses('slider').setChildren(container).build(); // TODO: what does section class do?     Looks like nothing. Deleted this class :)
+        const section = new ElementBuilder('section').setClasses('slider').setChildren(container).build();
 
         return section;
     }
@@ -319,22 +306,10 @@ class FilmContentComp {
     }
 }
 
-// class AnimationService {     // TODO to make instance     Done
-//     // static #requestAnimationFrameId;
-
-//     // static getAnimationId() {
-//     //     return this.#requestAnimationFrameId;
-//     // }
-
-//     // static setAnimationId(id) {
-//     //     this.#requestAnimationFrameId = id;
-//     // }
-// }
-
 class AnimationService {
     #requestAnimationFrameId;
 
-    constructor() {
+    constructor() { // TODO: what for?
         this.#requestAnimationFrameId = null;
     }
 
@@ -871,45 +846,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Adding main Section
-    // function createMainSection(main) { // TODO make component     Done
-    //     console.log(new MainSectionComp().render());
-    //     var makeSection = makeElem('section', 'main-section');
-
-    //     var makeContainer = makeElem('div', 'container');
-
-    //     var makeH1 = makeElem('h1');
-
-    //     var makeSpan = makeElem('span', 'accent-text');
-    //     makeSpan.textContent = 'The 10';
-
-    //     var makeMainP = makeElem('p');
-    //     makeMainP.textContent = 'Awesome movie soundtracks can turn a good movie like Guardians Of The Galaxy or Star Wars into iconic ones.'
-
-    //     var makeArrowDown = makeElem('a', 'arrow-down', 'arrow');
-    //     setAttribute(makeArrowDown, { 'href': '#top-10' });
-    //     makeArrowDown.innerHTML = (
-    //         `<svg width="43" height="60" viewBox="0 0 43 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-    //             <path d="M1 33L21 58M21 58L41.5 32M21 58V0" stroke-width="2" />
-    //         </svg>`
-    //     );
-
-    //     makeArrowDown.addEventListener('click', function (event) {
-    //         event.preventDefault();
-    //         var firstTopFilm = this.getAttribute('href');
-    //         scrollToFilm(firstTopFilm);
-    //     });
-
-    //     var map = new Map([
-    //         [makeSection, [makeContainer]],
-    //         [makeH1, [makeSpan, document.createElement('br'), document.createTextNode('Best Movie Soundtracks of All-Time')]],
-    //         [makeContainer, [makeH1, makeMainP, makeArrowDown]],
-    //         [main, [makeSection]]
-    //     ]);
-
-    //     insert(map);
-    // }
-
     // Adding Sign Up section
     function createSignUp(main) {
         var makeSignUp = makeElem('section', 'sign-up');
@@ -1040,7 +976,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     createHeader(['10', '09', '08', '07', '06', '05', '04', '03', '02', '01']);
-    var makeMain = document.body.appendChild(document.createElement('main'));
+    var makeMain = document.body.appendChild(document.createElement('main')); // TODO: move to component
     makeMain.appendChild(new MainSectionComp().render());
     makeMain.appendChild(new MovieSectionComp(
         {
@@ -1163,7 +1099,7 @@ document.addEventListener('DOMContentLoaded', function () {
             imgSrc: 'images/Baby-Driver_driver.jpg',
             imgAlt: 'driver'
         }
-    ],1).render());
+    ], 1).render());
 
     makeMain.appendChild(new MovieSectionComp(
         {
