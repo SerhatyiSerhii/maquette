@@ -1,6 +1,6 @@
 'use strict';
 
-class TagMainComp {
+class TagMainComp { // TODO: what the purpose of component if it's only creates html element?
     render() {
         const tagMain = new ElementBuilder('main').build();
 
@@ -17,38 +17,34 @@ class MainSectionComp {
     #start;
     #duration;
 
-    constructor(duration) { // TODO: what for?    Forgot to delete, but now it used to set scroll animation duration :)
+    constructor(duration) {
         this.#duration = duration;
     }
 
     #step(newTimestamp) {
-
         let toScroll = this.#startingPosition + (this.#distance * (newTimestamp - this.#start)) / this.#duration;
+
         if (toScroll >= this.#endingPosition) {
             toScroll = this.#endingPosition;
         }
+
         this.#page.scrollTop = toScroll;
 
         if (toScroll < this.#endingPosition) {
             requestAnimationFrame(this.#step.bind(this));
+            // TODO: hopefully you understood what bind does.
+            // that's a solution, but now we have another problem.
+            // #step is a function created once.
+            // but bind returns new function everytime it is called.
+            // and because requestAnimationFrame executes quite often - using bind this way is too much.
+            // there are two similiar ways to hanle this.
+            // first: use #step as property and store there function with bind
+            // second: use #step as property and store there arrow function
         }
     }
 
     #go() {
         this.#start = performance.now();
-
-        // const step = (newTimestamp) => { // TODO: method?     Corrected
-        //     let toScroll = this.#startingPosition + (this.#distance * (newTimestamp - this.#start)) / this.#duration;
-        //     if (toScroll >= this.#endingPosition) {
-        //         toScroll = this.#endingPosition;
-        //     }
-        //     this.#page.scrollTop = toScroll;
-
-        //     if (toScroll < this.#endingPosition) {
-        //         requestAnimationFrame(step);
-        //     }
-        // }
-
         requestAnimationFrame(this.#step.bind(this));
     }
 
@@ -59,7 +55,7 @@ class MainSectionComp {
         this.#endingPosition = document.querySelector(arg).offsetTop;
         this.#distance = this.#endingPosition - this.#startingPosition;
 
-        this.#go(); // TODO: how can I set up animation duration?    Corrected
+        this.#go();
     }
 
     render() {
@@ -114,7 +110,7 @@ class SliderComp {
     #maxIndex;
     #framesLine;
 
-    constructor(content, initialIndex) { // TODO: doesn't initialIndex reflect sense of parameter better?  It is better. Corrected :)
+    constructor(content, initialIndex) {
         this.#content = content;
         this.#currentIndex = initialIndex;
         this.#maxIndex = this.#content.length - 1;
@@ -138,17 +134,9 @@ class SliderComp {
     }
 
     render() {
-        // Corrected. It can be made even shorter. Is shorter version better or worse?
-        // TODO: is shorter more readable?   It's easier to read the code.
-
-        const sliderFrames = this.#content.map((frameOptions) =>  new SliderFrameComp(frameOptions).render());// TODO: short arrow function (without curly braces) will look laconic     Corrected
+        const sliderFrames = this.#content.map((frameOptions) => new SliderFrameComp(frameOptions).render());
 
         this.#framesLine = new ElementBuilder('ul').setChildren(...sliderFrames).build();
-
-        // what is the purpose to use method borrowing here?     Saw it on MDN. Works well without borrowing.
-        // this.#framesLine = new ElementBuilder('ul').setChildren(...this.#content.map((frameOptions) => {
-        //     return new SliderFrameComp(frameOptions).render();
-        // })).build();
 
         const arrowLeft = this.#createArrow('arrow-left', this.#arrowLeft);
         const arrowRight = this.#createArrow('arrow-right', this.#arrowRight);
@@ -326,10 +314,6 @@ class FilmContentComp {
 
 class AnimationService {
     #requestAnimationFrameId;
-
-    // constructor() { // TODO: what for?    Deleted
-    //     this.#requestAnimationFrameId = null;
-    // }
 
     getAnimationId() {
         return this.#requestAnimationFrameId;
@@ -865,7 +849,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Adding Sign Up section
-    function createSignUp(main) {
+    function createSignUp(main) { // TODO: move to component
         var makeSignUp = makeElem('section', 'sign-up');
 
         var makeContainer = makeElem('div', 'container');
@@ -902,7 +886,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     // Adding footer element to page
-    function createFooter() {
+    function createFooter() { // TODO: move to component
         var makeFooter = makeElem('footer');
 
         var makeContainer = makeElem('div', 'container');
@@ -994,7 +978,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     createHeader(['10', '09', '08', '07', '06', '05', '04', '03', '02', '01']);
-    // var makeMain = document.body.appendChild(document.createElement('main')); // TODO: move to component     Moved to componenet
     var makeMain = document.body.appendChild(new TagMainComp().render());
 
     makeMain.appendChild(new MainSectionComp(300).render());
