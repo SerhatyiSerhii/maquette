@@ -1,5 +1,13 @@
 'use strict';
 
+class TagMainComp {
+    render() {
+        const tagMain = new ElementBuilder('main').build();
+
+        return tagMain;
+    }
+}
+
 class MainSectionComp {
     #arrowDown = `<svg width="43" height="60" viewBox="0 0 43 60" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 33L21 58M21 58L41.5 32M21 58V0" stroke-width="2" /></svg>`;
     #page;
@@ -9,27 +17,39 @@ class MainSectionComp {
     #start;
     #duration;
 
-    constructor() { // TODO: what for?
-
+    constructor(duration) { // TODO: what for?    Forgot to delete, but now it used to set scroll animation duration :)
+        this.#duration = duration;
     }
 
-    #go(duration) {
-        this.#start = performance.now();
-        this.#duration = duration;
+    #step(newTimestamp) {
 
-        const step = (newTimestamp) => { // TODO: method?
-            let toScroll = this.#startingPosition + (this.#distance * (newTimestamp - this.#start)) / this.#duration;
-            if (toScroll >= this.#endingPosition) {
-                toScroll = this.#endingPosition;
-            }
-            this.#page.scrollTop = toScroll;
-
-            if (toScroll < this.#endingPosition) {
-                requestAnimationFrame(step);
-            }
+        let toScroll = this.#startingPosition + (this.#distance * (newTimestamp - this.#start)) / this.#duration;
+        if (toScroll >= this.#endingPosition) {
+            toScroll = this.#endingPosition;
         }
+        this.#page.scrollTop = toScroll;
 
-        requestAnimationFrame(step);
+        if (toScroll < this.#endingPosition) {
+            requestAnimationFrame(this.#step.bind(this));
+        }
+    }
+
+    #go() {
+        this.#start = performance.now();
+
+        // const step = (newTimestamp) => { // TODO: method?     Corrected
+        //     let toScroll = this.#startingPosition + (this.#distance * (newTimestamp - this.#start)) / this.#duration;
+        //     if (toScroll >= this.#endingPosition) {
+        //         toScroll = this.#endingPosition;
+        //     }
+        //     this.#page.scrollTop = toScroll;
+
+        //     if (toScroll < this.#endingPosition) {
+        //         requestAnimationFrame(step);
+        //     }
+        // }
+
+        requestAnimationFrame(this.#step.bind(this));
     }
 
 
@@ -39,7 +59,7 @@ class MainSectionComp {
         this.#endingPosition = document.querySelector(arg).offsetTop;
         this.#distance = this.#endingPosition - this.#startingPosition;
 
-        this.#go(300); // TODO: how can I set up animation duration?
+        this.#go(); // TODO: how can I set up animation duration?    Corrected
     }
 
     render() {
@@ -94,9 +114,9 @@ class SliderComp {
     #maxIndex;
     #framesLine;
 
-    constructor(content, index) { // TODO: doesn't initialIndex reflect sense of parameter better?
+    constructor(content, initialIndex) { // TODO: doesn't initialIndex reflect sense of parameter better?  It is better. Corrected :)
         this.#content = content;
-        this.#currentIndex = index;
+        this.#currentIndex = initialIndex;
         this.#maxIndex = this.#content.length - 1;
     }
 
@@ -119,18 +139,16 @@ class SliderComp {
 
     render() {
         // Corrected. It can be made even shorter. Is shorter version better or worse?
-        // TODO: is shorter more readable?
+        // TODO: is shorter more readable?   It's easier to read the code.
 
-        // const sliderFrames = this.#content.map((frameOptions) => { // TODO: short arrow function (without curly braces) will look laconic
+        const sliderFrames = this.#content.map((frameOptions) =>  new SliderFrameComp(frameOptions).render());// TODO: short arrow function (without curly braces) will look laconic     Corrected
+
+        this.#framesLine = new ElementBuilder('ul').setChildren(...sliderFrames).build();
+
+        // what is the purpose to use method borrowing here?     Saw it on MDN. Works well without borrowing.
+        // this.#framesLine = new ElementBuilder('ul').setChildren(...this.#content.map((frameOptions) => {
         //     return new SliderFrameComp(frameOptions).render();
-        // });
-
-        // this.#framesLine = new ElementBuilder('ul').setChildren(...sliderFrames).build();
-
-        // what is the purpose to use method borrowing here?
-        this.#framesLine = new ElementBuilder('ul').setChildren(...[].map.call(this.#content, (frameOptions) => {
-            return new SliderFrameComp(frameOptions).render();
-        })).build();
+        // })).build();
 
         const arrowLeft = this.#createArrow('arrow-left', this.#arrowLeft);
         const arrowRight = this.#createArrow('arrow-right', this.#arrowRight);
@@ -309,9 +327,9 @@ class FilmContentComp {
 class AnimationService {
     #requestAnimationFrameId;
 
-    constructor() { // TODO: what for?
-        this.#requestAnimationFrameId = null;
-    }
+    // constructor() { // TODO: what for?    Deleted
+    //     this.#requestAnimationFrameId = null;
+    // }
 
     getAnimationId() {
         return this.#requestAnimationFrameId;
@@ -976,8 +994,11 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     createHeader(['10', '09', '08', '07', '06', '05', '04', '03', '02', '01']);
-    var makeMain = document.body.appendChild(document.createElement('main')); // TODO: move to component
-    makeMain.appendChild(new MainSectionComp().render());
+    // var makeMain = document.body.appendChild(document.createElement('main')); // TODO: move to component     Moved to componenet
+    var makeMain = document.body.appendChild(new TagMainComp().render());
+
+    makeMain.appendChild(new MainSectionComp(300).render());
+
     makeMain.appendChild(new MovieSectionComp(
         {
             sectionClass: 'straight-direction-description',
