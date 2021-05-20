@@ -3,7 +3,7 @@
 const MEDIA_SERVICE = 'mediaServiceKey';
 const ANIMATION_SERVICE = 'animationServiceKey';
 
-// To encapsulate  services // TODO: this comment is not explain why service locator used
+// Encapsulation of services to ensure elements on their changes refer to one place and call unique required service according to the passed key // TODO: this comment is not explain why service locator used     Changed comment
 class ServiceLocator {
     static #serviceContainer = {};
 
@@ -13,6 +13,18 @@ class ServiceLocator {
 
     static inject(key) {
         return ServiceLocator.#serviceContainer[key];
+    }
+}
+
+class MainTagComponenet {
+    #childrenTags;
+
+    constructor(childrenTags) {
+        this.#childrenTags = childrenTags;
+    }
+
+    render() {
+        return new ElementBuilder('main').setChildren(...this.#childrenTags).build();
     }
 }
 
@@ -38,35 +50,36 @@ class FooterComp {
     ];
 
     render() {
-        const socialMediaArr = this.#socialMediaIcons.map((IconElement) => { // TODO: pascal case? Also don't forget you can skip parantheses for one-argument arrow functions
+        const socialMediaArr = this.#socialMediaIcons.map((iconElement) => { // TODO: pascal case? Also don't forget you can skip parantheses for one-argument arrow functions
+            // Corrected pascal case. But I can't skip parantheses here as I create several elements. I can place creation of one element into another, but can't assign innerHTML.
             const aTag = new ElementBuilder('a').setAttributes({ 'href': '#' }).setClasses('circle').build();
 
-            aTag.innerHTML = IconElement;
+            aTag.innerHTML = iconElement;
 
-            const liTag = new ElementBuilder('li').setChildren(aTag).build(); // TODO: no sense for variable
+            // const liTag = new ElementBuilder('li').setChildren(aTag).build(); // TODO: no sense for variable     Deleted
 
-            return liTag;
+            return new ElementBuilder('li').setChildren(aTag).build();;
         });
 
-        const SocialMediaUL = new ElementBuilder('ul').setClasses('social-media').setChildren(...socialMediaArr).build(); // TODO: whad happened? why you use pascal case?
+        const socialMediaUL = new ElementBuilder('ul').setClasses('social-media').setChildren(...socialMediaArr).build(); // TODO: whad happened? why you use pascal case?   Corrected. It's a habit from Deutschlernen: every Noun starts from a capital Letter :)
 
-        const policies = ['privacy policy', 'cookie policy']; // TODO: no sense for variable
+        // const policies = ['privacy policy', 'cookie policy']; // TODO: no sense for variable     Deleted
 
-        const policiesLIArr = policies.map((policiesElement) => { // TODO: why element?
+        const policiesLIArr = ['privacy policy', 'cookie policy'].map((policy) => { // TODO: why element?    Corrected
             const aTag = new ElementBuilder('a').setAttributes({ 'href': '#' }).build();
 
-            aTag.textContent = policiesElement;
+            aTag.textContent = policy;
 
-            const liTag = new ElementBuilder('li').setChildren(aTag).build(); // TODO: no sense for variable
+            // const liTag = new ElementBuilder('li').setChildren(aTag).build(); // TODO: no sense for variable     Deleted
 
-            return liTag;
+            return new ElementBuilder('li').setChildren(aTag).build();;
         });
 
         const policyUL = new ElementBuilder('ul').setClasses('policy').setChildren(...policiesLIArr).build();
-        const container = new ElementBuilder('container').setClasses('container').setChildren(policyUL, SocialMediaUL).build();
-        const footer = new ElementBuilder('footer').setChildren(container).build(); // TODO: no sense for variable
+        const container = new ElementBuilder('container').setClasses('container').setChildren(policyUL, socialMediaUL).build();
+        // const footer = new ElementBuilder('footer').setChildren(container).build(); // TODO: no sense for variable    Deleted
 
-        return footer;
+        return new ElementBuilder('footer').setChildren(container).build();
     }
 }
 
@@ -82,9 +95,9 @@ class SignUpComp {
 
         const appeal = new ElementBuilder('div').setClasses('appeal').setChildren(sighUpTitle, form).build();
         const container = new ElementBuilder('container').setChildren(appeal).build();
-        const section = new ElementBuilder('section').setClasses('sign-up').setChildren(container).build(); // TODO: no sense for variable
+        // const section = new ElementBuilder('section').setClasses('sign-up').setChildren(container).build(); // TODO: no sense for variable    Deleted
 
-        return section;
+        return new ElementBuilder('section').setClasses('sign-up').setChildren(container).build();
     }
 }
 
@@ -623,7 +636,7 @@ class MediaLengthComp {
         this.#currentLength = new ElementBuilder('div').setClasses('current-length').build();
         this.#container = new ElementBuilder('div').setClasses('media-length').setChildren(this.#currentLength).build();
 
-        this.#container.addEventListener('click', () => {
+        this.#container.addEventListener('click', (event) => {
             const id = this.#animationService.getAnimationId();
 
             cancelAnimationFrame(id);
@@ -936,7 +949,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     createHeader(['10', '09', '08', '07', '06', '05', '04', '03', '02', '01']);
-    const makeMain = new ElementBuilder('main'); // TODO: where is main component?
+    // const makeMain = new ElementBuilder('main'); // TODO: where is main component?    Corrected
 
     let mainTagChildrenArr = [];
 
@@ -1128,7 +1141,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     mainTagChildrenArr.push(new MovieSectionComp(
         {
-            sectionClass: 'reverse-direction-description', // TODO: make this section straight direction, will explain later
+            sectionClass: 'straight-direction-description', // TODO: make this section straight direction, will explain later    Corrected
             position: '01',
             name: 'THE LORD OF THE RINGS',
             audioName: 'the-lord-of-the-rings',
@@ -1145,7 +1158,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const footer = new FooterComp().render();
 
-    document.body.appendChild(makeMain.setChildren(...mainTagChildrenArr).build());
+    document.body.appendChild(new MainTagComponenet(mainTagChildrenArr).render());
     document.body.appendChild(footer);
 
     setVolumeAfterAppend();
