@@ -1,10 +1,9 @@
 'use strict';
 
 const MEDIA_SERVICE = 'mediaServiceKey';
-
 const ANIMATION_SERVICE = 'animationServiceKey';
 
-// To encapsulate  services
+// To encapsulate  services // TODO: this comment is not explain why service locator used
 class ServiceLocator {
     static #serviceContainer = {};
 
@@ -28,48 +27,44 @@ class FooterComp {
             </linearGradient>
             </defs>
         </svg>`,
-
         `<svg width="31" height="31" viewBox="0 0 31 31" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M22.1115 30.4209H8.14633C3.65538 30.4209 0 26.747 0 22.2307V8.19024C0 3.67391 3.65538 0 8.14633 0H22.1115C26.6024 0 30.2578 3.67391 30.2578 8.19024V22.2307C30.2578 26.747 26.6024 30.4209 22.1115 30.4209ZM8.14633 2.34007C4.93784 2.34007 2.32752 4.96446 2.32752 8.19024V22.2307C2.32752 25.4564 4.93784 28.0808 8.14633 28.0808H22.1115C25.32 28.0808 27.9303 25.4564 27.9303 22.2307V8.19024C27.9303 4.96446 25.32 2.34007 22.1115 2.34007H8.14633Z" fill="white" />
             <path d="M15.1463 23.4131C10.6554 23.4131 7 19.7391 7 15.2227C7 10.7062 10.6554 7.03223 15.1463 7.03223C19.6372 7.03223 23.2926 10.7062 23.2926 15.2227C23.2926 19.7391 19.6372 23.4131 15.1463 23.4131ZM15.1463 9.37235C11.9378 9.37235 9.32751 11.9968 9.32751 15.2227C9.32751 18.4485 11.9378 21.073 15.1463 21.073C18.3548 21.073 20.9651 18.4485 20.9651 15.2227C20.9651 11.9968 18.3548 9.37235 15.1463 9.37235Z" fill="white" />
             <path d="M24.7456 7.5293C25.7097 7.5293 26.4912 6.74339 26.4912 5.77393C26.4912 4.80446 25.7097 4.01855 24.7456 4.01855C23.7815 4.01855 23 4.80446 23 5.77393C23 6.74339 23.7815 7.5293 24.7456 7.5293Z" fill="white" />
         </svg>`,
-
         `<svg width="10" height="20" viewBox="0 0 10 20" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M8.71507 9.53953H6.13306V19.874H2.2999V9.53953H0V6.35969H2.2999V4.44383C2.30143 1.65511 3.41841 0 6.5869 0H9.19958V3.17984H7.4463C6.21279 3.17984 6.13306 3.65682 6.13306 4.54956V6.35969H9.19958L8.71507 9.53953Z" fill="white" />
         </svg>`
     ];
 
     render() {
-        const socialMediaArr = this.#socialMediaIcons.map((IconElement) => {
-            const aTag = new ElementBuilder('a').setAttributes({'href': '#'}).setClasses('circle').build();
+        const socialMediaArr = this.#socialMediaIcons.map((IconElement) => { // TODO: pascal case? Also don't forget you can skip parantheses for one-argument arrow functions
+            const aTag = new ElementBuilder('a').setAttributes({ 'href': '#' }).setClasses('circle').build();
 
             aTag.innerHTML = IconElement;
 
-            const liTag = new ElementBuilder('li').setChildren(aTag).build();
+            const liTag = new ElementBuilder('li').setChildren(aTag).build(); // TODO: no sense for variable
 
             return liTag;
         });
 
-        const SocialMediaUL = new ElementBuilder('ul').setClasses('social-media').setChildren(...socialMediaArr).build();
+        const SocialMediaUL = new ElementBuilder('ul').setClasses('social-media').setChildren(...socialMediaArr).build(); // TODO: whad happened? why you use pascal case?
 
-        const policies = ['privacy policy', 'cookie policy'];
+        const policies = ['privacy policy', 'cookie policy']; // TODO: no sense for variable
 
-        const policiesLIArr = policies.map((policiesElement) => {
-            const aTag = new ElementBuilder('a').setAttributes({'href': '#'}).build();
+        const policiesLIArr = policies.map((policiesElement) => { // TODO: why element?
+            const aTag = new ElementBuilder('a').setAttributes({ 'href': '#' }).build();
 
             aTag.textContent = policiesElement;
 
-            const liTag = new ElementBuilder('li').setChildren(aTag).build();
+            const liTag = new ElementBuilder('li').setChildren(aTag).build(); // TODO: no sense for variable
 
             return liTag;
         });
 
         const policyUL = new ElementBuilder('ul').setClasses('policy').setChildren(...policiesLIArr).build();
-
         const container = new ElementBuilder('container').setClasses('container').setChildren(policyUL, SocialMediaUL).build();
-
-        const footer = new ElementBuilder('footer').setChildren(container).build();
+        const footer = new ElementBuilder('footer').setChildren(container).build(); // TODO: no sense for variable
 
         return footer;
     }
@@ -77,22 +72,17 @@ class FooterComp {
 
 class SignUpComp {
     render() {
-        const textInput = new ElementBuilder('input').setAttributes({'type': 'text', 'name': 'email', 'placeholder': 'enter your email', 'autocomplete': 'off'}).build();
-
-        const submitInput = new ElementBuilder('input').setAttributes({'type': 'submit', 'value': 'submit'}).build();
-
+        const textInput = new ElementBuilder('input').setAttributes({ 'type': 'text', 'name': 'email', 'placeholder': 'enter your email', 'autocomplete': 'off' }).build();
+        const submitInput = new ElementBuilder('input').setAttributes({ 'type': 'submit', 'value': 'submit' }).build();
         const emailSpace = new ElementBuilder('div').setClasses('email-space').setChildren(textInput, submitInput).build();
-
         const form = new ElementBuilder('form').setChildren(emailSpace).build();
 
         const sighUpTitle = new ElementBuilder('h2').build();
         sighUpTitle.textContent = 'Sign up to receive the latest updates and news'
 
         const appeal = new ElementBuilder('div').setClasses('appeal').setChildren(sighUpTitle, form).build();
-
         const container = new ElementBuilder('container').setChildren(appeal).build();
-
-        const section = new ElementBuilder('section').setClasses('sign-up').setChildren(container).build();
+        const section = new ElementBuilder('section').setClasses('sign-up').setChildren(container).build(); // TODO: no sense for variable
 
         return section;
     }
@@ -123,30 +113,6 @@ class MainSectionComp {
         this.#duration = duration;
     }
 
-    // #step(newTimestamp) {
-    //     let toScroll = this.#startingPosition + (this.#distance * (newTimestamp - this.#start)) / this.#duration;
-
-    //     if (toScroll >= this.#endingPosition) {
-    //         toScroll = this.#endingPosition;
-    //     }
-
-    //     this.#page.scrollTop = toScroll;
-
-    //     if (toScroll < this.#endingPosition) {
-    //         requestAnimationFrame(this.#step.bind(this));
-    //         // TODO: hopefully you understood what bind does.
-    //         // that's a solution, but now we have another problem.
-    //         // #step is a function created once.
-    //         // but bind returns new function everytime it is called.
-    //         // and because requestAnimationFrame executes quite often - using bind this way is too much.
-    //         // there are two similiar ways to hanle this.
-    //         // first: use #step as property and store there function with bind
-    //         // second: use #step as property and store there arrow function
-
-    //         // Corrected. Used the second way
-    //     }
-    // }
-
     #go() {
         this.#start = performance.now();
         requestAnimationFrame(this.#step);
@@ -173,7 +139,7 @@ class MainSectionComp {
         const mainSentence = new ElementBuilder('p').build();
         mainSentence.textContent = 'Awesome movie soundtracks can turn a good movie like Guardians Of The Galaxy or Star Wars into iconic ones.'
 
-        const arrowDown = new ElementBuilder('a').setClasses('arrow-down', 'arrow').setAttributes({'href': '#top-10'}).build();
+        const arrowDown = new ElementBuilder('a').setClasses('arrow-down', 'arrow').setAttributes({ 'href': '#top-10' }).build();
         arrowDown.innerHTML = this.#arrowDown;
 
         arrowDown.addEventListener('click', (event) => {
@@ -221,7 +187,7 @@ class SliderComp {
     }
 
     #createArrow(arrowDirection, svg) {
-        const arrow = new ElementBuilder('a').setClasses(arrowDirection, 'arrow').setAttributes({'href': '#'}).build();
+        const arrow = new ElementBuilder('a').setClasses(arrowDirection, 'arrow').setAttributes({ 'href': '#' }).build();
 
         arrow.innerHTML = svg;
 
@@ -279,7 +245,7 @@ class SliderFrameComp {
     }
 
     render() {
-        const source = new ElementBuilder('source').setAttributes({'src': this.#options.src}).build();
+        const source = new ElementBuilder('source').setAttributes({ 'src': this.#options.src }).build();
         const video = new ElementBuilder('video').setChildren(source).build();
         const timer = new TimerComp(video);
 
@@ -312,7 +278,7 @@ class SliderFrameComp {
 
         const videoControls = new ElementBuilder('div').setClasses('video-controls').setChildren(volume.render(), mediaLength.render()).build();
         const videoWrapper = new ElementBuilder('div').setClasses('video-wrapper').setChildren(video, timer.render(), videoControls).build();
-        const image = new ElementBuilder('img').setAttributes({'src': this.#options.imgSrc, 'alt': this.#options.imgAlt}).build();
+        const image = new ElementBuilder('img').setAttributes({ 'src': this.#options.imgSrc, 'alt': this.#options.imgAlt }).build();
 
         const handler = (isActive) => {
 
@@ -352,14 +318,14 @@ class MovieSectionComp {
     }
 
     render() {
-        const section = new ElementBuilder('section').setClasses(this.#options.sectionClass, 'direction-description').setAttributes({'id': `top-${this.#options.position}`});
+        const section = new ElementBuilder('section').setClasses(this.#options.sectionClass, 'direction-description').setAttributes({ 'id': `top-${this.#options.position}` });
 
         const picture = new ElementBuilder('img');
 
         if (this.#options.sectionClass === 'central-direction-description') {
             section.setClasses(this.#options.sectionClass, this.#options.imgClass);
         } else {
-            picture.setAttributes({'src': this.#options.imgSrc, 'alt': this.#options.imgAlt});
+            picture.setAttributes({ 'src': this.#options.imgSrc, 'alt': this.#options.imgAlt });
         }
 
         const filmImage = new ElementBuilder('div').setClasses('film-image').setChildren(picture.build()).build();
@@ -491,7 +457,7 @@ class ModalWindowComp {
             }
         }
 
-        this.#audio = new ElementBuilder('audio').setAttributes({'src': `audios/${this.#audioSrc}.ogg`}).build();
+        this.#audio = new ElementBuilder('audio').setAttributes({ 'src': `audios/${this.#audioSrc}.ogg` }).build();
 
         this.#volume = new VolumeComp(this.#audio);
         const volume = this.#volume.render();
@@ -550,7 +516,7 @@ class ModalWindowComp {
         });
 
         this.#audio.addEventListener('pause', () => {
-            const id = this.#animationService .getAnimationId();
+            const id = this.#animationService.getAnimationId();
 
             cancelAnimationFrame(id);
         });
@@ -752,12 +718,12 @@ class TimerComp {
         this.#container.textContent = `${minSecCurTime} / ${minSecDurat}`;
     }
 
-render() {
-    this.#container = new ElementBuilder('div').setClasses('timer').build();
-    this.#container.textContent = '00:00 / 00:00';
+    render() {
+        this.#container = new ElementBuilder('div').setClasses('timer').build();
+        this.#container.textContent = '00:00 / 00:00';
 
-    return this.#container;
-}
+        return this.#container;
+    }
 }
 
 class ElementBuilder {
@@ -958,124 +924,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Adding Sign Up section
-    // function createSignUp(main) { // TODO: move to component     Moved
-    //     var makeSignUp = makeElem('section', 'sign-up');
-
-    //     var makeContainer = makeElem('div', 'container');
-
-    //     var makeAppeal = makeElem('div', 'appeal');
-
-    //     var makeH2 = makeElem('h2');
-    //     makeH2.textContent = 'Sign up to receive the latest updates and news';
-
-    //     var makeForm = makeElem('form');
-
-    //     var makeEmailSpace = makeElem('div', 'email-space');
-
-    //     var map = new Map([
-    //         [makeSignUp, [makeContainer]],
-    //         [makeContainer, [makeAppeal]],
-    //         [makeAppeal, [makeH2, makeForm]],
-    //         [makeForm, [makeEmailSpace]],
-    //         [makeEmailSpace, [document.createElement('input'), document.createElement('input')]],
-    //         [main, [makeSignUp]]
-    //     ]);
-
-    //     insert(map);
-
-    //     var submitBtn = makeEmailSpace.children;
-
-    //     var enterEmail = submitBtn[0];
-    //     var submitBtn = submitBtn[1];
-
-    //     setAttribute(enterEmail, { 'type': 'text', 'name': 'email', 'placeholder': 'enter your email', 'autocomplete': 'off' });
-
-    //     setAttribute(submitBtn, { 'type': 'submit', 'value': 'submit' });
-    // }
-
-
-    // Adding footer element to page
-    // function createFooter() { // TODO: move to component     Moved
-    //     var makeFooter = makeElem('footer');
-
-    //     var makeContainer = makeElem('div', 'container');
-
-    //     // Adding branches into footer
-    //     var containerBranches = ['policy', 'social-media'];
-
-    //     containerBranches.forEach(function (element) {
-    //         var makeUL = makeElem('ul', element);
-
-    //         var branchesMap = new Map([
-    //             [makeContainer, [makeUL]]
-    //         ]);
-
-    //         insert(branchesMap);
-    //     });
-
-    //     // Adding policies
-    //     var policies = ['privacy policy', 'cookie policy'];
-
-    //     policies.forEach(function (element) {
-    //         var makeListItm = makeElem('li');
-    //         var makeLink = makeElem('a');
-    //         setAttribute(makeLink, { 'href': '#' });
-    //         makeLink.textContent = element;
-
-    //         var policiesMap = new Map([
-    //             [makeListItm, [makeLink]],
-    //             [makeContainer.firstChild, [makeListItm]]
-    //         ]);
-
-    //         insert(policiesMap);
-    //     });
-
-    //     // Adding social media buttons
-    //     var sMChildren = [
-    //         `<svg width="30" height="25" viewBox="0 0 30 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-    //             <path d="M30 2.85104C28.8977 3.33827 27.7123 3.66309 26.4614 3.81699C27.7329 3.06381 28.7115 1.8624 29.1706 0.44255C27.9809 1.13829 26.6626 1.64963 25.2604 1.91913C24.1403 0.734746 22.5426 0 20.773 0C17.3737 0 14.6176 2.72551 14.6176 6.08648C14.6176 6.56236 14.6738 7.02548 14.7783 7.47512C9.66408 7.21909 5.12769 4.79287 2.09301 1.11063C1.55998 2.01062 1.26007 3.0638 1.26007 4.17585C1.26007 6.2886 2.34388 8.14887 3.99697 9.24461C2.98778 9.21411 2.03828 8.93397 1.20677 8.48433C1.20677 8.50277 1.20677 8.52972 1.20677 8.55596C1.20677 11.5084 3.32891 13.9673 6.14186 14.5268C5.62802 14.6673 5.08434 14.7453 4.52431 14.7453C4.12703 14.7453 3.7397 14.7006 3.36445 14.6332C4.14764 17.046 6.41974 18.8098 9.11187 18.8623C7.00536 20.492 4.35232 21.4679 1.46759 21.4679C0.969393 21.4679 0.481854 21.4395 0 21.3814C2.72695 23.1041 5.96276 24.1133 9.43665 24.1133C20.7559 24.1133 26.949 14.8375 26.949 6.79002C26.949 6.52619 26.9404 6.26378 26.9284 6.00421C28.1365 5.15244 29.1777 4.07869 30 2.85104Z" fill="url(#paint0_linear)" />
-    //             <defs>
-    //                 <linearGradient id="paint0_linear" x1="4.58258" y1="0.930489" x2="26.1831" y2="22.5762" gradientUnits="userSpaceOnUse">
-    //                 <stop stop-color="white" />
-    //                 <stop offset="1" stop-color="white" />
-    //             </linearGradient>
-    //             </defs>
-    //         </svg>`,
-
-    //         `<svg width="31" height="31" viewBox="0 0 31 31" fill="none" xmlns="http://www.w3.org/2000/svg">
-    //             <path d="M22.1115 30.4209H8.14633C3.65538 30.4209 0 26.747 0 22.2307V8.19024C0 3.67391 3.65538 0 8.14633 0H22.1115C26.6024 0 30.2578 3.67391 30.2578 8.19024V22.2307C30.2578 26.747 26.6024 30.4209 22.1115 30.4209ZM8.14633 2.34007C4.93784 2.34007 2.32752 4.96446 2.32752 8.19024V22.2307C2.32752 25.4564 4.93784 28.0808 8.14633 28.0808H22.1115C25.32 28.0808 27.9303 25.4564 27.9303 22.2307V8.19024C27.9303 4.96446 25.32 2.34007 22.1115 2.34007H8.14633Z" fill="white" />
-    //             <path d="M15.1463 23.4131C10.6554 23.4131 7 19.7391 7 15.2227C7 10.7062 10.6554 7.03223 15.1463 7.03223C19.6372 7.03223 23.2926 10.7062 23.2926 15.2227C23.2926 19.7391 19.6372 23.4131 15.1463 23.4131ZM15.1463 9.37235C11.9378 9.37235 9.32751 11.9968 9.32751 15.2227C9.32751 18.4485 11.9378 21.073 15.1463 21.073C18.3548 21.073 20.9651 18.4485 20.9651 15.2227C20.9651 11.9968 18.3548 9.37235 15.1463 9.37235Z" fill="white" />
-    //             <path d="M24.7456 7.5293C25.7097 7.5293 26.4912 6.74339 26.4912 5.77393C26.4912 4.80446 25.7097 4.01855 24.7456 4.01855C23.7815 4.01855 23 4.80446 23 5.77393C23 6.74339 23.7815 7.5293 24.7456 7.5293Z" fill="white" />
-    //         </svg>`,
-
-    //         `<svg width="10" height="20" viewBox="0 0 10 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-    //             <path d="M8.71507 9.53953H6.13306V19.874H2.2999V9.53953H0V6.35969H2.2999V4.44383C2.30143 1.65511 3.41841 0 6.5869 0H9.19958V3.17984H7.4463C6.21279 3.17984 6.13306 3.65682 6.13306 4.54956V6.35969H9.19958L8.71507 9.53953Z" fill="white" />
-    //         </svg>`
-    //     ];
-
-    //     for (var i = 0; i < sMChildren.length; i++) {
-    //         var makeListItm = makeElem('li');
-    //         var makeLink = makeElem('a', 'circle');
-    //         setAttribute(makeLink, { 'href': '#' });
-    //         makeLink.innerHTML = sMChildren[i];
-
-    //         var socMedMap = new Map([
-    //             [makeListItm, [makeLink]],
-    //             [makeContainer.lastChild, [makeListItm]]
-    //         ]);
-
-    //         insert(socMedMap);
-    //     }
-
-    //     var map = new Map([
-    //         [makeFooter, [makeContainer]],
-    //         [document.body, [makeFooter]]
-    //     ]);
-
-    //     insert(map);
-    // }
-
     function setVolumeAfterAppend() {
         var volume = document.getElementsByClassName('volume');
 
@@ -1088,7 +936,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     createHeader(['10', '09', '08', '07', '06', '05', '04', '03', '02', '01']);
-    const makeMain = new ElementBuilder('main');
+    const makeMain = new ElementBuilder('main'); // TODO: where is main component?
 
     let mainTagChildrenArr = [];
 
@@ -1280,7 +1128,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     mainTagChildrenArr.push(new MovieSectionComp(
         {
-            sectionClass: 'reverse-direction-description',
+            sectionClass: 'reverse-direction-description', // TODO: make this section straight direction, will explain later
             position: '01',
             name: 'THE LORD OF THE RINGS',
             audioName: 'the-lord-of-the-rings',
