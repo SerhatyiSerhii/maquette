@@ -16,10 +16,10 @@ class ServiceLocator {
     }
 }
 
-class MainTagComponenet {
+class MainTagComponenet { // TODO: bad component name. First, it breaks our name convention. Second, will you rename component if it stops wrapping in main tag?
     #childrenTags;
 
-    constructor(childrenTags) {
+    constructor(childrenTags) { // TODO: this component should create this section, but not accept them
         this.#childrenTags = childrenTags;
     }
 
@@ -50,34 +50,28 @@ class FooterComp {
     ];
 
     render() {
-        const socialMediaArr = this.#socialMediaIcons.map((iconElement) => { // TODO: pascal case? Also don't forget you can skip parantheses for one-argument arrow functions
+        const socialMediaArr = this.#socialMediaIcons.map((iconElement) => {
             // Corrected pascal case. But I can't skip parantheses here as I create several elements. I can place creation of one element into another, but can't assign innerHTML.
+            // I meant arg => {...} instead of (arg) => {...}
             const aTag = new ElementBuilder('a').setAttributes({ 'href': '#' }).setClasses('circle').build();
 
             aTag.innerHTML = iconElement;
 
-            // const liTag = new ElementBuilder('li').setChildren(aTag).build(); // TODO: no sense for variable     Deleted
-
             return new ElementBuilder('li').setChildren(aTag).build();;
         });
 
-        const socialMediaUL = new ElementBuilder('ul').setClasses('social-media').setChildren(...socialMediaArr).build(); // TODO: whad happened? why you use pascal case?   Corrected. It's a habit from Deutschlernen: every Noun starts from a capital Letter :)
+        const socialMediaUL = new ElementBuilder('ul').setClasses('social-media').setChildren(...socialMediaArr).build();
 
-        // const policies = ['privacy policy', 'cookie policy']; // TODO: no sense for variable     Deleted
-
-        const policiesLIArr = ['privacy policy', 'cookie policy'].map((policy) => { // TODO: why element?    Corrected
+        const policiesLIArr = ['privacy policy', 'cookie policy'].map((policy) => {
             const aTag = new ElementBuilder('a').setAttributes({ 'href': '#' }).build();
 
             aTag.textContent = policy;
-
-            // const liTag = new ElementBuilder('li').setChildren(aTag).build(); // TODO: no sense for variable     Deleted
 
             return new ElementBuilder('li').setChildren(aTag).build();;
         });
 
         const policyUL = new ElementBuilder('ul').setClasses('policy').setChildren(...policiesLIArr).build();
         const container = new ElementBuilder('container').setClasses('container').setChildren(policyUL, socialMediaUL).build();
-        // const footer = new ElementBuilder('footer').setChildren(container).build(); // TODO: no sense for variable    Deleted
 
         return new ElementBuilder('footer').setChildren(container).build();
     }
@@ -95,7 +89,6 @@ class SignUpComp {
 
         const appeal = new ElementBuilder('div').setClasses('appeal').setChildren(sighUpTitle, form).build();
         const container = new ElementBuilder('container').setChildren(appeal).build();
-        // const section = new ElementBuilder('section').setClasses('sign-up').setChildren(container).build(); // TODO: no sense for variable    Deleted
 
         return new ElementBuilder('section').setClasses('sign-up').setChildren(container).build();
     }
@@ -821,7 +814,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Adding header
-    function createHeader(array) {
+    function createHeader(array) { // TODO: move to component
 
         var makeHeader = makeElem('header');
 
@@ -949,7 +942,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     createHeader(['10', '09', '08', '07', '06', '05', '04', '03', '02', '01']);
-    // const makeMain = new ElementBuilder('main'); // TODO: where is main component?    Corrected
 
     let mainTagChildrenArr = [];
 
@@ -1141,7 +1133,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     mainTagChildrenArr.push(new MovieSectionComp(
         {
-            sectionClass: 'straight-direction-description', // TODO: make this section straight direction, will explain later    Corrected
+            sectionClass: 'straight-direction-description',
             position: '01',
             name: 'THE LORD OF THE RINGS',
             audioName: 'the-lord-of-the-rings',
