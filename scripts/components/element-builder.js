@@ -1,4 +1,4 @@
-export class ElementBuilder {
+export class ElementBuilder { // TODO: this is not a component !!! this is utility!!!
     #tagName;
     #classes;
     #attributes;

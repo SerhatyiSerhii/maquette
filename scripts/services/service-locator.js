@@ -1,4 +1,5 @@
-// Encapsulation of services to ensure one objects can access to another objects // TODO: this comment is not explain why service locator used     Changed comment
+// Encapsulation of services to ensure one objects can access to another objects
+// TODO: this comment still does not explain why we use service locator instead of dependency injector
 export class ServiceLocator {
     static #serviceContainer = {};
 

@@ -1,19 +1,14 @@
-import {ElementBuilder} from './element-builder.js';
-import {MainSectionComp} from './main-section-component.js';
-import {MovieSectionComp} from './movie-section.js';
-import {SliderComp} from './slider-component.js';
-import {SignUpComp} from './signup-component.js';
+import { ElementBuilder } from './element-builder.js';
+import { MainSectionComp } from './main-section-component.js';
+import { MovieSectionComp } from './movie-section.js';
+import { SignUpComp } from './signup-component.js';
+import { SliderComp } from './slider-component.js';
 
-export class WrapperComp { // TODO: bad component name. First, it breaks our name convention. Second, will you rename component if it stops wrapping in main tag?     Corrected
-
-    // constructor(childrenTags) { // TODO: this component should create this section, but not accept them   Corrected
-    //     this.#childrenTags = childrenTags;
-    // }
-
+export class WrapperComp {
     #createChildrenArr() {
         let childrenArr = [];
 
-        childrenArr.push(new MainSectionComp(300).render());
+        childrenArr.push(new MainSectionComp(300).render()); // TODO why not just define components in array literal instead of pushing them everytime?
 
         childrenArr.push(new MovieSectionComp(
             {

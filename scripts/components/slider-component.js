@@ -1,5 +1,5 @@
-import {ElementBuilder} from './element-builder.js';
-import {SliderFrameComp} from './slider-frame-component.js';
+import { ElementBuilder } from './element-builder.js';
+import { SliderFrameComp } from './slider-frame-component.js';
 
 export class SliderComp {
     #content;

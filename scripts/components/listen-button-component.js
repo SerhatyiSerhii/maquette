@@ -1,5 +1,5 @@
-import {ElementBuilder} from './element-builder.js';
-import {ModalWindowComp} from './modale-window-componenet.js';
+import { ElementBuilder } from './element-builder.js';
+import { ModalWindowComp } from './modale-window-componenet.js';
 
 export class ListenBtnComp {
     #movieName;

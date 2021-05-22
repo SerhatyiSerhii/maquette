@@ -1,5 +1,5 @@
-import {ServiceLocator} from '../services/service-locator.js';
-import {ElementBuilder} from './element-builder.js';
+import { ServiceLocator } from '../services/service-locator.js';
+import { ElementBuilder } from './element-builder.js';
 
 const ANIMATION_SERVICE = 'animationServiceKey';
 

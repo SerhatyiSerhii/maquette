@@ -1,5 +1,5 @@
-import {ElementBuilder} from './element-builder.js';
-import {ListenBtnComp} from './listen-button-component.js';
+import { ElementBuilder } from './element-builder.js';
+import { ListenBtnComp } from './listen-button-component.js';
 
 export class FilmContentComp {
     #positionMovie;

@@ -1,4 +1,4 @@
-import {ElementBuilder} from './element-builder.js';
+import { ElementBuilder } from './element-builder.js';
 
 export class HeaderComp {
     #page;
@@ -48,45 +48,51 @@ export class HeaderComp {
     }
 
     render() {
+        this.#boxMenu = new ElementBuilder('ul')
+            .setClasses('box-menu')
+            .setChildren(...['search', 'add to the favorites', 'faq', 'go to'].map(searchMenu => {
+                const linkTo = new ElementBuilder('a').setClasses('box-menu-item').setAttributes({'href': '#'}).build();
 
-        this.#boxMenu = new ElementBuilder('ul').setClasses('box-menu').setChildren(...['search', 'add to the favorites', 'faq', 'go to'].map(searchMenu => {
-            const linkTo = new ElementBuilder('a').setClasses('box-menu-item').setAttributes({'href': '#'}).build();
+                linkTo.textContent = searchMenu;
 
-            linkTo.textContent = searchMenu;
+                const boxMenuNav = new ElementBuilder('li').setChildren(linkTo);
 
-            const boxMenuNav = new ElementBuilder('li').setChildren(linkTo);
+                if (searchMenu === 'go to') { // TODO: move content of this if to the distinct method
+                    boxMenuNav.setClasses('go-to');
 
-            if (searchMenu === 'go to') {
-                boxMenuNav.setClasses('go-to');
+                    const filmNav = new ElementBuilder('ul')
+                        .setClasses('film-nav')
+                        .setChildren(...['10', '09', '08', '07', '06', '05', '04', '03', '02', '01'].map(filmNumber => {
+                            const linkToFilm = new ElementBuilder('a').setClasses('top-film').setAttributes({'href': `#top-${filmNumber}`}).build();
 
-                const filmNav = new ElementBuilder('ul').setClasses('film-nav').setChildren(...['10', '09', '08', '07', '06', '05', '04', '03', '02', '01'].map( filmNumber => {
-                    const linkToFilm = new ElementBuilder('a').setClasses('top-film').setAttributes({'href': `#top-${filmNumber}`}).build();
+                            linkToFilm.textContent = `.${filmNumber}`;
 
-                    linkToFilm.textContent = `.${filmNumber}`;
+                            linkToFilm.addEventListener('click', (event) => {
+                                event.preventDefault();
+                                let topLink = linkToFilm.getAttribute('href');
+                                this.#scrollToFilm(topLink);
 
-                    linkToFilm.addEventListener('click', (event) => {
-                        event.preventDefault();
-                        let topLink = linkToFilm.getAttribute('href');
-                        this.#scrollToFilm(topLink);
+                                if (window.innerWidth < 768) {
+                                    this.#toggleBurger();
+                                }
+                            });
 
-                        if (window.innerWidth < 768) {
-                            this.#toggleBurger();
-                        }
-                    });
+                            return new ElementBuilder('li').setChildren(linkToFilm).build();;
+                        })).build();
 
-                    return new ElementBuilder('li').setChildren(linkToFilm).build();;
-                })).build();
+                    boxMenuNav.setChildren(linkTo, filmNav);
+                }
 
-                boxMenuNav.setChildren(linkTo, filmNav);
-            }
-
-            return boxMenuNav.build();
-        })).build();
+                return boxMenuNav.build();
+            })).build();
 
         //  crutch
         const boxMenuChildren = this.#boxMenu.children;
 
         for (let child of boxMenuChildren) {
+            // TODO: move this to distinct method.
+            // what if go to won't be last child anymore?
+            // store child and lastChild in component properties and then call method which adds this events
             if (child.classList.contains('go-to')) {
 
                 child.addEventListener('mouseenter', () => {
@@ -121,11 +127,8 @@ export class HeaderComp {
         });
 
         const nav = new ElementBuilder('nav').setChildren(navWrapper, this.#boxMenu).build();
-
         const logoImg = new ElementBuilder('img').setAttributes({'src': 'images/the-top-logo.svg', 'alt': 'the-top-logo'}).build();
-
         const logo = new ElementBuilder('a').setClasses('logo').setAttributes({'href': '#'}).setChildren(logoImg).build();
-
         const container = new ElementBuilder('div').setClasses('container').setChildren(logo, nav).build();
 
         return new ElementBuilder('header').setChildren(container).build();
