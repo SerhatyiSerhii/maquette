@@ -1,6 +1,7 @@
-// Encapsulation of services to ensure one objects can access to another objects
+// Creation of custom dependencies and storing of objects
 // TODO: this comment still does not explain why we use service locator instead of dependency injector
-export class ServiceLocator {
+
+class ServiceLocator {
     static #serviceContainer = {};
 
     static register(key, service) {
@@ -11,3 +12,8 @@ export class ServiceLocator {
         return ServiceLocator.#serviceContainer[key];
     }
 }
+
+const MEDIA_SERVICE = 'mediaServiceKey';
+const ANIMATION_SERVICE = 'animationServiceKey';
+
+export {ServiceLocator, MEDIA_SERVICE, ANIMATION_SERVICE}

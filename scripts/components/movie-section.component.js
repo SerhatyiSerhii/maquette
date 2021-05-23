@@ -1,5 +1,5 @@
-import { ElementBuilder } from './element-builder.js';
-import { FilmContentComp } from './film-content-component.js';
+import { ElementBuilder } from '../utilities/element-builder.js';
+import { FilmContentComp } from './film-content.component.js';
 
 export class MovieSectionComp {
     #options;

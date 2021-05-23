@@ -1,7 +1,5 @@
-import { ServiceLocator } from '../services/service-locator.js';
-import { ElementBuilder } from './element-builder.js';
-
-const ANIMATION_SERVICE = 'animationServiceKey';
+import { ServiceLocator, ANIMATION_SERVICE } from '../services/service-locator.js';
+import { ElementBuilder } from '../utilities/element-builder.js';
 
 export class MediaLengthComp {
     #container;

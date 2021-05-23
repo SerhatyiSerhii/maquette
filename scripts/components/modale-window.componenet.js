@@ -1,12 +1,9 @@
-import { ServiceLocator } from '../services/service-locator.js';
-import { ElementBuilder } from './element-builder.js';
-import { MediaLengthComp } from './media-length-component.js';
-import { PlayBtnComp } from './play-button-component.js';
-import { TimerComp } from './timer-component.js';
-import { VolumeComp } from './volume-component.js';
-
-const MEDIA_SERVICE = 'mediaServiceKey';
-const ANIMATION_SERVICE = 'animationServiceKey';
+import { ServiceLocator, MEDIA_SERVICE, ANIMATION_SERVICE } from '../services/service-locator.js';
+import { ElementBuilder } from '../utilities/element-builder.js';
+import { MediaLengthComp } from './media-length.component.js';
+import { PlayBtnComp } from './play-button.component.js';
+import { TimerComp } from './timer.component.js';
+import { VolumeComp } from './volume.component.js';
 
 export class ModalWindowComp {
     #container;
