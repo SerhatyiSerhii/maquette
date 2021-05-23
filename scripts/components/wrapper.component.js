@@ -6,7 +6,7 @@ import { SliderComp } from './slider.component.js';
 
 export class WrapperComp {
     #wrapperChildren = [
-        new MainSectionComp(300).render(), // TODO why not just define components in array literal instead of pushing them everytime?   Corrected
+        new MainSectionComp(300).render(),
 
         new MovieSectionComp(
             {

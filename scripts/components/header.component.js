@@ -1,5 +1,16 @@
 import { ElementBuilder } from '../utilities/element-builder.js';
 
+// TODO: header and main section has a lot of duplication for animation
+// inheritance can help us
+// read about how classes can be extended
+// create ScrollableComp and move all animation logic there
+// extend header and main from new component
+// leave all properties and method private except scrollToFilm
+// the issues is that private fields cannot be accessed from derived classes
+// so let's create new definition - protected methods and properties
+// we will mark them already known sign - underscore in the beginning
+// so protected properties and methods are like private - can't be accessed outside, but unlike private - can be accessed in derived classes
+
 export class HeaderComp {
     #page;
     #startingPosition;
@@ -8,9 +19,9 @@ export class HeaderComp {
     #start;
     #duration;
     #boxMenu;
-    #boxMenuNav;
+    #boxMenuNav; // TODO: no need
     #burgerImg;
-    #linkTo;
+    #linkTo; // TODO: no need
     #linkGoTo;
     #filmNav;
 
@@ -51,7 +62,7 @@ export class HeaderComp {
         this.#burgerImg.classList.toggle('pressed');
     }
 
-    #addPopUpMenu() {
+    #addPopUpMenu() { // TODO: let this method just to create and return ul and all its content
         this.#boxMenuNav.setClasses('go-to');
 
         this.#filmNav = new ElementBuilder('ul')
@@ -77,7 +88,7 @@ export class HeaderComp {
             this.#boxMenuNav.setChildren(this.#linkTo, this.#filmNav);
     }
 
-    #showPopUpMenu() {
+    #showPopUpMenu() { // TODO: does this method show popup menu?
         this.#linkGoTo.addEventListener('mouseenter', () => {
             this.#filmNav.style.display = 'block';
         });
@@ -97,34 +108,17 @@ export class HeaderComp {
 
                 this.#boxMenuNav = new ElementBuilder('li').setChildren(this.#linkTo);
 
-                if (searchMenu === 'go to') { // TODO: move content of this if to the distinct method    Moved
+                if (searchMenu === 'go to') {
                     this.#addPopUpMenu();
                 }
 
+                // TODO: on the first iteration it will be 'search', second - 'add to fav', third - 'faq', and only in the last - 'go to'
+                // so why is it here?
                 this.#linkGoTo = this.#boxMenuNav.build();
 
                 return this.#linkGoTo;
 
             })).build();
-
-        //  crutch
-        // const boxMenuChildren = this.#boxMenu.children;
-
-        // for (let child of boxMenuChildren) {
-        //     // TODO: move this to distinct method.       This way is much better than I created :) Corrected
-        //     // what if go to won't be last child anymore?
-        //     // store child and lastChild in component properties and then call method which adds this events
-        //     if (child.classList.contains('go-to')) {
-
-        //         child.addEventListener('mouseenter', () => {
-        //             child.lastChild.style.display = 'block';
-        //         });
-
-        //         child.addEventListener('mouseleave', () => {
-        //             child.lastChild.style.display = 'none';
-        //         });
-        //     }
-        // }
 
         this.#showPopUpMenu();
 

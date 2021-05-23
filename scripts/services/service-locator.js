@@ -1,5 +1,6 @@
 // Creation of custom dependencies and storing of objects
 // TODO: this comment still does not explain why we use service locator instead of dependency injector
+// TODO: !!!
 
 class ServiceLocator {
     static #serviceContainer = {};
@@ -16,4 +17,4 @@ class ServiceLocator {
 const MEDIA_SERVICE = 'mediaServiceKey';
 const ANIMATION_SERVICE = 'animationServiceKey';
 
-export {ServiceLocator, MEDIA_SERVICE, ANIMATION_SERVICE}
+export { ServiceLocator, MEDIA_SERVICE, ANIMATION_SERVICE }; // TODO: you can write export directive along side every definition
