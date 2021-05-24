@@ -5,6 +5,8 @@ import { SignUpComp } from './signup.component.js';
 import { SliderComp } from './slider.component.js';
 
 export class WrapperComp {
+    // TODO: first - we don't need to have it in property
+    // second - we have pattern: [straight, reverse, central, slider], [straight, reverse, central, slider], [straight, reverse, central, slider], [straight] - looks like a perfect match for a loop
     #wrapperChildren = [
         new MainSectionComp(300).render(),
 

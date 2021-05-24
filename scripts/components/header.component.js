@@ -1,34 +1,18 @@
 import { ElementBuilder } from '../utilities/element-builder.js';
-import {ScrollableComp} from './scrollable.component.js';
-
-// TODO: header and main section has a lot of duplication for animation
-// inheritance can help us
-// read about how classes can be extended
-// create ScrollableComp and move all animation logic there
-// extend header and main from new component
-// leave all properties and method private except scrollToFilm
-// the issues is that private fields cannot be accessed from derived classes
-// so let's create new definition - protected methods and properties
-// we will mark them already known sign - underscore in the beginning
-// so protected properties and methods are like private - can't be accessed outside, but unlike private - can be accessed in derived classes
-
-// Done
+import { ScrollableComp } from './scrollable.component.js';
 
 export class HeaderComp extends ScrollableComp {
     #boxMenu;
-    // #boxMenuNav; // TODO: no need    Deleted
     #burgerImg;
-    // #linkTo; // TODO: no need     Deleted
-    #linkGoTo;
-    #filmNav;
+    #linkGoTo; // TODO: no need
+    #filmNav; // TODO: no need
 
     #toggleBurger() {
         this.#boxMenu.style.display = (this.#boxMenu.style.display === 'block') ? 'none' : 'block';
         this.#burgerImg.classList.toggle('pressed');
     }
 
-    #addPopUpMenu() { // TODO: let this method just to create and return ul and all its content     Corrected
-
+    #addPopUpMenu() { // TODO: does this method add popup menu?
         this.#filmNav = new ElementBuilder('ul')
             .setClasses('film-nav')
             .setChildren(...['10', '09', '08', '07', '06', '05', '04', '03', '02', '01'].map(filmNumber => {
@@ -52,8 +36,7 @@ export class HeaderComp extends ScrollableComp {
         return this.#filmNav;
     }
 
-    #displayPopUpMenu() { // TODO: does this method show popup menu?     Corrected
-
+    #displayPopUpMenu() { // TODO: does this method display popup menu?
         this.#linkGoTo.addEventListener('mouseenter', () => {
             this.#filmNav.style.display = 'block';
         });
@@ -69,7 +52,7 @@ export class HeaderComp extends ScrollableComp {
             .setChildren(...['search', 'add to the favorites', 'faq', 'go to'].map(searchMenu => {
                 const linkTo = new ElementBuilder('a').setClasses('box-menu-item').setAttributes({ 'href': '#' }).build();
 
-               linkTo.textContent = searchMenu;
+                linkTo.textContent = searchMenu;
 
                 const boxMenuNav = new ElementBuilder('li').setChildren(linkTo);
 
@@ -81,20 +64,13 @@ export class HeaderComp extends ScrollableComp {
                     boxMenuNav.setChildren(linkTo, this.#filmNav);
                 }
 
-                // TODO: on the first iteration it will be 'search', second - 'add to fav', third - 'faq', and only in the last - 'go to'
-                // so why is it here?
-                // Yep, it's true. And if add new nav item it will be showing navigation on hover over last item. not on go-to. But I have to use again a crutch method as addEventListener works on ready DOM elements :/
-
-                // this.#linkGoTo = boxMenuNav.build();
-                // return this.#linkGoTo;
-
                 return boxMenuNav.build();
 
             })).build();
 
         const boxMenuChildren = this.#boxMenu.children;
 
-        for (let child of boxMenuChildren) {
+        for (let child of boxMenuChildren) { // TODO: move this logic to map method above
             if (child.classList.contains('go-to')) {
                 this.#linkGoTo = child;
 
