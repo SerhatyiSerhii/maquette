@@ -1,4 +1,5 @@
 import { ElementBuilder } from '../utilities/element-builder.js';
+import {ScrollableComp} from './scrollable.component.js';
 
 // TODO: header and main section has a lot of duplication for animation
 // inheritance can help us
@@ -11,59 +12,22 @@ import { ElementBuilder } from '../utilities/element-builder.js';
 // we will mark them already known sign - underscore in the beginning
 // so protected properties and methods are like private - can't be accessed outside, but unlike private - can be accessed in derived classes
 
-export class HeaderComp {
-    #page;
-    #startingPosition;
-    #endingPosition;
-    #distance;
-    #start;
-    #duration;
+// Done
+
+export class HeaderComp extends ScrollableComp {
     #boxMenu;
-    #boxMenuNav; // TODO: no need
+    // #boxMenuNav; // TODO: no need    Deleted
     #burgerImg;
-    #linkTo; // TODO: no need
+    // #linkTo; // TODO: no need     Deleted
     #linkGoTo;
     #filmNav;
-
-    #step = (newTimestamp) => {
-        let toScroll = this.#startingPosition + (this.#distance * (newTimestamp - this.#start)) / this.#duration;
-
-        if (toScroll >= this.#endingPosition) {
-            toScroll = this.#endingPosition;
-        }
-
-        this.#page.scrollTop = toScroll;
-        if (toScroll < this.#endingPosition) {
-            requestAnimationFrame(this.#step);
-        }
-    }
-
-    constructor(duration) {
-        this.#duration = duration;
-    }
-
-    #go() {
-        this.#start = performance.now();
-        requestAnimationFrame(this.#step);
-    }
-
-
-    #scrollToFilm(arg) {
-        this.#page = document.documentElement;
-        this.#startingPosition = this.#page.scrollTop;
-        this.#endingPosition = document.querySelector(arg).offsetTop;
-        this.#distance = this.#endingPosition - this.#startingPosition;
-
-        this.#go();
-    }
 
     #toggleBurger() {
         this.#boxMenu.style.display = (this.#boxMenu.style.display === 'block') ? 'none' : 'block';
         this.#burgerImg.classList.toggle('pressed');
     }
 
-    #addPopUpMenu() { // TODO: let this method just to create and return ul and all its content
-        this.#boxMenuNav.setClasses('go-to');
+    #addPopUpMenu() { // TODO: let this method just to create and return ul and all its content     Corrected
 
         this.#filmNav = new ElementBuilder('ul')
             .setClasses('film-nav')
@@ -75,7 +39,7 @@ export class HeaderComp {
                 linkToFilm.addEventListener('click', (event) => {
                     event.preventDefault();
                     let topLink = linkToFilm.getAttribute('href');
-                    this.#scrollToFilm(topLink);
+                    this._scrollToFilm(topLink);
 
                     if (window.innerWidth < 768) {
                         this.#toggleBurger();
@@ -85,10 +49,11 @@ export class HeaderComp {
                 return new ElementBuilder('li').setChildren(linkToFilm).build();;
             })).build();
 
-            this.#boxMenuNav.setChildren(this.#linkTo, this.#filmNav);
+        return this.#filmNav;
     }
 
-    #showPopUpMenu() { // TODO: does this method show popup menu?
+    #displayPopUpMenu() { // TODO: does this method show popup menu?     Corrected
+
         this.#linkGoTo.addEventListener('mouseenter', () => {
             this.#filmNav.style.display = 'block';
         });
@@ -102,25 +67,40 @@ export class HeaderComp {
         this.#boxMenu = new ElementBuilder('ul')
             .setClasses('box-menu')
             .setChildren(...['search', 'add to the favorites', 'faq', 'go to'].map(searchMenu => {
-                this.#linkTo = new ElementBuilder('a').setClasses('box-menu-item').setAttributes({ 'href': '#' }).build();
+                const linkTo = new ElementBuilder('a').setClasses('box-menu-item').setAttributes({ 'href': '#' }).build();
 
-                this.#linkTo.textContent = searchMenu;
+               linkTo.textContent = searchMenu;
 
-                this.#boxMenuNav = new ElementBuilder('li').setChildren(this.#linkTo);
+                const boxMenuNav = new ElementBuilder('li').setChildren(linkTo);
 
                 if (searchMenu === 'go to') {
+                    boxMenuNav.setClasses('go-to');
+
                     this.#addPopUpMenu();
+
+                    boxMenuNav.setChildren(linkTo, this.#filmNav);
                 }
 
                 // TODO: on the first iteration it will be 'search', second - 'add to fav', third - 'faq', and only in the last - 'go to'
                 // so why is it here?
-                this.#linkGoTo = this.#boxMenuNav.build();
+                // Yep, it's true. And if add new nav item it will be showing navigation on hover over last item. not on go-to. But I have to use again a crutch method as addEventListener works on ready DOM elements :/
 
-                return this.#linkGoTo;
+                // this.#linkGoTo = boxMenuNav.build();
+                // return this.#linkGoTo;
+
+                return boxMenuNav.build();
 
             })).build();
 
-        this.#showPopUpMenu();
+        const boxMenuChildren = this.#boxMenu.children;
+
+        for (let child of boxMenuChildren) {
+            if (child.classList.contains('go-to')) {
+                this.#linkGoTo = child;
+
+                this.#displayPopUpMenu();
+            }
+        }
 
         this.#burgerImg = new ElementBuilder('span').setAttributes({ 'id': 'burger-img' }).build();
 

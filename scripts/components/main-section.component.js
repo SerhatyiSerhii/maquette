@@ -1,44 +1,8 @@
 import { ElementBuilder } from '../utilities/element-builder.js';
+import {ScrollableComp} from './scrollable.component.js';
 
-export class MainSectionComp {
+export class MainSectionComp extends ScrollableComp{
     #arrowDown = `<svg width="43" height="60" viewBox="0 0 43 60" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 33L21 58M21 58L41.5 32M21 58V0" stroke-width="2" /></svg>`;
-    #page;
-    #startingPosition;
-    #endingPosition;
-    #distance;
-    #start;
-    #duration;
-    #step = (newTimestamp) => {
-        let toScroll = this.#startingPosition + (this.#distance * (newTimestamp - this.#start)) / this.#duration;
-
-        if (toScroll >= this.#endingPosition) {
-            toScroll = this.#endingPosition;
-        }
-
-        this.#page.scrollTop = toScroll;
-        if (toScroll < this.#endingPosition) {
-            requestAnimationFrame(this.#step);
-        }
-    }
-
-    constructor(duration) {
-        this.#duration = duration;
-    }
-
-    #go() {
-        this.#start = performance.now();
-        requestAnimationFrame(this.#step);
-    }
-
-
-    #scrollToFilm(arg) {
-        this.#page = document.documentElement;
-        this.#startingPosition = this.#page.scrollTop;
-        this.#endingPosition = document.querySelector(arg).offsetTop;
-        this.#distance = this.#endingPosition - this.#startingPosition;
-
-        this.#go();
-    }
 
     render() {
         const accentText = new ElementBuilder('span').setClasses('accent-text').build();
@@ -58,7 +22,7 @@ export class MainSectionComp {
             event.preventDefault();
             const firstTopFilm = arrowDown.getAttribute('href');
 
-            this.#scrollToFilm(firstTopFilm);
+            this._scrollToFilm(firstTopFilm);
         });
 
         const container = new ElementBuilder('div').setClasses('container').setChildren(mainTitle, mainSentence, arrowDown).build();
