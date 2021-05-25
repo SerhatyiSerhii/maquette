@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+        "module": "system",
+        "target": "ESNext"
+    },
+    "files": [
+        "scripts/index.ts"
+    ]
+}
