@@ -4,16 +4,14 @@ import { ScrollableComp } from './scrollable.component.js';
 export class HeaderComp extends ScrollableComp {
     #boxMenu;
     #burgerImg;
-    // #linkGoTo; // TODO: no need   Deleted
-    // #filmNav; // TODO: no need   Deleted :)
 
     #toggleBurger() {
         this.#boxMenu.style.display = (this.#boxMenu.style.display === 'block') ? 'none' : 'block';
         this.#burgerImg.classList.toggle('pressed');
     }
 
-    #createGoToMenu() { // TODO: does this method add popup menu?     Corrected
-        const filmNav = new ElementBuilder('ul')
+    #createGoToMenu() {
+        const filmNav = new ElementBuilder('ul') // TODO: no sense for variable
             .setClasses('film-nav')
             .setChildren(...['10', '09', '08', '07', '06', '05', '04', '03', '02', '01'].map(filmNumber => {
                 const linkToFilm = new ElementBuilder('a').setClasses('top-film').setAttributes({ 'href': `#top-${filmNumber}` }).build();
@@ -36,7 +34,7 @@ export class HeaderComp extends ScrollableComp {
         return filmNav;
     }
 
-    #displayGoToMenuOnHover(goToMenuUnit, lastChildOfUnit) { // TODO: does this method display popup menu?     Corrected
+    #displayGoToMenuOnHover(goToMenuUnit, lastChildOfUnit) {
         goToMenuUnit.addEventListener('mouseenter', () => {
             lastChildOfUnit.style.display = 'block';
         });
@@ -69,21 +67,15 @@ export class HeaderComp extends ScrollableComp {
                 const childOfBoxMenuNav = boxMenuNav.build();
 
                 if (childOfBoxMenuNav.classList.contains('go-to')) {
-
+                    // TODO: you already have if statement that compare the same
+                    // move this code there
+                    // hint: function can have more than one return statement
                     this.#displayGoToMenuOnHover(childOfBoxMenuNav, goToMenu);
                 }
 
                 return childOfBoxMenuNav;
 
             })).build();
-
-        // for (let child of boxMenuChildren) { // TODO: move this logic to map method above    Moved
-        //     if (child.classList.contains('go-to')) {
-        //         this.#linkGoTo = child;
-
-        //         this.#displayPopUpMenu();
-        //     }
-        // }
 
         this.#burgerImg = new ElementBuilder('span').setAttributes({ 'id': 'burger-img' }).build();
 
