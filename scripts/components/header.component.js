@@ -5,9 +5,7 @@ export class HeaderComp extends ScrollableComp {
     #boxMenu;
     #burgerImg;
     // #linkGoTo; // TODO: no need   Deleted
-    #filmNav; // TODO: no need   I can't delete this parameter. I tried to make such command: this.#createGoToMenu().style.display, but it shows nothing. And I tried to
-    // make a variable and call there this.#createGoToMenu() function and apply styles to the variable, but also it shows nothing :(
-    // But there is one interesting thing: on line 64 this.#createGoToMenu() function works as it supposed to work.
+    // #filmNav; // TODO: no need   Deleted :)
 
     #toggleBurger() {
         this.#boxMenu.style.display = (this.#boxMenu.style.display === 'block') ? 'none' : 'block';
@@ -15,7 +13,7 @@ export class HeaderComp extends ScrollableComp {
     }
 
     #createGoToMenu() { // TODO: does this method add popup menu?     Corrected
-        this.#filmNav = new ElementBuilder('ul')
+        const filmNav = new ElementBuilder('ul')
             .setClasses('film-nav')
             .setChildren(...['10', '09', '08', '07', '06', '05', '04', '03', '02', '01'].map(filmNumber => {
                 const linkToFilm = new ElementBuilder('a').setClasses('top-film').setAttributes({ 'href': `#top-${filmNumber}` }).build();
@@ -35,16 +33,16 @@ export class HeaderComp extends ScrollableComp {
                 return new ElementBuilder('li').setChildren(linkToFilm).build();;
             })).build();
 
-        return this.#filmNav;
+        return filmNav;
     }
 
-    #displayGoToMenuOnHover(goToMenu) { // TODO: does this method display popup menu?     Corrected
-        goToMenu.addEventListener('mouseenter', () => {
-            this.#filmNav.style.display = 'block';
+    #displayGoToMenuOnHover(goToMenuUnit, lastChildOfUnit) { // TODO: does this method display popup menu?     Corrected
+        goToMenuUnit.addEventListener('mouseenter', () => {
+            lastChildOfUnit.style.display = 'block';
         });
 
-        goToMenu.addEventListener('mouseleave', () => {
-            this.#filmNav.style.display = 'none';
+        goToMenuUnit.addEventListener('mouseleave', () => {
+            lastChildOfUnit.style.display = 'none';
         });
     }
 
@@ -58,17 +56,21 @@ export class HeaderComp extends ScrollableComp {
 
                 const boxMenuNav = new ElementBuilder('li').setChildren(linkTo);
 
+                let goToMenu;
+
                 if (searchMenu === 'go to') {
                     boxMenuNav.setClasses('go-to');
 
-                    boxMenuNav.setChildren(linkTo, this.#createGoToMenu());
+                    goToMenu = this.#createGoToMenu();
+
+                    boxMenuNav.setChildren(linkTo, goToMenu);
                 }
 
                 const childOfBoxMenuNav = boxMenuNav.build();
 
                 if (childOfBoxMenuNav.classList.contains('go-to')) {
 
-                    this.#displayGoToMenuOnHover(childOfBoxMenuNav);
+                    this.#displayGoToMenuOnHover(childOfBoxMenuNav, goToMenu);
                 }
 
                 return childOfBoxMenuNav;
