@@ -4,15 +4,17 @@ import { ScrollableComp } from './scrollable.component.js';
 export class HeaderComp extends ScrollableComp {
     #boxMenu;
     #burgerImg;
-    #linkGoTo; // TODO: no need
-    #filmNav; // TODO: no need
+    // #linkGoTo; // TODO: no need   Deleted
+    #filmNav; // TODO: no need   I can't delete this parameter. I tried to make such command: this.#createGoToMenu().style.display, but it shows nothing. And I tried to
+    // make a variable and call there this.#createGoToMenu() function and apply styles to the variable, but also it shows nothing :(
+    // But there is one interesting thing: on line 64 this.#createGoToMenu() function works as it supposed to work.
 
     #toggleBurger() {
         this.#boxMenu.style.display = (this.#boxMenu.style.display === 'block') ? 'none' : 'block';
         this.#burgerImg.classList.toggle('pressed');
     }
 
-    #addPopUpMenu() { // TODO: does this method add popup menu?
+    #createGoToMenu() { // TODO: does this method add popup menu?     Corrected
         this.#filmNav = new ElementBuilder('ul')
             .setClasses('film-nav')
             .setChildren(...['10', '09', '08', '07', '06', '05', '04', '03', '02', '01'].map(filmNumber => {
@@ -36,12 +38,12 @@ export class HeaderComp extends ScrollableComp {
         return this.#filmNav;
     }
 
-    #displayPopUpMenu() { // TODO: does this method display popup menu?
-        this.#linkGoTo.addEventListener('mouseenter', () => {
+    #displayGoToMenuOnHover(goToMenu) { // TODO: does this method display popup menu?     Corrected
+        goToMenu.addEventListener('mouseenter', () => {
             this.#filmNav.style.display = 'block';
         });
 
-        this.#linkGoTo.addEventListener('mouseleave', () => {
+        goToMenu.addEventListener('mouseleave', () => {
             this.#filmNav.style.display = 'none';
         });
     }
@@ -59,24 +61,27 @@ export class HeaderComp extends ScrollableComp {
                 if (searchMenu === 'go to') {
                     boxMenuNav.setClasses('go-to');
 
-                    this.#addPopUpMenu();
-
-                    boxMenuNav.setChildren(linkTo, this.#filmNav);
+                    boxMenuNav.setChildren(linkTo, this.#createGoToMenu());
                 }
 
-                return boxMenuNav.build();
+                const childOfBoxMenuNav = boxMenuNav.build();
+
+                if (childOfBoxMenuNav.classList.contains('go-to')) {
+
+                    this.#displayGoToMenuOnHover(childOfBoxMenuNav);
+                }
+
+                return childOfBoxMenuNav;
 
             })).build();
 
-        const boxMenuChildren = this.#boxMenu.children;
+        // for (let child of boxMenuChildren) { // TODO: move this logic to map method above    Moved
+        //     if (child.classList.contains('go-to')) {
+        //         this.#linkGoTo = child;
 
-        for (let child of boxMenuChildren) { // TODO: move this logic to map method above
-            if (child.classList.contains('go-to')) {
-                this.#linkGoTo = child;
-
-                this.#displayPopUpMenu();
-            }
-        }
+        //         this.#displayPopUpMenu();
+        //     }
+        // }
 
         this.#burgerImg = new ElementBuilder('span').setAttributes({ 'id': 'burger-img' }).build();
 

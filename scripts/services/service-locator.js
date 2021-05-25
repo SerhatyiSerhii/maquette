@@ -1,5 +1,6 @@
 // Implemented Service Locator instead of Dependency Injector to simplify development
 // TODO: what about such a commnent?
+// So easy? I thought the comment should tell the true benefit of Service Locator versus Dependency Injector
 export class ServiceLocator {
     static #serviceContainer = {};
 
