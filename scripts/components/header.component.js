@@ -11,7 +11,7 @@ export class HeaderComp extends ScrollableComp {
     }
 
     #createGoToMenu() {
-        const filmNav = new ElementBuilder('ul') // TODO: no sense for variable
+        return new ElementBuilder('ul') // TODO: no sense for variable   Corrected
             .setClasses('film-nav')
             .setChildren(...['10', '09', '08', '07', '06', '05', '04', '03', '02', '01'].map(filmNumber => {
                 const linkToFilm = new ElementBuilder('a').setClasses('top-film').setAttributes({ 'href': `#top-${filmNumber}` }).build();
@@ -30,8 +30,6 @@ export class HeaderComp extends ScrollableComp {
 
                 return new ElementBuilder('li').setChildren(linkToFilm).build();;
             })).build();
-
-        return filmNav;
     }
 
     #displayGoToMenuOnHover(goToMenuUnit, lastChildOfUnit) {
@@ -62,18 +60,22 @@ export class HeaderComp extends ScrollableComp {
                     goToMenu = this.#createGoToMenu();
 
                     boxMenuNav.setChildren(linkTo, goToMenu);
-                }
 
-                const childOfBoxMenuNav = boxMenuNav.build();
+                    const childOfBoxMenuNav = boxMenuNav.build();
 
-                if (childOfBoxMenuNav.classList.contains('go-to')) {
-                    // TODO: you already have if statement that compare the same
-                    // move this code there
-                    // hint: function can have more than one return statement
                     this.#displayGoToMenuOnHover(childOfBoxMenuNav, goToMenu);
+
+                    return childOfBoxMenuNav;
+                } else {
+                    return boxMenuNav.build();
                 }
 
-                return childOfBoxMenuNav;
+                // if (childOfBoxMenuNav.classList.contains('go-to')) {
+                //     // TODO: you already have if statement that compare the same     Corrected
+                //     // move this code there
+                //     // hint: function can have more than one return statement
+                //     this.#displayGoToMenuOnHover(childOfBoxMenuNav, goToMenu);
+                // }
 
             })).build();
 
