@@ -6,8 +6,6 @@ import { SliderComp } from './slider.component.js';
 
 export class WrapperComp {
     #setWrapperChildren() {
-        // const pattern = ['straight', 'reverse', 'central', 'slider']; // TODO: no need   Deleted
-
         const keyPartsOfSection = [
             {
                 sectionClass: 'straight-direction-description',
@@ -191,39 +189,20 @@ export class WrapperComp {
 
         const wrapperChildren = [new MainSectionComp(300).render()];
         let keyPartPosition = 0;
-        // let patternPosition = 0; // TODO: no need     Deleted
 
-        // TODO: loop is not bad
-        // but what for all that strange variables?
-        // you know that slider shoud be on every 4th position except the first one
-        // slider indices are 3, 7, 11: all are multiple of 4 if add 1
-        // there is operator modulo (%) which can help
-
-        // Corrected
-
-        // I decited to make here two arrays (pattern and parts of section) and two variables that represent the position of elements in arrays.
-        // The while loop will run till the end of array "parts of section" and every iteration increases the position of elements to make it finite.
-        // On every iteration the loop checks the name of pattern element according to its position, which also increases on every iteration.
-        // If the name is "slider" it makes slider element, if not - movie section element. The necessary parts are provided to builder components according to "parts of section" position.
-        // Once the patternt position reaches the max number it becomes 0 and further builders create elements according to restartered pattern.
-
+        // TODO: MOVIE_SECTION: create MovieSectionService
+        // it will be used to store MovieSectionComp
+        // implementation of this service is similiar to service locator
+        // add movie section to this service after section is built
+        // you need to define what will be used as key - in next comments I will reference it as 'movie-key' - for each section
         while(keyPartPosition < keyPartsOfSection.length) {
-
-            wrapperChildren.push((keyPartPosition + 1) % 4 === 0 ? new SliderComp(keyPartsOfSection[keyPartPosition], 1).render() : new MovieSectionComp(keyPartsOfSection[keyPartPosition]).render());
+            wrapperChildren.push(
+                (keyPartPosition + 1) % 4 === 0
+                    ? new SliderComp(keyPartsOfSection[keyPartPosition], 1).render()
+                    : new MovieSectionComp(keyPartsOfSection[keyPartPosition]).render()
+            );
 
             keyPartPosition++;
-
-            // if (patternPosition === pattern.length) {
-            //     patternPosition = 0;
-            // }
-
-            // wrapperChildren.push(pattern[patternPosition] === 'slider' ? new SliderComp(keyPartsOfSection[keyPartPosition], 1).render() : new MovieSectionComp(keyPartsOfSection[keyPartPosition]).render());
-
-            // if (keyPartPosition === keyPartsOfSection.length - 1) { // TODO: that is the last section in the wrapper, why is it in the loop?     At first I made it out of loop, but then I thought that it should be in the loop. Corrected
-            //     wrapperChildren.push(new SignUpComp().render());
-            // }
-
-            // patternPosition++;
         }
 
         wrapperChildren.push(new SignUpComp().render());
@@ -232,7 +211,6 @@ export class WrapperComp {
     }
 
     render() {
-        // this.#setWrapperChildren(); // TODO: emmm?    I was using console.log to check the results of this function before implementing :) Forgot to delete.
         return new ElementBuilder('main').setChildren(...this.#setWrapperChildren()).build();
     }
 }

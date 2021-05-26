@@ -1,6 +1,10 @@
 import { ElementBuilder } from '../utilities/element-builder.js';
 import { FilmContentComp } from './film-content.component.js';
 
+// TODO: MOVIE_SECTION:
+// this component will need to store section html in private property
+// also you need getter to be able get section html where the section html will be required
+// after this section will not require id anymore
 export class MovieSectionComp {
     #options;
 

@@ -11,16 +11,19 @@ export class HeaderComp extends ScrollableComp {
     }
 
     #createGoToMenu() {
-        return new ElementBuilder('ul') // TODO: no sense for variable   Corrected
+        return new ElementBuilder('ul')
             .setClasses('film-nav')
             .setChildren(...['10', '09', '08', '07', '06', '05', '04', '03', '02', '01'].map(filmNumber => {
                 const linkToFilm = new ElementBuilder('a').setClasses('top-film').setAttributes({ 'href': `#top-${filmNumber}` }).build();
 
                 linkToFilm.textContent = `.${filmNumber}`;
-
                 linkToFilm.addEventListener('click', (event) => {
                     event.preventDefault();
                     let topLink = linkToFilm.getAttribute('href');
+
+                    // TODO: MOVIE_SECTION:
+                    // here you will pass 'movie-key'
+                    // also .top-film link will not need href anymore
                     this._scrollToFilm(topLink);
 
                     if (window.innerWidth < 768) {
@@ -50,9 +53,9 @@ export class HeaderComp extends ScrollableComp {
 
                 linkTo.textContent = searchMenu;
 
-                const boxMenuNav = new ElementBuilder('li').setChildren(linkTo);
+                const boxMenuNav = new ElementBuilder('li').setChildren(linkTo); // TODO: probably children can be set after 'if'
 
-                let goToMenu;
+                let goToMenu; // TODO: why is it declared here?
 
                 if (searchMenu === 'go to') {
                     boxMenuNav.setClasses('go-to');
@@ -67,15 +70,8 @@ export class HeaderComp extends ScrollableComp {
 
                     return childOfBoxMenuNav;
                 } else {
-                    return boxMenuNav.build();
+                    return boxMenuNav.build(); // TODO: since 'if' has return statement - no need to wrap this in 'else' statement
                 }
-
-                // if (childOfBoxMenuNav.classList.contains('go-to')) {
-                //     // TODO: you already have if statement that compare the same     Corrected
-                //     // move this code there
-                //     // hint: function can have more than one return statement
-                //     this.#displayGoToMenuOnHover(childOfBoxMenuNav, goToMenu);
-                // }
 
             })).build();
 
