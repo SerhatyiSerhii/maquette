@@ -1,12 +1,8 @@
 import { ElementBuilder } from '../utilities/element-builder.js';
 import { FilmContentComp } from './film-content.component.js';
 
-// TODO: MOVIE_SECTION:
-// this component will need to store section html in private property
-// also you need getter to be able get section html where the section html will be required
-// after this section will not require id anymore
-
 // Done. But why do we need getter if we can get section html from MovieSectionService?
+// TODO: because in the service we need to store component itself, not html element
 
 export class MovieSectionComp {
     #options;
@@ -21,7 +17,7 @@ export class MovieSectionComp {
         this.#filmContent.init();
     }
 
-    get getSection() {
+    get getSection() { // TODO: either convert to a function or rename to be a noun
         return this.#section;
     }
 
@@ -56,6 +52,6 @@ export class MovieSectionComp {
 
         this.#section = section.setChildren(container).build();
 
-        return this.getSection;
+        return this.getSection; // TODO: what is the reason to use getter?
     }
 }

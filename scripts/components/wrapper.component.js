@@ -1,9 +1,9 @@
+import { MovieSectionService } from '../services/movie-section.service.js';
 import { ElementBuilder } from '../utilities/element-builder.js';
 import { MainSectionComp } from './main-section.component.js';
 import { MovieSectionComp } from './movie-section.component.js';
 import { SignUpComp } from './signup.component.js';
 import { SliderComp } from './slider.component.js';
-import { MovieSectionService } from '../services/movie-section.service.js';
 
 export class WrapperComp {
     #initSectionsArr = [];
@@ -192,34 +192,19 @@ export class WrapperComp {
 
         const wrapperChildren = [new MainSectionComp(300).render()];
         let keyPartPosition = 0;
-
-        // TODO: MOVIE_SECTION: create MovieSectionService
-        // it will be used to store MovieSectionComp
-        // implementation of this service is similiar to service locator
-        // add movie section to this service after section is built
-        // you need to define what will be used as key - in next comments I will reference it as 'movie-key' - for each section
-
-        // Created
-
-        let componentInstance;
-        let readyComponent;
+        let componentInstance; //  TODO: why is it declared here?
+        let readyComponent; //  TODO: why is it declared here?
 
         while (keyPartPosition < keyPartsOfSection.length) {
-            // wrapperChildren.push(
-            //     (keyPartPosition + 1) % 4 === 0
-            //         ? new SliderComp(keyPartsOfSection[keyPartPosition], 1).render()
-            //         : new MovieSectionComp(keyPartsOfSection[keyPartPosition]).render()
-            // );
-
             (keyPartPosition + 1) % 4 === 0
                 ? componentInstance = new SliderComp(keyPartsOfSection[keyPartPosition], 1)
-                : componentInstance = new MovieSectionComp(keyPartsOfSection[keyPartPosition])
+                : componentInstance = new MovieSectionComp(keyPartsOfSection[keyPartPosition]);
 
             this.#initSectionsArr.push(componentInstance);
 
             readyComponent = componentInstance.render();
 
-            if (keyPartsOfSection[keyPartPosition].hasOwnProperty('position')) {
+            if (keyPartsOfSection[keyPartPosition].hasOwnProperty('position')) { // TODO: you can convert ternary operator to if statement and avoid this awful check
                 MovieSectionService.register(keyPartsOfSection[keyPartPosition].position, readyComponent);
             }
 

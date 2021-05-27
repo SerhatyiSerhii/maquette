@@ -40,7 +40,6 @@ export class SliderComp {
     render() {
         const sliderFrames = this.#content.map((frameOptions) => {
             this.#sliderFrameComponent = new SliderFrameComp(frameOptions);
-            // new SliderFrameComp(frameOptions).render()
             return this.#sliderFrameComponent.render();
         });
 

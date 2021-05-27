@@ -20,12 +20,6 @@ export class HeaderComp extends ScrollableComp {
                 linkToFilm.addEventListener('click', (event) => {
                     event.preventDefault();
 
-                    // TODO: MOVIE_SECTION:
-                    // here you will pass 'movie-key'
-                    // also .top-film link will not need href anymore
-
-                    // Done
-
                     this._scrollToFilm(filmNumber);
 
                     if (window.innerWidth < 768) {
@@ -55,28 +49,21 @@ export class HeaderComp extends ScrollableComp {
 
                 linkTo.textContent = searchMenu;
 
-                // const boxMenuNav = new ElementBuilder('li').setChildren(linkTo); // TODO: probably children can be set after 'if'    Corrected
                 const boxMenuNav = new ElementBuilder('li');
-
-                // let goToMenu; // TODO: why is it declared here?   Corrected
 
                 if (searchMenu === 'go to') {
                     boxMenuNav.setClasses('go-to');
 
-                    let goToMenu = this.#createGoToMenu();
+                    let goToMenu = this.#createGoToMenu(); // TODO: why let?
 
                     boxMenuNav.setChildren(linkTo, goToMenu);
 
-                    const childOfBoxMenuNav = boxMenuNav.build();
+                    const childOfBoxMenuNav = boxMenuNav.build(); // TODO: setChildren can be called here
 
                     this.#displayGoToMenuOnHover(childOfBoxMenuNav, goToMenu);
 
                     return childOfBoxMenuNav;
                 }
-
-                // else {
-                //     return boxMenuNav.build(); // TODO: since 'if' has return statement - no need to wrap this in 'else' statement    Corrected
-                // }
 
                 return boxMenuNav.setChildren(linkTo).build();
 

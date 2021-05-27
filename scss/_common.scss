@@ -28,7 +28,7 @@ a {
     &:hover {
         color: $main-color;
         text-decoration: underline;
-        cursor: pointer;
+        cursor: pointer; // TODO: why do you need it?
     }
 }
 

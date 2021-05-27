@@ -1,3 +1,5 @@
+// TODO: why is it static? what did we implement service locator for?
+// also why register, why inject? This is a little bit different than service locator
 export class MovieSectionService {
     static #movieSectionContainer = {};
 

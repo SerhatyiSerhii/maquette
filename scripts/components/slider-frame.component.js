@@ -1,4 +1,4 @@
-import { ServiceLocator, MEDIA_SERVICE, ANIMATION_SERVICE } from '../services/service-locator.js';
+import { ANIMATION_SERVICE, MEDIA_SERVICE, ServiceLocator } from '../services/service-locator.js';
 import { ElementBuilder } from '../utilities/element-builder.js';
 import { MediaLengthComp } from './media-length.component.js';
 import { PlayBtnComp } from './play-button.component.js';
@@ -24,7 +24,7 @@ export class SliderFrameComp {
 
         video.addEventListener('canplay', () => {
             timer.showTime();
-            this.#volume.init();
+            this.#volume.init(); // TODO: why is it here and not in init?
         });
 
         video.addEventListener('pause', () => {
