@@ -15,12 +15,12 @@ export class MainSectionComp extends ScrollableComp{
         const mainSentence = new ElementBuilder('p').build();
         mainSentence.textContent = 'Awesome movie soundtracks can turn a good movie like Guardians Of The Galaxy or Star Wars into iconic ones.'
 
-        const arrowDown = new ElementBuilder('a').setClasses('arrow-down', 'arrow').setAttributes({ 'href': '#top-10' }).build();
+        const arrowDown = new ElementBuilder('a').setClasses('arrow-down', 'arrow').build();
         arrowDown.innerHTML = this.#arrowDown;
 
         arrowDown.addEventListener('click', (event) => {
             event.preventDefault();
-            const firstTopFilm = arrowDown.getAttribute('href');
+            const firstTopFilm = '10';
 
             this._scrollToFilm(firstTopFilm);
         });

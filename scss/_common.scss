@@ -28,6 +28,7 @@ a {
     &:hover {
         color: $main-color;
         text-decoration: underline;
+        cursor: pointer;
     }
 }
 

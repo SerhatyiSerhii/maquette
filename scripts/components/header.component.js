@@ -14,17 +14,19 @@ export class HeaderComp extends ScrollableComp {
         return new ElementBuilder('ul')
             .setClasses('film-nav')
             .setChildren(...['10', '09', '08', '07', '06', '05', '04', '03', '02', '01'].map(filmNumber => {
-                const linkToFilm = new ElementBuilder('a').setClasses('top-film').setAttributes({ 'href': `#top-${filmNumber}` }).build();
+                const linkToFilm = new ElementBuilder('a').setClasses('top-film').build();
 
                 linkToFilm.textContent = `.${filmNumber}`;
                 linkToFilm.addEventListener('click', (event) => {
                     event.preventDefault();
-                    let topLink = linkToFilm.getAttribute('href');
 
                     // TODO: MOVIE_SECTION:
                     // here you will pass 'movie-key'
                     // also .top-film link will not need href anymore
-                    this._scrollToFilm(topLink);
+
+                    // Done
+
+                    this._scrollToFilm(filmNumber);
 
                     if (window.innerWidth < 768) {
                         this.#toggleBurger();
@@ -53,14 +55,15 @@ export class HeaderComp extends ScrollableComp {
 
                 linkTo.textContent = searchMenu;
 
-                const boxMenuNav = new ElementBuilder('li').setChildren(linkTo); // TODO: probably children can be set after 'if'
+                // const boxMenuNav = new ElementBuilder('li').setChildren(linkTo); // TODO: probably children can be set after 'if'    Corrected
+                const boxMenuNav = new ElementBuilder('li');
 
-                let goToMenu; // TODO: why is it declared here?
+                // let goToMenu; // TODO: why is it declared here?   Corrected
 
                 if (searchMenu === 'go to') {
                     boxMenuNav.setClasses('go-to');
 
-                    goToMenu = this.#createGoToMenu();
+                    let goToMenu = this.#createGoToMenu();
 
                     boxMenuNav.setChildren(linkTo, goToMenu);
 
@@ -69,9 +72,13 @@ export class HeaderComp extends ScrollableComp {
                     this.#displayGoToMenuOnHover(childOfBoxMenuNav, goToMenu);
 
                     return childOfBoxMenuNav;
-                } else {
-                    return boxMenuNav.build(); // TODO: since 'if' has return statement - no need to wrap this in 'else' statement
                 }
+
+                // else {
+                //     return boxMenuNav.build(); // TODO: since 'if' has return statement - no need to wrap this in 'else' statement    Corrected
+                // }
+
+                return boxMenuNav.setChildren(linkTo).build();
 
             })).build();
 

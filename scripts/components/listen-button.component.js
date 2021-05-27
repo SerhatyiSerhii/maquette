@@ -10,6 +10,8 @@ export class ListenBtnComp {
         this.#audioName = audioName;
     }
 
+    init() {}
+
     render() {
         const listenBtn = new ElementBuilder('button').setClasses('listen').build();
         listenBtn.textContent = 'listen';

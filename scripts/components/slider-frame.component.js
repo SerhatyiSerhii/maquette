@@ -9,10 +9,13 @@ export class SliderFrameComp {
     #options;
     #mediaService = ServiceLocator.inject(MEDIA_SERVICE);
     #animationService = ServiceLocator.inject(ANIMATION_SERVICE);
+    #volume;
 
     constructor(options) {
         this.#options = options;
     }
+
+    init() {}
 
     render() {
         const source = new ElementBuilder('source').setAttributes({ 'src': this.#options.src }).build();
@@ -21,6 +24,7 @@ export class SliderFrameComp {
 
         video.addEventListener('canplay', () => {
             timer.showTime();
+            this.#volume.init();
         });
 
         video.addEventListener('pause', () => {
@@ -29,7 +33,7 @@ export class SliderFrameComp {
             cancelAnimationFrame(id);
         });
 
-        const volume = new VolumeComp(video);
+        this.#volume = new VolumeComp(video);
         const mediaLength = new MediaLengthComp(video);
 
         video.addEventListener('playing', () => {
@@ -46,7 +50,7 @@ export class SliderFrameComp {
             }, 500);
         });
 
-        const videoControls = new ElementBuilder('div').setClasses('video-controls').setChildren(volume.render(), mediaLength.render()).build();
+        const videoControls = new ElementBuilder('div').setClasses('video-controls').setChildren(this.#volume.render(), mediaLength.render()).build();
         const videoWrapper = new ElementBuilder('div').setClasses('video-wrapper').setChildren(video, timer.render(), videoControls).build();
         const image = new ElementBuilder('img').setAttributes({ 'src': this.#options.imgSrc, 'alt': this.#options.imgAlt }).build();
 

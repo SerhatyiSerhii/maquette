@@ -6,12 +6,17 @@ export class FilmContentComp {
     #titleMovie;
     #aboutMovie;
     #audioName;
+    #listenButton;
 
     constructor(position, title, aboutMovie, audioName) {
         this.#positionMovie = position;
         this.#titleMovie = title;
         this.#aboutMovie = aboutMovie;
         this.#audioName = audioName;
+    }
+
+    init() {
+        this.#listenButton.init();
     }
 
     render() {
@@ -26,8 +31,8 @@ export class FilmContentComp {
         const movieAbout = new ElementBuilder('p').build();
         movieAbout.textContent = this.#aboutMovie;
 
-        const listenButton = new ListenBtnComp(this.#titleMovie, this.#audioName);
-        const compDescription = new ElementBuilder('div').setClasses('film-description-content').setChildren(movieAbout, listenButton.render()).build();
+        this.#listenButton = new ListenBtnComp(this.#titleMovie, this.#audioName);
+        const compDescription = new ElementBuilder('div').setClasses('film-description-content').setChildren(movieAbout, this.#listenButton.render()).build();
 
         const filmContent = new ElementBuilder('div').setClasses('film-content').setChildren(compTitle, compDescription).build();
 

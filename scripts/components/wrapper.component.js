@@ -3,8 +3,11 @@ import { MainSectionComp } from './main-section.component.js';
 import { MovieSectionComp } from './movie-section.component.js';
 import { SignUpComp } from './signup.component.js';
 import { SliderComp } from './slider.component.js';
+import { MovieSectionService } from '../services/movie-section.service.js';
 
 export class WrapperComp {
+    #initSectionsArr = [];
+
     #setWrapperChildren() {
         const keyPartsOfSection = [
             {
@@ -195,12 +198,32 @@ export class WrapperComp {
         // implementation of this service is similiar to service locator
         // add movie section to this service after section is built
         // you need to define what will be used as key - in next comments I will reference it as 'movie-key' - for each section
-        while(keyPartPosition < keyPartsOfSection.length) {
-            wrapperChildren.push(
-                (keyPartPosition + 1) % 4 === 0
-                    ? new SliderComp(keyPartsOfSection[keyPartPosition], 1).render()
-                    : new MovieSectionComp(keyPartsOfSection[keyPartPosition]).render()
-            );
+
+        // Created
+
+        let componentInstance;
+        let readyComponent;
+
+        while (keyPartPosition < keyPartsOfSection.length) {
+            // wrapperChildren.push(
+            //     (keyPartPosition + 1) % 4 === 0
+            //         ? new SliderComp(keyPartsOfSection[keyPartPosition], 1).render()
+            //         : new MovieSectionComp(keyPartsOfSection[keyPartPosition]).render()
+            // );
+
+            (keyPartPosition + 1) % 4 === 0
+                ? componentInstance = new SliderComp(keyPartsOfSection[keyPartPosition], 1)
+                : componentInstance = new MovieSectionComp(keyPartsOfSection[keyPartPosition])
+
+            this.#initSectionsArr.push(componentInstance);
+
+            readyComponent = componentInstance.render();
+
+            if (keyPartsOfSection[keyPartPosition].hasOwnProperty('position')) {
+                MovieSectionService.register(keyPartsOfSection[keyPartPosition].position, readyComponent);
+            }
+
+            wrapperChildren.push(readyComponent);
 
             keyPartPosition++;
         }
@@ -208,6 +231,12 @@ export class WrapperComp {
         wrapperChildren.push(new SignUpComp().render());
 
         return wrapperChildren;
+    }
+
+    init() {
+        for (let section of this.#initSectionsArr) {
+            section.init();
+        }
     }
 
     render() {
