@@ -1,4 +1,3 @@
-import { MovieSectionService } from '../services/movie-section.service.js';
 import { ElementBuilder } from '../utilities/element-builder.js';
 import { MainSectionComp } from './main-section.component.js';
 import { MovieSectionComp } from './movie-section.component.js';
@@ -6,7 +5,6 @@ import { SignUpComp } from './signup.component.js';
 import { SliderComp } from './slider.component.js';
 
 export class WrapperComp {
-    #initSectionsArr = [];
 
     #setWrapperChildren() {
         const keyPartsOfSection = [
@@ -192,23 +190,20 @@ export class WrapperComp {
 
         const wrapperChildren = [new MainSectionComp(300).render()];
         let keyPartPosition = 0;
-        let componentInstance; //  TODO: why is it declared here?
-        let readyComponent; //  TODO: why is it declared here?
+        // let componentInstance; //  TODO: why is it declared here?     Deleted
+        // let readyComponent; //  TODO: why is it declared here?    Deleted
 
         while (keyPartPosition < keyPartsOfSection.length) {
-            (keyPartPosition + 1) % 4 === 0
-                ? componentInstance = new SliderComp(keyPartsOfSection[keyPartPosition], 1)
-                : componentInstance = new MovieSectionComp(keyPartsOfSection[keyPartPosition]);
 
-            this.#initSectionsArr.push(componentInstance);
+            wrapperChildren.push(
+                (keyPartPosition + 1) % 4 === 0
+                ? new SliderComp(keyPartsOfSection[keyPartPosition], 1).render()
+                : new MovieSectionComp(keyPartsOfSection[keyPartPosition]).render()
+            )
 
-            readyComponent = componentInstance.render();
-
-            if (keyPartsOfSection[keyPartPosition].hasOwnProperty('position')) { // TODO: you can convert ternary operator to if statement and avoid this awful check
-                MovieSectionService.register(keyPartsOfSection[keyPartPosition].position, readyComponent);
-            }
-
-            wrapperChildren.push(readyComponent);
+            // if (keyPartsOfSection[keyPartPosition].hasOwnProperty('position')) { // TODO: you can convert ternary operator to if statement and avoid this awful check   :D Corrected
+            //     MovieSectionService.register(keyPartsOfSection[keyPartPosition].position, readyComponent);
+            // }
 
             keyPartPosition++;
         }
@@ -216,12 +211,6 @@ export class WrapperComp {
         wrapperChildren.push(new SignUpComp().render());
 
         return wrapperChildren;
-    }
-
-    init() {
-        for (let section of this.#initSectionsArr) {
-            section.init();
-        }
     }
 
     render() {

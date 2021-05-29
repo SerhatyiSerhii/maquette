@@ -1,4 +1,4 @@
-import { MovieSectionService } from '../services/movie-section.service.js';
+import { ServiceLocator, MOVIE_SECTION } from '../services/service-locator.js';
 
 export class ScrollableComp {
     #page;
@@ -7,6 +7,7 @@ export class ScrollableComp {
     #distance;
     #start;
     #duration;
+    #movieSection = ServiceLocator.inject(MOVIE_SECTION);
 
     #step = (newTimestamp) => {
         let toScroll = this.#startingPosition + (this.#distance * (newTimestamp - this.#start)) / this.#duration;
@@ -34,7 +35,7 @@ export class ScrollableComp {
     _scrollToFilm(movieNumber) {
         this.#page = document.documentElement;
         this.#startingPosition = this.#page.scrollTop;
-        this.#endingPosition = MovieSectionService.inject(movieNumber).offsetTop;
+        this.#endingPosition = this.#movieSection.getSection(movieNumber).movieSection.offsetTop;
         this.#distance = this.#endingPosition - this.#startingPosition;
         this.#go();
     }

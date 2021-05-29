@@ -27,7 +27,7 @@ export class HeaderComp extends ScrollableComp {
                     }
                 });
 
-                return new ElementBuilder('li').setChildren(linkToFilm).build();;
+                return new ElementBuilder('li').setChildren(linkToFilm).build();
             })).build();
     }
 
@@ -54,11 +54,9 @@ export class HeaderComp extends ScrollableComp {
                 if (searchMenu === 'go to') {
                     boxMenuNav.setClasses('go-to');
 
-                    let goToMenu = this.#createGoToMenu(); // TODO: why let?
+                    const goToMenu = this.#createGoToMenu(); // TODO: why let?   Corrected
 
-                    boxMenuNav.setChildren(linkTo, goToMenu);
-
-                    const childOfBoxMenuNav = boxMenuNav.build(); // TODO: setChildren can be called here
+                    const childOfBoxMenuNav = boxMenuNav.setChildren(linkTo, goToMenu).build(); // TODO: setChildren can be called here     Yep. Corrected
 
                     this.#displayGoToMenuOnHover(childOfBoxMenuNav, goToMenu);
 

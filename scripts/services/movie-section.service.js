@@ -1,13 +1,15 @@
 // TODO: why is it static? what did we implement service locator for?
 // also why register, why inject? This is a little bit different than service locator
-export class MovieSectionService {
-    static #movieSectionContainer = {};
 
-    static register(moviePosition, movie) {
-        MovieSectionService.#movieSectionContainer[moviePosition] = movie;
+// Ok, got it. Corrected.
+export class MovieSectionService {
+    #movieSectionContainer = {};
+
+    addSection(moviePosition, movie) {
+        this.#movieSectionContainer[moviePosition] = movie;
     }
 
-    static inject(moviePosition) {
-        return MovieSectionService.#movieSectionContainer[moviePosition];
+    getSection(moviePosition) {
+        return this.#movieSectionContainer[moviePosition];
     }
 }

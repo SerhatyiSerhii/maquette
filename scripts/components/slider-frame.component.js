@@ -10,12 +10,17 @@ export class SliderFrameComp {
     #mediaService = ServiceLocator.inject(MEDIA_SERVICE);
     #animationService = ServiceLocator.inject(ANIMATION_SERVICE);
     #volume;
+    #volumeArr = [];
 
     constructor(options) {
         this.#options = options;
     }
 
-    init() {}
+    init() {
+        for (let volumeItem of this.#volumeArr) {
+            volumeItem.init();
+        }
+    }
 
     render() {
         const source = new ElementBuilder('source').setAttributes({ 'src': this.#options.src }).build();
@@ -24,7 +29,10 @@ export class SliderFrameComp {
 
         video.addEventListener('canplay', () => {
             timer.showTime();
-            this.#volume.init(); // TODO: why is it here and not in init?
+            // this.#volume.init(); // TODO: why is it here and not in init?    Corrected
+            this.#volumeArr.push(this.#volume);
+
+            this.init();
         });
 
         video.addEventListener('pause', () => {
