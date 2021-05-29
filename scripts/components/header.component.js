@@ -54,9 +54,8 @@ export class HeaderComp extends ScrollableComp {
                 if (searchMenu === 'go to') {
                     boxMenuNav.setClasses('go-to');
 
-                    const goToMenu = this.#createGoToMenu(); // TODO: why let?   Corrected
-
-                    const childOfBoxMenuNav = boxMenuNav.setChildren(linkTo, goToMenu).build(); // TODO: setChildren can be called here     Yep. Corrected
+                    const goToMenu = this.#createGoToMenu();
+                    const childOfBoxMenuNav = boxMenuNav.setChildren(linkTo, goToMenu).build();
 
                     this.#displayGoToMenuOnHover(childOfBoxMenuNav, goToMenu);
 

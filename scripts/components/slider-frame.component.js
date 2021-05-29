@@ -10,7 +10,7 @@ export class SliderFrameComp {
     #mediaService = ServiceLocator.inject(MEDIA_SERVICE);
     #animationService = ServiceLocator.inject(ANIMATION_SERVICE);
     #volume;
-    #volumeArr = [];
+    #volumeArr = []; // TODO: what is this? how many volumes does slider frame have?
 
     constructor(options) {
         this.#options = options;
@@ -29,10 +29,9 @@ export class SliderFrameComp {
 
         video.addEventListener('canplay', () => {
             timer.showTime();
-            // this.#volume.init(); // TODO: why is it here and not in init?    Corrected
             this.#volumeArr.push(this.#volume);
 
-            this.init();
+            this.init(); // TODO: DO NOT CALL INIT METHOD HERE!!! THIS ONE MUST BE CALLED ONLY IN ANOTHER INIT METHOD!!!
         });
 
         video.addEventListener('pause', () => {

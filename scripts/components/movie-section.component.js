@@ -1,9 +1,6 @@
-import { ServiceLocator, MOVIE_SECTION } from '../services/service-locator.js';
+import { MOVIE_SECTION, ServiceLocator } from '../services/service-locator.js';
 import { ElementBuilder } from '../utilities/element-builder.js';
 import { FilmContentComp } from './film-content.component.js';
-
-// Done. But why do we need getter if we can get section html from MovieSectionService?
-// TODO: because in the service we need to store component itself, not html element     Ok. Got it. Corrected
 
 export class MovieSectionComp {
     #options;
@@ -19,7 +16,7 @@ export class MovieSectionComp {
         this.#filmContent.init();
     }
 
-    get movieSection() { // TODO: either convert to a function or rename to be a noun    Renamed
+    get movieSection() {
         return this.#section;
     }
 
@@ -54,8 +51,8 @@ export class MovieSectionComp {
 
         this.#section = section.setChildren(container).build();
 
-        this.#movieService.addSection(this.#options.position, this);
+        this.#movieService.addSection(this.#options.position, this); // TODO: better to do it where movie section created
 
-        return this.#section; // TODO: what is the reason to use getter?     Corrected
+        return this.#section;
     }
 }

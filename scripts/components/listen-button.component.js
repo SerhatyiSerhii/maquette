@@ -13,8 +13,7 @@ export class ListenBtnComp {
 
     init() {
         this.#modalWindow.init();
-    } // TODO: what for?     Corrected. Looks like we don't need the long chain of init methods. We can simply call init method of volume component
-    // at modale window creation and at slider-frame creation (when js reads video canplay).
+    }
 
     render() {
         const listenBtn = new ElementBuilder('button').setClasses('listen').build();
@@ -25,7 +24,7 @@ export class ListenBtnComp {
 
             document.body.appendChild(this.#modalWindow.render());
 
-            this.init();
+            this.init(); // TODO: what is the point? after append you can simply call init on modal window
             this.#modalWindow.showModalWindow();
         });
 

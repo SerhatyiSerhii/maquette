@@ -190,20 +190,13 @@ export class WrapperComp {
 
         const wrapperChildren = [new MainSectionComp(300).render()];
         let keyPartPosition = 0;
-        // let componentInstance; //  TODO: why is it declared here?     Deleted
-        // let readyComponent; //  TODO: why is it declared here?    Deleted
 
         while (keyPartPosition < keyPartsOfSection.length) {
-
             wrapperChildren.push(
                 (keyPartPosition + 1) % 4 === 0
                 ? new SliderComp(keyPartsOfSection[keyPartPosition], 1).render()
                 : new MovieSectionComp(keyPartsOfSection[keyPartPosition]).render()
             )
-
-            // if (keyPartsOfSection[keyPartPosition].hasOwnProperty('position')) { // TODO: you can convert ternary operator to if statement and avoid this awful check   :D Corrected
-            //     MovieSectionService.register(keyPartsOfSection[keyPartPosition].position, readyComponent);
-            // }
 
             keyPartPosition++;
         }

@@ -28,8 +28,7 @@ a {
     &:hover {
         color: $main-color;
         text-decoration: underline;
-        cursor: pointer; // TODO: why do you need it?    This is to make pointer cursor on hover over arrow-down or links at go-to menu.
-        // it can be deleted from here, but arrow-down and go-to menu will need attribute 'href=#'.
+        cursor: pointer;
     }
 }
 
