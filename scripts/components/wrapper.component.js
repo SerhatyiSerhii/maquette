@@ -3,8 +3,10 @@ import { MainSectionComp } from './main-section.component.js';
 import { MovieSectionComp } from './movie-section.component.js';
 import { SignUpComp } from './signup.component.js';
 import { SliderComp } from './slider.component.js';
+import { MOVIE_SECTION, ServiceLocator } from '../services/service-locator.js';
 
 export class WrapperComp {
+    #movieService = ServiceLocator.inject(MOVIE_SECTION);
 
     #setWrapperChildren() {
         const keyPartsOfSection = [
@@ -192,11 +194,22 @@ export class WrapperComp {
         let keyPartPosition = 0;
 
         while (keyPartPosition < keyPartsOfSection.length) {
-            wrapperChildren.push(
-                (keyPartPosition + 1) % 4 === 0
-                ? new SliderComp(keyPartsOfSection[keyPartPosition], 1).render()
-                : new MovieSectionComp(keyPartsOfSection[keyPartPosition]).render()
-            )
+            let componenetInstance;
+
+            (keyPartPosition + 1) % 4 === 0
+                ? componenetInstance = new SliderComp(keyPartsOfSection[keyPartPosition], 1)
+                : (
+                    componenetInstance = new MovieSectionComp(keyPartsOfSection[keyPartPosition]),
+                    this.#movieService.addSection(keyPartsOfSection[keyPartPosition].position, componenetInstance)
+                  )
+
+            // wrapperChildren.push(
+            //     (keyPartPosition + 1) % 4 === 0
+            //     ? new SliderComp(keyPartsOfSection[keyPartPosition], 1).render()
+            //     : new MovieSectionComp(keyPartsOfSection[keyPartPosition]).render()
+            // )
+
+            wrapperChildren.push(componenetInstance.render());
 
             keyPartPosition++;
         }

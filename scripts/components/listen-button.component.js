@@ -11,10 +11,6 @@ export class ListenBtnComp {
         this.#audioName = audioName;
     }
 
-    init() {
-        this.#modalWindow.init();
-    }
-
     render() {
         const listenBtn = new ElementBuilder('button').setClasses('listen').build();
         listenBtn.textContent = 'listen';
@@ -24,7 +20,8 @@ export class ListenBtnComp {
 
             document.body.appendChild(this.#modalWindow.render());
 
-            this.init(); // TODO: what is the point? after append you can simply call init on modal window
+            this.#modalWindow.init();
+            // this.init(); // TODO: what is the point? after append you can simply call init on modal window   Corrected
             this.#modalWindow.showModalWindow();
         });
 

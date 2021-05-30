@@ -1,4 +1,3 @@
-import { MOVIE_SECTION, ServiceLocator } from '../services/service-locator.js';
 import { ElementBuilder } from '../utilities/element-builder.js';
 import { FilmContentComp } from './film-content.component.js';
 
@@ -6,14 +5,9 @@ export class MovieSectionComp {
     #options;
     #filmContent;
     #section;
-    #movieService = ServiceLocator.inject(MOVIE_SECTION);
 
     constructor(options) {
         this.#options = options;
-    }
-
-    init() {
-        this.#filmContent.init();
     }
 
     get movieSection() {
@@ -51,7 +45,7 @@ export class MovieSectionComp {
 
         this.#section = section.setChildren(container).build();
 
-        this.#movieService.addSection(this.#options.position, this); // TODO: better to do it where movie section created
+        // this.#movieService.addSection(this.#options.position, this); // TODO: better to do it where movie section created    Corrected
 
         return this.#section;
     }

@@ -33,10 +33,6 @@ export class SliderComp {
         this.#framesLine.style.transform = `translateX(${-this.#currentIndex * 100}%)`;
     }
 
-    init() {
-        this.#sliderFrameComponent.init();
-    }
-
     render() {
         const sliderFrames = this.#content.map((frameOptions) => {
             this.#sliderFrameComponent = new SliderFrameComp(frameOptions);

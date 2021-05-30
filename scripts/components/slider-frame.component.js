@@ -10,16 +10,9 @@ export class SliderFrameComp {
     #mediaService = ServiceLocator.inject(MEDIA_SERVICE);
     #animationService = ServiceLocator.inject(ANIMATION_SERVICE);
     #volume;
-    #volumeArr = []; // TODO: what is this? how many volumes does slider frame have?
 
     constructor(options) {
         this.#options = options;
-    }
-
-    init() {
-        for (let volumeItem of this.#volumeArr) {
-            volumeItem.init();
-        }
     }
 
     render() {
@@ -29,9 +22,16 @@ export class SliderFrameComp {
 
         video.addEventListener('canplay', () => {
             timer.showTime();
-            this.#volumeArr.push(this.#volume);
 
-            this.init(); // TODO: DO NOT CALL INIT METHOD HERE!!! THIS ONE MUST BE CALLED ONLY IN ANOTHER INIT METHOD!!!
+            // this.init(); // TODO: DO NOT CALL INIT METHOD HERE!!! THIS ONE MUST BE CALLED ONLY IN ANOTHER INIT METHOD!!!
+
+            // Volume.init method should be called here or in playing EventListener. If i put the Volume.init method after the volume component is rendered (line 63 after 60),
+            // it will put the volume-handle to 0, but not to 1. But here it puts the volume to 1.
+            // If I put Volume.init method to slider-frame.component init method and call it at slider.component,
+            // it will put volume-handle to 0 at the last video of every slider, but it will not apply volume-handle putting for first and second videos of every slider.
+            // It's strange as on line 60 it supposed to work, but it doesn't.
+
+            this.#volume.init();
         });
 
         video.addEventListener('pause', () => {

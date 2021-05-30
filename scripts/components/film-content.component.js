@@ -15,10 +15,6 @@ export class FilmContentComp {
         this.#audioName = audioName;
     }
 
-    init() {
-        this.#listenButton.init();
-    }
-
     render() {
         const movieNumber = new ElementBuilder('span').build();
         movieNumber.textContent = `.${this.#positionMovie}`;
