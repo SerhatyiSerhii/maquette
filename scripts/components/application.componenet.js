@@ -3,7 +3,7 @@ import { HeaderComp } from './header.component.js';
 import { WrapperComp } from './wrapper.component.js';
 
 export class AppComp {
-    #wrapper;
+    #wrapper; // TODO: what for?
 
     init() {
         this.#wrapper = new WrapperComp();

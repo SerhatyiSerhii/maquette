@@ -4,7 +4,7 @@ import { ModalWindowComp } from './modale-window.componenet.js';
 export class ListenBtnComp {
     #movieName;
     #audioName;
-    #modalWindow;
+    #modalWindow; // TODO: what for?
 
     constructor(movieName, audioName) {
         this.#movieName = movieName;
@@ -21,7 +21,6 @@ export class ListenBtnComp {
             document.body.appendChild(this.#modalWindow.render());
 
             this.#modalWindow.init();
-            // this.init(); // TODO: what is the point? after append you can simply call init on modal window   Corrected
             this.#modalWindow.showModalWindow();
         });
 

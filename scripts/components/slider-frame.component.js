@@ -26,10 +26,6 @@ export class SliderFrameComp {
 
         video.addEventListener('canplay', () => {
             timer.showTime();
-
-            // this.init(); // TODO: DO NOT CALL INIT METHOD HERE!!! THIS ONE MUST BE CALLED ONLY IN ANOTHER INIT METHOD!!!
-
-            // Got the logic. Corrected
         });
 
         video.addEventListener('pause', () => {

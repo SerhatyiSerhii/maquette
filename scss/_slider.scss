@@ -98,17 +98,6 @@
     }
 }
 
-// .video-volume-handle::after {
-//     transform: translateX(10px);
-// }
-
-// .media-length.video-length {
-//     bottom: 90px;
-//     position: absolute;
-//     left: 50%;
-//     transform: translateX(-50%);
-// }
-
 .btn-play,
 .btn-play:active {
     width: 85px;
@@ -294,10 +283,6 @@ video {
             bottom: 30px;
         }
     }
-
-    // .media-length.video-length {
-    //     bottom: 30px;
-    // }
 
     .video-wrapper .timer {
         bottom: 5px;

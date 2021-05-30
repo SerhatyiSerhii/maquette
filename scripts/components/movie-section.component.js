@@ -45,8 +45,6 @@ export class MovieSectionComp {
 
         this.#section = section.setChildren(container).build();
 
-        // this.#movieService.addSection(this.#options.position, this); // TODO: better to do it where movie section created    Corrected
-
         return this.#section;
     }
 }

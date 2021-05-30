@@ -1,9 +1,9 @@
+import { MOVIE_SECTION, ServiceLocator } from '../services/service-locator.js';
 import { ElementBuilder } from '../utilities/element-builder.js';
 import { MainSectionComp } from './main-section.component.js';
 import { MovieSectionComp } from './movie-section.component.js';
 import { SignUpComp } from './signup.component.js';
 import { SliderComp } from './slider.component.js';
-import { MOVIE_SECTION, ServiceLocator } from '../services/service-locator.js';
 
 export class WrapperComp {
     #movieService = ServiceLocator.inject(MOVIE_SECTION);
@@ -197,21 +197,17 @@ export class WrapperComp {
         while (keyPartPosition < keyPartsOfSection.length) {
             let componenetInstance;
 
+            // TODO: if you have multiple lines for different conditions
+            // why not to use if else ?
             (keyPartPosition + 1) % 4 === 0
                 ? (
                     componenetInstance = new SliderComp(keyPartsOfSection[keyPartPosition], 1),
                     this.#slider.push(componenetInstance)
-                 )
+                )
                 : (
                     componenetInstance = new MovieSectionComp(keyPartsOfSection[keyPartPosition]),
                     this.#movieService.addSection(keyPartsOfSection[keyPartPosition].position, componenetInstance)
-                  )
-
-            // wrapperChildren.push(
-            //     (keyPartPosition + 1) % 4 === 0
-            //     ? new SliderComp(keyPartsOfSection[keyPartPosition], 1).render()
-            //     : new MovieSectionComp(keyPartsOfSection[keyPartPosition]).render()
-            // )
+                )
 
             wrapperChildren.push(componenetInstance.render());
 
