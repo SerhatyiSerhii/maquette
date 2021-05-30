@@ -7,6 +7,7 @@ import { MOVIE_SECTION, ServiceLocator } from '../services/service-locator.js';
 
 export class WrapperComp {
     #movieService = ServiceLocator.inject(MOVIE_SECTION);
+    #slider = [];
 
     #setWrapperChildren() {
         const keyPartsOfSection = [
@@ -197,7 +198,10 @@ export class WrapperComp {
             let componenetInstance;
 
             (keyPartPosition + 1) % 4 === 0
-                ? componenetInstance = new SliderComp(keyPartsOfSection[keyPartPosition], 1)
+                ? (
+                    componenetInstance = new SliderComp(keyPartsOfSection[keyPartPosition], 1),
+                    this.#slider.push(componenetInstance)
+                 )
                 : (
                     componenetInstance = new MovieSectionComp(keyPartsOfSection[keyPartPosition]),
                     this.#movieService.addSection(keyPartsOfSection[keyPartPosition].position, componenetInstance)
@@ -217,6 +221,12 @@ export class WrapperComp {
         wrapperChildren.push(new SignUpComp().render());
 
         return wrapperChildren;
+    }
+
+    init() {
+        for (let slideItem of this.#slider) {
+            slideItem.init();
+        }
     }
 
     render() {

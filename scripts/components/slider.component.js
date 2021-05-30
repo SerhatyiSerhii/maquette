@@ -8,7 +8,7 @@ export class SliderComp {
     #currentIndex;
     #maxIndex;
     #framesLine;
-    #sliderFrameComponent;
+    #sliderFrameComponent = [];
 
     constructor(content, initialIndex) {
         this.#content = content;
@@ -33,10 +33,19 @@ export class SliderComp {
         this.#framesLine.style.transform = `translateX(${-this.#currentIndex * 100}%)`;
     }
 
+    init() {
+        for (let slideFrameItem of this.#sliderFrameComponent) {
+            slideFrameItem.init();
+        }
+    }
+
     render() {
         const sliderFrames = this.#content.map((frameOptions) => {
-            this.#sliderFrameComponent = new SliderFrameComp(frameOptions);
-            return this.#sliderFrameComponent.render();
+            const slide = new SliderFrameComp(frameOptions);
+
+            this.#sliderFrameComponent.push(slide);
+
+            return slide.render();
         });
 
         this.#framesLine = new ElementBuilder('ul').setChildren(...sliderFrames).build();

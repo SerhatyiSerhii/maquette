@@ -15,6 +15,10 @@ export class SliderFrameComp {
         this.#options = options;
     }
 
+    init() {
+        this.#volume.init();
+    }
+
     render() {
         const source = new ElementBuilder('source').setAttributes({ 'src': this.#options.src }).build();
         const video = new ElementBuilder('video').setChildren(source).build();
@@ -25,13 +29,7 @@ export class SliderFrameComp {
 
             // this.init(); // TODO: DO NOT CALL INIT METHOD HERE!!! THIS ONE MUST BE CALLED ONLY IN ANOTHER INIT METHOD!!!
 
-            // Volume.init method should be called here or in playing EventListener. If i put the Volume.init method after the volume component is rendered (line 63 after 60),
-            // it will put the volume-handle to 0, but not to 1. But here it puts the volume to 1.
-            // If I put Volume.init method to slider-frame.component init method and call it at slider.component,
-            // it will put volume-handle to 0 at the last video of every slider, but it will not apply volume-handle putting for first and second videos of every slider.
-            // It's strange as on line 60 it supposed to work, but it doesn't.
-
-            this.#volume.init();
+            // Got the logic. Corrected
         });
 
         video.addEventListener('pause', () => {
