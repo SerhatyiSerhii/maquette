@@ -4,6 +4,7 @@
     padding: 140px 0 70px;
     background: url('images/headphones.png') no-repeat top right;
     background-size: cover;
+    background-image: linear-gradient(to bottom, transparent, black), url(images/headphones.png);
 
     h1 {
         margin-bottom: 55px;

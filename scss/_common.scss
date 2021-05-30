@@ -28,6 +28,7 @@ a {
     &:hover {
         color: $main-color;
         text-decoration: underline;
+        cursor: pointer;
     }
 }
 
@@ -102,7 +103,7 @@ h2 {
         position: relative;
         padding-top: 40px;
 
-        .listener {
+        .btn-play {
             position: static;
             transform: none;
             margin-top: 10px;
@@ -151,10 +152,6 @@ h2 {
     font-size: 35px;
     position: relative;
     margin-top: 35px;
-}
-
-.hidden {
-    display: none;
 }
 
 .visually-hidden {

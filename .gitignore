@@ -5,3 +5,5 @@ node_modules
 generated-scripts
 .vscode/
 settings.json
+require.js
+index.js
