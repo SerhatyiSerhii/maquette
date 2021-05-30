@@ -4,7 +4,6 @@ import { ModalWindowComp } from './modale-window.componenet.js';
 export class ListenBtnComp {
     #movieName;
     #audioName;
-    #modalWindow; // TODO: what for?
 
     constructor(movieName, audioName) {
         this.#movieName = movieName;
@@ -16,12 +15,12 @@ export class ListenBtnComp {
         listenBtn.textContent = 'listen';
 
         listenBtn.addEventListener('click', () => {
-            this.#modalWindow = new ModalWindowComp(this.#audioName, this.#movieName);
+            const modalWindow = new ModalWindowComp(this.#audioName, this.#movieName);
 
-            document.body.appendChild(this.#modalWindow.render());
+            document.body.appendChild(modalWindow.render());
 
-            this.#modalWindow.init();
-            this.#modalWindow.showModalWindow();
+            modalWindow.init();
+            modalWindow.showModalWindow();
         });
 
         return listenBtn;
