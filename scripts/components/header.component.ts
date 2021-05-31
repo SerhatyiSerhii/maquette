@@ -1,16 +1,16 @@
-import { ElementBuilder } from '../utilities/element-builder.js';
-import { ScrollableComp } from './scrollable.component.js';
+import { ElementBuilder } from '../utilities/element-builder';
+import { ScrollableComp } from './scrollable.component';
 
 export class HeaderComp extends ScrollableComp {
-    #boxMenu;
-    #burgerImg;
+    private boxMenu;
+    private burgerImg;
 
-    #toggleBurger() {
-        this.#boxMenu.style.display = (this.#boxMenu.style.display === 'block') ? 'none' : 'block';
-        this.#burgerImg.classList.toggle('pressed');
+    private toggleBurger() {
+        this.boxMenu.style.display = (this.boxMenu.style.display === 'block') ? 'none' : 'block';
+        this.burgerImg.classList.toggle('pressed');
     }
 
-    #createGoToMenu() {
+    private createGoToMenu() {
         return new ElementBuilder('ul')
             .setClasses('film-nav')
             .setChildren(...['10', '09', '08', '07', '06', '05', '04', '03', '02', '01'].map(filmNumber => {
@@ -20,10 +20,10 @@ export class HeaderComp extends ScrollableComp {
                 linkToFilm.addEventListener('click', (event) => {
                     event.preventDefault();
 
-                    this._scrollToFilm(filmNumber);
+                    this.scrollToFilm(filmNumber);
 
                     if (window.innerWidth < 768) {
-                        this.#toggleBurger();
+                        this.toggleBurger();
                     }
                 });
 
@@ -31,7 +31,7 @@ export class HeaderComp extends ScrollableComp {
             })).build();
     }
 
-    #displayGoToMenuOnHover(goToMenuUnit, lastChildOfUnit) {
+    private displayGoToMenuOnHover(goToMenuUnit, lastChildOfUnit) {
         goToMenuUnit.addEventListener('mouseenter', () => {
             lastChildOfUnit.style.display = 'block';
         });
@@ -42,7 +42,7 @@ export class HeaderComp extends ScrollableComp {
     }
 
     render() {
-        this.#boxMenu = new ElementBuilder('ul')
+        this.boxMenu = new ElementBuilder('ul')
             .setClasses('box-menu')
             .setChildren(...['search', 'add to the favorites', 'faq', 'go to'].map(searchMenu => {
                 const linkTo = new ElementBuilder('a').setClasses('box-menu-item').setAttributes({ 'href': '#' }).build();
@@ -54,10 +54,10 @@ export class HeaderComp extends ScrollableComp {
                 if (searchMenu === 'go to') {
                     boxMenuNav.setClasses('go-to');
 
-                    const goToMenu = this.#createGoToMenu();
+                    const goToMenu = this.createGoToMenu();
                     const childOfBoxMenuNav = boxMenuNav.setChildren(linkTo, goToMenu).build();
 
-                    this.#displayGoToMenuOnHover(childOfBoxMenuNav, goToMenu);
+                    this.displayGoToMenuOnHover(childOfBoxMenuNav, goToMenu);
 
                     return childOfBoxMenuNav;
                 }
@@ -66,28 +66,30 @@ export class HeaderComp extends ScrollableComp {
 
             })).build();
 
-        this.#burgerImg = new ElementBuilder('span').setAttributes({ 'id': 'burger-img' }).build();
+        this.burgerImg = new ElementBuilder('span').setAttributes({ 'id': 'burger-img' }).build();
 
-        const navWrapper = new ElementBuilder('div').setAttributes({ 'id': 'nav-wrapper' }).setChildren(this.#burgerImg).build();
+        const navWrapper = new ElementBuilder('div').setAttributes({ 'id': 'nav-wrapper' }).setChildren(this.burgerImg).build();
 
         navWrapper.addEventListener('click', event => {
             event.stopPropagation();
-            this.#toggleBurger();
+            this.toggleBurger();
         });
 
         document.addEventListener('click', event => {
-            if (window.innerWidth < 768 && event.target.closest('.box-menu') == undefined) {
-                this.#boxMenu.style.display = 'none';
-                this.#burgerImg.classList.remove('pressed');
+            const target = event.target as HTMLElement;
+
+            if (window.innerWidth < 768 && target.closest('.box-menu') == undefined) {
+                this.boxMenu.style.display = 'none';
+                this.burgerImg.classList.remove('pressed');
             }
         })
 
         window.addEventListener('resize', () => {
-            this.#burgerImg.classList.remove('pressed');
-            this.#boxMenu.style.display = (window.innerWidth < 768) ? 'none' : 'block';
+            this.burgerImg.classList.remove('pressed');
+            this.boxMenu.style.display = (window.innerWidth < 768) ? 'none' : 'block';
         });
 
-        const nav = new ElementBuilder('nav').setChildren(navWrapper, this.#boxMenu).build();
+        const nav = new ElementBuilder('nav').setChildren(navWrapper, this.boxMenu).build();
         const logoImg = new ElementBuilder('img').setAttributes({ 'src': 'images/the-top-logo.svg', 'alt': 'the-top-logo' }).build();
         const logo = new ElementBuilder('a').setClasses('logo').setAttributes({ 'href': '#' }).setChildren(logoImg).build();
         const container = new ElementBuilder('div').setClasses('container').setChildren(logo, nav).build();

@@ -1,6 +1,6 @@
-import { FooterComp } from './footer.component.js';
-import { HeaderComp } from './header.component.js';
-import { WrapperComp } from './wrapper.component.js';
+import { FooterComp } from './footer.component';
+import { HeaderComp } from './header.component';
+import { WrapperComp } from './wrapper.component';
 
 export class AppComp {
     init() {

@@ -1,26 +1,28 @@
-import { ANIMATION_SERVICE, MEDIA_SERVICE, ServiceLocator } from '../services/service-locator.js';
-import { ElementBuilder } from '../utilities/element-builder.js';
-import { MediaLengthComp } from './media-length.component.js';
-import { PlayBtnComp } from './play-button.component.js';
-import { TimerComp } from './timer.component.js';
-import { VolumeComp } from './volume.component.js';
+import { AnimationService } from '../services/animation.service';
+import { MediaService } from '../services/media.service';
+import { ANIMATION_SERVICE, MEDIA_SERVICE, ServiceLocator } from '../services/service-locator';
+import { ElementBuilder } from '../utilities/element-builder';
+import { MediaLengthComp } from './media-length.component';
+import { PlayBtnComp } from './play-button.component';
+import { TimerComp } from './timer.component';
+import { VolumeComp } from './volume.component';
 
 export class SliderFrameComp {
-    #options;
-    #mediaService = ServiceLocator.inject(MEDIA_SERVICE);
-    #animationService = ServiceLocator.inject(ANIMATION_SERVICE);
-    #volume;
+    private options;
+    private mediaService = ServiceLocator.inject<MediaService>(MEDIA_SERVICE);
+    private animationService = ServiceLocator.inject<AnimationService>(ANIMATION_SERVICE);
+    private volume;
 
     constructor(options) {
-        this.#options = options;
+        this.options = options;
     }
 
     init() {
-        this.#volume.init();
+        this.volume.init();
     }
 
     render() {
-        const source = new ElementBuilder('source').setAttributes({ 'src': this.#options.src }).build();
+        const source = new ElementBuilder('source').setAttributes({ 'src': this.options.src }).build();
         const video = new ElementBuilder('video').setChildren(source).build();
         const timer = new TimerComp(video);
 
@@ -29,12 +31,12 @@ export class SliderFrameComp {
         });
 
         video.addEventListener('pause', () => {
-            const id = this.#animationService.getAnimationId();
+            const id = this.animationService.getAnimationId();
 
             cancelAnimationFrame(id);
         });
 
-        this.#volume = new VolumeComp(video);
+        this.volume = new VolumeComp(video);
         const mediaLength = new MediaLengthComp(video);
 
         video.addEventListener('playing', () => {
@@ -45,22 +47,22 @@ export class SliderFrameComp {
 
         video.addEventListener('ended', () => {
             setTimeout(() => {
-                this.#mediaService.notifyMediaPlaying();
+                this.mediaService.notifyMediaPlaying();
                 mediaLength.reset();
                 video.currentTime = 0;
             }, 500);
         });
 
-        const videoControls = new ElementBuilder('div').setClasses('video-controls').setChildren(this.#volume.render(), mediaLength.render()).build();
+        const videoControls = new ElementBuilder('div').setClasses('video-controls').setChildren(this.volume.render(), mediaLength.render()).build();
         const videoWrapper = new ElementBuilder('div').setClasses('video-wrapper').setChildren(video, timer.render(), videoControls).build();
-        const image = new ElementBuilder('img').setAttributes({ 'src': this.#options.imgSrc, 'alt': this.#options.imgAlt }).build();
+        const image = new ElementBuilder('img').setAttributes({ 'src': this.options.imgSrc, 'alt': this.options.imgAlt }).build();
 
         const handler = (isActive) => {
 
             image.style.display = isActive ? 'none' : 'block';
 
             if (isActive) {
-                this.#mediaService.notifyMediaPlaying(this);
+                this.mediaService.notifyMediaPlaying(this);
 
                 video.play();
             } else {
@@ -70,7 +72,7 @@ export class SliderFrameComp {
 
         const button = new PlayBtnComp(handler);
 
-        this.#mediaService.registerMediaPlaying((eventComp) => {
+        this.mediaService.registerMediaPlaying((eventComp) => {
             if (eventComp !== this) {
                 image.style.display = 'block';
                 video.pause();

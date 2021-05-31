@@ -1,13 +1,13 @@
-import { ElementBuilder } from '../utilities/element-builder.js';
-import { ModalWindowComp } from './modale-window.componenet.js';
+import { ElementBuilder } from '../utilities/element-builder';
+import { ModalWindowComp } from './modale-window.componenet';
 
 export class ListenBtnComp {
-    #movieName;
-    #audioName;
+    private movieName;
+    private audioName;
 
     constructor(movieName, audioName) {
-        this.#movieName = movieName;
-        this.#audioName = audioName;
+        this.movieName = movieName;
+        this.audioName = audioName;
     }
 
     render() {
@@ -15,7 +15,7 @@ export class ListenBtnComp {
         listenBtn.textContent = 'listen';
 
         listenBtn.addEventListener('click', () => {
-            const modalWindow = new ModalWindowComp(this.#audioName, this.#movieName);
+            const modalWindow = new ModalWindowComp(this.audioName, this.movieName);
 
             document.body.appendChild(modalWindow.render());
 

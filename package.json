@@ -8,8 +8,8 @@
     "build": "cp node_modules/requirejs/require.js ./ && npm run ts:build && npm run scss:build",
     "scss": "sass --watch scss/styles.scss styles.css",
     "scss:build": "sass --no-source-map scss/styles.scss styles.css --style compressed",
-    "ts": "tsc -w --outFile ./index.js",
-    "ts:build": "tsc --outFile ./index.js",
+    "ts": "tsc -w --outFile ./index.js --sourceMap",
+    "ts:build": "tsc --outFile ./index.js --sourceMap",
     "start": "node server/index.js"
   },
   "repository": {

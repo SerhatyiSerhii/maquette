@@ -1,15 +1,16 @@
-import { MOVIE_SECTION, ServiceLocator } from '../services/service-locator.js';
-import { ElementBuilder } from '../utilities/element-builder.js';
-import { MainSectionComp } from './main-section.component.js';
-import { MovieSectionComp } from './movie-section.component.js';
-import { SignUpComp } from './signup.component.js';
-import { SliderComp } from './slider.component.js';
+import { MovieSectionService } from '../services/movie-section.service';
+import { MOVIE_SECTION, ServiceLocator } from '../services/service-locator';
+import { ElementBuilder } from '../utilities/element-builder';
+import { MainSectionComp } from './main-section.component';
+import { MovieSectionComp } from './movie-section.component';
+import { SignUpComp } from './signup.component';
+import { SliderComp } from './slider.component';
 
 export class WrapperComp {
-    #movieService = ServiceLocator.inject(MOVIE_SECTION);
-    #slider = [];
+    private movieService = ServiceLocator.inject<MovieSectionService>(MOVIE_SECTION); //TODO change name
+    private slider = [];
 
-    #setWrapperChildren() {
+    private setWrapperChildren() {
         const keyPartsOfSection = [
             {
                 sectionClass: 'straight-direction-description',
@@ -199,10 +200,10 @@ export class WrapperComp {
 
             if ((keyPartPosition + 1) % 4 === 0) {
                 componenetInstance = new SliderComp(keyPartsOfSection[keyPartPosition], 1);
-                this.#slider.push(componenetInstance);
+                this.slider.push(componenetInstance);
             } else {
                 componenetInstance = new MovieSectionComp(keyPartsOfSection[keyPartPosition]);
-                this.#movieService.addSection(keyPartsOfSection[keyPartPosition].position, componenetInstance);
+                this.movieService.addSection((keyPartsOfSection[keyPartPosition] as any).position, componenetInstance);
             }
 
             wrapperChildren.push(componenetInstance.render());
@@ -216,12 +217,12 @@ export class WrapperComp {
     }
 
     init() {
-        for (let slideItem of this.#slider) {
+        for (let slideItem of this.slider) {
             slideItem.init();
         }
     }
 
     render() {
-        return new ElementBuilder('main').setChildren(...this.#setWrapperChildren()).build();
+        return new ElementBuilder('main').setChildren(...this.setWrapperChildren()).build();
     }
 }

@@ -1,13 +1,14 @@
 // Implemented Service Locator instead of Dependency Injector to simplify development
-export class ServiceLocator {
-    static #serviceContainer = {};
 
-    static register(key, service) {
-        ServiceLocator.#serviceContainer[key] = service;
+export class ServiceLocator {
+    private static serviceContainer: { [key: string]: object } = {};
+
+    static register(key: string, service: object): void {
+        ServiceLocator.serviceContainer[key] = service;
     }
 
-    static inject(key) {
-        return ServiceLocator.#serviceContainer[key];
+    static inject<T>(key: string): T {
+        return ServiceLocator.serviceContainer[key] as unknown as T;
     }
 }
 

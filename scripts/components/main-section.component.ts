@@ -1,8 +1,8 @@
-import { ElementBuilder } from '../utilities/element-builder.js';
-import {ScrollableComp} from './scrollable.component.js';
+import { ElementBuilder } from '../utilities/element-builder';
+import {ScrollableComp} from './scrollable.component';
 
 export class MainSectionComp extends ScrollableComp{
-    #arrowDown = `<svg width="43" height="60" viewBox="0 0 43 60" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 33L21 58M21 58L41.5 32M21 58V0" stroke-width="2" /></svg>`;
+    private arrowDown = `<svg width="43" height="60" viewBox="0 0 43 60" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 33L21 58M21 58L41.5 32M21 58V0" stroke-width="2" /></svg>`;
 
     render() {
         const accentText = new ElementBuilder('span').setClasses('accent-text').build();
@@ -16,13 +16,13 @@ export class MainSectionComp extends ScrollableComp{
         mainSentence.textContent = 'Awesome movie soundtracks can turn a good movie like Guardians Of The Galaxy or Star Wars into iconic ones.'
 
         const arrowDown = new ElementBuilder('a').setClasses('arrow-down', 'arrow').build();
-        arrowDown.innerHTML = this.#arrowDown;
+        arrowDown.innerHTML = this.arrowDown;
 
         arrowDown.addEventListener('click', (event) => {
             event.preventDefault();
             const firstTopFilm = '10';
 
-            this._scrollToFilm(firstTopFilm);
+            this.scrollToFilm(firstTopFilm);
         });
 
         const container = new ElementBuilder('div').setClasses('container').setChildren(mainTitle, mainSentence, arrowDown).build();

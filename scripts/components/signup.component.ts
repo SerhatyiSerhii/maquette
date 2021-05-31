@@ -1,4 +1,4 @@
-import {ElementBuilder} from '../utilities/element-builder.js';
+import {ElementBuilder} from '../utilities/element-builder';
 
 export class SignUpComp {
     render() {
