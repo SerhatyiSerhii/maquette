@@ -1,18 +1,18 @@
 import { ElementBuilder } from '../utilities/element-builder';
 
 export class PlayBtnComp {
-    private buttonEl;
-    private handler;
+    private buttonEl: any;
+    private handler: any;
 
-    constructor(handler) {
+    constructor(handler: object) {
         this.handler = handler;
     }
 
-    removePlayState() {
+    removePlayState(): void {
         this.buttonEl.classList.remove('play-active');
     }
 
-    render() {
+    render(): Node {
         this.buttonEl = new ElementBuilder('button').setClasses('btn-play').build();
 
         this.buttonEl.addEventListener('click', () => {

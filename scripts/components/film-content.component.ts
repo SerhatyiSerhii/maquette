@@ -2,20 +2,20 @@ import { ElementBuilder } from '../utilities/element-builder';
 import { ListenBtnComp } from './listen-button.component';
 
 export class FilmContentComp {
-    private positionMovie;
-    private titleMovie;
-    private aboutMovie;
-    private audioName;
-    private listenButton;
+    private positionMovie: string;
+    private titleMovie: string;
+    private aboutMovie: string;
+    private audioName: string;
+    private listenButton: any;
 
-    constructor(position, title, aboutMovie, audioName) {
+    constructor(position: string, title: string, aboutMovie: string, audioName: string) {
         this.positionMovie = position;
         this.titleMovie = title;
         this.aboutMovie = aboutMovie;
         this.audioName = audioName;
     }
 
-    render() {
+    render(): Node {
         const movieNumber = new ElementBuilder('span').build();
         movieNumber.textContent = `.${this.positionMovie}`;
 

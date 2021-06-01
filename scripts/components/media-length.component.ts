@@ -3,16 +3,16 @@ import { ServiceLocator, ANIMATION_SERVICE } from '../services/service-locator';
 import { ElementBuilder } from '../utilities/element-builder';
 
 export class MediaLengthComp {
-    private container;
-    private currentLength;
-    private mediaElement;
-    private animationService = ServiceLocator.inject<AnimationService>(ANIMATION_SERVICE);
+    private container: any;
+    private currentLength: any;
+    private mediaElement: any;
+    private animationService: AnimationService = ServiceLocator.inject<AnimationService>(ANIMATION_SERVICE);
 
-    constructor(mediaElement) {
+    constructor(mediaElement: object) {
         this.mediaElement = mediaElement;
     }
 
-    private setMediaVolumeInBarWidth(event) {
+    private setMediaVolumeInBarWidth(event: any): void {
         const barWidth = this.container.clientWidth;
         const inBarXCoor = this.currentLength.getBoundingClientRect().left;
         const inBarPosition = ((event.pageX - inBarXCoor) / barWidth) * 100;
@@ -21,7 +21,7 @@ export class MediaLengthComp {
         this.mediaElement.currentTime = (inBarPosition * this.mediaElement.duration) / 100;
     }
 
-    progress(onProgress) {
+    progress(onProgress: Function): void {
         const position = (this.mediaElement.currentTime / this.mediaElement.duration) * 100;
 
         this.currentLength.style.width = `${position}%`;
@@ -37,15 +37,15 @@ export class MediaLengthComp {
         }
     }
 
-    reset() {
+    reset(): void {
         this.currentLength.style.width = 0;
     }
 
-    render() {
+    render(): Node {
         this.currentLength = new ElementBuilder('div').setClasses('current-length').build();
         this.container = new ElementBuilder('div').setClasses('media-length').setChildren(this.currentLength).build();
 
-        this.container.addEventListener('click', (event) => {
+        this.container.addEventListener('click', (event: any) => {
             const id = this.animationService.getAnimationId();
 
             cancelAnimationFrame(id);

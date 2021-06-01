@@ -1,11 +1,11 @@
 export class MediaService {
-    private listeners = [];
+    private listeners: any = [];
 
-    registerMediaPlaying(listener) {
+    registerMediaPlaying(listener: any): void {
         this.listeners.push(listener);
     }
 
-    notifyMediaPlaying(eventComp?) {
+    notifyMediaPlaying(eventComp?: any): void {
         for (let listener of this.listeners) {
             listener(eventComp);
         }

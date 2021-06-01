@@ -2,21 +2,21 @@ import { ElementBuilder } from '../utilities/element-builder';
 import { SliderFrameComp } from './slider-frame.component';
 
 export class SliderComp {
-    private content;
-    private arrowLeft = `<svg width="60" height="43" viewBox="0 0 60 43" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M27 41.5L2 21.5M2 21.5L28 1M2 21.5L60 21.5" stroke-width="2" /></svg>`;
-    private arrowRight = `<svg width="60" height="43" viewBox="0 0 60 43" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M33 41.5L58 21.5M58 21.5L32 1M58 21.5L0 21.5" stroke-width="2" /></svg>`;
-    private currentIndex;
-    private maxIndex;
-    private framesLine;
-    private sliderFrameComponent = [];
+    private content: any;
+    private arrowLeft: string = `<svg width="60" height="43" viewBox="0 0 60 43" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M27 41.5L2 21.5M2 21.5L28 1M2 21.5L60 21.5" stroke-width="2" /></svg>`;
+    private arrowRight: string = `<svg width="60" height="43" viewBox="0 0 60 43" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M33 41.5L58 21.5M58 21.5L32 1M58 21.5L0 21.5" stroke-width="2" /></svg>`;
+    private currentIndex: any;
+    private maxIndex: any;
+    private framesLine: any;
+    private sliderFrameComponent: any[] = [];
 
-    constructor(content, initialIndex) {
+    constructor(content: object, initialIndex: number) {
         this.content = content;
         this.currentIndex = initialIndex;
         this.maxIndex = this.content.length - 1;
     }
 
-    private createArrow(arrowDirection, svg) {
+    private createArrow(arrowDirection: string, svg: string): Node {
         const arrow = new ElementBuilder('a').setClasses(arrowDirection, 'arrow').setAttributes({ 'href': '#' }).build();
 
         arrow.innerHTML = svg;
@@ -24,7 +24,7 @@ export class SliderComp {
         return arrow;
     }
 
-    private settingTranslateX() {
+    private settingTranslateX(): void {
         if (this.currentIndex <= 0) {
             this.currentIndex = 0;
         } else if (this.currentIndex >= this.maxIndex) {
@@ -33,14 +33,14 @@ export class SliderComp {
         this.framesLine.style.transform = `translateX(${-this.currentIndex * 100}%)`;
     }
 
-    init() {
+    init(): void {
         for (let slideFrameItem of this.sliderFrameComponent) {
             slideFrameItem.init();
         }
     }
 
-    render() {
-        const sliderFrames = this.content.map((frameOptions) => {
+    render(): Node {
+        const sliderFrames = this.content.map((frameOptions: object) => {
             const slide = new SliderFrameComp(frameOptions);
 
             this.sliderFrameComponent.push(slide);

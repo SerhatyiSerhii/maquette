@@ -1,11 +1,11 @@
 export class MovieSectionService {
-    private movieSectionContainer = {};
+    private movieSectionContainer: {[key: string]: any} = {};
 
-    addSection(moviePosition, movie) {
+    addSection(moviePosition: string, movie: any): void {
         this.movieSectionContainer[moviePosition] = movie;
     }
 
-    getSection(moviePosition) {
+    getSection(moviePosition: string): any {
         return this.movieSectionContainer[moviePosition];
     }
 }

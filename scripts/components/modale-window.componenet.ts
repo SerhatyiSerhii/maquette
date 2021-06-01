@@ -8,27 +8,27 @@ import { TimerComp } from './timer.component';
 import { VolumeComp } from './volume.component';
 
 export class ModalWindowComp {
-    private container;
-    private audio;
-    private button;
-    private mediaLength;
-    private volume;
-    private audioSrc;
-    private movieName;
-    private mediaService = ServiceLocator.inject<MediaService>(MEDIA_SERVICE);
-    private animationService = ServiceLocator.inject<AnimationService>(ANIMATION_SERVICE);
+    private container: any;
+    private audio: any;
+    private button: any;
+    private mediaLength: any;
+    private volume: any;
+    private audioSrc: string;
+    private movieName: string;
+    private mediaService: MediaService = ServiceLocator.inject<MediaService>(MEDIA_SERVICE);
+    private animationService: AnimationService = ServiceLocator.inject<AnimationService>(ANIMATION_SERVICE);
 
-    constructor(audioSrc, movieName) {
+    constructor(audioSrc: string, movieName: string) {
         this.audioSrc = audioSrc;
         this.movieName = movieName;
     }
 
-    private closeListener() {
+    private closeListener(): void {
         document.body.classList.remove('lock');
 
         this.container.classList.add('visually-hidden');
 
-        const closeMdlWindow = (event) => {
+        const closeMdlWindow = (event: any) => {
             if (event.propertyName === 'opacity') {
                 document.body.removeChild(this.container);
                 this.container.removeEventListener('transitionend', closeMdlWindow);
@@ -45,16 +45,16 @@ export class ModalWindowComp {
         this.mediaLength.reset();
     }
 
-    showModalWindow() {
+    showModalWindow(): void {
         this.container.classList.remove('visually-hidden');
     }
 
-    init() {
+    init(): void {
         this.volume.init();
     }
 
-    render() {
-        const btnHandler = (isActive) => {
+    render(): Node {
+        const btnHandler = (isActive: boolean) => {
 
             if (isActive) {
                 this.mediaService.notifyMediaPlaying(this);
@@ -88,7 +88,7 @@ export class ModalWindowComp {
 
         this.container = new ElementBuilder('div').setClasses('substrate', 'visually-hidden').setChildren(modWind).build();
 
-        this.container.addEventListener('click', (event) => {
+        this.container.addEventListener('click', (event: any) => {
             let element = event.target;
 
             while (element != null && element !== modWind) {

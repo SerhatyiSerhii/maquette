@@ -8,20 +8,20 @@ import { TimerComp } from './timer.component';
 import { VolumeComp } from './volume.component';
 
 export class SliderFrameComp {
-    private options;
-    private mediaService = ServiceLocator.inject<MediaService>(MEDIA_SERVICE);
-    private animationService = ServiceLocator.inject<AnimationService>(ANIMATION_SERVICE);
-    private volume;
+    private options: any;
+    private mediaService: MediaService = ServiceLocator.inject<MediaService>(MEDIA_SERVICE);
+    private animationService: AnimationService = ServiceLocator.inject<AnimationService>(ANIMATION_SERVICE);
+    private volume: any;
 
-    constructor(options) {
+    constructor(options: object) {
         this.options = options;
     }
 
-    init() {
+    init(): void {
         this.volume.init();
     }
 
-    render() {
+    render(): Node {
         const source = new ElementBuilder('source').setAttributes({ 'src': this.options.src }).build();
         const video = new ElementBuilder('video').setChildren(source).build();
         const timer = new TimerComp(video);
@@ -57,7 +57,7 @@ export class SliderFrameComp {
         const videoWrapper = new ElementBuilder('div').setClasses('video-wrapper').setChildren(video, timer.render(), videoControls).build();
         const image = new ElementBuilder('img').setAttributes({ 'src': this.options.imgSrc, 'alt': this.options.imgAlt }).build();
 
-        const handler = (isActive) => {
+        const handler = (isActive: boolean) => {
 
             image.style.display = isActive ? 'none' : 'block';
 
@@ -72,7 +72,7 @@ export class SliderFrameComp {
 
         const button = new PlayBtnComp(handler);
 
-        this.mediaService.registerMediaPlaying((eventComp) => {
+        this.mediaService.registerMediaPlaying((eventComp: any) => {
             if (eventComp !== this) {
                 image.style.display = 'block';
                 video.pause();

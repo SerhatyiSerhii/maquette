@@ -2,15 +2,15 @@ import { ElementBuilder } from '../utilities/element-builder';
 import { ModalWindowComp } from './modale-window.componenet';
 
 export class ListenBtnComp {
-    private movieName;
-    private audioName;
+    private movieName: string;
+    private audioName: string;
 
-    constructor(movieName, audioName) {
+    constructor(movieName: string, audioName: string) {
         this.movieName = movieName;
         this.audioName = audioName;
     }
 
-    render() {
+    render(): Node {
         const listenBtn = new ElementBuilder('button').setClasses('listen').build();
         listenBtn.textContent = 'listen';
 

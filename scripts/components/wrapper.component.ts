@@ -7,11 +7,11 @@ import { SignUpComp } from './signup.component';
 import { SliderComp } from './slider.component';
 
 export class WrapperComp {
-    private movieService = ServiceLocator.inject<MovieSectionService>(MOVIE_SECTION); //TODO change name
-    private slider = [];
+    private movieSectionService: any = ServiceLocator.inject<MovieSectionService>(MOVIE_SECTION);
+    private slider: any[] = [];
 
-    private setWrapperChildren() {
-        const keyPartsOfSection = [
+    private setWrapperChildren(): any[] {
+        const keyPartsOfSection: any[] = [
             {
                 sectionClass: 'straight-direction-description',
                 position: '10',
@@ -192,18 +192,18 @@ export class WrapperComp {
             }
         ];
 
-        const wrapperChildren = [new MainSectionComp(300).render()];
-        let keyPartPosition = 0;
+        const wrapperChildren: any[] = [new MainSectionComp(300).render()];
+        let keyPartPosition: number = 0;
 
         while (keyPartPosition < keyPartsOfSection.length) {
-            let componenetInstance;
+            let componenetInstance: any;
 
             if ((keyPartPosition + 1) % 4 === 0) {
                 componenetInstance = new SliderComp(keyPartsOfSection[keyPartPosition], 1);
                 this.slider.push(componenetInstance);
             } else {
                 componenetInstance = new MovieSectionComp(keyPartsOfSection[keyPartPosition]);
-                this.movieService.addSection((keyPartsOfSection[keyPartPosition] as any).position, componenetInstance);
+                this.movieSectionService.addSection((keyPartsOfSection[keyPartPosition] as any).position, componenetInstance);
             }
 
             wrapperChildren.push(componenetInstance.render());
@@ -216,13 +216,13 @@ export class WrapperComp {
         return wrapperChildren;
     }
 
-    init() {
+    init(): void {
         for (let slideItem of this.slider) {
             slideItem.init();
         }
     }
 
-    render() {
+    render(): Node {
         return new ElementBuilder('main').setChildren(...this.setWrapperChildren()).build();
     }
 }

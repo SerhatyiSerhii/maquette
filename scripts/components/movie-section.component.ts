@@ -2,19 +2,19 @@ import { ElementBuilder } from '../utilities/element-builder';
 import { FilmContentComp } from './film-content.component';
 
 export class MovieSectionComp {
-    private options;
-    private filmContent;
-    private section;
+    private options: any;
+    private filmContent: any;
+    private section: any;
 
-    constructor(options) {
+    constructor(options: object) {
         this.options = options;
     }
 
-    get movieSection() {
+    get movieSection(): this {
         return this.section;
     }
 
-    render() {
+    render(): Node {
         const section = new ElementBuilder('section').setClasses(this.options.sectionClass, 'direction-description').setAttributes({ 'id': `top-${this.options.position}` });
 
         const picture = new ElementBuilder('img');

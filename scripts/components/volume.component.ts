@@ -1,20 +1,20 @@
 import { ElementBuilder } from '../utilities/element-builder';
 
 export class VolumeComp {
-    private container;
-    private label;
-    private volumeHandle;
-    private mediaElement;
+    private container: any;
+    private label: any;
+    private volumeHandle: any;
+    private mediaElement: any;
 
-    constructor(mediaElement) {
+    constructor(mediaElement: any) {
         this.mediaElement = mediaElement;
     }
 
-    init() {
+    init(): void {
         this.volumeHandle.style.width = `${this.container.clientWidth - this.label.clientWidth}px`;
     }
 
-    private putVolumeHandle(event) {
+    private putVolumeHandle(event: any): void {
         const halfLabel = this.label.clientWidth / 2;
         const volumeLeftCoor = this.volumeHandle.getBoundingClientRect().left;
         let volHandlPos = event.pageX - volumeLeftCoor;
@@ -33,7 +33,7 @@ export class VolumeComp {
         this.mediaElement.volume = volumeIndex;
     }
 
-    render() {
+    render(): Node {
         this.label = new ElementBuilder('div').setClasses('label').build();
         this.volumeHandle = new ElementBuilder('div').setClasses('volume-handle').setChildren(this.label).build();
         this.container = new ElementBuilder('div').setClasses('volume').setChildren(this.volumeHandle).build();

@@ -1,11 +1,11 @@
 export class AnimationService {
-    private requestAnimationFrameId;
+    private requestAnimationFrameId: number;
 
-    getAnimationId() {
+    getAnimationId(): number {
         return this.requestAnimationFrameId;
     }
 
-    setAnimationId(id) {
+    setAnimationId(id: number): void {
         this.requestAnimationFrameId = id;
     }
 }
