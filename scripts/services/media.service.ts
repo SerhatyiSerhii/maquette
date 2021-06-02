@@ -1,11 +1,13 @@
-export class MediaService {
-    private listeners: any = [];
+import { SliderFrameComp } from "../components/slider-frame.component";
 
-    registerMediaPlaying(listener: any): void {
+export class MediaService {
+    private listeners: ((eventComp: SliderFrameComp) => void)[] = [];
+
+    registerMediaPlaying(listener: (eventComp: SliderFrameComp) => void): void {
         this.listeners.push(listener);
     }
 
-    notifyMediaPlaying(eventComp?: any): void {
+    notifyMediaPlaying(eventComp?: SliderFrameComp): void {
         for (let listener of this.listeners) {
             listener(eventComp);
         }

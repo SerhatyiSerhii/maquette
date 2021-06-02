@@ -1,10 +1,11 @@
+import { IComp } from '../models/i-comp';
 import { ElementBuilder } from '../utilities/element-builder';
 
-export class TimerComp {
-    private container: any;
-    private mediaElement: any;
+export class TimerComp implements IComp {
+    private container: HTMLElement;
+    private mediaElement: HTMLAudioElement;
 
-    constructor(mediaElement: any) {
+    constructor(mediaElement: HTMLAudioElement) {
         this.mediaElement = mediaElement;
     }
 
@@ -12,8 +13,8 @@ export class TimerComp {
         const min = Math.floor(time / 60);
         const sec = Math.floor(time % 60);
 
-        const minAsString = (min < 10) ? `0${min}` : String(min);
-        const secAsString = (sec < 10) ? `0${sec}`: String(sec);
+        const minAsString = (min < 10) ? `0${min}` : min.toString();
+        const secAsString = (sec < 10) ? `0${sec}`: sec.toString();
 
         return `${minAsString}:${secAsString}`;
     }
@@ -25,7 +26,7 @@ export class TimerComp {
         this.container.textContent = `${minSecCurTime} / ${minSecDurat}`;
     }
 
-    render(): Node {
+    render(): HTMLElement {
         this.container = new ElementBuilder('div').setClasses('timer').build();
         this.container.textContent = '00:00 / 00:00';
 

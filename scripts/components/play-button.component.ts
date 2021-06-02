@@ -1,10 +1,11 @@
+import { IComp } from '../models/i-comp';
 import { ElementBuilder } from '../utilities/element-builder';
 
-export class PlayBtnComp {
-    private buttonEl: any;
-    private handler: any;
+export class PlayBtnComp implements IComp {
+    private buttonEl: HTMLElement;
+    private handler: (isActive: boolean) => void;
 
-    constructor(handler: object) {
+    constructor(handler: (isActive: boolean) => void) {
         this.handler = handler;
     }
 
@@ -12,7 +13,7 @@ export class PlayBtnComp {
         this.buttonEl.classList.remove('play-active');
     }
 
-    render(): Node {
+    render(): HTMLElement {
         this.buttonEl = new ElementBuilder('button').setClasses('btn-play').build();
 
         this.buttonEl.addEventListener('click', () => {

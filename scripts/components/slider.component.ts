@@ -1,22 +1,24 @@
+import { IComp } from '../models/i-comp';
+import { ISliderFrameOptions } from '../models/i-slider-frame-options';
 import { ElementBuilder } from '../utilities/element-builder';
 import { SliderFrameComp } from './slider-frame.component';
 
-export class SliderComp {
-    private content: any;
+export class SliderComp implements IComp {
+    private content: ISliderFrameOptions[];
     private arrowLeft: string = `<svg width="60" height="43" viewBox="0 0 60 43" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M27 41.5L2 21.5M2 21.5L28 1M2 21.5L60 21.5" stroke-width="2" /></svg>`;
     private arrowRight: string = `<svg width="60" height="43" viewBox="0 0 60 43" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M33 41.5L58 21.5M58 21.5L32 1M58 21.5L0 21.5" stroke-width="2" /></svg>`;
-    private currentIndex: any;
-    private maxIndex: any;
-    private framesLine: any;
-    private sliderFrameComponent: any[] = [];
+    private currentIndex: number;
+    private maxIndex: number;
+    private framesLine: HTMLElement;
+    private sliderFrameComponent: SliderFrameComp[] = [];
 
-    constructor(content: object, initialIndex: number) {
+    constructor(content: ISliderFrameOptions[], initialIndex: number) {
         this.content = content;
         this.currentIndex = initialIndex;
         this.maxIndex = this.content.length - 1;
     }
 
-    private createArrow(arrowDirection: string, svg: string): Node {
+    private createArrow(arrowDirection: string, svg: string): HTMLElement {
         const arrow = new ElementBuilder('a').setClasses(arrowDirection, 'arrow').setAttributes({ 'href': '#' }).build();
 
         arrow.innerHTML = svg;
@@ -39,8 +41,8 @@ export class SliderComp {
         }
     }
 
-    render(): Node {
-        const sliderFrames = this.content.map((frameOptions: object) => {
+    render(): HTMLElement {
+        const sliderFrames = this.content.map((frameOptions) => {
             const slide = new SliderFrameComp(frameOptions);
 
             this.sliderFrameComponent.push(slide);

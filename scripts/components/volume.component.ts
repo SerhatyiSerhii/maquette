@@ -1,12 +1,13 @@
+import { IComp } from '../models/i-comp';
 import { ElementBuilder } from '../utilities/element-builder';
 
-export class VolumeComp {
-    private container: any;
-    private label: any;
-    private volumeHandle: any;
-    private mediaElement: any;
+export class VolumeComp implements IComp {
+    private container: HTMLElement;
+    private label: HTMLElement;
+    private volumeHandle: HTMLElement;
+    private mediaElement: HTMLAudioElement;
 
-    constructor(mediaElement: any) {
+    constructor(mediaElement: HTMLAudioElement) {
         this.mediaElement = mediaElement;
     }
 
@@ -14,7 +15,7 @@ export class VolumeComp {
         this.volumeHandle.style.width = `${this.container.clientWidth - this.label.clientWidth}px`;
     }
 
-    private putVolumeHandle(event: any): void {
+    private putVolumeHandle(event: MouseEvent): void {
         const halfLabel = this.label.clientWidth / 2;
         const volumeLeftCoor = this.volumeHandle.getBoundingClientRect().left;
         let volHandlPos = event.pageX - volumeLeftCoor;
@@ -33,7 +34,7 @@ export class VolumeComp {
         this.mediaElement.volume = volumeIndex;
     }
 
-    render(): Node {
+    render(): HTMLElement {
         this.label = new ElementBuilder('div').setClasses('label').build();
         this.volumeHandle = new ElementBuilder('div').setClasses('volume-handle').setChildren(this.label).build();
         this.container = new ElementBuilder('div').setClasses('volume').setChildren(this.volumeHandle).build();
@@ -41,7 +42,7 @@ export class VolumeComp {
         this.container.addEventListener('mousedown', (mouseDownEvent) => {
             this.putVolumeHandle(mouseDownEvent);
 
-            const moveLable = (event) => {
+            const moveLable = (event: MouseEvent) => {
                 this.putVolumeHandle(event);
             }
 

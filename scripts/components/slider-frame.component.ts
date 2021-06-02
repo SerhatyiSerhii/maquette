@@ -1,3 +1,4 @@
+import { IComp } from '../models/i-comp';
 import { AnimationService } from '../services/animation.service';
 import { MediaService } from '../services/media.service';
 import { ANIMATION_SERVICE, MEDIA_SERVICE, ServiceLocator } from '../services/service-locator';
@@ -6,14 +7,15 @@ import { MediaLengthComp } from './media-length.component';
 import { PlayBtnComp } from './play-button.component';
 import { TimerComp } from './timer.component';
 import { VolumeComp } from './volume.component';
+import { ISliderFrameOptions } from '../models/i-slider-frame-options';
 
-export class SliderFrameComp {
-    private options: any;
+export class SliderFrameComp implements IComp {
+    private options: ISliderFrameOptions;
     private mediaService: MediaService = ServiceLocator.inject<MediaService>(MEDIA_SERVICE);
     private animationService: AnimationService = ServiceLocator.inject<AnimationService>(ANIMATION_SERVICE);
-    private volume: any;
+    private volume: VolumeComp;
 
-    constructor(options: object) {
+    constructor(options: ISliderFrameOptions) {
         this.options = options;
     }
 
@@ -21,9 +23,9 @@ export class SliderFrameComp {
         this.volume.init();
     }
 
-    render(): Node {
+    render(): HTMLElement {
         const source = new ElementBuilder('source').setAttributes({ 'src': this.options.src }).build();
-        const video = new ElementBuilder('video').setChildren(source).build();
+        const video = new ElementBuilder<HTMLVideoElement>('video').setChildren(source).build();
         const timer = new TimerComp(video);
 
         video.addEventListener('canplay', () => {
@@ -72,7 +74,7 @@ export class SliderFrameComp {
 
         const button = new PlayBtnComp(handler);
 
-        this.mediaService.registerMediaPlaying((eventComp: any) => {
+        this.mediaService.registerMediaPlaying((eventComp: SliderFrameComp) => {
             if (eventComp !== this) {
                 image.style.display = 'block';
                 video.pause();

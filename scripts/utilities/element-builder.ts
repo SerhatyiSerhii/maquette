@@ -1,32 +1,32 @@
-export class ElementBuilder {
-    private tagName;
-    private classes;
-    private attributes;
-    private children = [];
+export class ElementBuilder<T extends HTMLElement = HTMLElement>  {
+    private tagName: string;
+    private classes: string[];
+    private attributes: { [attr: string]: string };
+    private children: HTMLElement[] = [];
 
-    constructor(elementName) {
+    constructor(elementName: string) {
         this.tagName = elementName;
     }
 
-    setClasses(...classes) {
+    setClasses(...classes: string[]): this {
         this.classes = classes;
 
         return this;
     }
 
-    setAttributes(obj) {
+    setAttributes(obj: { [attr: string]: string }): this {
         this.attributes = obj;
 
         return this;
     }
 
-    setChildren(...children) {
+    setChildren(...children: HTMLElement[]): this {
         this.children = children;
 
         return this;
     }
 
-    build() {
+    build(): T {
         const element = document.createElement(this.tagName);
 
         if (this.classes != null) {
@@ -47,6 +47,6 @@ export class ElementBuilder {
             }
         }
 
-        return element;
+        return element as T;
     }
 }

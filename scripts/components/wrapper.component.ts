@@ -1,17 +1,20 @@
+import { IComp } from '../models/i-comp';
+import { IMovieSectionOptions } from '../models/i-movie-section-options';
+import { ISliderFrameOptions } from '../models/i-slider-frame-options';
 import { MovieSectionService } from '../services/movie-section.service';
-import { MOVIE_SECTION, ServiceLocator } from '../services/service-locator';
+import { MOVIE_SECTION_SERVICE, ServiceLocator } from '../services/service-locator';
 import { ElementBuilder } from '../utilities/element-builder';
 import { MainSectionComp } from './main-section.component';
 import { MovieSectionComp } from './movie-section.component';
 import { SignUpComp } from './signup.component';
 import { SliderComp } from './slider.component';
 
-export class WrapperComp {
-    private movieSectionService: any = ServiceLocator.inject<MovieSectionService>(MOVIE_SECTION);
-    private slider: any[] = [];
+export class WrapperComp implements IComp {
+    private movieSectionService: MovieSectionService = ServiceLocator.inject<MovieSectionService>(MOVIE_SECTION_SERVICE);
+    private slider: SliderComp[] = [];
 
-    private setWrapperChildren(): any[] {
-        const keyPartsOfSection: any[] = [
+    private setWrapperChildren(): HTMLElement[] {
+        const keyPartsOfSection: (IMovieSectionOptions | ISliderFrameOptions[])[] = [
             {
                 sectionClass: 'straight-direction-description',
                 position: '10',
@@ -192,18 +195,19 @@ export class WrapperComp {
             }
         ];
 
-        const wrapperChildren: any[] = [new MainSectionComp(300).render()];
+        const wrapperChildren: HTMLElement[] = [new MainSectionComp(300).render()];
         let keyPartPosition: number = 0;
 
         while (keyPartPosition < keyPartsOfSection.length) {
-            let componenetInstance: any;
+            let componenetInstance: SliderComp | MovieSectionComp;
 
             if ((keyPartPosition + 1) % 4 === 0) {
-                componenetInstance = new SliderComp(keyPartsOfSection[keyPartPosition], 1);
+                componenetInstance = new SliderComp(keyPartsOfSection[keyPartPosition] as ISliderFrameOptions[], 1);
                 this.slider.push(componenetInstance);
             } else {
-                componenetInstance = new MovieSectionComp(keyPartsOfSection[keyPartPosition]);
-                this.movieSectionService.addSection((keyPartsOfSection[keyPartPosition] as any).position, componenetInstance);
+                const options = keyPartsOfSection[keyPartPosition] as IMovieSectionOptions;
+                componenetInstance = new MovieSectionComp(options);
+                this.movieSectionService.addSection(options.position, componenetInstance);
             }
 
             wrapperChildren.push(componenetInstance.render());
@@ -222,7 +226,7 @@ export class WrapperComp {
         }
     }
 
-    render(): Node {
+    render(): HTMLElement {
         return new ElementBuilder('main').setChildren(...this.setWrapperChildren()).build();
     }
 }

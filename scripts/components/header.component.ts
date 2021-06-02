@@ -1,23 +1,24 @@
+import { IComp } from '../models/i-comp';
 import { ElementBuilder } from '../utilities/element-builder';
 import { ScrollableComp } from './scrollable.component';
 
-export class HeaderComp extends ScrollableComp {
-    private boxMenu: any;
-    private burgerImg: any;
+export class HeaderComp extends ScrollableComp implements IComp {
+    private boxMenu: HTMLElement;
+    private burgerImg: HTMLElement;
 
     private toggleBurger(): void {
         this.boxMenu.style.display = (this.boxMenu.style.display === 'block') ? 'none' : 'block';
         this.burgerImg.classList.toggle('pressed');
     }
 
-    private createGoToMenu(): Node {
+    private createGoToMenu(): HTMLElement {
         return new ElementBuilder('ul')
             .setClasses('film-nav')
             .setChildren(...['10', '09', '08', '07', '06', '05', '04', '03', '02', '01'].map(filmNumber => {
                 const linkToFilm = new ElementBuilder('a').setClasses('top-film').build();
 
                 linkToFilm.textContent = `.${filmNumber}`;
-                linkToFilm.addEventListener('click', (event: any) => {
+                linkToFilm.addEventListener('click', (event) => {
                     event.preventDefault();
 
                     this.scrollToFilm(filmNumber);
@@ -31,7 +32,7 @@ export class HeaderComp extends ScrollableComp {
             })).build();
     }
 
-    private displayGoToMenuOnHover(goToMenuUnit: Node, lastChildOfUnit: any): void {
+    private displayGoToMenuOnHover(goToMenuUnit: HTMLElement, lastChildOfUnit: HTMLElement): void {
         goToMenuUnit.addEventListener('mouseenter', () => {
             lastChildOfUnit.style.display = 'block';
         });
@@ -41,7 +42,7 @@ export class HeaderComp extends ScrollableComp {
         });
     }
 
-    render(): Node {
+    render(): HTMLElement {
         this.boxMenu = new ElementBuilder('ul')
             .setClasses('box-menu')
             .setChildren(...['search', 'add to the favorites', 'faq', 'go to'].map(searchMenu => {

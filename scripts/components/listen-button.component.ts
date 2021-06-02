@@ -1,7 +1,8 @@
+import { IComp } from '../models/i-comp';
 import { ElementBuilder } from '../utilities/element-builder';
 import { ModalWindowComp } from './modale-window.componenet';
 
-export class ListenBtnComp {
+export class ListenBtnComp implements IComp {
     private movieName: string;
     private audioName: string;
 
@@ -10,7 +11,7 @@ export class ListenBtnComp {
         this.audioName = audioName;
     }
 
-    render(): Node {
+    render(): HTMLElement {
         const listenBtn = new ElementBuilder('button').setClasses('listen').build();
         listenBtn.textContent = 'listen';
 

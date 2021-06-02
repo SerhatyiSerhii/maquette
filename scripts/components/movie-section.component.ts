@@ -1,20 +1,22 @@
 import { ElementBuilder } from '../utilities/element-builder';
 import { FilmContentComp } from './film-content.component';
+import { IMovieSectionOptions } from '../models/i-movie-section-options';
+import { IComp } from '../models/i-comp';
 
-export class MovieSectionComp {
-    private options: any;
-    private filmContent: any;
-    private section: any;
+export class MovieSectionComp implements IComp {
+    private options: IMovieSectionOptions;
+    private filmContent: FilmContentComp;
+    private section: HTMLElement;
 
-    constructor(options: object) {
+    constructor(options: IMovieSectionOptions) {
         this.options = options;
     }
 
-    get movieSection(): this {
+    get movieSection(): HTMLElement {
         return this.section;
     }
 
-    render(): Node {
+    render(): HTMLElement {
         const section = new ElementBuilder('section').setClasses(this.options.sectionClass, 'direction-description').setAttributes({ 'id': `top-${this.options.position}` });
 
         const picture = new ElementBuilder('img');

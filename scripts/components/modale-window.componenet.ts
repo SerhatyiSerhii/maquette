@@ -1,3 +1,4 @@
+import { IComp } from '../models/i-comp';
 import { AnimationService } from '../services/animation.service';
 import { MediaService } from '../services/media.service';
 import { ServiceLocator, MEDIA_SERVICE, ANIMATION_SERVICE } from '../services/service-locator';
@@ -7,12 +8,12 @@ import { PlayBtnComp } from './play-button.component';
 import { TimerComp } from './timer.component';
 import { VolumeComp } from './volume.component';
 
-export class ModalWindowComp {
-    private container: any;
-    private audio: any;
-    private button: any;
-    private mediaLength: any;
-    private volume: any;
+export class ModalWindowComp implements IComp {
+    private container: HTMLElement;
+    private audio: HTMLAudioElement;
+    private button: PlayBtnComp;
+    private mediaLength: MediaLengthComp;
+    private volume: VolumeComp;
     private audioSrc: string;
     private movieName: string;
     private mediaService: MediaService = ServiceLocator.inject<MediaService>(MEDIA_SERVICE);
@@ -28,7 +29,7 @@ export class ModalWindowComp {
 
         this.container.classList.add('visually-hidden');
 
-        const closeMdlWindow = (event: any) => {
+        const closeMdlWindow = (event: TransitionEvent) => {
             if (event.propertyName === 'opacity') {
                 document.body.removeChild(this.container);
                 this.container.removeEventListener('transitionend', closeMdlWindow);
@@ -53,11 +54,11 @@ export class ModalWindowComp {
         this.volume.init();
     }
 
-    render(): Node {
+    render(): HTMLElement {
         const btnHandler = (isActive: boolean) => {
 
             if (isActive) {
-                this.mediaService.notifyMediaPlaying(this);
+                this.mediaService.notifyMediaPlaying();
 
                 this.audio.play();
             } else {
@@ -65,7 +66,7 @@ export class ModalWindowComp {
             }
         }
 
-        this.audio = new ElementBuilder('audio').setAttributes({ 'src': `audios/${this.audioSrc}.ogg` }).build();
+        this.audio = new ElementBuilder<HTMLAudioElement>('audio').setAttributes({ 'src': `audios/${this.audioSrc}.ogg` }).build();
 
         this.volume = new VolumeComp(this.audio);
         const volume = this.volume.render();
@@ -88,8 +89,8 @@ export class ModalWindowComp {
 
         this.container = new ElementBuilder('div').setClasses('substrate', 'visually-hidden').setChildren(modWind).build();
 
-        this.container.addEventListener('click', (event: any) => {
-            let element = event.target;
+        this.container.addEventListener('click', (event: MouseEvent) => {
+            let element = event.target as Node;
 
             while (element != null && element !== modWind) {
                 element = element.parentNode;

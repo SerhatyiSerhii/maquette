@@ -8,10 +8,10 @@ export class ServiceLocator {
     }
 
     static inject<T>(key: string): T {
-        return ServiceLocator.serviceContainer[key] as unknown as T;
+        return ServiceLocator.serviceContainer[key] as unknown as T; // TODO:  refactor
     }
 }
 
 export const MEDIA_SERVICE = 'mediaServiceKey';
 export const ANIMATION_SERVICE = 'animationServiceKey';
-export const MOVIE_SECTION = 'movieSectionServiceKey';
+export const MOVIE_SECTION_SERVICE = 'movieSectionServiceKey';
