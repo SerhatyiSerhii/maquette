@@ -66,7 +66,7 @@ export class ModalWindowComp implements IComp {
             }
         }
 
-        this.audio = new ElementBuilder<HTMLAudioElement>('audio').setAttributes({ 'src': `audios/${this.audioSrc}.ogg` }).build();
+        this.audio = new ElementBuilder<HTMLAudioElement>('audio').setAttributes({ 'src': this.audioSrc }).build();
 
         this.volume = new VolumeComp(this.audio);
         const volume = this.volume.render();

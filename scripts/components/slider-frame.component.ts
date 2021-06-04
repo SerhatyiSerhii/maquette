@@ -24,7 +24,7 @@ export class SliderFrameComp implements IComp {
     }
 
     render(): HTMLElement {
-        const source = new ElementBuilder('source').setAttributes({ 'src': this.options.src }).build();
+        const source = new ElementBuilder('source').setAttributes({ 'src': this.options.path }).build();
         const video = new ElementBuilder<HTMLVideoElement>('video').setChildren(source).build();
         const timer = new TimerComp(video);
 
@@ -57,7 +57,7 @@ export class SliderFrameComp implements IComp {
 
         const videoControls = new ElementBuilder('div').setClasses('video-controls').setChildren(this.volume.render(), mediaLength.render()).build();
         const videoWrapper = new ElementBuilder('div').setClasses('video-wrapper').setChildren(video, timer.render(), videoControls).build();
-        const image = new ElementBuilder('img').setAttributes({ 'src': this.options.imgSrc, 'alt': this.options.imgAlt }).build();
+        const image = new ElementBuilder('img').setAttributes({ 'src': this.options.bannerPath, 'alt': this.options.bannerDescription }).build();
 
         const handler = (isActive: boolean) => {
 

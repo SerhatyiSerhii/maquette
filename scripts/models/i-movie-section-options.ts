@@ -1,10 +1,11 @@
+import { IVideo } from './i-video';
+
 export interface IMovieSectionOptions {
-    sectionClass: string;
-    position: string;
+    id: number;
+    position: number;
     name: string;
-    audioName: string;
-    imgSrc?: string;
-    imgAlt?: string;
-    about: string;
-    imgClass?: string;
+    bannerPath?: string;
+    shortDescription?: string;
+    description: string;
+    video?: IVideo;
 }

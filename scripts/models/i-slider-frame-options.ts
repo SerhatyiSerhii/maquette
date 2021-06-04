@@ -1,5 +1,5 @@
 export interface ISliderFrameOptions {
-    src: string;
-    imgSrc: string;
-    imgAlt: string;
+    path: string;
+    bannerPath: string,
+    bannerDescription: string;
 }
