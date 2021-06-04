@@ -1,4 +1,5 @@
 import { IComp } from '../models/i-comp';
+import { ISliderFrameOptions } from '../models/i-slider-frame-options';
 import { AnimationService } from '../services/animation.service';
 import { MediaService } from '../services/media.service';
 import { ANIMATION_SERVICE, MEDIA_SERVICE, ServiceLocator } from '../services/service-locator';
@@ -7,10 +8,9 @@ import { MediaLengthComp } from './media-length.component';
 import { PlayBtnComp } from './play-button.component';
 import { TimerComp } from './timer.component';
 import { VolumeComp } from './volume.component';
-import { ISliderFrameOptions } from '../models/i-slider-frame-options';
 
 export class SliderFrameComp implements IComp {
-    private options: ISliderFrameOptions;
+    private options: ISliderFrameOptions; // TODO: it was easier to use IMovie interface instead of change this one. More over - this one is superfluous now
     private mediaService: MediaService = ServiceLocator.inject<MediaService>(MEDIA_SERVICE);
     private animationService: AnimationService = ServiceLocator.inject<AnimationService>(ANIMATION_SERVICE);
     private volume: VolumeComp;

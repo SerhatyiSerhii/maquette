@@ -1,7 +1,7 @@
-import { ServiceLocator, MOVIE_SECTION_SERVICE } from '../services/service-locator';
 import { MovieSectionService } from '../services/movie-section.service';
+import { MOVIE_SECTION_SERVICE, ServiceLocator } from '../services/service-locator';
 
-export class ScrollableComp {
+export class ScrollableComp { // TODO: make this class abstract
     private page: HTMLElement;
     private startingPosition: number;
     private endingPosition: number;
