@@ -15,3 +15,4 @@ export class ServiceLocator {
 export const MEDIA_SERVICE = 'mediaServiceKey';
 export const ANIMATION_SERVICE = 'animationServiceKey';
 export const MOVIE_SECTION_SERVICE = 'movieSectionServiceKey';
+export const DATA_SERVICE = 'dataServiceKey';

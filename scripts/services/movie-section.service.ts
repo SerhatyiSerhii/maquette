@@ -1,13 +1,13 @@
 import { MovieSectionComp } from "../components/movie-section.component";
 
 export class MovieSectionService {
-    private movieSectionContainer: {[key: string]: MovieSectionComp} = {};
+    private movieSectionContainer: {[movieId: number]: MovieSectionComp} = {};
 
-    addSection(moviePosition: string, movie: MovieSectionComp): void {
-        this.movieSectionContainer[moviePosition] = movie;
+    addSection(movieId: number, movie: MovieSectionComp): void {
+        this.movieSectionContainer[movieId] = movie;
     }
 
-    getSection(moviePosition: string): MovieSectionComp {
-        return this.movieSectionContainer[moviePosition];
+    getSection(movieId: number): MovieSectionComp {
+        return this.movieSectionContainer[movieId];
     }
 }

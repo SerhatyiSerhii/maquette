@@ -1,10 +1,14 @@
 import { IComp } from '../models/i-comp';
 import { ElementBuilder } from '../utilities/element-builder';
 import { ScrollableComp } from './scrollable.component';
+import { DataService } from '../services/data.service';
+import { ServiceLocator, DATA_SERVICE } from '../services/service-locator';
+import { generateMoviePosition } from '../utilities/generate-movie-position';
 
 export class HeaderComp extends ScrollableComp implements IComp {
     private boxMenu: HTMLElement;
     private burgerImg: HTMLElement;
+    private dataService: DataService = ServiceLocator.inject<DataService>(DATA_SERVICE);
 
     private toggleBurger(): void {
         this.boxMenu.style.display = (this.boxMenu.style.display === 'block') ? 'none' : 'block';
@@ -14,14 +18,14 @@ export class HeaderComp extends ScrollableComp implements IComp {
     private createGoToMenu(): HTMLElement {
         return new ElementBuilder('ul')
             .setClasses('film-nav')
-            .setChildren(...['10', '09', '08', '07', '06', '05', '04', '03', '02', '01'].map(filmNumber => {
+            .setChildren(...this.dataService.getAllMovies().map(movie => {
                 const linkToFilm = new ElementBuilder('a').setClasses('top-film').build();
 
-                linkToFilm.textContent = `.${filmNumber}`;
+                linkToFilm.textContent = `.${generateMoviePosition(movie.position)}`;
                 linkToFilm.addEventListener('click', (event) => {
                     event.preventDefault();
 
-                    this.scrollToFilm(filmNumber);
+                    this.scrollToFilm(movie.id);
 
                     if (window.innerWidth < 768) {
                         this.toggleBurger();
@@ -29,7 +33,7 @@ export class HeaderComp extends ScrollableComp implements IComp {
                 });
 
                 return new ElementBuilder('li').setChildren(linkToFilm).build();
-            })).build();
+            }).reverse()).build();
     }
 
     private displayGoToMenuOnHover(goToMenuUnit: HTMLElement, lastChildOfUnit: HTMLElement): void {

@@ -1,10 +1,10 @@
 import { IComp } from '../models/i-comp';
-import { ISliderFrameOptions } from '../models/i-slider-frame-options';
+import { IVideo } from '../models/i-video';
 import { ElementBuilder } from '../utilities/element-builder';
 import { SliderFrameComp } from './slider-frame.component';
 
 export class SliderComp implements IComp {
-    private content: ISliderFrameOptions[]; // TODO: it was easier to use IMovie interface instead of change this one. More over - this one is superfluous now
+    private content: IVideo[];
     private arrowLeft: string = `<svg width="60" height="43" viewBox="0 0 60 43" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M27 41.5L2 21.5M2 21.5L28 1M2 21.5L60 21.5" stroke-width="2" /></svg>`;
     private arrowRight: string = `<svg width="60" height="43" viewBox="0 0 60 43" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M33 41.5L58 21.5M58 21.5L32 1M58 21.5L0 21.5" stroke-width="2" /></svg>`;
     private currentIndex: number;
@@ -12,7 +12,7 @@ export class SliderComp implements IComp {
     private framesLine: HTMLElement;
     private sliderFrameComponent: SliderFrameComp[] = [];
 
-    constructor(content: ISliderFrameOptions[], initialIndex: number) {
+    constructor(content: IVideo[], initialIndex: number) {
         this.content = content;
         this.currentIndex = initialIndex;
         this.maxIndex = this.content.length - 1;

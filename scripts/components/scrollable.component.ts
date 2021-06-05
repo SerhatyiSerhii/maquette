@@ -1,7 +1,7 @@
 import { MovieSectionService } from '../services/movie-section.service';
 import { MOVIE_SECTION_SERVICE, ServiceLocator } from '../services/service-locator';
 
-export class ScrollableComp { // TODO: make this class abstract
+export abstract class ScrollableComp {
     private page: HTMLElement;
     private startingPosition: number;
     private endingPosition: number;
@@ -33,10 +33,10 @@ export class ScrollableComp { // TODO: make this class abstract
     }
 
 
-    protected scrollToFilm(movieNumber: string): void {
+    protected scrollToFilm(movieId: number): void {
         this.page = document.documentElement;
         this.startingPosition = this.page.scrollTop;
-        this.endingPosition = this.movieSection.getSection(movieNumber).movieSection.offsetTop;
+        this.endingPosition = this.movieSection.getSection(movieId).movieSection.offsetTop;
         this.distance = this.endingPosition - this.startingPosition;
         this.go();
     }
