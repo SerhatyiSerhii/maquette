@@ -1,6 +1,6 @@
 import { IComp } from '../models/i-comp';
 import { AnimationService } from '../services/animation.service';
-import { ServiceLocator, ANIMATION_SERVICE } from '../services/service-locator';
+import { ANIMATION_SERVICE, ServiceLocator } from '../services/service-locator';
 import { ElementBuilder } from '../utilities/element-builder';
 
 export class MediaLengthComp implements IComp {
@@ -22,7 +22,7 @@ export class MediaLengthComp implements IComp {
         this.mediaElement.currentTime = (inBarPosition * this.mediaElement.duration) / 100;
     }
 
-    progress(onProgress: () => void ): void {
+    progress(onProgress: () => void): void {
         const position = (this.mediaElement.currentTime / this.mediaElement.duration) * 100;
 
         this.currentLength.style.width = `${position}%`;

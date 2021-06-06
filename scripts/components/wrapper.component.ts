@@ -1,17 +1,16 @@
 import { IComp } from '../models/i-comp';
-import { IMovie } from '../models/i-movie';
+import { IDirectionStrategy } from '../models/i-direction-strategy';
 import { IVideo } from '../models/i-video';
+import { DataService } from '../services/data.service';
 import { MovieSectionService } from '../services/movie-section.service';
-import { MOVIE_SECTION_SERVICE, DATA_SERVICE, ServiceLocator } from '../services/service-locator';
+import { DATA_SERVICE, MOVIE_SECTION_SERVICE, ServiceLocator } from '../services/service-locator';
+import { AsideDirectionStrategy } from '../strategies/aside-direction-strategy';
+import { CentralDirectionStrategy } from '../strategies/central-direction-strategy';
 import { ElementBuilder } from '../utilities/element-builder';
 import { MainSectionComp } from './main-section.component';
 import { MovieSectionComp } from './movie-section.component';
-import { SignUpComp } from './signup.component';
+import { SignUpComp } from './sign-up.component';
 import { SliderComp } from './slider.component';
-import { DataService } from '../services/data.service';
-import { AsideDirectionStrategy } from '../strategies/aside-direction-strategy';
-import { CentralDirectionStrategy } from '../strategies/central-direction-strategy';
-import { IDirectionStrategy } from '../models/i-direction-strategy';
 
 export class WrapperComp implements IComp {
     private movieSectionService: MovieSectionService = ServiceLocator.inject<MovieSectionService>(MOVIE_SECTION_SERVICE);

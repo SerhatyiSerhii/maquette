@@ -1,7 +1,7 @@
 import { IComp } from '../models/i-comp';
 import { AnimationService } from '../services/animation.service';
 import { MediaService } from '../services/media.service';
-import { ServiceLocator, MEDIA_SERVICE, ANIMATION_SERVICE } from '../services/service-locator';
+import { ANIMATION_SERVICE, MEDIA_SERVICE, ServiceLocator } from '../services/service-locator';
 import { ElementBuilder } from '../utilities/element-builder';
 import { MediaLengthComp } from './media-length.component';
 import { PlayBtnComp } from './play-button.component';

@@ -1,11 +1,11 @@
-import { IMovie } from '../models/i-movie';
 import { IComp } from '../models/i-comp';
-import { ElementBuilder } from '../utilities/element-builder';
-import { FilmContentComp } from './film-content.component';
-import { ServiceLocator, DATA_SERVICE } from '../services/service-locator';
-import { DataService } from '../services/data.service';
-import { generateMoviePosition } from '../utilities/generate-movie-position';
 import { IDirectionStrategy } from '../models/i-direction-strategy';
+import { IMovie } from '../models/i-movie';
+import { DataService } from '../services/data.service';
+import { DATA_SERVICE, ServiceLocator } from '../services/service-locator';
+import { ElementBuilder } from '../utilities/element-builder';
+import { generateMoviePosition } from '../utilities/generate-movie-position';
+import { FilmContentComp } from './film-content.component';
 
 export class MovieSectionComp implements IComp {
     private options: IMovie;

@@ -1,10 +1,10 @@
 import { AppComp } from './components/application.componenet';
 import { AnimationService } from './services/animation.service';
+import { DataService } from './services/data.service';
 import { MediaService } from './services/media.service';
 import { MovieSectionService } from './services/movie-section.service';
-import { DataService } from './services/data.service';
-import { ANIMATION_SERVICE, MEDIA_SERVICE, MOVIE_SECTION_SERVICE, DATA_SERVICE, ServiceLocator } from './services/service-locator';
-
+import { ANIMATION_SERVICE, DATA_SERVICE, MEDIA_SERVICE, MOVIE_SECTION_SERVICE, ServiceLocator } from './services/service-locator';
+// TODO: fix central direction wrong class names
 'use strict';
 
 ServiceLocator.register(MEDIA_SERVICE, new MediaService());

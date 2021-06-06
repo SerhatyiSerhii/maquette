@@ -1,5 +1,5 @@
 import { IComp } from '../models/i-comp';
-import {ElementBuilder} from '../utilities/element-builder';
+import { ElementBuilder } from '../utilities/element-builder';
 
 export class SignUpComp implements IComp {
     render(): HTMLElement {

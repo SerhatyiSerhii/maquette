@@ -1,5 +1,4 @@
 // Implemented Service Locator instead of Dependency Injector to simplify development
-
 export class ServiceLocator {
     private static serviceContainer: { [key: string]: object } = {};
 
@@ -8,7 +7,7 @@ export class ServiceLocator {
     }
 
     static inject<T>(key: string): T {
-        return ServiceLocator.serviceContainer[key] as unknown as T; // TODO:  refactor
+        return ServiceLocator.serviceContainer[key] as unknown as T; // for later TODO:  refactor
     }
 }
 

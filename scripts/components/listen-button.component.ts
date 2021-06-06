@@ -1,10 +1,10 @@
 import { IComp } from '../models/i-comp';
 import { ElementBuilder } from '../utilities/element-builder';
-import { ModalWindowComp } from './modale-window.componenet';
+import { ModalWindowComp } from './modal-window.componenet';
 
 export class ListenBtnComp implements IComp {
     private movieName: string;
-    private audioName: string;
+    private audioName: string; // TODO: make this component to accept film id instead of audio name
 
     constructor(movieName: string, audioName: string) {
         this.movieName = movieName;

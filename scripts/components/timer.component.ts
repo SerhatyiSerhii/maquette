@@ -14,7 +14,7 @@ export class TimerComp implements IComp {
         const sec = Math.floor(time % 60);
 
         const minAsString = (min < 10) ? `0${min}` : min.toString();
-        const secAsString = (sec < 10) ? `0${sec}`: sec.toString();
+        const secAsString = (sec < 10) ? `0${sec}` : sec.toString();
 
         return `${minAsString}:${secAsString}`;
     }

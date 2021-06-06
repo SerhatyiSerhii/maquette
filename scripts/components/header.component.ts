@@ -1,9 +1,9 @@
 import { IComp } from '../models/i-comp';
-import { ElementBuilder } from '../utilities/element-builder';
-import { ScrollableComp } from './scrollable.component';
 import { DataService } from '../services/data.service';
-import { ServiceLocator, DATA_SERVICE } from '../services/service-locator';
+import { DATA_SERVICE, ServiceLocator } from '../services/service-locator';
+import { ElementBuilder } from '../utilities/element-builder';
 import { generateMoviePosition } from '../utilities/generate-movie-position';
+import { ScrollableComp } from './scrollable.component';
 
 export class HeaderComp extends ScrollableComp implements IComp {
     private boxMenu: HTMLElement;

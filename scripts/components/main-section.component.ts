@@ -1,8 +1,8 @@
 import { IComp } from '../models/i-comp';
+import { DataService } from '../services/data.service';
+import { DATA_SERVICE, ServiceLocator } from '../services/service-locator';
 import { ElementBuilder } from '../utilities/element-builder';
 import { ScrollableComp } from './scrollable.component';
-import { DataService } from '../services/data.service';
-import { ServiceLocator, DATA_SERVICE } from '../services/service-locator';
 
 export class MainSectionComp extends ScrollableComp implements IComp {
     private arrowDown: string = `<svg width="43" height="60" viewBox="0 0 43 60" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 33L21 58M21 58L41.5 32M21 58V0" stroke-width="2" /></svg>`;
@@ -10,7 +10,7 @@ export class MainSectionComp extends ScrollableComp implements IComp {
 
     render(): HTMLElement {
         const allMovies = this.dataService.getAllMovies();
-        const lastMovie = allMovies[allMovies.length-1];
+        const lastMovie = allMovies[allMovies.length - 1];
 
         const accentText = new ElementBuilder('span').setClasses('accent-text').build();
         accentText.textContent = 'The 10';

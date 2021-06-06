@@ -1,11 +1,11 @@
+import { IComp } from '../models/i-comp';
 import { ElementBuilder } from '../utilities/element-builder';
 import { ListenBtnComp } from './listen-button.component';
-import { IComp } from '../models/i-comp';
 
 export class FilmContentComp implements IComp {
     private listenButton: ListenBtnComp;
 
-    constructor(private positionMovie: string, private titleMovie: string, private aboutMovie: string, private audioName: string) {}
+    constructor(private positionMovie: string, private titleMovie: string, private aboutMovie: string, private audioName: string) { }
 
     render(): HTMLElement {
         const movieNumber = new ElementBuilder('span').build();
