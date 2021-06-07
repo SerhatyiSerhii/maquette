@@ -4,7 +4,6 @@ import { ModalWindowComp } from './modal-window.componenet';
 
 export class ListenBtnComp implements IComp {
     private movieName: string;
-    // private audioName: string; // TODO: make this component to accept film id instead of audio name   Corrected
     private movieId: number;
 
     constructor(movieName: string, movieId: number) {
@@ -16,8 +15,10 @@ export class ListenBtnComp implements IComp {
         const listenBtn = new ElementBuilder('button').setClasses('listen').build();
         listenBtn.textContent = 'listen';
 
+        // TODO: you will need to use data service here
+        // use async method instead of general
         listenBtn.addEventListener('click', () => {
-            const modalWindow = new ModalWindowComp(this.movieId, this.movieName);
+            const modalWindow = new ModalWindowComp(this.movieId, this.movieName); // TODO: and let's modal window accepts audio src instead of movie id
 
             document.body.appendChild(modalWindow.render());
 

@@ -1,5 +1,6 @@
 import { IComp } from '../models/i-comp';
 import { AnimationService } from '../services/animation.service';
+import { DataService } from '../services/data.service';
 import { MediaService } from '../services/media.service';
 import { ANIMATION_SERVICE, DATA_SERVICE, MEDIA_SERVICE, ServiceLocator } from '../services/service-locator';
 import { ElementBuilder } from '../utilities/element-builder';
@@ -7,7 +8,6 @@ import { MediaLengthComp } from './media-length.component';
 import { PlayBtnComp } from './play-button.component';
 import { TimerComp } from './timer.component';
 import { VolumeComp } from './volume.component';
-import { DataService } from '../services/data.service';
 
 export class ModalWindowComp implements IComp {
     private container: HTMLElement;
