@@ -20,7 +20,6 @@ export class WrapperComp implements IComp {
     setWrapperChildren(): HTMLElement[] {
         const allMovies = this.dataService.getAllMovies();
 
-
         const wrapperChildren: HTMLElement[] = [new MainSectionComp(300).render()];
 
         const centralClasses: string[] = ['star-wars', 'runner', 'godfuther'];
@@ -62,8 +61,6 @@ export class WrapperComp implements IComp {
                 this.slider.push(slider);
 
                 wrapperChildren.push(slider.render());
-
-                centralClassesPosition++
             }
         }
 

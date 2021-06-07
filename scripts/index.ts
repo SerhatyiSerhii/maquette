@@ -4,7 +4,7 @@ import { DataService } from './services/data.service';
 import { MediaService } from './services/media.service';
 import { MovieSectionService } from './services/movie-section.service';
 import { ANIMATION_SERVICE, DATA_SERVICE, MEDIA_SERVICE, MOVIE_SECTION_SERVICE, ServiceLocator } from './services/service-locator';
-// TODO: fix central direction wrong class names
+// TODO: fix central direction wrong class names      Is it an issue where classes' names skipped central movies? If so - corrected
 'use strict';
 
 ServiceLocator.register(MEDIA_SERVICE, new MediaService());

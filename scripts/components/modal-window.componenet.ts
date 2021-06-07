@@ -1,12 +1,13 @@
 import { IComp } from '../models/i-comp';
 import { AnimationService } from '../services/animation.service';
 import { MediaService } from '../services/media.service';
-import { ANIMATION_SERVICE, MEDIA_SERVICE, ServiceLocator } from '../services/service-locator';
+import { ANIMATION_SERVICE, DATA_SERVICE, MEDIA_SERVICE, ServiceLocator } from '../services/service-locator';
 import { ElementBuilder } from '../utilities/element-builder';
 import { MediaLengthComp } from './media-length.component';
 import { PlayBtnComp } from './play-button.component';
 import { TimerComp } from './timer.component';
 import { VolumeComp } from './volume.component';
+import { DataService } from '../services/data.service';
 
 export class ModalWindowComp implements IComp {
     private container: HTMLElement;
@@ -14,13 +15,14 @@ export class ModalWindowComp implements IComp {
     private button: PlayBtnComp;
     private mediaLength: MediaLengthComp;
     private volume: VolumeComp;
-    private audioSrc: string;
     private movieName: string;
+    private movieId: number;
     private mediaService: MediaService = ServiceLocator.inject<MediaService>(MEDIA_SERVICE);
     private animationService: AnimationService = ServiceLocator.inject<AnimationService>(ANIMATION_SERVICE);
+    private dataService: DataService = ServiceLocator.inject<DataService>(DATA_SERVICE);
 
-    constructor(audioSrc: string, movieName: string) {
-        this.audioSrc = audioSrc;
+    constructor(movieId: number, movieName: string) {
+        this.movieId = movieId;
         this.movieName = movieName;
     }
 
@@ -66,7 +68,7 @@ export class ModalWindowComp implements IComp {
             }
         }
 
-        this.audio = new ElementBuilder<HTMLAudioElement>('audio').setAttributes({ 'src': this.audioSrc }).build();
+        this.audio = new ElementBuilder<HTMLAudioElement>('audio').setAttributes({ 'src': this.dataService.getAudioSourceById(this.movieId).audioPath }).build();
 
         this.volume = new VolumeComp(this.audio);
         const volume = this.volume.render();
