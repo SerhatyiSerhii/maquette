@@ -1,6 +1,6 @@
 import { IComp } from '../models/i-comp';
 import { DataService } from '../services/data.service';
-import { Services, ServiceLocator } from '../services/service-locator';
+import { ServiceLocator, Services } from '../services/service-locator';
 import { ElementBuilder } from '../utilities/element-builder';
 import { ScrollableComp } from './scrollable.component';
 
@@ -9,7 +9,7 @@ export class MainSectionComp extends ScrollableComp implements IComp {
     private dataService: DataService = ServiceLocator.inject<DataService>(Services.DATA_SERVICE);
 
     render(): HTMLElement {
-        const allMovies = this.dataService.getAllMovies();
+        const allMovies = this.dataService.getAllMovies(); // TODO: use async method
         const lastMovie = allMovies[allMovies.length - 1];
 
         const accentText = new ElementBuilder('span').setClasses('accent-text').build();

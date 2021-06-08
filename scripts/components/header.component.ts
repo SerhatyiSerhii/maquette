@@ -1,6 +1,6 @@
 import { IComp } from '../models/i-comp';
 import { DataService } from '../services/data.service';
-import { Services, ServiceLocator } from '../services/service-locator';
+import { ServiceLocator, Services } from '../services/service-locator';
 import { ElementBuilder } from '../utilities/element-builder';
 import { generateMoviePosition } from '../utilities/generate-movie-position';
 import { ScrollableComp } from './scrollable.component';

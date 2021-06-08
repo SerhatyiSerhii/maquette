@@ -1,5 +1,5 @@
 import { MovieSectionService } from '../services/movie-section.service';
-import { Services, ServiceLocator } from '../services/service-locator';
+import { ServiceLocator, Services } from '../services/service-locator';
 
 export abstract class ScrollableComp {
     private page: HTMLElement;

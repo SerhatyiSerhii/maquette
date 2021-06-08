@@ -1,6 +1,6 @@
 import { IComp } from '../models/i-comp';
 import { AnimationService } from '../services/animation.service';
-import { Services, ServiceLocator } from '../services/service-locator';
+import { ServiceLocator, Services } from '../services/service-locator';
 import { ElementBuilder } from '../utilities/element-builder';
 
 export class MediaLengthComp implements IComp {

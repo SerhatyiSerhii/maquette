@@ -7,17 +7,13 @@ export class DataService {
         return dataBase;
     }
 
-    getAudioSourceById(id: number): IAudio {
-        return audioDataBase.find(entity => entity.id === id);
-    }
-
     getAllMoviesAsync(callback: (data: IMovie[]) => void): void {
         setTimeout(() => {
             callback(dataBase);
         }, 300);
     }
 
-    getAudioSourceByIdAsync(id: number, callback: (audio: IAudio) => void): void {
+    getAudioSourceById(id: number, callback: (audio: IAudio) => void): void {
         setTimeout(() => {
             callback(audioDataBase.find(entity => entity.id === id));
         }, 300);

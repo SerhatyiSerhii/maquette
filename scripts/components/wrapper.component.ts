@@ -3,7 +3,7 @@ import { IDirectionStrategy } from '../models/i-direction-strategy';
 import { IVideo } from '../models/i-video';
 import { DataService } from '../services/data.service';
 import { MovieSectionService } from '../services/movie-section.service';
-import { Services, ServiceLocator } from '../services/service-locator';
+import { ServiceLocator, Services } from '../services/service-locator';
 import { AsideDirectionStrategy } from '../strategies/aside-direction-strategy';
 import { CentralDirectionStrategy } from '../strategies/central-direction-strategy';
 import { ElementBuilder } from '../utilities/element-builder';

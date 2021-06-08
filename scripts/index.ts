@@ -3,7 +3,7 @@ import { AnimationService } from './services/animation.service';
 import { DataService } from './services/data.service';
 import { MediaService } from './services/media.service';
 import { MovieSectionService } from './services/movie-section.service';
-import { Services, ServiceLocator } from './services/service-locator';
+import { ServiceLocator, Services } from './services/service-locator';
 
 'use strict';
 
