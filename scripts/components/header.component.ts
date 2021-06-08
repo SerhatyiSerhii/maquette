@@ -1,6 +1,6 @@
 import { IComp } from '../models/i-comp';
 import { DataService } from '../services/data.service';
-import { DATA_SERVICE, ServiceLocator } from '../services/service-locator';
+import { Services, ServiceLocator } from '../services/service-locator';
 import { ElementBuilder } from '../utilities/element-builder';
 import { generateMoviePosition } from '../utilities/generate-movie-position';
 import { ScrollableComp } from './scrollable.component';
@@ -8,7 +8,7 @@ import { ScrollableComp } from './scrollable.component';
 export class HeaderComp extends ScrollableComp implements IComp {
     private boxMenu: HTMLElement;
     private burgerImg: HTMLElement;
-    private dataService: DataService = ServiceLocator.inject<DataService>(DATA_SERVICE);
+    private dataService: DataService = ServiceLocator.inject<DataService>(Services.DATA_SERVICE);
 
     private toggleBurger(): void {
         this.boxMenu.style.display = (this.boxMenu.style.display === 'block') ? 'none' : 'block';

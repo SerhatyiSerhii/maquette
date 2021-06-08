@@ -1,5 +1,5 @@
 import { MovieSectionService } from '../services/movie-section.service';
-import { MOVIE_SECTION_SERVICE, ServiceLocator } from '../services/service-locator';
+import { Services, ServiceLocator } from '../services/service-locator';
 
 export abstract class ScrollableComp {
     private page: HTMLElement;
@@ -8,7 +8,7 @@ export abstract class ScrollableComp {
     private distance: number;
     private start: number;
     private duration: number;
-    private movieSection: MovieSectionService = ServiceLocator.inject<MovieSectionService>(MOVIE_SECTION_SERVICE);
+    private movieSection: MovieSectionService = ServiceLocator.inject<MovieSectionService>(Services.MOVIE_SECTION_SERVICE);
 
     private step = (newTimestamp: number) => {
         let toScroll = this.startingPosition + (this.distance * (newTimestamp - this.start)) / this.duration;

@@ -1,13 +1,13 @@
 import { IComp } from '../models/i-comp';
 import { AnimationService } from '../services/animation.service';
-import { ANIMATION_SERVICE, ServiceLocator } from '../services/service-locator';
+import { Services, ServiceLocator } from '../services/service-locator';
 import { ElementBuilder } from '../utilities/element-builder';
 
 export class MediaLengthComp implements IComp {
     private container: HTMLElement;
     private currentLength: HTMLElement;
     private mediaElement: HTMLVideoElement | HTMLAudioElement;
-    private animationService: AnimationService = ServiceLocator.inject<AnimationService>(ANIMATION_SERVICE);
+    private animationService: AnimationService = ServiceLocator.inject<AnimationService>(Services.ANIMATION_SERVICE);
 
     constructor(mediaElement: HTMLVideoElement | HTMLAudioElement) {
         this.mediaElement = mediaElement;

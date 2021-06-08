@@ -3,7 +3,7 @@ import { IDirectionStrategy } from '../models/i-direction-strategy';
 import { IVideo } from '../models/i-video';
 import { DataService } from '../services/data.service';
 import { MovieSectionService } from '../services/movie-section.service';
-import { DATA_SERVICE, MOVIE_SECTION_SERVICE, ServiceLocator } from '../services/service-locator';
+import { Services, ServiceLocator } from '../services/service-locator';
 import { AsideDirectionStrategy } from '../strategies/aside-direction-strategy';
 import { CentralDirectionStrategy } from '../strategies/central-direction-strategy';
 import { ElementBuilder } from '../utilities/element-builder';
@@ -13,9 +13,9 @@ import { SignUpComp } from './sign-up.component';
 import { SliderComp } from './slider.component';
 
 export class WrapperComp implements IComp {
-    private movieSectionService: MovieSectionService = ServiceLocator.inject<MovieSectionService>(MOVIE_SECTION_SERVICE);
+    private movieSectionService: MovieSectionService = ServiceLocator.inject<MovieSectionService>(Services.MOVIE_SECTION_SERVICE);
     private slider: SliderComp[] = [];
-    private dataService: DataService = ServiceLocator.inject<DataService>(DATA_SERVICE);
+    private dataService: DataService = ServiceLocator.inject<DataService>(Services.DATA_SERVICE);
 
     setWrapperChildren(): HTMLElement[] {
         const allMovies = this.dataService.getAllMovies();

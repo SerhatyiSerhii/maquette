@@ -1,12 +1,12 @@
 import { IComp } from '../models/i-comp';
 import { DataService } from '../services/data.service';
-import { DATA_SERVICE, ServiceLocator } from '../services/service-locator';
+import { Services, ServiceLocator } from '../services/service-locator';
 import { ElementBuilder } from '../utilities/element-builder';
 import { ScrollableComp } from './scrollable.component';
 
 export class MainSectionComp extends ScrollableComp implements IComp {
     private arrowDown: string = `<svg width="43" height="60" viewBox="0 0 43 60" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 33L21 58M21 58L41.5 32M21 58V0" stroke-width="2" /></svg>`;
-    private dataService: DataService = ServiceLocator.inject<DataService>(DATA_SERVICE);
+    private dataService: DataService = ServiceLocator.inject<DataService>(Services.DATA_SERVICE);
 
     render(): HTMLElement {
         const allMovies = this.dataService.getAllMovies();

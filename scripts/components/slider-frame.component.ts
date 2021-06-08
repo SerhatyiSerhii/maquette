@@ -2,7 +2,7 @@ import { IComp } from '../models/i-comp';
 import { IVideo } from '../models/i-video';
 import { AnimationService } from '../services/animation.service';
 import { MediaService } from '../services/media.service';
-import { ANIMATION_SERVICE, MEDIA_SERVICE, ServiceLocator } from '../services/service-locator';
+import { Services, ServiceLocator } from '../services/service-locator';
 import { ElementBuilder } from '../utilities/element-builder';
 import { MediaLengthComp } from './media-length.component';
 import { PlayBtnComp } from './play-button.component';
@@ -11,8 +11,8 @@ import { VolumeComp } from './volume.component';
 
 export class SliderFrameComp implements IComp {
     private options: IVideo;
-    private mediaService: MediaService = ServiceLocator.inject<MediaService>(MEDIA_SERVICE);
-    private animationService: AnimationService = ServiceLocator.inject<AnimationService>(ANIMATION_SERVICE);
+    private mediaService: MediaService = ServiceLocator.inject<MediaService>(Services.MEDIA_SERVICE);
+    private animationService: AnimationService = ServiceLocator.inject<AnimationService>(Services.ANIMATION_SERVICE);
     private volume: VolumeComp;
 
     constructor(options: IVideo) {
