@@ -15,7 +15,7 @@ export class HeaderComp extends ScrollableComp implements IComp {
         this.burgerImg.classList.toggle('pressed');
     }
 
-    private createGoToMenu(): HTMLElement {
+    private createGoToMenu(): HTMLElement { // TODO: use async method here
         return new ElementBuilder('ul')
             .setClasses('film-nav')
             .setChildren(...this.dataService.getAllMovies().map(movie => {

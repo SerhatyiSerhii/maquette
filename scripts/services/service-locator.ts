@@ -11,7 +11,7 @@ export class ServiceLocator {
     }
 }
 
-export enum Services { // TODO: enum is not a const     Corrected
+export enum Services {
     MEDIA_SERVICE = 'mediaServiceKey',
     ANIMATION_SERVICE = 'animationServiceKey',
     MOVIE_SECTION_SERVICE = 'movieSectionServiceKey',
