@@ -9,8 +9,8 @@ export class MainSectionComp extends ScrollableComp implements IComp {
     private dataService: DataService = ServiceLocator.inject<DataService>(Services.DATA_SERVICE);
 
     render(): HTMLElement {
-        const allMovies = this.dataService.getAllMovies(); // TODO: use async method
-        const lastMovie = allMovies[allMovies.length - 1];
+        // const allMovies = this.dataService.getAllMovies(); // TODO: use async method     Corrected
+        // const lastMovie = allMovies[allMovies.length - 1];
 
         const accentText = new ElementBuilder('span').setClasses('accent-text').build();
         accentText.textContent = 'The 10';
@@ -26,10 +26,21 @@ export class MainSectionComp extends ScrollableComp implements IComp {
         const arrowDown = new ElementBuilder('a').setClasses('arrow-down', 'arrow').build();
         arrowDown.innerHTML = this.arrowDown;
 
-        arrowDown.addEventListener('click', (event) => {
-            event.preventDefault();
+        // arrowDown.addEventListener('click', (event) => {
+        //     event.preventDefault();
 
-            this.scrollToFilm(lastMovie.id);
+        //     this.scrollToFilm(lastMovie.id);
+        // });
+
+        this.dataService.getAllMoviesAsync((movies) => {
+            const allMovies = movies;
+            const lastMovie = allMovies[allMovies.length - 1];
+
+            arrowDown.addEventListener('click', (event) => {
+                event.preventDefault();
+
+                this.scrollToFilm(lastMovie.id);
+            });
         });
 
         const container = new ElementBuilder('div').setClasses('container').setChildren(mainTitle, mainSentence, arrowDown).build();
