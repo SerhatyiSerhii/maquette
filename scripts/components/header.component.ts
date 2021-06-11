@@ -1,4 +1,6 @@
+import { isThisTypeNode } from '../../node_modules/typescript/lib/typescript';
 import { IComp } from '../models/i-comp';
+import { IMovie } from '../models/i-movie';
 import { DataService } from '../services/data.service';
 import { ServiceLocator, Services } from '../services/service-locator';
 import { ElementBuilder } from '../utilities/element-builder';
@@ -15,13 +17,13 @@ export class HeaderComp extends ScrollableComp implements IComp {
         this.burgerImg.classList.toggle('pressed');
     }
 
-    private createGoToMenu(): HTMLElement { // TODO: use async method here
+    private createGoToMenu(data: IMovie[]): HTMLElement { // TODO: use async method here   Corrected
         return new ElementBuilder('ul')
             .setClasses('film-nav')
-            .setChildren(...this.dataService.getAllMovies().map(movie => {
+            .setChildren(...data.map(movie => {
                 const linkToFilm = new ElementBuilder('a').setClasses('top-film').build();
 
-                linkToFilm.textContent = `.${generateMoviePosition(movie.position)}`;
+                linkToFilm.textContent = generateMoviePosition(movie.position);
                 linkToFilm.addEventListener('click', (event) => {
                     event.preventDefault();
 
@@ -58,18 +60,25 @@ export class HeaderComp extends ScrollableComp implements IComp {
 
                 if (searchMenu === 'go to') {
                     boxMenuNav.setClasses('go-to');
-
-                    const goToMenu = this.createGoToMenu();
-                    const childOfBoxMenuNav = boxMenuNav.setChildren(linkTo, goToMenu).build();
-
-                    this.displayGoToMenuOnHover(childOfBoxMenuNav, goToMenu);
-
-                    return childOfBoxMenuNav;
                 }
 
                 return boxMenuNav.setChildren(linkTo).build();
 
             })).build();
+
+        this.dataService.getAllMoviesAsync(data => {
+            const moviesList = this.createGoToMenu(data);
+
+            const navChildren = this.boxMenu.children;
+
+            for (let child of navChildren) {
+                if (child.classList.contains('go-to')) {
+                    child.appendChild(moviesList);
+
+                    this.displayGoToMenuOnHover(child as HTMLElement, moviesList);
+                }
+            }
+        });
 
         this.burgerImg = new ElementBuilder('span').setAttributes({ 'id': 'burger-img' }).build();
 

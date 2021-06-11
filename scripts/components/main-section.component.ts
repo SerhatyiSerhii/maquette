@@ -24,8 +24,8 @@ export class MainSectionComp extends ScrollableComp implements IComp {
         arrowDown.innerHTML = this.arrowDown;
 
         this.dataService.getAllMoviesAsync((movies) => {
-            const allMovies = movies; // TODO: what for?
-            const lastMovie = allMovies[allMovies.length - 1];
+            // const allMovies = movies; // TODO: what for?     Deleted
+            const lastMovie = movies[movies.length - 1];
 
             arrowDown.addEventListener('click', (event) => {
                 event.preventDefault();
