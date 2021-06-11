@@ -1,5 +1,4 @@
 import { IComp } from '../models/i-comp';
-import { IMovie } from '../models/i-movie';
 import { DataService } from '../services/data.service';
 import { ServiceLocator, Services } from '../services/service-locator';
 import { ElementBuilder } from '../utilities/element-builder';
@@ -16,15 +15,23 @@ export class HeaderComp extends ScrollableComp implements IComp {
         this.burgerImg.classList.toggle('pressed');
     }
 
-    private createGoToMenu(data: IMovie[]): HTMLElement {
-        // TODO: can you request data from here?
-        // can you create this ul without content before data arrived?
-        // can you store this ul into variable?
-        // can you access ul variable from closure?
-        // can you create li elements here and append to ul stored in variable?
-        return new ElementBuilder('ul')
-            .setClasses('film-nav')
-            .setChildren(...data.map(movie => {
+    private createGoToMenu(): HTMLElement {
+        // TODO: can you request data from here? yes
+        // can you create this ul without content before data arrived? yes
+        // can you store this ul into variable? yes
+        // can you access ul variable from closure? yes
+        // can you create li elements here and append to ul stored in variable? yes
+
+        // Corrected :)
+
+        const filmNav = new ElementBuilder('ul')
+        .setClasses('film-nav').build();
+
+        this.dataService.getAllMoviesAsync(data => {
+
+            const fimNavChildren = [];
+
+            data.map(movie => {
                 const linkToFilm = new ElementBuilder('a').setClasses('top-film').build();
 
                 linkToFilm.textContent = generateMoviePosition(movie.position);
@@ -38,8 +45,15 @@ export class HeaderComp extends ScrollableComp implements IComp {
                     }
                 });
 
-                return new ElementBuilder('li').setChildren(linkToFilm).build();
-            }).reverse()).build();
+                fimNavChildren.push(new ElementBuilder('li').setChildren(linkToFilm).build());
+            })
+
+            for (let i = fimNavChildren.length - 1; i >= 0; i--) {
+                filmNav.appendChild(fimNavChildren[i]);
+            }
+        });
+
+        return filmNav;
     }
 
     private displayGoToMenuOnHover(goToMenuUnit: HTMLElement, lastChildOfUnit: HTMLElement): void {
@@ -64,25 +78,18 @@ export class HeaderComp extends ScrollableComp implements IComp {
 
                 if (searchMenu === 'go to') {
                     boxMenuNav.setClasses('go-to');
+
+                    const goToMenu = this.createGoToMenu();
+                    const childOfBoxMenuNav = boxMenuNav.setChildren(linkTo, goToMenu).build();
+
+                    this.displayGoToMenuOnHover(childOfBoxMenuNav, goToMenu);
+
+                    return childOfBoxMenuNav;
                 }
 
                 return boxMenuNav.setChildren(linkTo).build();
 
             })).build();
-
-        this.dataService.getAllMoviesAsync(data => {
-            const moviesList = this.createGoToMenu(data);
-
-            const navChildren = this.boxMenu.children;
-
-            for (let child of navChildren) {
-                if (child.classList.contains('go-to')) {
-                    child.appendChild(moviesList);
-
-                    this.displayGoToMenuOnHover(child as HTMLElement, moviesList);
-                }
-            }
-        });
 
         this.burgerImg = new ElementBuilder('span').setAttributes({ 'id': 'burger-img' }).build();
 
