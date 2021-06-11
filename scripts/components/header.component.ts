@@ -1,4 +1,3 @@
-import { isThisTypeNode } from '../../node_modules/typescript/lib/typescript';
 import { IComp } from '../models/i-comp';
 import { IMovie } from '../models/i-movie';
 import { DataService } from '../services/data.service';
@@ -17,7 +16,12 @@ export class HeaderComp extends ScrollableComp implements IComp {
         this.burgerImg.classList.toggle('pressed');
     }
 
-    private createGoToMenu(data: IMovie[]): HTMLElement { // TODO: use async method here   Corrected
+    private createGoToMenu(data: IMovie[]): HTMLElement {
+        // TODO: can you request data from here?
+        // can you create this ul without content before data arrived?
+        // can you store this ul into variable?
+        // can you access ul variable from closure?
+        // can you create li elements here and append to ul stored in variable?
         return new ElementBuilder('ul')
             .setClasses('film-nav')
             .setChildren(...data.map(movie => {
