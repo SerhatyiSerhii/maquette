@@ -18,6 +18,7 @@ export class WrapperComp implements IComp {
     private dataService: DataService = ServiceLocator.inject<DataService>(Services.DATA_SERVICE);
 
     setWrapperChildren(): HTMLElement[] {
+        // TODO: use async method here
         const allMovies = this.dataService.getAllMovies();
 
         const wrapperChildren: HTMLElement[] = [new MainSectionComp(300).render()];

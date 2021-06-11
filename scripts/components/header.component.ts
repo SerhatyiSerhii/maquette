@@ -16,20 +16,10 @@ export class HeaderComp extends ScrollableComp implements IComp {
     }
 
     private createGoToMenu(): HTMLElement {
-        // TODO: can you request data from here? yes
-        // can you create this ul without content before data arrived? yes
-        // can you store this ul into variable? yes
-        // can you access ul variable from closure? yes
-        // can you create li elements here and append to ul stored in variable? yes
-
-        // Corrected :)
-
-        const filmNav = new ElementBuilder('ul')
-        .setClasses('film-nav').build();
+        const filmNav = new ElementBuilder('ul').setClasses('film-nav').build();
 
         this.dataService.getAllMoviesAsync(data => {
-
-            const fimNavChildren = [];
+            const fimNavChildren = []; // TODO: what does Array.prototype.map return?
 
             data.map(movie => {
                 const linkToFilm = new ElementBuilder('a').setClasses('top-film').build();
@@ -48,7 +38,7 @@ export class HeaderComp extends ScrollableComp implements IComp {
                 fimNavChildren.push(new ElementBuilder('li').setChildren(linkToFilm).build());
             })
 
-            for (let i = fimNavChildren.length - 1; i >= 0; i--) {
+            for (let i = fimNavChildren.length - 1; i >= 0; i--) { // TODO: reverse + forEach?
                 filmNav.appendChild(fimNavChildren[i]);
             }
         });
