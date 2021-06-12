@@ -23,7 +23,7 @@ export class MainSectionComp extends ScrollableComp implements IComp {
         const arrowDown = new ElementBuilder('a').setClasses('arrow-down', 'arrow').build();
         arrowDown.innerHTML = this.arrowDown;
 
-        this.dataService.getAllMoviesAsync((movies) => {
+        this.dataService.getAllMovies((movies) => {
             const lastMovie = movies[movies.length - 1];
 
             arrowDown.addEventListener('click', (event) => {

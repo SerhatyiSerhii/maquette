@@ -3,11 +3,7 @@ import { IMovie } from '../models/i-movie';
 import { audioDataBase, dataBase } from './database';
 
 export class DataService {
-    getAllMovies(): IMovie[] {
-        return dataBase;
-    }
-
-    getAllMoviesAsync(callback: (data: IMovie[]) => void): void {
+    getAllMovies(callback: (data: IMovie[]) => void): void {
         setTimeout(() => {
             callback(dataBase);
         }, 300);

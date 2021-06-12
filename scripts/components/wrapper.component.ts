@@ -18,32 +18,24 @@ export class WrapperComp implements IComp {
     private dataService: DataService = ServiceLocator.inject<DataService>(Services.DATA_SERVICE);
 
     setWrapperChildren(element: HTMLElement): HTMLElement {
-        // TODO: use async method here
-
-        const main = element;
+        const main = element; // TODO: what for?
 
         main.appendChild(new MainSectionComp(300).render());
 
         const centralClasses: string[] = ['star-wars', 'runner', 'godfuther'];
         let centralClassesPosition = 0;
 
-        this.dataService.getAllMoviesAsync(data => {
-
-            const allMoviesAsync = data;
+        this.dataService.getAllMovies(data => {
+            const allMoviesAsync = data; // TODO: what for?
 
             for (let i = allMoviesAsync.length - 1; i >= 0; i--) {
                 const optionsAsync = allMoviesAsync[i];
-
                 const indicatorAsync = i % 3;
-
                 let strategyAsync: IDirectionStrategy;
 
                 if (indicatorAsync === 0 || indicatorAsync === 2) {
-
                     strategyAsync = new AsideDirectionStrategy(optionsAsync.bannerPath, optionsAsync.shortDescription, indicatorAsync === 0)
-
                 } else {
-
                     strategyAsync = new CentralDirectionStrategy(centralClasses[centralClassesPosition]);
 
                     centralClassesPosition++;
@@ -65,7 +57,6 @@ export class WrapperComp implements IComp {
                     const slider = new SliderComp(sliderOptions, 1);
 
                     this.slider.push(slider);
-
                     main.appendChild(slider.render());
                 }
             }
@@ -74,64 +65,13 @@ export class WrapperComp implements IComp {
         });
 
         return main;
-
-        // const allMovies = this.dataService.getAllMovies();
-
-        // const wrapperChildren: HTMLElement[] = [new MainSectionComp(300).render()];
-
-        // const centralClasses: string[] = ['star-wars', 'runner', 'godfuther'];
-        // let centralClassesPosition = 0;
-
-        // for (let i = allMovies.length - 1; i >= 0; i--) {
-        //     const options = allMovies[i];
-
-        //     const indicator = i % 3;
-
-        //     let strategy: IDirectionStrategy;
-
-        //     if (indicator === 0 || indicator === 2) {
-
-        //         strategy = new AsideDirectionStrategy(options.bannerPath, options.shortDescription, indicator === 0)
-
-        //     } else {
-
-        //         strategy = new CentralDirectionStrategy(centralClasses[centralClassesPosition]);
-
-        //         centralClassesPosition++;
-        //     }
-
-        //     const componenetInstance = new MovieSectionComp(options, strategy);
-
-        //     this.movieSectionService.addSection(options.id, componenetInstance);
-
-        //     wrapperChildren.push(componenetInstance.render());
-
-        //     if (i % 3 === 1) {
-        //         const sliderOptions: IVideo[] = [];
-
-        //         for (let j = i + 2; j >= i; j--) {
-        //             sliderOptions.push(allMovies[j].video);
-        //         }
-
-        //         const slider = new SliderComp(sliderOptions, 1);
-
-        //         this.slider.push(slider);
-
-        //         wrapperChildren.push(slider.render());
-        //     }
-        // }
-
-        // wrapperChildren.push(new SignUpComp().render());
-
-        // return wrapperChildren;
     }
 
     init(): void {
-        // for (let slideItem of this.slider) {
-        //     slideItem.init();
-        // }
-
-        this.dataService.getAllMoviesAsync(() => {
+        // TODO: so to have this inited you decided to fetch data one more time
+        // what if you had a millions of data which took about 10 seconds to fetch it, would you call it one more time?
+        // since main is already in the dom when data arrived - you can get rid of this method and call init directly when slider appended
+        this.dataService.getAllMovies(() => {
             for (let slideItem of this.slider) {
                 slideItem.init();
             }
@@ -139,13 +79,10 @@ export class WrapperComp implements IComp {
     }
 
     render(): HTMLElement {
-
         const singleMain = new ElementBuilder('main').build();
 
-        const readyMain = this.setWrapperChildren(singleMain);
+        const readyMain = this.setWrapperChildren(singleMain); // TODO: what the difference between single main and ready main?
 
         return readyMain;
-
-        // return new ElementBuilder('main').setChildren(...this.setWrapperChildren()).build();
     }
 }

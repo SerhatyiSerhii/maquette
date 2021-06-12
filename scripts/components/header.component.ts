@@ -18,9 +18,8 @@ export class HeaderComp extends ScrollableComp implements IComp {
     private createGoToMenu(): HTMLElement {
         const filmNav = new ElementBuilder('ul').setClasses('film-nav').build();
 
-        this.dataService.getAllMoviesAsync(data => {
-            // const fimNavChildren = []; // TODO: what does Array.prototype.map return?    It returns array :)
-
+        this.dataService.getAllMovies(data => {
+            // TODO: you don't even need a variable if you use chaining
             const fimNavChildren = data.map(movie => {
                 const linkToFilm = new ElementBuilder('a').setClasses('top-film').build();
 
@@ -37,10 +36,6 @@ export class HeaderComp extends ScrollableComp implements IComp {
 
                 return new ElementBuilder('li').setChildren(linkToFilm).build();
             })
-
-            // for (let i = fimNavChildren.length - 1; i >= 0; i--) { // TODO: reverse + forEach?   Corrected
-            //     filmNav.appendChild(fimNavChildren[i]);
-            // }
 
             fimNavChildren.reverse();
 
