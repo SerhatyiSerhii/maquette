@@ -19,8 +19,8 @@ export class HeaderComp extends ScrollableComp implements IComp {
         const filmNav = new ElementBuilder('ul').setClasses('film-nav').build();
 
         this.dataService.getAllMovies(data => {
-            // TODO: you don't even need a variable if you use chaining
-            const fimNavChildren = data.map(movie => {
+            // TODO: you don't even need a variable if you use chaining     Ok, got it. Corrected
+            data.map(movie => {
                 const linkToFilm = new ElementBuilder('a').setClasses('top-film').build();
 
                 linkToFilm.textContent = generateMoviePosition(movie.position);
@@ -35,13 +35,9 @@ export class HeaderComp extends ScrollableComp implements IComp {
                 });
 
                 return new ElementBuilder('li').setChildren(linkToFilm).build();
-            })
-
-            fimNavChildren.reverse();
-
-            fimNavChildren.forEach(child => {
+            }).reverse().forEach(child => {
                 filmNav.appendChild(child);
-            })
+            });
         });
 
         return filmNav;

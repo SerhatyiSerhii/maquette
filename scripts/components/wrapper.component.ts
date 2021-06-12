@@ -14,22 +14,21 @@ import { SliderComp } from './slider.component';
 
 export class WrapperComp implements IComp {
     private movieSectionService: MovieSectionService = ServiceLocator.inject<MovieSectionService>(Services.MOVIE_SECTION_SERVICE);
-    private slider: SliderComp[] = [];
     private dataService: DataService = ServiceLocator.inject<DataService>(Services.DATA_SERVICE);
 
     setWrapperChildren(element: HTMLElement): HTMLElement {
-        const main = element; // TODO: what for?
+        // const main = element; // TODO: what for?     Deleted
 
-        main.appendChild(new MainSectionComp(300).render());
+        element.appendChild(new MainSectionComp(300).render());
 
         const centralClasses: string[] = ['star-wars', 'runner', 'godfuther'];
         let centralClassesPosition = 0;
 
         this.dataService.getAllMovies(data => {
-            const allMoviesAsync = data; // TODO: what for?
+            // const allMoviesAsync = data; // TODO: what for?   It can be deleted :)
 
-            for (let i = allMoviesAsync.length - 1; i >= 0; i--) {
-                const optionsAsync = allMoviesAsync[i];
+            for (let i = data.length - 1; i >= 0; i--) {
+                const optionsAsync = data[i];
                 const indicatorAsync = i % 3;
                 let strategyAsync: IDirectionStrategy;
 
@@ -45,44 +44,48 @@ export class WrapperComp implements IComp {
 
                 this.movieSectionService.addSection(optionsAsync.id, componenetInstance);
 
-                main.appendChild(componenetInstance.render());
+                element.appendChild(componenetInstance.render());
 
                 if (i % 3 === 1) {
                     const sliderOptions: IVideo[] = [];
 
                     for (let j = i + 2; j >= i; j--) {
-                        sliderOptions.push(allMoviesAsync[j].video);
+                        sliderOptions.push(data[j].video);
                     }
 
                     const slider = new SliderComp(sliderOptions, 1);
 
-                    this.slider.push(slider);
-                    main.appendChild(slider.render());
+                    element.appendChild(slider.render());
+
+                    slider.init();
                 }
             }
 
-            main.appendChild(new SignUpComp().render());
+            element.appendChild(new SignUpComp().render());
         });
 
-        return main;
+        return element;
     }
 
-    init(): void {
-        // TODO: so to have this inited you decided to fetch data one more time
-        // what if you had a millions of data which took about 10 seconds to fetch it, would you call it one more time?
-        // since main is already in the dom when data arrived - you can get rid of this method and call init directly when slider appended
-        this.dataService.getAllMovies(() => {
-            for (let slideItem of this.slider) {
-                slideItem.init();
-            }
-        })
-    }
+    // init(): void {
+    //     // TODO: so to have this inited you decided to fetch data one more time
+    //     // what if you had a millions of data which took about 10 seconds to fetch it, would you call it one more time?
+    //     // since main is already in the dom when data arrived - you can get rid of this method and call init directly when slider appended
+
+            //  Corrected
+
+    //     this.dataService.getAllMovies(() => {
+    //         for (let slideItem of this.slider) {
+    //             slideItem.init();
+    //         }
+    //     })
+    // }
 
     render(): HTMLElement {
-        const singleMain = new ElementBuilder('main').build();
+        // const singleMain = new ElementBuilder('main').build();
 
-        const readyMain = this.setWrapperChildren(singleMain); // TODO: what the difference between single main and ready main?
+        // const readyMain = this.setWrapperChildren(singleMain); // TODO: what the difference between single main and ready main?   Single main is an element without children and ready main is an element with children. Corrected :)
 
-        return readyMain;
+        return this.setWrapperChildren(new ElementBuilder('main').build());
     }
 }

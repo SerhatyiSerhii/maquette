@@ -4,12 +4,8 @@ import { WrapperComp } from './wrapper.component';
 
 export class AppComp {
     init(): void {
-        const wrapper = new WrapperComp();
-
         document.body.appendChild(new HeaderComp(300).render());
-        document.body.appendChild(wrapper.render());
+        document.body.appendChild(new WrapperComp().render());
         document.body.appendChild(new FooterComp().render());
-
-        wrapper.init();
     }
 }
