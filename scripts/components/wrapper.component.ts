@@ -17,66 +17,135 @@ export class WrapperComp implements IComp {
     private slider: SliderComp[] = [];
     private dataService: DataService = ServiceLocator.inject<DataService>(Services.DATA_SERVICE);
 
-    setWrapperChildren(): HTMLElement[] {
+    setWrapperChildren(element: HTMLElement): HTMLElement {
         // TODO: use async method here
-        const allMovies = this.dataService.getAllMovies();
 
-        const wrapperChildren: HTMLElement[] = [new MainSectionComp(300).render()];
+        const main = element;
+
+        main.appendChild(new MainSectionComp(300).render());
 
         const centralClasses: string[] = ['star-wars', 'runner', 'godfuther'];
         let centralClassesPosition = 0;
 
-        for (let i = allMovies.length - 1; i >= 0; i--) {
-            const options = allMovies[i];
+        this.dataService.getAllMoviesAsync(data => {
 
-            const indicator = i % 3;
+            const allMoviesAsync = data;
 
-            let strategy: IDirectionStrategy;
+            for (let i = allMoviesAsync.length - 1; i >= 0; i--) {
+                const optionsAsync = allMoviesAsync[i];
 
-            if (indicator === 0 || indicator === 2) {
+                const indicatorAsync = i % 3;
 
-                strategy = new AsideDirectionStrategy(options.bannerPath, options.shortDescription, indicator === 0)
+                let strategyAsync: IDirectionStrategy;
 
-            } else {
+                if (indicatorAsync === 0 || indicatorAsync === 2) {
 
-                strategy = new CentralDirectionStrategy(centralClasses[centralClassesPosition]);
+                    strategyAsync = new AsideDirectionStrategy(optionsAsync.bannerPath, optionsAsync.shortDescription, indicatorAsync === 0)
 
-                centralClassesPosition++;
-            }
+                } else {
 
-            const componenetInstance = new MovieSectionComp(options, strategy);
+                    strategyAsync = new CentralDirectionStrategy(centralClasses[centralClassesPosition]);
 
-            this.movieSectionService.addSection(options.id, componenetInstance);
-
-            wrapperChildren.push(componenetInstance.render());
-
-            if (i % 3 === 1) {
-                const sliderOptions: IVideo[] = [];
-
-                for (let j = i + 2; j >= i; j--) {
-                    sliderOptions.push(allMovies[j].video);
+                    centralClassesPosition++;
                 }
 
-                const slider = new SliderComp(sliderOptions, 1);
+                const componenetInstance = new MovieSectionComp(optionsAsync, strategyAsync);
 
-                this.slider.push(slider);
+                this.movieSectionService.addSection(optionsAsync.id, componenetInstance);
 
-                wrapperChildren.push(slider.render());
+                main.appendChild(componenetInstance.render());
+
+                if (i % 3 === 1) {
+                    const sliderOptions: IVideo[] = [];
+
+                    for (let j = i + 2; j >= i; j--) {
+                        sliderOptions.push(allMoviesAsync[j].video);
+                    }
+
+                    const slider = new SliderComp(sliderOptions, 1);
+
+                    this.slider.push(slider);
+
+                    main.appendChild(slider.render());
+                }
             }
-        }
 
-        wrapperChildren.push(new SignUpComp().render());
+            main.appendChild(new SignUpComp().render());
+        });
 
-        return wrapperChildren;
+        return main;
+
+        // const allMovies = this.dataService.getAllMovies();
+
+        // const wrapperChildren: HTMLElement[] = [new MainSectionComp(300).render()];
+
+        // const centralClasses: string[] = ['star-wars', 'runner', 'godfuther'];
+        // let centralClassesPosition = 0;
+
+        // for (let i = allMovies.length - 1; i >= 0; i--) {
+        //     const options = allMovies[i];
+
+        //     const indicator = i % 3;
+
+        //     let strategy: IDirectionStrategy;
+
+        //     if (indicator === 0 || indicator === 2) {
+
+        //         strategy = new AsideDirectionStrategy(options.bannerPath, options.shortDescription, indicator === 0)
+
+        //     } else {
+
+        //         strategy = new CentralDirectionStrategy(centralClasses[centralClassesPosition]);
+
+        //         centralClassesPosition++;
+        //     }
+
+        //     const componenetInstance = new MovieSectionComp(options, strategy);
+
+        //     this.movieSectionService.addSection(options.id, componenetInstance);
+
+        //     wrapperChildren.push(componenetInstance.render());
+
+        //     if (i % 3 === 1) {
+        //         const sliderOptions: IVideo[] = [];
+
+        //         for (let j = i + 2; j >= i; j--) {
+        //             sliderOptions.push(allMovies[j].video);
+        //         }
+
+        //         const slider = new SliderComp(sliderOptions, 1);
+
+        //         this.slider.push(slider);
+
+        //         wrapperChildren.push(slider.render());
+        //     }
+        // }
+
+        // wrapperChildren.push(new SignUpComp().render());
+
+        // return wrapperChildren;
     }
 
     init(): void {
-        for (let slideItem of this.slider) {
-            slideItem.init();
-        }
+        // for (let slideItem of this.slider) {
+        //     slideItem.init();
+        // }
+
+        this.dataService.getAllMoviesAsync(() => {
+            for (let slideItem of this.slider) {
+                slideItem.init();
+            }
+        })
     }
 
     render(): HTMLElement {
-        return new ElementBuilder('main').setChildren(...this.setWrapperChildren()).build();
+
+        const singleMain = new ElementBuilder('main').build();
+
+        const readyMain = this.setWrapperChildren(singleMain);
+
+        return readyMain;
+
+        // return new ElementBuilder('main').setChildren(...this.setWrapperChildren()).build();
     }
 }

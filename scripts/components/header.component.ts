@@ -19,9 +19,9 @@ export class HeaderComp extends ScrollableComp implements IComp {
         const filmNav = new ElementBuilder('ul').setClasses('film-nav').build();
 
         this.dataService.getAllMoviesAsync(data => {
-            const fimNavChildren = []; // TODO: what does Array.prototype.map return?
+            // const fimNavChildren = []; // TODO: what does Array.prototype.map return?    It returns array :)
 
-            data.map(movie => {
+            const fimNavChildren = data.map(movie => {
                 const linkToFilm = new ElementBuilder('a').setClasses('top-film').build();
 
                 linkToFilm.textContent = generateMoviePosition(movie.position);
@@ -35,12 +35,18 @@ export class HeaderComp extends ScrollableComp implements IComp {
                     }
                 });
 
-                fimNavChildren.push(new ElementBuilder('li').setChildren(linkToFilm).build());
+                return new ElementBuilder('li').setChildren(linkToFilm).build();
             })
 
-            for (let i = fimNavChildren.length - 1; i >= 0; i--) { // TODO: reverse + forEach?
-                filmNav.appendChild(fimNavChildren[i]);
-            }
+            // for (let i = fimNavChildren.length - 1; i >= 0; i--) { // TODO: reverse + forEach?   Corrected
+            //     filmNav.appendChild(fimNavChildren[i]);
+            // }
+
+            fimNavChildren.reverse();
+
+            fimNavChildren.forEach(child => {
+                filmNav.appendChild(child);
+            })
         });
 
         return filmNav;
