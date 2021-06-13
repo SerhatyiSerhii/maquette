@@ -19,25 +19,27 @@ export class HeaderComp extends ScrollableComp implements IComp {
         const filmNav = new ElementBuilder('ul').setClasses('film-nav').build();
 
         this.dataService.getAllMovies(data => {
-            // TODO: you don't even need a variable if you use chaining     Ok, got it. Corrected
-            data.map(movie => {
-                const linkToFilm = new ElementBuilder('a').setClasses('top-film').build();
+            data
+                .map(movie => {
+                    const linkToFilm = new ElementBuilder('a').setClasses('top-film').build();
 
-                linkToFilm.textContent = generateMoviePosition(movie.position);
-                linkToFilm.addEventListener('click', (event) => {
-                    event.preventDefault();
+                    linkToFilm.textContent = generateMoviePosition(movie.position);
+                    linkToFilm.addEventListener('click', (event) => {
+                        event.preventDefault();
 
-                    this.scrollToFilm(movie.id);
+                        this.scrollToFilm(movie.id);
 
-                    if (window.innerWidth < 768) {
-                        this.toggleBurger();
-                    }
+                        if (window.innerWidth < 768) {
+                            this.toggleBurger();
+                        }
+                    });
+
+                    return new ElementBuilder('li').setChildren(linkToFilm).build();
+                })
+                .reverse()
+                .forEach(child => {
+                    filmNav.appendChild(child);
                 });
-
-                return new ElementBuilder('li').setChildren(linkToFilm).build();
-            }).reverse().forEach(child => {
-                filmNav.appendChild(child);
-            });
         });
 
         return filmNav;

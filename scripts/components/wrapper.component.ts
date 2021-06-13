@@ -17,16 +17,12 @@ export class WrapperComp implements IComp {
     private dataService: DataService = ServiceLocator.inject<DataService>(Services.DATA_SERVICE);
 
     setWrapperChildren(element: HTMLElement): HTMLElement {
-        // const main = element; // TODO: what for?     Deleted
-
         element.appendChild(new MainSectionComp(300).render());
 
         const centralClasses: string[] = ['star-wars', 'runner', 'godfuther'];
         let centralClassesPosition = 0;
 
         this.dataService.getAllMovies(data => {
-            // const allMoviesAsync = data; // TODO: what for?   It can be deleted :)
-
             for (let i = data.length - 1; i >= 0; i--) {
                 const optionsAsync = data[i];
                 const indicatorAsync = i % 3;
@@ -67,25 +63,7 @@ export class WrapperComp implements IComp {
         return element;
     }
 
-    // init(): void {
-    //     // TODO: so to have this inited you decided to fetch data one more time
-    //     // what if you had a millions of data which took about 10 seconds to fetch it, would you call it one more time?
-    //     // since main is already in the dom when data arrived - you can get rid of this method and call init directly when slider appended
-
-            //  Corrected
-
-    //     this.dataService.getAllMovies(() => {
-    //         for (let slideItem of this.slider) {
-    //             slideItem.init();
-    //         }
-    //     })
-    // }
-
     render(): HTMLElement {
-        // const singleMain = new ElementBuilder('main').build();
-
-        // const readyMain = this.setWrapperChildren(singleMain); // TODO: what the difference between single main and ready main?   Single main is an element without children and ready main is an element with children. Corrected :)
-
         return this.setWrapperChildren(new ElementBuilder('main').build());
     }
 }
