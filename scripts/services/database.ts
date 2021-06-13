@@ -16,9 +16,9 @@ export const dataBase: IMovie[] = [
         name: 'The Godfather',
         description: `The Godfather is one of cinema's best works. There are so many pieces in that movie that just work, and the soundtrack is part of it. Because the movie deals with crime, gangs, and the works, the music is designed to reflect that.`,
         video: {
-            path: 'videos/o-brother-where-art-thou.mp4',
-            bannerPath: 'images/o-brother-image.jpg',
-            bannerDescription: 'confess before the end'
+            path: 'videos/the-godfather.mp4',
+            bannerPath: 'images/group33.jpg',
+            bannerDescription: 'gungsters discussing a deal'
         }
     },
     {
@@ -29,9 +29,9 @@ export const dataBase: IMovie[] = [
         shortDescription: 'space odyssey',
         description: `The movie tries very hard to sell the idea of what space exploration would be like, and its themes of isolation and sophistication are further enhanced by its soundtrack. 2001: A Space Odyssey makes use of classical themes and motifs to narrow down a tone that makes the movie feel all its own.`,
         video: {
-            path: 'videos/the-godfather.mp4',
-            bannerPath: 'images/group33.jpg',
-            bannerDescription: 'gungsters discussing a deal'
+            path: 'videos/2001-a-space-odyssey.mp4',
+            bannerPath: 'images/amanda.jpg',
+            bannerDescription: 'amanda from a space odyssey'
         }
     },
     {
@@ -42,9 +42,9 @@ export const dataBase: IMovie[] = [
         shortDescription: 'o brother where art thou',
         description: `O Brother, Where Art Thou? is a movie that fires on all cylinders. It takes place in the Great Depression and involves a group of convicts who go on a wild journey to find a treasure of sorts. With this film based in a stylistic period in history, the soundtrack was designed to match it.`,
         video: {
-            path: 'videos/2001-a-space-odyssey.mp4',
-            bannerPath: 'images/amanda.jpg',
-            bannerDescription: 'amanda from a space odyssey'
+            path: 'videos/o-brother-where-art-thou.mp4',
+            bannerPath: 'images/o-brother-image.jpg',
+            bannerDescription: 'confess before the end'
         }
     },
     {
