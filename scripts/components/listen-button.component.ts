@@ -14,7 +14,7 @@ export class ListenBtnComp implements IComp {
         this.movieId = movieId
     }
 
-    render(): HTMLElement {
+    public render(): HTMLElement {
         const listenBtn = new ElementBuilder('button').setClasses('listen').build();
         listenBtn.textContent = 'listen';
 

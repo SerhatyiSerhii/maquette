@@ -35,13 +35,13 @@ export class SliderComp implements IComp {
         this.framesLine.style.transform = `translateX(${-this.currentIndex * 100}%)`;
     }
 
-    init(): void {
+    public init(): void {
         for (let slideFrameItem of this.sliderFrameComponent) {
             slideFrameItem.init();
         }
     }
 
-    render(): HTMLElement {
+    public render(): HTMLElement {
         const sliderFrames = this.content.map((frameOptions) => {
             const slide = new SliderFrameComp(frameOptions);
 

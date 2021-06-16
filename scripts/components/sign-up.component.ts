@@ -2,7 +2,7 @@ import { IComp } from '../models/i-comp';
 import { ElementBuilder } from '../utilities/element-builder';
 
 export class SignUpComp implements IComp {
-    render(): HTMLElement {
+    public render(): HTMLElement {
         const textInput = new ElementBuilder('input').setAttributes({ 'type': 'text', 'name': 'email', 'placeholder': 'enter your email', 'autocomplete': 'off' }).build();
         const submitInput = new ElementBuilder('input').setAttributes({ 'type': 'submit', 'value': 'submit' }).build();
         const emailSpace = new ElementBuilder('div').setClasses('email-space').setChildren(textInput, submitInput).build();

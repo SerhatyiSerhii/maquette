@@ -46,15 +46,15 @@ export class ModalWindowComp implements IComp {
         this.mediaLength.reset();
     }
 
-    showModalWindow(): void {
+    public showModalWindow(): void {
         this.container.classList.remove('visually-hidden');
     }
 
-    init(): void {
+    public init(): void {
         this.volume.init();
     }
 
-    render(): HTMLElement {
+    public render(): HTMLElement {
         const btnHandler = (isActive: boolean) => {
 
             if (isActive) {

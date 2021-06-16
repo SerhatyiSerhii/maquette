@@ -22,7 +22,7 @@ export class FooterComp implements IComp {
         </svg>`
     ];
 
-    render(): HTMLElement {
+    public render(): HTMLElement {
         const socialMediaArr = this.socialMediaIcons.map(iconElement => {
             const aTag = new ElementBuilder('a').setAttributes({ 'href': '#' }).setClasses('circle').build();
 

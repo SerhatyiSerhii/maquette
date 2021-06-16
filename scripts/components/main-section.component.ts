@@ -8,7 +8,7 @@ export class MainSectionComp extends ScrollableComp implements IComp {
     private arrowDown: string = `<svg width="43" height="60" viewBox="0 0 43 60" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 33L21 58M21 58L41.5 32M21 58V0" stroke-width="2" /></svg>`;
     private dataService: DataService = ServiceLocator.inject<DataService>(Services.DATA_SERVICE);
 
-    render(): HTMLElement {
+    public render(): HTMLElement {
         const accentText = new ElementBuilder('span').setClasses('accent-text').build();
         accentText.textContent = 'The 10';
 

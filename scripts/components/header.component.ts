@@ -55,7 +55,7 @@ export class HeaderComp extends ScrollableComp implements IComp {
         });
     }
 
-    render(): HTMLElement {
+    public render(): HTMLElement {
         this.boxMenu = new ElementBuilder('ul')
             .setClasses('box-menu')
             .setChildren(...['search', 'add to the favorites', 'faq', 'go to'].map(searchMenu => {

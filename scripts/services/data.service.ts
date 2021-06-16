@@ -1,13 +1,8 @@
 import { IAudio } from '../models/i-audio';
 import { IMovie } from '../models/i-movie';
-// import { audioDataBase, dataBase } from './database';
 
 export class DataService {
-    getAllMovies(callback: (data: IMovie[]) => void): void {
-        // setTimeout(() => {
-        //     callback(dataBase);
-        // }, 300);
-
+    public getAllMovies(callback: (data: IMovie[]) => void): void {
         const xml = new XMLHttpRequest();
 
         xml.open('GET', 'http://localhost:8080/movies');
@@ -21,11 +16,7 @@ export class DataService {
         }
     }
 
-    getAudioSourceById(id: number, callback: (audio: IAudio) => void): void {
-        // setTimeout(() => {
-        //     callback(audioDataBase.find(entity => entity.id === id));
-        // }, 300);
-
+    public getAudioSourceById(id: number, callback: (audio: IAudio) => void): void {
         const xml = new XMLHttpRequest();
 
         xml.open('GET', `http://localhost:8080/audios?id=${id}`);

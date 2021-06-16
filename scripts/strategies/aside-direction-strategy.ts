@@ -4,7 +4,7 @@ import { ElementBuilder } from '../utilities/element-builder';
 export class AsideDirectionStrategy implements IDirectionStrategy {
     constructor(private bannerPath: string, private shortDescription: string, private straight: boolean) { }
 
-    buildContent(section: ElementBuilder, descriptionContent: ElementBuilder, filmContent: HTMLElement): void {
+    public buildContent(section: ElementBuilder, descriptionContent: ElementBuilder, filmContent: HTMLElement): void {
         const picture = new ElementBuilder('img');
 
         picture.setAttributes({ 'src': this.bannerPath, 'alt': this.shortDescription });

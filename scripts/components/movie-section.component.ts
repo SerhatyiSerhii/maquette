@@ -15,11 +15,11 @@ export class MovieSectionComp implements IComp {
         this.directionStrategy = directionStrategy;
     }
 
-    get movieSection(): HTMLElement {
+    public get movieSection(): HTMLElement {
         return this.section;
     }
 
-    render(): HTMLElement {
+    public render(): HTMLElement {
         const section = new ElementBuilder('section');
 
         const descriptionContent = new ElementBuilder('div').setClasses('description-content');

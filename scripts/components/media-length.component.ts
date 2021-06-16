@@ -22,7 +22,7 @@ export class MediaLengthComp implements IComp {
         this.mediaElement.currentTime = (inBarPosition * this.mediaElement.duration) / 100;
     }
 
-    progress(onProgress: () => void): void {
+    public progress(onProgress: () => void): void {
         const position = (this.mediaElement.currentTime / this.mediaElement.duration) * 100;
 
         this.currentLength.style.width = `${position}%`;
@@ -38,11 +38,11 @@ export class MediaLengthComp implements IComp {
         }
     }
 
-    reset(): void {
+    public reset(): void {
         this.currentLength.style.width = String(0);
     }
 
-    render(): HTMLElement {
+    public render(): HTMLElement {
         this.currentLength = new ElementBuilder('div').setClasses('current-length').build();
         this.container = new ElementBuilder('div').setClasses('media-length').setChildren(this.currentLength).build();
 

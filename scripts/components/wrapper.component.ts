@@ -16,7 +16,7 @@ export class WrapperComp implements IComp {
     private movieSectionService: MovieSectionService = ServiceLocator.inject<MovieSectionService>(Services.MOVIE_SECTION_SERVICE);
     private dataService: DataService = ServiceLocator.inject<DataService>(Services.DATA_SERVICE);
 
-    setWrapperChildren(element: HTMLElement): HTMLElement {
+    public setWrapperChildren(element: HTMLElement): HTMLElement {
         element.appendChild(new MainSectionComp(300).render());
 
         const centralClasses: string[] = ['star-wars', 'runner', 'godfuther'];
@@ -63,7 +63,7 @@ export class WrapperComp implements IComp {
         return element;
     }
 
-    render(): HTMLElement {
+    public render(): HTMLElement {
         return this.setWrapperChildren(new ElementBuilder('main').build());
     }
 }

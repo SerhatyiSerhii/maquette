@@ -8,25 +8,25 @@ export class ElementBuilder<T extends HTMLElement = HTMLElement>  {
         this.tagName = elementName;
     }
 
-    setClasses(...classes: string[]): this {
+    public setClasses(...classes: string[]): this {
         this.classes = classes;
 
         return this;
     }
 
-    setAttributes(obj: { [attr: string]: string }): this {
+    public setAttributes(obj: { [attr: string]: string }): this {
         this.attributes = obj;
 
         return this;
     }
 
-    setChildren(...children: HTMLElement[]): this {
+    public setChildren(...children: HTMLElement[]): this {
         this.children = children;
 
         return this;
     }
 
-    build(): T {
+    public build(): T {
         const element = document.createElement(this.tagName);
 
         if (this.classes != null) {

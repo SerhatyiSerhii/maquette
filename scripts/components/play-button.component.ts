@@ -9,11 +9,11 @@ export class PlayBtnComp implements IComp {
         this.handler = handler;
     }
 
-    removePlayState(): void {
+    public removePlayState(): void {
         this.buttonEl.classList.remove('play-active');
     }
 
-    render(): HTMLElement {
+    public render(): HTMLElement {
         this.buttonEl = new ElementBuilder('button').setClasses('btn-play').build();
 
         this.buttonEl.addEventListener('click', () => {

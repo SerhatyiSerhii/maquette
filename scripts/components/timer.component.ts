@@ -19,14 +19,14 @@ export class TimerComp implements IComp {
         return `${minAsString}:${secAsString}`;
     }
 
-    showTime(): void {
+    public showTime(): void {
         const minSecCurTime = this.calcTime(this.mediaElement.currentTime);
         const minSecDurat = this.calcTime(this.mediaElement.duration);
 
         this.container.textContent = `${minSecCurTime} / ${minSecDurat}`;
     }
 
-    render(): HTMLElement {
+    public render(): HTMLElement {
         this.container = new ElementBuilder('div').setClasses('timer').build();
         this.container.textContent = '00:00 / 00:00';
 

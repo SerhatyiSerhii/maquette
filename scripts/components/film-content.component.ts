@@ -7,7 +7,7 @@ export class FilmContentComp implements IComp {
 
     constructor(private positionMovie: string, private titleMovie: string, private aboutMovie: string, private movieId: number) { }
 
-    render(): HTMLElement {
+    public render(): HTMLElement {
         const movieNumber = new ElementBuilder('span').build();
         movieNumber.textContent = this.positionMovie;
 

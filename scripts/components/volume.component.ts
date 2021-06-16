@@ -11,7 +11,7 @@ export class VolumeComp implements IComp {
         this.mediaElement = mediaElement;
     }
 
-    init(): void {
+    public init(): void {
         this.volumeHandle.style.width = `${this.container.clientWidth - this.label.clientWidth}px`;
     }
 
@@ -34,7 +34,7 @@ export class VolumeComp implements IComp {
         this.mediaElement.volume = volumeIndex;
     }
 
-    render(): HTMLElement {
+    public render(): HTMLElement {
         this.label = new ElementBuilder('div').setClasses('label').build();
         this.volumeHandle = new ElementBuilder('div').setClasses('volume-handle').setChildren(this.label).build();
         this.container = new ElementBuilder('div').setClasses('volume').setChildren(this.volumeHandle).build();

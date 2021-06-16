@@ -19,11 +19,11 @@ export class SliderFrameComp implements IComp {
         this.options = options;
     }
 
-    init(): void {
+    public init(): void {
         this.volume.init();
     }
 
-    render(): HTMLElement {
+    public render(): HTMLElement {
         const source = new ElementBuilder('source').setAttributes({ 'src': this.options.path }).build();
         const video = new ElementBuilder<HTMLVideoElement>('video').setChildren(source).build();
         const timer = new TimerComp(video);
