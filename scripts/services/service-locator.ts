@@ -1,5 +1,5 @@
 // Implemented Service Locator instead of Dependency Injector to simplify development
-export class ServiceLocator {
+export class ServiceLocator { // TODO: publics?
     private static serviceContainer: { [key: string]: {} } = {};
 
     static register(key: Services, service: object): void {
