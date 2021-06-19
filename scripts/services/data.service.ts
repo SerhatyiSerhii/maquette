@@ -2,34 +2,56 @@ import { IAudio } from '../models/i-audio';
 import { IMovie } from '../models/i-movie';
 
 export class DataService {
+    private url = 'http://localhost:8080/';
+
     public getAllMovies(callback: (data: IMovie[]) => void): void {
-        const xml = new XMLHttpRequest(); // TODO: I'd say that is xhr, not xml
+        const xhr = new XMLHttpRequest(); // TODO: I'd say that is xhr, not xml     Corrected
 
         // TODO: you can skip base url because if address is not url-like - it will automatically add base url
         // but usually base url is stored in config file and just used from there to build whole url string
         // so, better to store base url in property for now
-        xml.open('GET', 'http://localhost:8080/movies');
 
-        xml.responseType = 'json';
+        // Corrected
+        xhr.open('GET', `${this.url}movies`);
 
-        xml.send();
+        xhr.responseType = 'json';
 
-        xml.onload = () => { // TODO: you can also use addEventListener as it's more modern way
-            callback(xml.response);
-        }
+        xhr.send();
+
+        // xhr.onload = () => { // TODO: you can also use addEventListener as it's more modern way   Corrected
+
+        xhr.addEventListener('load', () => {
+            callback(xhr.response);
+        });
     }
 
     public getAudioSourceById(id: number, callback: (audio: IAudio) => void): void {
-        const xml = new XMLHttpRequest();
+        const xhr = new XMLHttpRequest();
 
-        xml.open('GET', `http://localhost:8080/audios?id=${id}`);
+        // xhr.open('GET', `${this.url}audios?id=${id}`);
 
-        xml.responseType = 'json';
+        // xhr.responseType = 'json';
 
-        xml.send();
+        // xhr.send();
 
-        xml.onload = () => {
-            callback(xml.response);
-        }
+        // xhr.addEventListener('load', () => {
+        //     callback(xhr.response);
+        // });
+
+        const json = JSON.stringify({
+            id: id,
+        });
+
+        xhr.open('POST', `${this.url}audios`);
+
+        xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+
+        xhr.responseType = 'json';
+
+        xhr.send(json);
+
+        xhr.addEventListener('load', () => {
+            callback(xhr.response);
+        });
     }
 }
