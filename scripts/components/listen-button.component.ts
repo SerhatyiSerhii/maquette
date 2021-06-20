@@ -18,7 +18,7 @@ export class ListenBtnComp implements IComp {
         const listenBtn = new ElementBuilder('button').setClasses('listen').build();
         listenBtn.textContent = 'listen';
 
-        listenBtn.addEventListener('click', async () => {
+        listenBtn.addEventListener('click', () => {
             this.dataService.getAudioSourceById(this.movieId).then(result => {
                 const modalWindow = new ModalWindowComp(result.audioPath, this.movieName);
 
