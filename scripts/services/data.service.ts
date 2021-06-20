@@ -5,23 +5,9 @@ export class DataService {
     private url = 'http://localhost:8080/';
 
     public getAllMovies(): Promise<IMovie[]> {
-        // const xhr = new XMLHttpRequest(); // TODO: use fetch api     Corrected
-
-        // xhr.open('GET', `${this.url}movies`);
-
-        // xhr.responseType = 'json';
-
-        // xhr.send();
-
-        // return new Promise<IMovie[]>(resolve => {
-        //    xhr.addEventListener('load', () => {
-        //        resolve(xhr.response);
-        //    })
-        // });
-
         const response = fetch(`${this.url}movies`);
 
-        return new Promise<IMovie[]>(resolve => {
+        return new Promise<IMovie[]>(resolve => { // TODO: fetch returns promise itself
             response.then(result => {
                 resolve(result.json());
             })
@@ -29,26 +15,6 @@ export class DataService {
     }
 
     public getAudioSourceById(id: number): Promise<IAudio> {
-        // const xhr = new XMLHttpRequest(); // TODO: use fetch api     Corrected
-
-        // const json = JSON.stringify({
-        //     id
-        // });
-
-        // xhr.open('POST', `${this.url}audios`);
-
-        // xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
-
-        // xhr.responseType = 'json';
-
-        // xhr.send(json);
-
-        // return new Promise<IAudio>(resolve => {
-        //     xhr.addEventListener('load', () => {
-        //         resolve(xhr.response);
-        //     });
-        // })
-
         const settings = {
             method: 'POST',
             body: JSON.stringify({id}),
@@ -59,7 +25,7 @@ export class DataService {
 
         const response = fetch(`${this.url}audios`, settings);
 
-        return new Promise<IAudio>(resolve => {
+        return new Promise<IAudio>(resolve => { // TODO: fetch returns promise itself
             response.then(result => {
                 resolve(result.json());
             })

@@ -14,6 +14,16 @@ app.use(express.static(__dirname + '/..'));
 app.get('/', (_req, res) => res.sendFile(__dirname + "/../index.html"));
 app.get('/movies', (_req, res) => res.json(dataBase));
 
+app.get('/audios/:id', (req, res) => {
+    const movieId = Number(req.params.id);
+    const entity = audioDataBase.find(e => e.id === movieId);
+
+    res.json(entity);
+});
+
+/**
+ * @deprecated
+ */
 app.post('/audios', (req, res) => {
     const movieId = req.body.id;
     const entity = audioDataBase.find(e => e.id === movieId);
