@@ -5,7 +5,7 @@ export class DataService {
     private url = 'http://localhost:8080/';
 
     // public getAllMovies(): Promise<IMovie[]>;
-    public async getAllMovies2(): Promise<IMovie[]> {
+    public async getAllMovies(): Promise<IMovie[]> {
         // Method without xhr
         // const response = fetch(`${this.url}movies`);
 
@@ -28,19 +28,19 @@ export class DataService {
         });
     }
 
-    public getAllMovies(callback: (data: IMovie[]) => void): void {
-        const xhr = new XMLHttpRequest();
+    // public getAllMovies(callback: (data: IMovie[]) => void): void {
+    //     const xhr = new XMLHttpRequest();
 
-        xhr.open('GET', `${this.url}movies`);
+    //     xhr.open('GET', `${this.url}movies`);
 
-        xhr.responseType = 'json';
+    //     xhr.responseType = 'json';
 
-        xhr.send();
+    //     xhr.send();
 
-        xhr.addEventListener('load', () => {
-            callback(xhr.response);
-        });
-    }
+    //     xhr.addEventListener('load', () => {
+    //         callback(xhr.response);
+    //     });
+    // }
 
     // public getAudioSourceById(id: number): Promise<IAudio>;
     public async getAudioSourceById(id: number): Promise<IAudio> {
@@ -79,8 +79,6 @@ export class DataService {
             });
         })
     }
-
-    // I am not sure if I have to proceed converting method calls at components, so I converted only at listen-button.component a method call.
 
     // public getAudioSourceById(id: number, callback: (audio: IAudio) => void): void {
     //     const xhr = new XMLHttpRequest();

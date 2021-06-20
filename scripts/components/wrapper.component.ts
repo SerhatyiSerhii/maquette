@@ -22,7 +22,7 @@ export class WrapperComp implements IComp {
         const centralClasses: string[] = ['star-wars', 'runner', 'godfuther'];
         let centralClassesPosition = 0;
 
-        this.dataService.getAllMovies(data => {
+        this.dataService.getAllMovies().then(data => {
             for (let i = data.length - 1; i >= 0; i--) {
                 const optionsAsync = data[i];
                 const indicatorAsync = i % 3;

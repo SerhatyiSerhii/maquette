@@ -18,28 +18,27 @@ export class HeaderComp extends ScrollableComp implements IComp {
     private createGoToMenu(): HTMLElement {
         const filmNav = new ElementBuilder('ul').setClasses('film-nav').build();
 
-        this.dataService.getAllMovies(data => {
-            data
-                .map(movie => {
-                    const linkToFilm = new ElementBuilder('a').setClasses('top-film').build();
+        this.dataService.getAllMovies().then(data => {
+            data.map(movie => {
+                const linkToFilm = new ElementBuilder('a').setClasses('top-film').build();
 
-                    linkToFilm.textContent = generateMoviePosition(movie.position);
-                    linkToFilm.addEventListener('click', (event) => {
-                        event.preventDefault();
+                linkToFilm.textContent = generateMoviePosition(movie.position);
+                linkToFilm.addEventListener('click', (event) => {
+                    event.preventDefault();
 
-                        this.scrollToFilm(movie.id);
+                    this.scrollToFilm(movie.id);
 
-                        if (window.innerWidth < 768) {
-                            this.toggleBurger();
-                        }
-                    });
-
-                    return new ElementBuilder('li').setChildren(linkToFilm).build();
-                })
-                .reverse()
-                .forEach(child => {
-                    filmNav.appendChild(child);
+                    if (window.innerWidth < 768) {
+                        this.toggleBurger();
+                    }
                 });
+
+                return new ElementBuilder('li').setChildren(linkToFilm).build();
+            })
+            .reverse()
+            .forEach(child => {
+                filmNav.appendChild(child);
+            });
         });
 
         return filmNav;
