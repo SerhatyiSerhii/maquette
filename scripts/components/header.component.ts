@@ -9,39 +9,44 @@ export class HeaderComp extends ScrollableComp implements IComp {
     private boxMenu: HTMLElement;
     private burgerImg: HTMLElement;
     private dataService: DataService = ServiceLocator.inject<DataService>(Services.DATA_SERVICE);
+    private filmNav: HTMLElement;
 
     private toggleBurger(): void {
         this.boxMenu.style.display = (this.boxMenu.style.display === 'block') ? 'none' : 'block';
         this.burgerImg.classList.toggle('pressed');
     }
 
-    private createGoToMenu(): HTMLElement {
-        const filmNav = new ElementBuilder('ul').setClasses('film-nav').build();
+    private async getAllMovies(): Promise<void> {
+        const movies = await this.dataService.getAllMovies();
 
-        this.dataService.getAllMovies().then(data => {
-            data.map(movie => {
-                const linkToFilm = new ElementBuilder('a').setClasses('top-film').build();
+        movies.map(movie => {
+            const linkToFilm = new ElementBuilder('a').setClasses('top-film').build();
 
-                linkToFilm.textContent = generateMoviePosition(movie.position);
-                linkToFilm.addEventListener('click', (event) => {
-                    event.preventDefault();
+            linkToFilm.textContent = generateMoviePosition(movie.position);
+            linkToFilm.addEventListener('click', (event) => {
+                event.preventDefault();
 
-                    this.scrollToFilm(movie.id);
+                this.scrollToFilm(movie.id);
 
-                    if (window.innerWidth < 768) {
-                        this.toggleBurger();
-                    }
-                });
+                if (window.innerWidth < 768) {
+                    this.toggleBurger();
+                }
+            });
 
-                return new ElementBuilder('li').setChildren(linkToFilm).build();
-            })
+            return new ElementBuilder('li').setChildren(linkToFilm).build();
+        })
             .reverse()
             .forEach(child => {
-                filmNav.appendChild(child);
+                this.filmNav.appendChild(child);
             });
-        });
+    }
 
-        return filmNav;
+    private createGoToMenu(): HTMLElement {
+        this.filmNav = new ElementBuilder('ul').setClasses('film-nav').build();
+
+        this.getAllMovies();
+
+        return this.filmNav;
     }
 
     private displayGoToMenuOnHover(goToMenuUnit: HTMLElement, lastChildOfUnit: HTMLElement): void {

@@ -18,15 +18,13 @@ export class ListenBtnComp implements IComp {
         const listenBtn = new ElementBuilder('button').setClasses('listen').build();
         listenBtn.textContent = 'listen';
 
-        listenBtn.addEventListener('click', () => {
-            this.dataService.getAudioSourceById(this.movieId).then(result => {
-                const modalWindow = new ModalWindowComp(result.audioPath, this.movieName);
+        listenBtn.addEventListener('click', async () => {
+            const modalWindow = new ModalWindowComp( (await this.dataService.getAudioSourceById(this.movieId)).audioPath, this.movieName );
 
-                document.body.appendChild(modalWindow.render());
+            document.body.appendChild(modalWindow.render());
 
-                modalWindow.init();
-                modalWindow.showModalWindow();
-            });
+            modalWindow.init();
+            modalWindow.showModalWindow();
         });
 
         return listenBtn;

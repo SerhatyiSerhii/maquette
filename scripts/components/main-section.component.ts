@@ -5,8 +5,21 @@ import { ElementBuilder } from '../utilities/element-builder';
 import { ScrollableComp } from './scrollable.component';
 
 export class MainSectionComp extends ScrollableComp implements IComp {
-    private arrowDown: string = `<svg width="43" height="60" viewBox="0 0 43 60" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 33L21 58M21 58L41.5 32M21 58V0" stroke-width="2" /></svg>`;
+    private arrowDown: HTMLElement;
+    private arrowDownSVG: string = `<svg width="43" height="60" viewBox="0 0 43 60" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 33L21 58M21 58L41.5 32M21 58V0" stroke-width="2" /></svg>`;
     private dataService: DataService = ServiceLocator.inject<DataService>(Services.DATA_SERVICE);
+
+    private async getLastMovie(): Promise<void> {
+        const movies = await this.dataService.getAllMovies();
+
+        const lastMovie = movies[movies.length - 1];
+
+        this.arrowDown.addEventListener('click', (event) => {
+            event.preventDefault();
+
+            this.scrollToFilm(lastMovie.id);
+        });
+    }
 
     public render(): HTMLElement {
         const accentText = new ElementBuilder('span').setClasses('accent-text').build();
@@ -20,20 +33,12 @@ export class MainSectionComp extends ScrollableComp implements IComp {
         const mainSentence = new ElementBuilder('p').build();
         mainSentence.textContent = 'Awesome movie soundtracks can turn a good movie like Guardians Of The Galaxy or Star Wars into iconic ones.'
 
-        const arrowDown = new ElementBuilder('a').setClasses('arrow-down', 'arrow').build();
-        arrowDown.innerHTML = this.arrowDown;
+        this.arrowDown = new ElementBuilder('a').setClasses('arrow-down', 'arrow').build();
+        this.arrowDown.innerHTML = this.arrowDownSVG;
 
-        this.dataService.getAllMovies().then(movies => {
-            const lastMovie = movies[movies.length - 1];
+        this.getLastMovie();
 
-            arrowDown.addEventListener('click', (event) => {
-                event.preventDefault();
-
-                this.scrollToFilm(lastMovie.id);
-            });
-        });
-
-        const container = new ElementBuilder('div').setClasses('container').setChildren(mainTitle, mainSentence, arrowDown).build();
+        const container = new ElementBuilder('div').setClasses('container').setChildren(mainTitle, mainSentence, this.arrowDown).build();
         const section = new ElementBuilder('section').setClasses('main-section').setChildren(container).build();
 
         return section;
