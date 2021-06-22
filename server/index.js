@@ -21,14 +21,4 @@ app.get('/audios/:id', (req, res) => {
     res.json(entity);
 });
 
-/**
- * @deprecated
- */
-app.post('/audios', (req, res) => {
-    const movieId = req.body.id;
-    const entity = audioDataBase.find(e => e.id === movieId);
-
-    res.json(entity);
-});
-
 app.listen(port, () => console.log(`Server running at http://localhost:${port}/`));

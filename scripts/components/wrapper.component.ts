@@ -17,46 +17,46 @@ export class WrapperComp implements IComp {
     private dataService: DataService = ServiceLocator.inject<DataService>(Services.DATA_SERVICE);
     private centralClasses: string[] = ['star-wars', 'runner', 'godfuther'];
 
-    private async getAllMovies(passedElement: HTMLElement): Promise<void> {
+    private async getAllMovies(passedElement: HTMLElement): Promise<void> { // TODO: is the purpose of this method to get all movies?
         let centralClassesPosition = 0;
 
         const movies = await this.dataService.getAllMovies();
 
-            for (let i = movies.length - 1; i >= 0; i--) {
-                const optionsAsync = movies[i];
-                const indicatorAsync = i % 3;
-                let strategyAsync: IDirectionStrategy;
+        for (let i = movies.length - 1; i >= 0; i--) {
+            const optionsAsync = movies[i];
+            const indicatorAsync = i % 3;
+            let strategyAsync: IDirectionStrategy;
 
-                if (indicatorAsync === 0 || indicatorAsync === 2) {
-                    strategyAsync = new AsideDirectionStrategy(optionsAsync.bannerPath, optionsAsync.shortDescription, indicatorAsync === 0)
-                } else {
-                    strategyAsync = new CentralDirectionStrategy(this.centralClasses[centralClassesPosition]);
+            if (indicatorAsync === 0 || indicatorAsync === 2) {
+                strategyAsync = new AsideDirectionStrategy(optionsAsync.bannerPath, optionsAsync.shortDescription, indicatorAsync === 0)
+            } else {
+                strategyAsync = new CentralDirectionStrategy(this.centralClasses[centralClassesPosition]);
 
-                    centralClassesPosition++;
-                }
-
-                const componenetInstance = new MovieSectionComp(optionsAsync, strategyAsync);
-
-                this.movieSectionService.addSection(optionsAsync.id, componenetInstance);
-
-                passedElement.appendChild(componenetInstance.render());
-
-                if (i % 3 === 1) {
-                    const sliderOptions: IVideo[] = [];
-
-                    for (let j = i + 2; j >= i; j--) {
-                        sliderOptions.push(movies[j].video);
-                    }
-
-                    const slider = new SliderComp(sliderOptions, 1);
-
-                    passedElement.appendChild(slider.render());
-
-                    slider.init();
-                }
+                centralClassesPosition++;
             }
 
-            passedElement.appendChild(new SignUpComp().render());
+            const componenetInstance = new MovieSectionComp(optionsAsync, strategyAsync);
+
+            this.movieSectionService.addSection(optionsAsync.id, componenetInstance);
+
+            passedElement.appendChild(componenetInstance.render());
+
+            if (i % 3 === 1) {
+                const sliderOptions: IVideo[] = [];
+
+                for (let j = i + 2; j >= i; j--) {
+                    sliderOptions.push(movies[j].video);
+                }
+
+                const slider = new SliderComp(sliderOptions, 1);
+
+                passedElement.appendChild(slider.render());
+
+                slider.init();
+            }
+        }
+
+        passedElement.appendChild(new SignUpComp().render());
     }
 
     public setWrapperChildren(element: HTMLElement): HTMLElement {

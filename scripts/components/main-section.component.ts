@@ -6,10 +6,10 @@ import { ScrollableComp } from './scrollable.component';
 
 export class MainSectionComp extends ScrollableComp implements IComp {
     private arrowDown: HTMLElement;
-    private arrowDownSVG: string = `<svg width="43" height="60" viewBox="0 0 43 60" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 33L21 58M21 58L41.5 32M21 58V0" stroke-width="2" /></svg>`;
+    private arrowDownIcon: string = `<svg width="43" height="60" viewBox="0 0 43 60" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 33L21 58M21 58L41.5 32M21 58V0" stroke-width="2" /></svg>`;
     private dataService: DataService = ServiceLocator.inject<DataService>(Services.DATA_SERVICE);
 
-    private async getLastMovie(): Promise<void> {
+    private async getLastMovie(): Promise<void> { // TODO: is the purpose of this method to get last movie?
         const movies = await this.dataService.getAllMovies();
 
         const lastMovie = movies[movies.length - 1];
@@ -34,7 +34,7 @@ export class MainSectionComp extends ScrollableComp implements IComp {
         mainSentence.textContent = 'Awesome movie soundtracks can turn a good movie like Guardians Of The Galaxy or Star Wars into iconic ones.'
 
         this.arrowDown = new ElementBuilder('a').setClasses('arrow-down', 'arrow').build();
-        this.arrowDown.innerHTML = this.arrowDownSVG;
+        this.arrowDown.innerHTML = this.arrowDownIcon;
 
         this.getLastMovie();
 

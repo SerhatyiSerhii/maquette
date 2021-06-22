@@ -16,25 +16,26 @@ export class HeaderComp extends ScrollableComp implements IComp {
         this.burgerImg.classList.toggle('pressed');
     }
 
-    private async getAllMovies(): Promise<void> {
+    private async getAllMovies(): Promise<void> { // TODO: is the purpose of this method to get all movies?
         const movies = await this.dataService.getAllMovies();
 
-        movies.map(movie => {
-            const linkToFilm = new ElementBuilder('a').setClasses('top-film').build();
+        movies
+            .map(movie => {
+                const linkToFilm = new ElementBuilder('a').setClasses('top-film').build();
 
-            linkToFilm.textContent = generateMoviePosition(movie.position);
-            linkToFilm.addEventListener('click', (event) => {
-                event.preventDefault();
+                linkToFilm.textContent = generateMoviePosition(movie.position);
+                linkToFilm.addEventListener('click', (event) => {
+                    event.preventDefault();
 
-                this.scrollToFilm(movie.id);
+                    this.scrollToFilm(movie.id);
 
-                if (window.innerWidth < 768) {
-                    this.toggleBurger();
-                }
-            });
+                    if (window.innerWidth < 768) {
+                        this.toggleBurger();
+                    }
+                });
 
-            return new ElementBuilder('li').setChildren(linkToFilm).build();
-        })
+                return new ElementBuilder('li').setChildren(linkToFilm).build();
+            })
             .reverse()
             .forEach(child => {
                 this.filmNav.appendChild(child);
