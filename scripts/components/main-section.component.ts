@@ -9,7 +9,7 @@ export class MainSectionComp extends ScrollableComp implements IComp {
     private arrowDownIcon: string = `<svg width="43" height="60" viewBox="0 0 43 60" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 33L21 58M21 58L41.5 32M21 58V0" stroke-width="2" /></svg>`;
     private dataService: DataService = ServiceLocator.inject<DataService>(Services.DATA_SERVICE);
 
-    private async scrollToTheLastMovie(): Promise<void> { // TODO: is the purpose of this method to get last movie?     Corrected
+    private async scrollToTheLastMovie(): Promise<void> {
         const movies = await this.dataService.getAllMovies();
 
         const lastMovie = movies[movies.length - 1];

@@ -16,7 +16,7 @@ export class HeaderComp extends ScrollableComp implements IComp {
         this.burgerImg.classList.toggle('pressed');
     }
 
-    private async createGoToSubList(): Promise<void> { // TODO: is the purpose of this method to get all movies?    Corrected
+    private async createGoToSubList(): Promise<void> {
         const movies = await this.dataService.getAllMovies();
 
         movies

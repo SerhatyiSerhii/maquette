@@ -17,7 +17,7 @@ export class WrapperComp implements IComp {
     private dataService: DataService = ServiceLocator.inject<DataService>(Services.DATA_SERVICE);
     private centralClasses: string[] = ['star-wars', 'runner', 'godfuther'];
 
-    private async makeMovieSection(passedElement: HTMLElement): Promise<void> { // TODO: is the purpose of this method to get all movies?   Corrected
+    private async makeMovieSection(passedElement: HTMLElement): Promise<void> {
         let centralClassesPosition = 0;
 
         const movies = await this.dataService.getAllMovies();
