@@ -16,7 +16,7 @@ export class HeaderComp extends ScrollableComp implements IComp {
         this.burgerImg.classList.toggle('pressed');
     }
 
-    private async getAllMovies(): Promise<void> { // TODO: is the purpose of this method to get all movies?
+    private async createGoToSubList(): Promise<void> { // TODO: is the purpose of this method to get all movies?    Corrected
         const movies = await this.dataService.getAllMovies();
 
         movies
@@ -45,7 +45,7 @@ export class HeaderComp extends ScrollableComp implements IComp {
     private createGoToMenu(): HTMLElement {
         this.filmNav = new ElementBuilder('ul').setClasses('film-nav').build();
 
-        this.getAllMovies();
+        this.createGoToSubList();
 
         return this.filmNav;
     }

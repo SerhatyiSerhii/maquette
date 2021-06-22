@@ -17,7 +17,7 @@ export class WrapperComp implements IComp {
     private dataService: DataService = ServiceLocator.inject<DataService>(Services.DATA_SERVICE);
     private centralClasses: string[] = ['star-wars', 'runner', 'godfuther'];
 
-    private async getAllMovies(passedElement: HTMLElement): Promise<void> { // TODO: is the purpose of this method to get all movies?
+    private async makeMovieSection(passedElement: HTMLElement): Promise<void> { // TODO: is the purpose of this method to get all movies?   Corrected
         let centralClassesPosition = 0;
 
         const movies = await this.dataService.getAllMovies();
@@ -62,7 +62,7 @@ export class WrapperComp implements IComp {
     public setWrapperChildren(element: HTMLElement): HTMLElement {
         element.appendChild(new MainSectionComp(300).render());
 
-        this.getAllMovies(element);
+        this.makeMovieSection(element);
 
         return element;
     }
